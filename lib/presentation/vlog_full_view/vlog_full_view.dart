@@ -491,6 +491,9 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                                     width: 38,
                                     imagePath: "assets/image/delete (1).png",
                                   ),
+                                  //Pramodvishwakarma08/colleage_thriver
+                                  //Pramodvishwakarma08/colleage_thriver
+                                  //Pramodvishwakarma08/colleage_thriver
                                   SizedBox(
                                     width: 20,
                                   ),
