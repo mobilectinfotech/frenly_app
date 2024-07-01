@@ -3,8 +3,8 @@ import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 import '../../data/models/SertchUserModel.dart';
 import '../Blog/PopularBlogModel.dart';
-import '../Post_ALL/post_view_all/GetAllPostsModel.dart';
 import '../Vlog/TrendingVlogModel.dart';
+import '../photos/photo_list/PhotosListModel.dart';
 
 class SearchVlogController extends GetxController{
 
@@ -50,8 +50,8 @@ class SearchVlogController extends GetxController{
 
 
 
-  Rx<GetAllPostsModel> getPostData =GetAllPostsModel().obs;
-  GetAllPostsModel get searchPhotosModel => getPostData.value;
+  Rx<PhotosListsModel> getPostData =PhotosListsModel().obs;
+  PhotosListsModel get searchPhotosModel => getPostData.value;
   RxBool isLoadingPosts =false.obs;
 
   searchPhotos(String text, bool ? load)async{

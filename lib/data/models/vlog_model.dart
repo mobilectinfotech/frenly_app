@@ -15,7 +15,7 @@ class Vlog {
   int? numberOfViews;
   DateTime? createdAt;
   DateTime? updatedAt;
-  User? user;
+  ProfileUser ? user;
   bool? isFollowed;
   bool? alreadyLiked;
   bool? alreadySaved;
@@ -56,7 +56,7 @@ class Vlog {
     numberOfViews: json["numberOfViews"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: json["user"] == null ? null : ProfileUser.fromJson(json["user"]),
     isFollowed: json["isFollowed"],
     alreadyLiked: json["alreadyLiked"],
     alreadySaved: json["alreadySaved"],

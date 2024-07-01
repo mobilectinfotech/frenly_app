@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 class NotificationsModel {
-    final bool? success;
-    final int? status;
-    final String? message;
-    final List<Notification>? notifications;
-    final int? total;
-    final int? unRead;
+    bool? success;
+    int? status;
+    String? message;
+    List<Notification>? notifications;
+    int? total;
+    int? unRead;
 
     NotificationsModel({
         this.success,
@@ -41,15 +41,17 @@ class NotificationsModel {
 }
 
 class Notification {
-    final int? id;
-    final int? byUserId;
-    final int? toUserId;
-    final bool? isRead;
-    final String? content;
-    final Data? data;
-    final DateTime? createdAt;
-    final DateTime? updatedAt;
-    final ByUser? byUser;
+    int? id;
+    int? byUserId;
+    int? toUserId;
+    bool? isRead;
+    String? content;
+    String? type;
+    int? followStatus;
+    Data? data;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    ByUser? byUser;
 
     Notification({
         this.id,
@@ -57,6 +59,8 @@ class Notification {
         this.toUserId,
         this.isRead,
         this.content,
+        this.type,
+        this.followStatus,
         this.data,
         this.createdAt,
         this.updatedAt,
@@ -73,6 +77,8 @@ class Notification {
         toUserId: json["toUserId"],
         isRead: json["isRead"],
         content: json["content"],
+        type: json["type"],
+        followStatus: json["followStatus"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -85,6 +91,8 @@ class Notification {
         "toUserId": toUserId,
         "isRead": isRead,
         "content": content,
+        "type": type,
+        "followStatus": followStatus,
         "data": data?.toJson(),
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
@@ -93,27 +101,28 @@ class Notification {
 }
 
 class ByUser {
-    final int? id;
-    final String? email;
-    final String? password;
-    final String? fullName;
-    final String? bio;
-    final String? handle;
-    final String? fcmToken;
-    final String? avatarUrl;
-    final dynamic coverPhotoUrl;
-    final dynamic token;
-    final String? actToken;
-    final bool? isVerified;
-    final int? numberOfFollower;
-    final int? numberOfFollowing;
-    final String? city;
-    final String? country;
-    final DateTime? createdAt;
-    final DateTime? updatedAt;
-    final int? numberOfSaves;
-    final int? isOnline;
-    final DateTime? lastSeen;
+    int? id;
+    String? email;
+    String? password;
+    String? fullName;
+    String? bio;
+    String? handle;
+    String? fcmToken;
+    String? avatarUrl;
+    String? coverPhotoUrl;
+    String? token;
+    String? actToken;
+    bool? isVerified;
+    int? numberOfFollower;
+    int? numberOfFollowing;
+    String? city;
+    String? country;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    int? numberOfSaves;
+    int? isOnline;
+    DateTime? lastSeen;
+    bool? isPrivate;
 
     ByUser({
         this.id,
@@ -137,6 +146,7 @@ class ByUser {
         this.numberOfSaves,
         this.isOnline,
         this.lastSeen,
+        this.isPrivate,
     });
 
     factory ByUser.fromRawJson(String str) => ByUser.fromJson(json.decode(str));
@@ -165,6 +175,7 @@ class ByUser {
         numberOfSaves: json["numberOfSaves"],
         isOnline: json["isOnline"],
         lastSeen: json["lastSeen"] == null ? null : DateTime.parse(json["lastSeen"]),
+        isPrivate: json["isPrivate"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -189,16 +200,21 @@ class ByUser {
         "numberOfSaves": numberOfSaves,
         "isOnline": isOnline,
         "lastSeen": lastSeen?.toIso8601String(),
+        "isPrivate": isPrivate,
     };
 }
 
 class Data {
-    final int? userId;
-    final int? vlogId;
+    int? id;
+    String? imageUrl;
+    String? videoUrl;
+    String? thumbnailUrl;
 
     Data({
-        this.userId,
-        this.vlogId,
+        this.id,
+        this.imageUrl,
+        this.videoUrl,
+        this.thumbnailUrl,
     });
 
     factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
@@ -206,12 +222,16 @@ class Data {
     String toRawJson() => json.encode(toJson());
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        userId: json["userId"],
-        vlogId: json["vlogId"],
+        id: json["id"],
+        imageUrl: json["image_url"],
+        videoUrl: json["video_url"],
+        thumbnailUrl: json["thumbnail_url"],
     );
 
     Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "vlogId": vlogId,
+        "id": id,
+        "image_url": imageUrl,
+        "video_url": videoUrl,
+        "thumbnail_url": thumbnailUrl,
     };
 }

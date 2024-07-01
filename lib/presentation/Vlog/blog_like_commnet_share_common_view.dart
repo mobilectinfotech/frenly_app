@@ -28,8 +28,7 @@ class BlogLikeCommentsShareView extends StatefulWidget {
 
 class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
   DashBoardController controller = Get.find();
-  BlogFullViewController blogFullViewController =
-      Get.put(BlogFullViewController());
+  BlogFullViewController blogFullViewController = Get.put(BlogFullViewController());
 
   @override
   Widget build(BuildContext context) {
@@ -286,11 +285,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                                               )
                                             : ListView.builder(
                                                 reverse: true,
-                                                itemCount:
-                                                    trendingVlogController
-                                                        .getCommentsModel
-                                                        .comments
-                                                        ?.length,
+                                                itemCount: trendingVlogController.getCommentsModel.comments?.length,
                                                 itemBuilder:
                                                     (BuildContext context,
                                                         int index) {
@@ -515,7 +510,6 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
   _bottomSheetWidget2(
       {required BuildContext context001, required String vlogId}) {
     dashBoardController.getFriends();
-
     showBottomSheet(
         context: context001,
         builder: (BuildContext context) {

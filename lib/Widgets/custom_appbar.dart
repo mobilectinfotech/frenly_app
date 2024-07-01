@@ -19,7 +19,6 @@ PreferredSizeWidget customAppbar(
     Function()? onTap,
     bool? editBlogIcon,
     Widget? rightSideWidget}) {
-  MyProfileController myProfileController = Get.put(MyProfileController());
 
   return PreferredSize(
       preferredSize:
@@ -49,7 +48,7 @@ PreferredSizeWidget customAppbar(
               width: 16.aw,
             ),
             Text(
-              title ?? "${MyStrings.caption}",
+              title ?? "caption",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: const Color(0xFF111111),
@@ -66,11 +65,10 @@ PreferredSizeWidget customAppbar(
                   height: 38.adaptSize,
                   radius: BorderRadius.circular(36),
                   fit: BoxFit.cover,
-                  imagePath:
-                      myProfileController.getUserByIdModel.user?.avatarUrl,
+                  imagePath:null,
                 ),
               ),
-            if (rightSideWidget != null) rightSideWidget!,
+            if (rightSideWidget != null) rightSideWidget,
             SizedBox(
               width: 16.aw,
             ),
@@ -259,7 +257,7 @@ PreferredSizeWidget customAppbarHomepage({
               width: 16.aw,
             ),
             Text(
-              title ?? "${MyStrings.caption}",
+              title ?? "caption",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: const Color(0xFF111111),

@@ -93,7 +93,7 @@ class LocalString extends  Translations {
           "Contacts": "Contacts",
           "Delete Account": "Delete Account",
           "Chat notification": "Chat notification",
-          "Handlle": "handle is unique",
+          "Handlle": "Username is unique",
           "Hand": "Handle",
           "Location": "Location",
           "This is Description": "This is the description of new video. My name is Jessica Parker and I enjoy meeting new people",

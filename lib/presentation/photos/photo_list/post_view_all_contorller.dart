@@ -1,7 +1,8 @@
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 import '../../../data/models/PostSingleViewModel.dart';
-import 'GetAllPostsModel.dart';
+import 'PhotosListModel.dart';
+import 'PhotosListModel.dart';
 
 class PostAllViewController extends GetxController{
 
@@ -12,7 +13,7 @@ class PostAllViewController extends GetxController{
     getAllPost();
   }
 
-  GetAllPostsModel getAllPostsModel=GetAllPostsModel();
+  PhotosListsModel getAllPostsModel=PhotosListsModel();
   RxBool isLoading =false.obs ;
    getAllPost()async{
      isLoading.value =true;
@@ -21,16 +22,6 @@ class PostAllViewController extends GetxController{
    }
 
 
-  RxBool isLoadingGetPostByid =false.obs ;
-
-  PostSingleViewModel ? postSingleViewModel ;
-
-   getPostByid({required String id}) async {
-     isLoadingGetPostByid.value=true;
-     postSingleViewModel = await   ApiRepository.getPostsByID(id: '$id');
-     isLoadingGetPostByid.value=false;
-
-   }
 
 
 }

@@ -1,19 +1,15 @@
-// To parse this JSON data, do
-//
-//     final getUserByIdModel = getUserByIdModelFromJson(jsonString);
-
 import 'dart:convert';
 
-import '../../data/models/blog_model.dart';
+import '../../data/models/HomePageModel.dart';
+import '../../data/models/PostSingleViewModel.dart';
 import '../../data/models/post_model.dart';
-import '../../data/models/user_model.dart';
 import '../../data/models/vlog_model.dart';
 
 class GetUserByIdModel {
   int? status;
   String? message;
   bool? success;
-  User? user;
+  ProfileUser? user;
 
   GetUserByIdModel({
     this.status,
@@ -30,7 +26,7 @@ class GetUserByIdModel {
     status: json["status"],
     message: json["message"],
     success: json["success"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: json["user"] == null ? null : ProfileUser.fromJson(json["user"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,7 +37,7 @@ class GetUserByIdModel {
   };
 }
 
-class User {
+class ProfileUser {
   int? id;
   String? email;
   String? password;
@@ -51,26 +47,27 @@ class User {
   String? fcmToken;
   String? avatarUrl;
   String? coverPhotoUrl;
-  dynamic token;
+  String? token;
   String? actToken;
   bool? isVerified;
   int? numberOfFollower;
   int? numberOfFollowing;
   String? city;
   String? country;
-  String? createdAt;
-  String? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   int? numberOfSaves;
   int? isOnline;
-  String? lastSeen;
+  DateTime? lastSeen;
+  bool? isPrivate;
   List<Post>? posts;
   List<Vlog>? vlogs;
   List<Blog>? blogs;
   int? numberOfPosts;
-  bool? isFollowed;
   bool? commentsAllowed;
+  int? followState;
 
-  User({
+  ProfileUser({
     this.id,
     this.email,
     this.password,
@@ -92,19 +89,20 @@ class User {
     this.numberOfSaves,
     this.isOnline,
     this.lastSeen,
+    this.isPrivate,
     this.posts,
     this.vlogs,
     this.blogs,
     this.numberOfPosts,
-    this.isFollowed,
     this.commentsAllowed,
+    this.followState,
   });
 
-  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+  factory ProfileUser.fromRawJson(String str) => ProfileUser.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory ProfileUser.fromJson(Map<String, dynamic> json) => ProfileUser(
     id: json["id"],
     email: json["email"],
     password: json["password"],
@@ -121,17 +119,18 @@ class User {
     numberOfFollowing: json["numberOfFollowing"],
     city: json["city"],
     country: json["country"],
-    createdAt: json["createdAt"],
-    updatedAt: json["updatedAt"],
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     numberOfSaves: json["numberOfSaves"],
     isOnline: json["isOnline"],
-    lastSeen: json["lastSeen"],
+    lastSeen: json["lastSeen"] == null ? null : DateTime.parse(json["lastSeen"]),
+    isPrivate: json["isPrivate"],
     posts: json["posts"] == null ? [] : List<Post>.from(json["posts"]!.map((x) => Post.fromJson(x))),
     vlogs: json["vlogs"] == null ? [] : List<Vlog>.from(json["vlogs"]!.map((x) => Vlog.fromJson(x))),
     blogs: json["blogs"] == null ? [] : List<Blog>.from(json["blogs"]!.map((x) => Blog.fromJson(x))),
     numberOfPosts: json["numberOfPosts"],
-    isFollowed: json["isFollowed"],
     commentsAllowed: json["commentsAllowed"],
+    followState: json["followState"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -151,89 +150,18 @@ class User {
     "numberOfFollowing": numberOfFollowing,
     "city": city,
     "country": country,
-    "createdAt": createdAt,
-    "updatedAt": updatedAt,
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
     "numberOfSaves": numberOfSaves,
     "isOnline": isOnline,
-    "lastSeen": lastSeen,
+    "lastSeen": lastSeen?.toIso8601String(),
+    "isPrivate": isPrivate,
     "posts": posts == null ? [] : List<dynamic>.from(posts!.map((x) => x.toJson())),
     "vlogs": vlogs == null ? [] : List<dynamic>.from(vlogs!.map((x) => x.toJson())),
     "blogs": blogs == null ? [] : List<dynamic>.from(blogs!.map((x) => x.toJson())),
     "numberOfPosts": numberOfPosts,
-    "isFollowed": isFollowed,
     "commentsAllowed": commentsAllowed,
-  };
-}
-
-class Blog {
-  int? id;
-  String? body;
-  String? title;
-  String? tags;
-  dynamic city;
-  String? imageUrl;
-  dynamic country;
-  int? userId;
-  String? createdAt;
-  String? updatedAt;
-  int? numberOfLikes;
-  int? numberOfShares;
-  int? numberOfComments;
-  int? numberOfSaves;
-
-  Blog({
-    this.id,
-    this.body,
-    this.title,
-    this.tags,
-    this.city,
-    this.imageUrl,
-    this.country,
-    this.userId,
-    this.createdAt,
-    this.updatedAt,
-    this.numberOfLikes,
-    this.numberOfShares,
-    this.numberOfComments,
-    this.numberOfSaves,
-  });
-
-  factory Blog.fromRawJson(String str) => Blog.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Blog.fromJson(Map<String, dynamic> json) => Blog(
-    id: json["id"],
-    body: json["body"],
-    title: json["title"],
-    tags: json["tags"],
-    city: json["city"],
-    imageUrl: json["image_url"],
-    country: json["country"],
-    userId: json["userId"],
-    createdAt: json["createdAt"],
-    updatedAt: json["updatedAt"],
-    numberOfLikes: json["numberOfLikes"],
-    numberOfShares: json["numberOfShares"],
-    numberOfComments: json["numberOfComments"],
-    numberOfSaves: json["numberOfSaves"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "body": body,
-    "title": title,
-    "tags": tags,
-    "city": city,
-    "image_url": imageUrl,
-    "country": country,
-    "userId": userId,
-    "createdAt": createdAt,
-    "updatedAt": updatedAt,
-    "numberOfLikes": numberOfLikes,
-    "numberOfShares": numberOfShares,
-    "numberOfComments": numberOfComments,
-    "numberOfSaves": numberOfSaves,
+    "followState": followState,
   };
 }
 

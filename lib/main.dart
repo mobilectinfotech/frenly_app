@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/core/utils/initial_bindings.dart';
-import 'package:frenly_app/routes/app_routes.dart';
+import 'package:frenly_app/presentation/auth/splash_screen/splash_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'data/data_sources/local/app_localization.dart';
 import 'package:get/get.dart';
@@ -18,6 +18,9 @@ import 'messaing_service/messaging_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
  await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -76,21 +79,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-     // statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness:Brightness.dark,
-     // systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.white, //
-      // Change this to your desired color
-    ));
+    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    //   statusBarIconBrightness:Brightness.dark,
+    //   statusBarColor: Colors.white, //
+    // ));
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       translations: LocalString(),
-      locale: const Locale('swe', 'SE'), //for setting localization strings
-      fallbackLocale: const Locale('se', 'SE'),
+      // locale: const Locale('swe', 'SE'), //for setting localization strings
+      // fallbackLocale: const Locale('se', 'SE'),
+      locale: const Locale('en', 'US'), //for setting localization strings
+      fallbackLocale: const Locale('en', 'US'),
+      // Locale('en', 'US')
       title: 'friendlily',
-      initialRoute: AppRoutes.splash,
-      getPages:   AppRoutes.pages,
+     home: SplashScreen(),
+
      initialBinding: InitialBindings(),
       theme: ThemeData(
         highlightColor: Colors.transparent,
@@ -101,9 +104,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-
 
 
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
+import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
@@ -33,27 +34,28 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(
-          context: context,
-          title: "Following".tr,
-        ),
-        body: Obx(
-    ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(),) : controller.followingsModel.followings?.length == 0 ? Center(child: Text("No followings Found"),) :  Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: RefreshIndicator(
-            onRefresh: _refresh,
-            child: ListView(
-              children: [
-                SizedBox(height: 10.ah),
-                gridView()
-
-              ],
-            ),
-          ),
-        ),
-      ),)
-    );
+        child: Scaffold(
+            appBar: customAppbar(context: context, title: "Following".tr,),
+            body: Obx(
+        () => controller.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : controller.followingsModel.followings?.length == 0
+                ? Center(
+                    child: Text("No followings Found"),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: RefreshIndicator(
+                      onRefresh: _refresh,
+                      child: ListView(
+                        children: [SizedBox(height: 10.ah), gridView()],
+                      ),
+                    ),
+                  ),
+      ),
+    ));
   }
 
   Widget gridView() {
@@ -78,118 +80,15 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
                       crossAxisSpacing: 5),
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserProfileScreen(
-                                      userId:
-                                          '${controller.followingsModel.followings?[index].id}',
-                                    )));
-                      },
-                      child: Container(
-                        height: 220.ah,
-                        width: 120.aw,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(7),
-                            border: Border.all(
-                                //color: HexColor('#FFFFFF'),
-                                color: Colors.black12,
-                                width: 1)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomImageView(
-                              height: 104.adaptSize,
-                              width: 104.adaptSize,
-                              imagePath: controller.followingsModel
-                                  .followings?[index].avatarUrl,
-                              radius: BorderRadius.circular(109.ah),
-                              fit: BoxFit.cover,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                '${controller.followingsModel.followings?[index].fullName}',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13.fSize),
-                              ),
-                            ),
-                            Text(
-                              controller.followingsModel.followings?[index]
-                                      .handle ??
-                                  '',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.fSize),
-                            ),
-                            SizedBox(height: 4.ah),
-                            Text(
-                              '${controller.followingsModel.followings?[index].numberOfFollower ?? ''}',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12.fSize),
-                            ),
-                            SizedBox(height: 10.ah),
-                            InkWell(
-                              onTap: () {
-                                setState(
-                                  () {
-                                    controller.followingsModel
-                                            .followings?[index].isFollowed =
-                                        !controller.followingsModel
-                                            .followings![index].isFollowed!;
-                                    if (controller.followingsModel
-                                        .followings![index].isFollowed!) {
-                                      ApiRepository.follow(
-                                          userId:
-                                              "${controller.followingsModel.followings?[index].id!}");
-                                    } else {
-                                      ApiRepository.unfollow(
-                                          userId:
-                                              "${controller.followingsModel.followings?[index].id!}");
-                                    }
-                                  },
-                                );
-                              },
-                              child: Container(
-                                height: 24.ah,
-                                width: 98.aw,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: controller.followingsModel
-                                          .followings![index].isFollowed!
-                                      ? Colors.red
-                                      : HexColor('#001649'),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    controller.followingsModel
-                                            .followings![index].isFollowed!
-                                        ? "UnFollow"
-                                        : "Follow",
-                                    style: TextStyle(
-                                        color: controller.followingsModel
-                                                .followings![index].isFollowed!
-                                            ? Colors.white
-                                            : Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14.fSize),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
+                        onTap: () {
+                          Get.to(() => UserProfileScreen(
+                                userId:
+                                    '${controller.followingsModel.followings?[index].id}',
+                              ));
+                        },
+                        child: CustomUserCard(
+                          users: controller.followingsModel.followings![index],
+                        ));
                   }),
             ),
     );

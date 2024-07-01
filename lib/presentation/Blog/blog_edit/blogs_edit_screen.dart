@@ -35,7 +35,6 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-     // controller.tagcontroller.text =  widget.getBlogByIdModel.blog.tags.;
      controller.titleController.text = widget.getBlogByIdModel.blog!.title!;
      controller.bodyController.text =widget.getBlogByIdModel.blog!.body!;
 

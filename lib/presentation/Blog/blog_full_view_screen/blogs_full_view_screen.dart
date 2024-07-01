@@ -15,6 +15,7 @@ import '../../../data/repositories/api_repository.dart';
 import '../../Vlog/blog_like_commnet_share_common_view.dart';
 import '../../Vlog/vlog_like_commnet_share_common_view.dart';
 import '../../auth/my_profile_view/my_profile_controller.dart';
+import '../../user_profile_screen/user_profile_screen.dart';
 import '../PopularBlogModel.dart';
 import 'blog_full_view_controller.dart';
 
@@ -42,78 +43,136 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Obx(()=>controller.isLoading.value ? const Center(child: Scaffold(body: Center(child: CircularProgressIndicator())),) : Scaffold(
-          appBar: customAppbarForChat(context: context,name: "${controller.blogByIdModel.blog?.user?.fullName}",handle: "${controller.blogByIdModel.blog?.user?.handle}",imagepath: controller.blogByIdModel.blog?.user?.coverPhotoUrl,editBlogIcon: widget.isOwn== true ? true : false,
-            onTap: () {
-              _bottomSheetWidget2( vlogId: '');
-          },),
+    return Scaffold(
+          appBar: AppBar(),
+          body:  Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator()) : Padding(
+            padding: const EdgeInsets.only(left: 10.0,right: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.to(()=> UserProfileScreen(userId: "${controller.blogByIdModel.blog?.user?.id}"));
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomImageView(
+                        height: 50.ah,
+                        width: 50.ah,
+                        imagePath: controller.blogByIdModel.blog?.user?.avatarUrl,
+                        radius: BorderRadius.circular(60.ah),
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(width: 10.aw),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("${controller.blogByIdModel.blog?.user?.fullName}".capitalizeFirst!,
+                            style: TextStyle(
+                              color: Colors.black,fontWeight: FontWeight.w700,fontSize:20.fSize,
+                            ),),
+                          Text("${controller.blogByIdModel.blog?.user?.handle}",
+                            style: TextStyle(
+                              color: Colors.grey,fontWeight: FontWeight.w500,fontSize:14.fSize,
+                            ),),
+                        ],
+                      ),
+                      const Spacer(),
+                      widget.isOwn ==true ? InkWell(
+                        onTap: () {
+                          // This is left empty as the PopupMenuButton handles the tap
+                        },
+                        child: PopupMenuButton<String>(
+                          icon: const Icon(
+                            Icons.more_vert_outlined,
+                            size: 30,
+                          ),
+                          onSelected: (String result) async{
+                            // Handle the selection from the menu
+                            print(result);
+                            if(result=="1"){
+                              Get.to(()=> BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
 
-            body: Builder(
-              builder: (context) {
-                controller.context=context;
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: CustomImageView(
-                            height: 185.ah,
-                            width: 351.aw,
-                            imagePath: controller.blogByIdModel.blog?.imageUrl,
-                            radius: BorderRadius.circular(25),
-                            fit: BoxFit.cover,
-                          ),
+                            }
+                            if(result=="2"){
+                              await  ApiRepository.deleteBlog(blogId: "${controller.blogByIdModel.blog?.id}");
+                              if(Get.isRegistered<MyProfileController>()) {
+                                Get.find<MyProfileController>().getProfile(); //done
+                              }                            }
+
+                          },
+                          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: '1',
+                              child: Text('Edit'),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: '2',
+                              child: Text('Delete'),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 20.ah),
-                        tags(),
-                        SizedBox(height: 20.ah),
-                        Text(
-                          "${controller.blogByIdModel.blog?.title!.capitalizeFirst}".tr,
-                          style:  TextStyle(
-                              color: const Color(0xFF000000),
-                              fontSize: 18.adaptSize,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w700,
-                              height: 1.2),
-                        ),
-                        SizedBox(height: 20.ah),
-                        Text(
-                          "${controller.blogByIdModel.blog?.body!.capitalizeFirst}".tr,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.adaptSize,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 20.ah),
-                        SizedBox(height: 50.ah),
-                      ],
-                    ),
+                      ) : SizedBox(),
+                      SizedBox(width: 10.aw),
+
+                    ],
                   ),
-                );
-              }
+                ),
+                SizedBox(height: 20,),
+                Center(
+                  child: CustomImageView(
+                    height: 185.ah,
+                    width: 351.aw,
+                    imagePath: controller.blogByIdModel.blog?.imageUrl,
+                    radius: BorderRadius.circular(25),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(height: 20.ah),
+                tags(),
+                SizedBox(height: 20.ah),
+                Text(
+                  "${controller.blogByIdModel.blog?.title!.capitalizeFirst}".tr,
+                  style:  TextStyle(
+                      color: const Color(0xFF000000),
+                      fontSize: 18.adaptSize,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w700,
+                      height: 1.2),
+                ),
+                SizedBox(height: 20.ah),
+                Text(
+                  "${controller.blogByIdModel.blog?.body!.capitalizeFirst}".tr,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.adaptSize,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 20.ah),
+                SizedBox(height: 50.ah),
+              ],
             ),
-            bottomNavigationBar: BottomAppBar(
-              color: HexColor('#001649'),
+          )),
+          bottomNavigationBar: Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator()) : BottomAppBar(
+            color: HexColor('#001649'),
 
-              height: 108.ah,
+            height: 108.ah,
 
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25.0,right: 25),
-                child: SizedBox(
-                    child: Column(
-                      children: [BlogLikeCommentsShareView(vlog: controller.blogByIdModel.blog!,),
-                      ],
-                    )),
-              ),
-            )),
-      ),
-    );
+            child: Padding(
+              padding: const EdgeInsets.only(left: 25.0,right: 25),
+              child: SizedBox(
+                  child: Column(
+                    children: [BlogLikeCommentsShareView(vlog: controller.blogByIdModel.blog!,),
+                    ],
+                  )),
+            ),
+          )));
   }
   Widget tags(){
     String jsonString = "${controller.blogByIdModel.blog?.tags}";
@@ -156,82 +215,6 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
           ),
       ],
     );
-  }
-  _bottomSheetWidget2(
-      { required String vlogId}) {
-    MyProfileController myProfileControllerasd =Get.find();
-    BlogFullViewController myProfileController=Get.find();
-    showBottomSheet(
-        context: myProfileController.context,
-        builder: (BuildContext context) {
-          return FractionallySizedBox(
-              heightFactor: .25,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Container(
-                    // color: Colors.white,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.0.ah, right: 20.ah),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 40,),
-                            InkWell(
-                              onTap: () async {
-                                 await  ApiRepository.deleteBlog(blogId: "${controller.blogByIdModel.blog?.id}");
-                                 myProfileControllerasd.getProfile();
-                                Get.back();
-                                Get.back();
-                                Get.back();
-
-                              },
-                              child: Row(
-                                children: [
-                                  CustomImageView(
-                                    height: 38,
-                                    width: 38,
-                                    imagePath: "assets/image/delete (1).png",
-                                  ),
-                                  SizedBox(width: 20,),
-                                  const SizedBox(
-                                    child: Text("Delete this Blog"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 20,),
-                            InkWell(
-                              onTap: () async {
-                                Get.to(()=>BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
-                                // Get.to(()=>BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
-                              },
-                              child: Row(
-                                children: [
-                                  CustomImageView(
-                                    height: 38,
-                                    width: 38,
-                                    imagePath: "assets/image/edit_with_container.png",
-                                  ),
-                                  SizedBox(width: 20,),
-                                  const SizedBox(
-                                    child: Text("Edit this Blog"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ]),
-                    ),
-                  ),
-                ),
-              ));
-        }).closed.then((value) {});
   }
 }
 

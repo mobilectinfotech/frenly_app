@@ -30,14 +30,12 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(context: context,title: "selectfriend".tr),
-        body: Obx(
-          ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator()) :ListView.builder(
-            itemCount: controller.allFriendsModel.friends!.length,
-            itemBuilder: (context, index) => customCard(index),
-          ),
+    return  Scaffold(
+      appBar: AppBar(title:Text("selectfriend".tr) ,),
+      body: Obx(
+        ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator()) :ListView.builder(
+          itemCount: controller.allFriendsModel.friends!.length,
+          itemBuilder: (context, index) => customCard(index),
         ),
       ),
     );

@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../auth/my_profile_view/my_profile_controller.dart';
 class PostVideoController extends GetxController{
 
-  MyProfileController myProfileController =Get.put(MyProfileController());
 
   TextEditingController titleController =TextEditingController();
   TextEditingController desController =TextEditingController();
@@ -18,7 +17,9 @@ class PostVideoController extends GetxController{
   bool isPost = await ApiRepository.postVlog( photoPath: pikedVideo!.path, title: titleController.text, des: desController.text);
     isLoading.value=true;
     if(isPost){
-      myProfileController.getProfile();
+      if(Get.isRegistered<MyProfileController>()) {
+        Get.find<MyProfileController>().getProfile(); //pramod
+      }
       Get.back();
     }
   }
@@ -28,7 +29,10 @@ class PostVideoController extends GetxController{
     bool isPost = await ApiRepository.updateVlog(id: '', title: '', body: '', );
     isLoading.value=true;
     if(isPost){
-      myProfileController.getProfile();
+      if(Get.isRegistered<MyProfileController>()) {
+        Get.find<MyProfileController>().getProfile(); //done
+      }
+
       Get.back();
     }
   }

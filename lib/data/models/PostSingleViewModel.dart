@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:frenly_app/data/models/post_model.dart';
+
 PostSingleViewModel postSingleViewModelFromJson(String str) => PostSingleViewModel.fromJson(json.decode(str));
 
 String postSingleViewModelToJson(PostSingleViewModel data) => json.encode(data.toJson());
@@ -36,69 +38,6 @@ class PostSingleViewModel {
     };
 }
 
-class Post {
-    int? id;
-    String? caption;
-    String? imageUrl;
-    int? userId;
-    int? numberOfLikes;
-    int? numberOfShares;
-    int? numberOfComments;
-    int? numberOfSaves;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    User? user;
-    bool? alreadySaved;
-    bool? commentAllowed;
-
-    Post({
-        this.id,
-        this.caption,
-        this.imageUrl,
-        this.userId,
-        this.numberOfLikes,
-        this.numberOfShares,
-        this.numberOfComments,
-        this.numberOfSaves,
-        this.createdAt,
-        this.updatedAt,
-        this.user,
-        this.alreadySaved,
-        this.commentAllowed,
-    });
-
-    factory Post.fromJson(Map<String, dynamic> json) => Post(
-        id: json["id"],
-        caption: json["caption"],
-        imageUrl: json["image_url"],
-        userId: json["userId"],
-        numberOfLikes: json["numberOfLikes"],
-        numberOfShares: json["numberOfShares"],
-        numberOfComments: json["numberOfComments"],
-        numberOfSaves: json["numberOfSaves"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-        alreadySaved: json["alreadySaved"],
-        commentAllowed: json["commentAllowed"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "caption": caption,
-        "image_url": imageUrl,
-        "userId": userId,
-        "numberOfLikes": numberOfLikes,
-        "numberOfShares": numberOfShares,
-        "numberOfComments": numberOfComments,
-        "numberOfSaves": numberOfSaves,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "user": user?.toJson(),
-        "alreadySaved": alreadySaved,
-        "commentAllowed": commentAllowed,
-    };
-}
 
 class User {
     int? id;

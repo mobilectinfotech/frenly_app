@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import '../../data/models/GetCommentsModel.dart';
 import '../../data/repositories/api_repository.dart';
 import '../chat/Pages/all_frined/AllFriendsModel.dart';
@@ -7,14 +8,18 @@ import '../chat/Pages/all_frined/AllFriendsModel.dart';
 class DashBoardController extends GetxController{
 
 
-   RxBool bottomBarShow = true.obs;
+
+
+  RxInt selectedIndex = 0.obs;
+
+  RxBool bottomBarShow = true.obs;
 
   RxBool isLoadingONComments = false.obs;
   Rx<GetCommentsModel> getdata =GetCommentsModel().obs;
   GetCommentsModel get getCommentsModel => getdata.value;
 
 
-  getComments({required String vlogId,bool ? isLoading,bool ? isBlog, bool ? post})async{
+   getComments({required String vlogId,  bool ? isLoading, bool ? isBlog, bool ? post})async{
     print("getComments========>$isBlog ");
     isLoadingONComments.value = isLoading ?? true;
     var response = isBlog == true ? await ApiRepository.getCommentsOnBlog(blogId: vlogId) : post==true ?  await ApiRepository.getCommentsOnPosts(vlogId: vlogId) : await ApiRepository.getCommentsOnVlog(vlogId: vlogId);

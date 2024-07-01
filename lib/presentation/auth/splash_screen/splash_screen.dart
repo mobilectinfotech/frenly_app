@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // ignore_for_file: must_be_immutable
-class SplashScreen extends GetWidget<SplashController> {
+class SplashScreen extends StatelessWidget {
     SplashScreen({Key? key}) : super(key: key,);
 
-  var name = [];
+    SplashController splashController =Get.put(SplashController());
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +19,11 @@ class SplashScreen extends GetWidget<SplashController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 1.v),
-            CustomImageView(
-              imagePath: "assets/image/splash.png",
-              height: 169,
-              width: 162,
+            Padding(
+              padding:  EdgeInsets.all(80.0.adaptSize),
+              child: CustomImageView(
+                imagePath: "assets/logo/bakgrund_logo.png",
+              ),
             ),
           ],
         ),

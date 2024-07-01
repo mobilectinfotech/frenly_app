@@ -12,7 +12,6 @@ class MyFollowersController extends GetxController{
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    myFollowers();
   }
 
   var followingsModelData =FollowersModel().obs;

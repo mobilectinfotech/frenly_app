@@ -5,9 +5,12 @@ import 'package:frenly_app/presentation/vlog_full_view/vlog_full_view.dart';
 import 'package:get/get.dart';
 import '../../../Widgets/custom_image_view.dart';
 import '../../../core/constants/app_dialogs.dart';
+import '../../../data/models/PostSingleViewModel.dart';
+import '../../../data/repositories/api_repository.dart';
 import '../../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
-import '../../Post_ALL/post_view_all/post_view_by_id.dart';
+import '../../photos/photo_view_screen.dart';
 import '../Pages/chat_room/chat_room_model.dart';
+import 'package:intl/intl.dart';
 
 class ReplyCard extends StatelessWidget {
   const ReplyCard({Key ? key, required this.message, required this.createdAt}) : super(key: key);
@@ -47,7 +50,7 @@ class ReplyCard extends StatelessWidget {
                 //
                 // ),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   print("dsafgfdsgdgsfgdgdsgdsgdsfgdgdgfdgdfgd${message.isLink}");
                   print("dsafgfdsgdgsfgdgdsgdsgdsfgdgdgfdgdfgd${message.isLinkId}");
                   if(message.isLink==3){
@@ -67,7 +70,9 @@ class ReplyCard extends StatelessWidget {
                   }
                   if(message.isLink==1){
                     if(message.isLinkId!=null){
-                      Get.to(()=>PostSingleViewScreen(  id: '${message.isLinkId}',));
+                      PostSingleViewModel post = await  ApiRepository.getPostsByID(id: "${message.isLinkId}");
+                      Get.to(()=>PostFullViewScreen(  loadPostByid: "${post.post?.id}",));
+
                     }else{
                       AppDialog.taostMessage("Photo not Found");
                     }
@@ -80,7 +85,10 @@ class ReplyCard extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: CustomImageView(imagePath: "assets/image/share.png",color: Colors.white,height: 20,),
                     ),
-                    Text("${message.content}",style: TextStyle(color:message.isLink== 0 ?   Colors.white :  Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
+                    Container(
+                      width: MediaQuery.of(context).size.width *.62,
+                      child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ?   Colors.white :  Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -92,7 +100,7 @@ class ReplyCard extends StatelessWidget {
                 opacity: 0.5,
                 child: Padding(
                     padding: EdgeInsets.only(left: 10.h),
-                    child: Text("check check check",
+                    child: Text("  ${DateFormat('hh:mm a').format(createdAt ?? DateTime.now())}",
                       style: TextStyle(fontSize: 12.adaptSize),
                     )
 

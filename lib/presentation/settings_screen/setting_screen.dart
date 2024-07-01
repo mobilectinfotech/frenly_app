@@ -16,7 +16,8 @@ import '../auth/login_screen/login_screen.dart';
 import '../my_block_list/my_blocklist_screen.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({super.key});
+    bool  isAccountPrivate ;
+   SettingScreen({super.key, required this.isAccountPrivate});
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -77,10 +78,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.white, //
-    ));
     return SafeArea(
       child: Scaffold(
         appBar: customAppbar(context: context, title: "Settings".tr ),
@@ -131,6 +128,39 @@ class _SettingScreenState extends State<SettingScreen> {
                                       controller.mySettingModel!.userSetting.lastSeen =
                                       !controller.mySettingModel!.userSetting.lastSeen;
                                       controller.mySettingsUpdate();
+                                    });
+                                  },
+                                ),
+                              ),
+                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                            ],
+                          ),
+                          SizedBox(height: 10.ah),
+
+                          //profile private public
+
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Private Account'.tr,
+                                style: TextStyle(
+                                    color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                              ),
+                              Transform.scale(
+                                scale: 0.4,
+                                child: CupertinoSwitch(
+                                  activeColor: Colors.blueGrey,
+                                  trackColor: Colors.grey,
+                                  onLabelColor: Colors.brown,
+                                  offLabelColor: Colors.red,
+                                  thumbColor: const Color(0xff001649),
+                                  value: widget.isAccountPrivate,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      widget.isAccountPrivate = !widget.isAccountPrivate;
+                                      ApiRepository.updateAccountPrivate(isPrivate: widget.isAccountPrivate);
                                     });
                                   },
                                 ),
@@ -386,6 +416,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       },
                     ),
                   ),
+                  SizedBox(height: 40,),
                 ],
               ),
             ),

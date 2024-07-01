@@ -7,24 +7,24 @@ import 'dart:convert';
 import '../../../data/models/post_model.dart';
 
 
-GetAllPostsModel getAllPostsModelFromJson(String str) => GetAllPostsModel.fromJson(json.decode(str));
+PhotosListsModel getAllPostsModelFromJson(String str) => PhotosListsModel.fromJson(json.decode(str));
 
-String getAllPostsModelToJson(GetAllPostsModel data) => json.encode(data.toJson());
+String getAllPostsModelToJson(PhotosListsModel data) => json.encode(data.toJson());
 
-class GetAllPostsModel {
+class PhotosListsModel {
     bool? success;
     int? status;
     String? message;
     List<Post>? posts;
 
-    GetAllPostsModel({
+    PhotosListsModel({
         this.success,
         this.status,
         this.message,
         this.posts,
     });
 
-    factory GetAllPostsModel.fromJson(Map<String, dynamic> json) => GetAllPostsModel(
+    factory PhotosListsModel.fromJson(Map<String, dynamic> json) => PhotosListsModel(
         success: json["success"],
         status: json["status"],
         message: json["message"],

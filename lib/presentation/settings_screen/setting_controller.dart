@@ -29,4 +29,9 @@ class SettingsController extends GetxController {
         feedNotification: mySettingModel!.userSetting.feedNotification,
         language: mySettingModel!.userSetting.language);
   }
+
+
+
+
+
 }

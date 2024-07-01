@@ -60,18 +60,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 1),
                     ),
                   ),
-                  SizedBox(height: 80.ah),
+                  SizedBox(height: 60.ah),
                   Center(
-                    child: Container(
-                      height: 151.ah, width: 148.aw,
-                      decoration: BoxDecoration(
-                          color: Color(0x305B5B5B),
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.contain,
-                            image: AssetImage('assets/image/frenly_logo.png'),
-                          )),
-                    ),
+                    child: SizedBox(
+                      width: 200,
+                        child: Image.asset("assets/logo/transparent_bakgrund_logo.png")),
                     // Image.asset('assets/image/image 1.png',height: 151.ah,width: 148.aw,)
                   ),
                   Spacer(),

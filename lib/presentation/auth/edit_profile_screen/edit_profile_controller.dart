@@ -34,7 +34,7 @@ class EditProfileController extends GetxController {
 
   editProfile() async {
     if (bioController.text.trim().isEmpty) {
-      Get.snackbar("warning", "Bio can't be empty");
+      Get.snackbar("Warning", "Bio can't be empty");
       return;
     }
     bool isUpdate = await ApiRepository.editProfile(

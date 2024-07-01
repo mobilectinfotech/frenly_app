@@ -1,11 +1,9 @@
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
 import '../../../../messaing_service/messaging_service.dart';
 import '../../../dashboard_screen/dashboard_screen.dart';
 import '../../onboard/onboard.dart';
 class SplashController extends GetxController {
-
 
 
   final _messagingService = MessagingService();

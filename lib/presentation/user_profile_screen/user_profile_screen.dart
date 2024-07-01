@@ -1,18 +1,45 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
+import 'package:frenly_app/Widgets/custom_vlog_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
-import 'package:frenly_app/presentation/Post_ALL/post_view_all/post_view_by_id.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../../data/repositories/api_repository.dart';
-import '../Vlog/vlog_like_commnet_share_common_view.dart';
+import '../photos/photo_view_screen.dart';
+import '../user_follwers/user_followers_screen.dart';
+import '../user_follwings_page/user_followings_screen.dart';
 import '../vlog_full_view/vlog_full_view.dart';
+
+//
+// class UserProfileScreen extends StatefulWidget {
+//   final String userId;
+//
+//   const UserProfileScreen({super.key, required this.userId});
+//
+//   @override
+//   State<UserProfileScreen> createState() => _UserProfileScreenState();
+// }
+//
+// class _UserProfileScreenState extends State<UserProfileScreen> {
+//   UserProfileController controller = Get.put(UserProfileController());
+//
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     controller.getUserById(userId: widget.userId);
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(
+//         backgroundColor: Color(0xffE8E8E8), body: asdklfjnlkasd());
+//   }
+// }
 
 class UserProfileScreen extends StatefulWidget {
   final String userId;
@@ -33,118 +60,204 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     controller.getUserById(userId: widget.userId);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(backgroundColor: Color(0xffE8E8E8), body: asdklfjnlkasd());
-  }
-}
-
-class asdklfjnlkasd extends StatefulWidget {
-  const asdklfjnlkasd({super.key});
-
-  @override
-  State<asdklfjnlkasd> createState() => _asdklfjnlkasdState();
-}
-
-class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
-  UserProfileController controller = Get.find();
   int activeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-          () => controller.isLoading.value
-          ? const Center(
-        child: CircularProgressIndicator(),
-      )
-          : MediaQuery.removePadding(
-        removeTop: true,
-        removeBottom: true,
-        context: context,
-        child: ListView(
-          children: [
-            imageView(),
-            SizedBox(height: 10.ah),
-            bioTexts(),
-            SizedBox(height: 20.ah),
-            Padding(
-              padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
-              child: Container(
-                height: 52.ah,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.adaptSize)),
-                child: Padding(
-                  padding: EdgeInsets.all(6.0.adaptSize),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          activeIndex = 0;
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 112,
-                          decoration: BoxDecoration(
-                              color: activeIndex == 0 ? const Color(0xff001649) : Colors.transparent,
-                              borderRadius: BorderRadius.circular(9.adaptSize)),
-                          child: Center(
-                              child: Text(
-                                'Vlogs'.tr,
-                                style: TextStyle(color: activeIndex == 0 ? Colors.white : Colors.black54),
-                              )),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          activeIndex = 1;
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 112,
-                          decoration: BoxDecoration(
-                              color: activeIndex == 1 ? const Color(0xff001649) : Colors.transparent,
-                              borderRadius: BorderRadius.circular(9.adaptSize)),
-                          child: Center(
-                              child: Text(
-                                'Blogs'.tr,
-                                style: TextStyle(color: activeIndex == 1 ? Colors.white : Colors.black54),
-                              )),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          activeIndex = 2;
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 112,
-                          decoration: BoxDecoration(
-                              color: activeIndex == 2 ? const Color(0xff001649) : Colors.transparent,
-                              borderRadius: BorderRadius.circular(9.adaptSize)),
-                          child: Center(
-                              child: Text(
-                                'Photos'.tr,
-                                style: TextStyle(color: activeIndex == 2 ? Colors.white : Colors.black54),
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
+    return Scaffold(
+      body: Obx(
+        () => controller.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : MediaQuery.removePadding(
+                removeTop: true,
+                removeBottom: true,
+                context: context,
+                child: ListView(
+                  children: [
+                    imageView(),
+                    SizedBox(height: 10.ah),
+                    bioTexts(),
+                    SizedBox(height: 20.ah),
+                    ((controller.getUserByIdModel.user?.isPrivate == true &&
+                                controller.getUserByIdModel.user!.followState ==
+                                    0) ||
+                            (controller.getUserByIdModel.user?.isPrivate ==
+                                    true &&
+                                controller.getUserByIdModel.user!.followState ==
+                                    1))
+                        ? Container(
+                            child: Column(
+                              children: [
+                                Divider(),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 20.0.aw, right: 16.aw, top: 40.ah),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 45.adaptSize,
+                                          height: 45.adaptSize,
+                                          child:
+                                              Icon(Icons.lock_outline_rounded),
+                                          decoration: ShapeDecoration(
+                                            color: Colors.white,
+                                            shape: OvalBorder(
+                                                side: BorderSide(width: 2)),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5.0.aw),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              height: 6.ah,
+                                            ),
+                                            Text(
+                                              'This Account is Private',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.09,
+                                                fontFamily: 'Roboto',
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.ah,
+                                            ),
+                                            Opacity(
+                                              opacity: 0.50,
+                                              child: Text(
+                                                'Follow this account to see their photos \nand videos.',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14.09,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding:
+                                EdgeInsets.only(left: 16.0.aw, right: 16.aw),
+                            child: Container(
+                              height: 52.ah,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.circular(10.adaptSize)),
+                              child: Padding(
+                                padding: EdgeInsets.all(6.0.adaptSize),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        activeIndex = 0;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: 112,
+                                        decoration: BoxDecoration(
+                                            color: activeIndex == 0
+                                                ? const Color(0xff001649)
+                                                : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(
+                                                9.adaptSize)),
+                                        child: Center(
+                                            child: Text(
+                                          'Vlogs'.tr,
+                                          style: TextStyle(
+                                              color: activeIndex == 0
+                                                  ? Colors.white
+                                                  : Colors.black54),
+                                        )),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        activeIndex = 1;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: 112,
+                                        decoration: BoxDecoration(
+                                            color: activeIndex == 1
+                                                ? const Color(0xff001649)
+                                                : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(
+                                                9.adaptSize)),
+                                        child: Center(
+                                            child: Text(
+                                          'Blogs'.tr,
+                                          style: TextStyle(
+                                              color: activeIndex == 1
+                                                  ? Colors.white
+                                                  : Colors.black54),
+                                        )),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        activeIndex = 2;
+                                        setState(() {});
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: 112,
+                                        decoration: BoxDecoration(
+                                            color: activeIndex == 2
+                                                ? const Color(0xff001649)
+                                                : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(
+                                                9.adaptSize)),
+                                        child: Center(
+                                            child: Text(
+                                          'Photos'.tr,
+                                          style: TextStyle(
+                                              color: activeIndex == 2
+                                                  ? Colors.white
+                                                  : Colors.black54),
+                                        )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                    SizedBox(height: 20.ah),
+                    Column(
+                      children: [
+                        activeIndex == 0 ? _vlogs() : const SizedBox(),
+                        activeIndex == 1 ? _blogs() : const SizedBox(),
+                        activeIndex == 2 ? _photos() : const SizedBox(),
+                      ],
+                    )
+                  ],
                 ),
               ),
-            ),
-            SizedBox(height: 20.ah),
-            Column(
-              children: [
-                activeIndex == 0 ? _vlogs() : const SizedBox(),
-                activeIndex == 1 ? _blogs() : const SizedBox(),
-                activeIndex == 2 ? _photos() : const SizedBox(),
-              ],
-            )
-          ],
-        ),
       ),
     );
   }
@@ -160,7 +273,8 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
               onTap: () {
                 Get.back();
               },
-              child: Image.asset('assets/image/arrow.png', height: 20.aw, width: 20.aw)),
+              child: Image.asset('assets/image/arrow.png',
+                  height: 20.aw, width: 20.aw)),
           SizedBox(
               height: 20.aw,
               width: 20.aw,
@@ -186,7 +300,8 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
             width: double.infinity,
             child: CustomImageView(
               radius: BorderRadius.only(
-                  bottomRight: Radius.circular(25.adaptSize), bottomLeft: Radius.circular(25.adaptSize)),
+                  bottomRight: Radius.circular(25.adaptSize),
+                  bottomLeft: Radius.circular(25.adaptSize)),
               fit: BoxFit.cover,
               imagePath: controller.getUserByIdModel.user?.coverPhotoUrl,
             ),
@@ -195,7 +310,9 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
             bottom: 0,
             left: 121.aw,
             child: Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(500)),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(500)),
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: CustomImageView(
@@ -232,40 +349,58 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${controller.getUserByIdModel.user?.fullName?.trim()}'.capitalizeFirst!,
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 25.fSize),
+                    '${controller.getUserByIdModel.user?.fullName?.trim()}'
+                        .capitalizeFirst!,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 25.fSize),
                   ),
                   Text(
                     controller.getUserByIdModel.user?.handle?.trim() ?? "",
-                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700, fontSize: 15.fSize),
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15.fSize),
                   ),
                 ],
               ),
               InkWell(
                 onTap: () {
                   setState(
-                        () {
-                      controller.getUserByIdModel.user!.isFollowed = !controller.getUserByIdModel.user!.isFollowed!;
-                      if (controller.getUserByIdModel.user!.isFollowed!) {
-                        ApiRepository.follow(userId: "${controller.getUserByIdModel.user!.id!}");
+                    () {
+                      if (controller.getUserByIdModel.user?.followState == 0) {
+                        controller.getUserByIdModel.user?.followState = 1;
+                        setState(() {});
+                        ApiRepository.follow(
+                            userId: "${controller.getUserByIdModel.user!.id!}");
                       } else {
-                        ApiRepository.unfollow(userId: "${controller.getUserByIdModel.user!.id!}");
+                        controller.getUserByIdModel.user?.followState = 0;
+                        setState(() {});
+                        ApiRepository.unfollow(
+                            userId: "${controller.getUserByIdModel.user!.id!}");
                       }
                     },
                   );
                 },
                 child: Container(
-                  height: 24.ah,
+                  height: 40.ah,
                   width: 98.aw,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: controller.getUserByIdModel.user?.isFollowed ?? false ? Colors.red : HexColor('#001649'),
+                    color: HexColor('#001649'),
                   ),
                   child: Center(
                     child: Text(
-                      controller.getUserByIdModel.user?.isFollowed ?? false ? "Unfollow".tr : "Follow".tr,
+                      controller.getUserByIdModel.user?.followState == 1
+                          ? controller.getUserByIdModel.user?.isPrivate == false
+                              ? "Following"
+                              : "Requested".tr
+                          : controller.getUserByIdModel.user?.followState == 0
+                              ? "Follow".tr
+                              : "Following",
                       style: TextStyle(
-                          color: controller.getUserByIdModel.user!.isFollowed! ? Colors.white : Colors.white,
+                          color: Colors.white,
                           fontWeight: FontWeight.w500,
                           fontSize: 14.fSize),
                     ),
@@ -275,8 +410,13 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
             ],
           ),
           Text(
-            "${controller.getUserByIdModel.user?.bio}".capitalizeFirst ?? "",
-            style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400, fontSize: 16.fSize),
+            "${controller.getUserByIdModel.user?.bio}${controller.getUserByIdModel.user?.isPrivate} "
+                    .capitalizeFirst ??
+                "",
+            style: TextStyle(
+                color: Colors.black54,
+                fontWeight: FontWeight.w400,
+                fontSize: 16.fSize),
           ),
           SizedBox(height: 15.ah),
           Row(
@@ -305,50 +445,80 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
                   ),
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '${controller.getUserByIdModel.user?.numberOfFollower}',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.fSize,
+              InkWell(
+                onTap: () {
+                  if (controller.getUserByIdModel.user!.isPrivate!) {
+                    if (controller.getUserByIdModel.user!.followState == 2) {
+                      Get.to(() => UserFollowersScreen(
+                            userId: '${controller.getUserByIdModel.user!.id}',
+                          ));
+                    }
+                  } else {
+                    Get.to(() => UserFollowersScreen(
+                          userId: '${controller.getUserByIdModel.user!.id}',
+                        ));
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${controller.getUserByIdModel.user?.numberOfFollower}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.fSize,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Followers'.tr,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.fSize,
+                    Text(
+                      'Followers'.tr,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.fSize,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '${controller.getUserByIdModel.user?.numberOfFollowing}',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.fSize,
+              InkWell(
+                onTap: () {
+                  if (controller.getUserByIdModel.user!.isPrivate!) {
+                    if (controller.getUserByIdModel.user!.followState == 2) {
+                      Get.to(() => UserFollowingsScreen(
+                            userId: '${controller.getUserByIdModel.user!.id}',
+                          ));
+                    }
+                  } else {
+                    Get.to(() => UserFollowingsScreen(
+                          userId: '${controller.getUserByIdModel.user!.id}',
+                        ));
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${controller.getUserByIdModel.user?.numberOfFollowing}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.fSize,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Following'.tr,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.fSize,
+                    Text(
+                      'Following'.tr,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.fSize,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               // Image.asset(
               //   'assets/image/msg btn.png',
@@ -364,182 +534,33 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
   }
 
   //vlogs
+
   Widget _vlogs() {
-    return SizedBox(
-      width: double.infinity,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: controller.getUserByIdModel.user!.vlogs!.length,
-        padding: const EdgeInsets.only(bottom: 10),
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              Get.to(() => VlogFullViewNewScreen(
-                videoUrl: '${controller.getUserByIdModel.user!.vlogs![index].videoUrl}',
-                vlogId: controller.getUserByIdModel.user!.vlogs![index].id.toString(),
-              ));
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 196.ah,
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 15),
-                        child: CustomImageView(
-                          height: 196.ah,
-                          width: double.infinity,
-                          radius: BorderRadius.circular(15.adaptSize),
-                          fit: BoxFit.cover,
-                          imagePath: controller.getUserByIdModel.user!.vlogs![index].thumbnailUrl,
-                        ),
-                      ),
-                      vlogInLocationRow(index),
-                      userLikeViewShare(index),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget vlogInLocationRow(int index) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 15),
+      padding: EdgeInsets.only(left: 10.0.aw, right: 10.aw),
       child: SizedBox(
-        height: 40.ah,
         width: double.infinity,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Image.asset(
-                'assets/image/location-outline.png',
-                width: 21.ah,
-                height: 21.ah,
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: controller.getUserByIdModel.user!.vlogs!.length,
+          padding: const EdgeInsets.only(bottom: 10),
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                Get.to(() => VlogFullViewNewScreen(
+                      videoUrl:
+                          '${controller.getUserByIdModel.user!.vlogs![index].videoUrl}',
+                      vlogId: controller.getUserByIdModel.user!.vlogs![index].id
+                          .toString(),
+                    ));
+              },
+              child: CustomVlogCard(
+                vlog: controller.getUserByIdModel.user!.vlogs![index],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Text(
-                '${controller.getUserByIdModel.user?.city}, ',
-                style: TextStyle(
-                  color: HexColor('#FFFFFF'),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11.fSize,
-                ),
-              ),
-            ),
-            Text(
-              '${controller.getUserByIdModel.user?.country}',
-              style: TextStyle(
-                color: HexColor('#FFFFFF'),
-                fontWeight: FontWeight.w600,
-                fontSize: 11.fSize,
-              ),
-            ),
-            const Spacer(),
-            // Image.asset(
-            //   'assets/image/more op.png',
-            //   width: 22.aw,
-            // ),
-            const SizedBox(
-              width: 20,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget userLikeViewShare(int index) {
-    DateTime currentDate = DateTime.now();
-    DateTime createdAtDate = DateTime.parse("${controller.getUserByIdModel.user!.vlogs?[index].createdAt}");
-    int differenceInDays = currentDate.difference(createdAtDate).inDays;
-    return Padding(
-      padding: EdgeInsets.only(left: 15.0, right: 15, bottom: 15, top: 116.ah),
-      child: SizedBox(
-        height: 160.ah,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 15.0,
-              ),
-              child: Text(
-                '${controller.getUserByIdModel.user?.vlogs![index].title}'.capitalizeFirst!,
-                style:
-                TextStyle(color: HexColor('#FFFFFF'), fontWeight: FontWeight.w700, fontSize: 16.fSize, height: 1.5),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 10.ah),
-                    CustomImageView(
-                      height: 30.ah,
-                      width: 30.ah,
-                      imagePath: controller.getUserByIdModel.user?.avatarUrl,
-                      radius: BorderRadius.circular(40.ah),
-                    ),
-                    SizedBox(
-                      width: 95.aw,
-                      child: Text(
-                        '  ${controller.getUserByIdModel.user!.handle}  '.capitalizeFirst!,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: HexColor('#FFFFFF'),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11.fSize,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      '${controller.getUserByIdModel.user?.vlogs![index].numberOfViews} views ',
-                      style: TextStyle(
-                        color: HexColor('#FFFFFF'),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11.fSize,
-                      ),
-                    ),
-                    Text(
-                      // ignore: unnecessary_brace_in_string_interps
-                      '${differenceInDays} days ago',
-                      style: TextStyle(
-                        color: HexColor('#FFFFFF'),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11.fSize,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                VlogLikeCommentsShareView(
-                  vlog: controller.getUserByIdModel.user!.vlogs![index]!,
-                  commentsAllowed: controller.getUserByIdModel.user!.commentsAllowed,
-                ),
-                SizedBox(width: 15.0.aw)
-              ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -556,11 +577,13 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
         itemCount: controller.getUserByIdModel.user!.blogs!.length,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: (context, index) {
-          String jsonString = "${controller.getUserByIdModel.user!.blogs![index].tags}";
+          String jsonString =
+              "${controller.getUserByIdModel.user!.blogs![index].tags}";
           List<String> tagsList = json.decode(jsonString).cast<String>();
           return InkWell(
             onTap: () {
-              Get.to(() => BlogsFullViewScreen(id: "${controller.getUserByIdModel.user!.blogs![index].id}"));
+              Get.to(() => BlogsFullViewScreen(
+                  id: "${controller.getUserByIdModel.user!.blogs![index].id}"));
             },
             child: Padding(
               padding: const EdgeInsets.only(bottom: 10, right: 5),
@@ -580,7 +603,8 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
                         width: 144.ah,
                         fit: BoxFit.cover,
                         radius: BorderRadius.circular(10),
-                        imagePath: controller.getUserByIdModel.user?.blogs![index].imageUrl,
+                        imagePath: controller
+                            .getUserByIdModel.user?.blogs![index].imageUrl,
                       ),
                       SizedBox(
                         width: 10.aw,
@@ -599,21 +623,30 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                for (int i = 0; i < (tagsList.length < 2 ? tagsList.length : 2); i++)
+                                for (int i = 0;
+                                    i <
+                                        (tagsList.length < 2
+                                            ? tagsList.length
+                                            : 2);
+                                    i++)
                                   Padding(
                                     padding: EdgeInsets.only(left: 5.0.aw),
                                     child: Container(
                                       height: 20.ah,
                                       width: 60.aw,
                                       decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.black, width: 0.3),
-                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(
+                                              color: Colors.black, width: 0.3),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                           color: Colors.transparent),
                                       child: Center(
                                         child: Text(
                                           tagsList[i].tr,
                                           style: TextStyle(
-                                              color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 10.fSize),
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 10.fSize),
                                         ),
                                       ),
                                     ),
@@ -626,11 +659,14 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
                               child: SizedBox(
                                 width: 220.aw,
                                 child: Text(
-                                  '${controller.getUserByIdModel.user?.blogs?[index].title}'.tr,
+                                  '${controller.getUserByIdModel.user?.blogs?[index].title}'
+                                      .tr,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style:
-                                  TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18.fSize),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18.fSize),
                                 ),
                               ),
                             ),
@@ -644,7 +680,8 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
                                   height: 35.ah,
                                   width: 35.ah,
                                   fit: BoxFit.cover,
-                                  imagePath: controller.getUserByIdModel.user?.avatarUrl,
+                                  imagePath: controller
+                                      .getUserByIdModel.user?.avatarUrl,
                                   radius: BorderRadius.circular(32),
                                 ),
                                 SizedBox(width: 10.aw),
@@ -708,27 +745,29 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
         crossAxisSpacing: 4,
         children: List.generate(
           controller.getUserByIdModel.user!.posts!.length,
-              (index) => StaggeredGridTile.count(
+          (index) => StaggeredGridTile.count(
             crossAxisCellCount: cont[index % 9],
             mainAxisCellCount: cont[index % 9],
             child: Center(
                 child: InkWell(
-                  onTap: () {
-                    Get.to(() => PostSingleViewScreen(id: "${controller.getUserByIdModel.user?.posts![index].id}"));
-                  },
-                  child: CustomImageView(
-                    imagePath: controller.getUserByIdModel.user?.posts![index].imageUrl,
-                    fit: BoxFit.cover,
-                    radius: BorderRadius.circular(10),
-                  ),
-                )),
+              onTap: () {
+                Get.to(()=>PostFullViewScreen( loadPostByid: "${controller.getUserByIdModel.user?.posts![index]}", ));
+              },
+              child: CustomImageView(
+                imagePath:
+                    controller.getUserByIdModel.user?.posts![index].imageUrl,
+                fit: BoxFit.cover,
+                radius: BorderRadius.circular(10),
+              ),
+            )),
           ),
         ),
       ),
     );
   }
 
-  _bottomSheetWidget2({required BuildContext context001, required String vlogId}) {
+  _bottomSheetWidget2(
+      {required BuildContext context001, required String vlogId}) {
     showBottomSheet(
         context: context001,
         builder: (BuildContext context) {
@@ -739,37 +778,42 @@ class _asdklfjnlkasdState extends State<asdklfjnlkasd> {
                   Get.back();
                 },
                 child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
                   child: Container(
                     // color: Colors.white,
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.0.ah, right: 20.ah),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            await ApiRepository.blockUser(userId: "${controller.getUserByIdModel.user?.id}");
-                            Get.back();
-                          },
-                          child: Row(
-                            children: [
-                              CustomImageView(
-                                height: 38,
-                                width: 38,
-                                imagePath: "assets/image/delete (1).png",
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                await ApiRepository.blockUser(
+                                    userId:
+                                        "${controller.getUserByIdModel.user?.id}");
+                                Get.back();
+                              },
+                              child: Row(
+                                children: [
+                                  CustomImageView(
+                                    height: 38,
+                                    width: 38,
+                                    imagePath: "assets/image/delete (1).png",
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const SizedBox(
+                                    child: Text("Block this user"),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              const SizedBox(
-                                child: Text("Block this user"),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]),
+                            ),
+                          ]),
                     ),
                   ),
                 ),

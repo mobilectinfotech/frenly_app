@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/Post_ALL/post_view_all/post_full_view.dart';
-import 'package:frenly_app/presentation/Post_ALL/post_view_all/post_view_all_contorller.dart';
+import 'package:frenly_app/presentation/photos/photo_view_screen.dart';
+import 'package:frenly_app/presentation/photos/photo_list/post_view_all_contorller.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import '../../../Widgets/custom_appbar.dart';
 import '../../../Widgets/custom_image_view.dart';
 import 'package:get/get.dart';
-import 'PostLikeCommentsShareView.dart';
+import '../PostLikeCommentsShareView.dart';
 
 
 
@@ -89,7 +89,7 @@ class _PhotoViewAllNewScreenState extends State<PhotoViewAllNewScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                Get.to(()=>PostFullViewScreen(post: controller.getAllPostsModel.posts?[index]));
+                                Get.to(()=>PostFullViewScreen(loadPostByid: "${ controller.getAllPostsModel.posts?[index].id}"));
                               },
                               child: Container(
                                   width: 385.adaptSize,

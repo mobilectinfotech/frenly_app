@@ -11,27 +11,23 @@ String discoverUsersModelToJson(DiscoverUsersModel data) => json.encode(data.toJ
 class DiscoverUsersModel {
     bool? success;
     int? status;
-    String? message;
     List<DiscoverUser>? discoverUsers;
 
     DiscoverUsersModel({
         this.success,
         this.status,
-        this.message,
         this.discoverUsers,
     });
 
     factory DiscoverUsersModel.fromJson(Map<String, dynamic> json) => DiscoverUsersModel(
         success: json["success"],
         status: json["status"],
-        message: json["message"],
         discoverUsers: json["discoverUsers"] == null ? [] : List<DiscoverUser>.from(json["discoverUsers"]!.map((x) => DiscoverUser.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
         "status": status,
-        "message": message,
         "discoverUsers": discoverUsers == null ? [] : List<dynamic>.from(discoverUsers!.map((x) => x.toJson())),
     };
 }
@@ -56,9 +52,11 @@ class DiscoverUser {
     DateTime? createdAt;
     DateTime? updatedAt;
     int? numberOfSaves;
-    bool? isFollowed;
+    int ? followState;
+    bool ? isPrivate ;
 
     DiscoverUser({
+        this.isPrivate,
         this.id,
         this.email,
         this.password,
@@ -78,11 +76,12 @@ class DiscoverUser {
         this.createdAt,
         this.updatedAt,
         this.numberOfSaves,
-        this.isFollowed,
+        this.followState,
     });
 
     factory DiscoverUser.fromJson(Map<String, dynamic> json) => DiscoverUser(
         id: json["id"],
+        isPrivate: json["isPrivate"],
         email: json["email"],
         password: json["password"],
         fullName: json["full_name"],
@@ -101,7 +100,7 @@ class DiscoverUser {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         numberOfSaves: json["numberOfSaves"],
-        isFollowed: json["isFollowed"],
+        followState: json["followState"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -124,6 +123,7 @@ class DiscoverUser {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "numberOfSaves": numberOfSaves,
-        "isFollowed": isFollowed,
+        "isFollowed": followState
+        ,
     };
 }

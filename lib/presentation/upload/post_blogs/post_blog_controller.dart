@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
-
 import '../../auth/my_profile_view/my_profile_controller.dart';
 
 class PostBolgController extends GetxController{
 
-  MyProfileController myProfileController =Get.put(MyProfileController());
 
   @override
   void dispose() {
@@ -34,7 +32,9 @@ class PostBolgController extends GetxController{
       bool isPosted = await ApiRepository.postBlog(title: titleController.text, body:bodyController.text, tag: tags,blogPic:coverPhoto?.path );
       isLoading.value =false;
       if(isPosted){
-        myProfileController.getProfile();
+        if(Get.isRegistered<MyProfileController>()) {
+          Get.find<MyProfileController>().getProfile(); //done
+        }
         Get.back();
       }
    }

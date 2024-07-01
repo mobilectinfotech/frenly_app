@@ -10,14 +10,21 @@ import 'custom_image_view.dart';
 
 class CustomVlogCard extends StatelessWidget {
   Vlog vlog ;
-  CustomVlogCard({super.key,required this.vlog});
+  bool ?  isRedrectRormVlogPage ;
+  CustomVlogCard({super.key,required this.vlog,this.isRedrectRormVlogPage});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding:  EdgeInsets.only(bottom: 30.0.ah),
       child: InkWell(
-        onTap: () {Get.to(()=>VlogFullViewNewScreen(videoUrl: '${vlog.videoUrl}', vlogId:vlog.id.toString(),));},
+        onTap: () {
+          if(isRedrectRormVlogPage==true) {
+            Get.back();
+          }
+          Get.to(()=>VlogFullViewNewScreen(videoUrl: '${vlog.videoUrl}', vlogId:vlog.id.toString(),));
+          },
+
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

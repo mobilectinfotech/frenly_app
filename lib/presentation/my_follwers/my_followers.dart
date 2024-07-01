@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
+import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
@@ -19,6 +20,14 @@ class MyFollowersScreen extends StatefulWidget {
 
 class _MyFollowersScreenState extends State<MyFollowersScreen> {
   MyFollowersController controller = Get.put(MyFollowersController());
+
+
+  @override
+  void initState() {
+    super.initState();
+    controller.myFollowers();
+  }
+
   Future<void> _refresh() async {
     controller.myFollowers();
   }
@@ -32,8 +41,8 @@ class _MyFollowersScreenState extends State<MyFollowersScreen> {
           title: "Followers".tr,
         ),
         body: Obx(
-            ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(),)
-                : controller.followingsModel.followers?.length == 0 ? Center(child: Text("No Followers Found"),) : Padding(
+              ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(),)
+              : controller.followingsModel.followers?.length == 0 ? Center(child: Text("No Followers Found"),) : Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: RefreshIndicator(
               onRefresh:_refresh ,
@@ -75,102 +84,7 @@ class _MyFollowersScreenState extends State<MyFollowersScreen> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfileScreen(userId: '${controller.followingsModel.followers?[index].id}',)));
                 },
-                child: Container(
-                  height: 220.ah,
-                  width: 120.aw,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(7),
-                      border: Border.all(
-                        //color: HexColor('#FFFFFF'),
-                          color: Colors.black12,
-                          width: 1)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomImageView(
-                        height: 104.adaptSize,
-                        width: 104.adaptSize,
-                        imagePath: controller.followingsModel
-                            .followers?[index].avatarUrl,
-                        radius: BorderRadius.circular(109.ah),
-                        fit: BoxFit.cover,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          '${controller.followingsModel.followers?[index].fullName}',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13.fSize),
-                        ),
-                      ),
-                      Text(
-                        controller.followingsModel.followers?[index].handle ??
-                            '',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 4.ah),
-                      Text(
-                        '${controller.followingsModel.followers?[index].numberOfFollower ?? ''}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 10.ah),
-                      InkWell(
-                        onTap: () {
-                          setState(
-                                () {
-                              controller.followingsModel.followers?[index].isFollowed =
-                              !controller.followingsModel.followers![index].isFollowed!;
-                              if (controller.followingsModel.followers![index].isFollowed!) {
-                                ApiRepository.follow(
-                                    userId: "${controller.followingsModel.followers?[index].id!}");
-                              } else {
-                                ApiRepository.unfollow(
-                                    userId: "${controller.followingsModel.followers?[index].id!}");
-                              }
-                            },
-                          );
-                        },
-                        child: Container(
-                          height: 24.ah,
-                          width: 98.aw,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: controller.followingsModel
-                                .followers![index].isFollowed!
-                                ? Colors.red
-                                : HexColor('#001649'),
-                          ),
-                          child: Center(
-                            child: Text(
-                              controller.followingsModel
-                                  .followers![index].isFollowed!
-                                  ? "UnFollow"
-                                  : "Follow",
-                              style: TextStyle(
-                                  color: controller.followingsModel
-                                      .followers![index].isFollowed!
-                                      ? Colors.white
-                                      : Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.fSize),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                child: CustomUserCard(users: controller.followingsModel.followers![index],),
               );
             }),
       ),

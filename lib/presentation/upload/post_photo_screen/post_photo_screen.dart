@@ -7,10 +7,12 @@ import 'package:frenly_app/core/constants/my_textfield.dart';
 import 'package:frenly_app/core/constants/textfield_validation.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:frenly_app/presentation/post/post_photo_screen/post_photo_controller.dart';
+import 'package:frenly_app/presentation/upload/post_photo_screen/post_photo_controller.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../Widgets/ImageProcessor.dart';
 
 
 
@@ -111,6 +113,18 @@ class _PostPostScreenState extends State<PostPostScreen> {
     );
   }
 
+
+  Future<void> _pickAndProcessImage() async {
+    final result = await ImageProcessor.pickAndProcessImage(
+        ImageSource.gallery,
+        const CropAspectRatio(ratioX: 1, ratioY: 1)); // You can pass CropAspectRatio if you want to crop the image, otherwise, pass null
+    if (result != null) {
+      setState(() {
+      //  processedImage = result;
+      });
+    }
+  }
+
   Future<CroppedFile?> imagePicker({required ImageSource source,CropAspectRatio ? cropAspectRatio}) async {
     final ImagePicker _picker = ImagePicker();
     CroppedFile  ?  _croppedFile ;
@@ -127,6 +141,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
     }
     return _croppedFile;
   }
+
   void _showImagePiker() {
     showModalBottomSheet(
         context: context,

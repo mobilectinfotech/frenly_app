@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/discover_screen/discover_all_user.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../Widgets/custom_appbar.dart';
 import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../Blog/popular_blogs_screen.dart';
-import '../Post_ALL/post_view_all/post_view_all.dart';
 import '../Vlog/vlogs_list/all_vlogs_list_screen.dart';
 import '../notification_screen/Notification_Screen.dart';
+import '../photos/photo_list/photo_list_screen.dart';
+import '../photos/photo_view_screen.dart';
 import '../popular_city/popular_city_screen.dart';
 import '../popular_city/user_by_city_screen.dart';
 import '../user_profile_screen/user_profile_screen.dart';
@@ -406,90 +407,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: (){
                   Get.to(()=>UserProfileScreen(userId: '${controller.homeModel.discoverUsers?[index].id}',));
                 },
-                child: Container(
-                  height: 223.ah,
-                  width: 120.aw,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(7),
-                      border: Border.all(
-                        //color: HexColor('#FFFFFF'),
-                          color: Colors.black12,
-                          width: 1)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomImageView(
-                        radius: BorderRadius.circular(100.ah),
-                        height: 100.ah,
-                        width: 100.ah,
-                        imagePath: controller.homeModel.discoverUsers?[index].coverPhotoUrl,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(height: 4.ah),
-                      Container(
-                        width: 95.aw,
-                        child: Center(
-                          child: Text(
-                             overflow: TextOverflow.ellipsis,
-                            '${controller.homeModel.discoverUsers?[index].fullName?.capitalizeFirst}',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13.fSize),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 2.ah),
-                      Text(
-                        '${controller.homeModel.discoverUsers?[index].handle ?? ""}',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 2.ah),
-                      Text(
-                        '${controller.homeModel.discoverUsers?[index].numberOfFollower}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 10.ah),
-                      InkWell(
-                        onTap:  () {
-                          setState(() {
-                            controller.homeModel.discoverUsers![index].isFollowed = !controller.homeModel.discoverUsers![index].isFollowed!;
-                            if(controller.homeModel.discoverUsers![index].isFollowed!){
-                              ApiRepository.follow(userId: "${controller.homeModel.discoverUsers![index].id!}");
-                            }else{
-                              ApiRepository.unfollow(userId: "${controller.homeModel.discoverUsers![index].id!}");
-
-                            }
-                          },
-                          );
-                        },
-                        child: Container(
-                          height: 24.ah,width: 98.aw,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: controller.homeModel.discoverUsers![index].isFollowed!  ? Colors.red : HexColor('#001649'),
-                          ),
-                          child:  Center(
-                            child: Text(controller.homeModel.discoverUsers![index].isFollowed! ?   "Unfollow".tr : "Follow".tr,
-                              style: TextStyle(
-                                  color: controller.homeModel.discoverUsers![index].isFollowed! ? Colors.white : Colors.white,
-                                  fontWeight: FontWeight.w500,fontSize:14.fSize
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                child: CustomUserCard(users: controller.homeModel.discoverUsers![index]),
               ),
             );
           },
@@ -506,46 +424,54 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: controller.homeModel.posts?.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding:  const EdgeInsets.only(right: 5.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CustomImageView(
-                    width: 157.aw,
-                    height: 82.ah,
-                    fit: BoxFit.cover,
-                    imagePath: controller.homeModel.posts?[index].imageUrl,
-                    radius:  BorderRadius.all(Radius.circular(10.adaptSize),
-                    )),
-                SizedBox(height: 10.ah),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomImageView(
-                        height: 30.ah,
-                        width: 30.ah,
-                        fit: BoxFit.fill,
-                        imagePath: controller.homeModel.posts?[index].user?.avatarUrl,
-                        // imagePath: "assets/image/Frame 427320834.png",
-                        radius: const BorderRadius.all(
-                          Radius.circular(50),
-                        )),
-                    SizedBox(width: 10.aw),
-                    Text(
-                      '${controller.homeModel.posts?[index].user?.handle}'.capitalizeFirst!,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14.fSize,
+          return InkWell(
+              onTap: () {
+                Get.to(()=>PostFullViewScreen(loadPostByid: "${controller.homeModel.posts?[index].id}",));
+
+                // Get.to(()=>UserProfileScreen(userId: "${controller.homeModel.posts?[index].user?.id}"));
+              },
+
+            child: Padding(
+              padding:  const EdgeInsets.only(right: 5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomImageView(
+                      width: 157.aw,
+                      height: 82.ah,
+                      fit: BoxFit.cover,
+                      imagePath: controller.homeModel.posts?[index].imageUrl,
+                      radius:  BorderRadius.all(Radius.circular(10.adaptSize),
+                      )),
+                  SizedBox(height: 10.ah),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomImageView(
+                          height: 30.ah,
+                          width: 30.ah,
+                          fit: BoxFit.fill,
+                          imagePath: controller.homeModel.posts?[index].user?.avatarUrl,
+                          // imagePath: "assets/image/Frame 427320834.png",
+                          radius: const BorderRadius.all(
+                            Radius.circular(50),
+                          )),
+                      SizedBox(width: 10.aw),
+                      Text(
+                        '${controller.homeModel.posts?[index].user?.handle}'.capitalizeFirst!,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14.fSize,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },

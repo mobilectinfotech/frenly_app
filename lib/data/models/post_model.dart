@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 class Post {
   int? id;
   String? caption;
@@ -12,7 +14,8 @@ class Post {
   DateTime? updatedAt;
   User? user;
   bool? alreadySaved;
-  bool? alreadyLiked ;
+  bool? commentAllowed;
+  bool? alreadyLiked;
 
   Post({
     this.id,
@@ -27,12 +30,16 @@ class Post {
     this.updatedAt,
     this.user,
     this.alreadySaved,
-    this.alreadyLiked
+    this.commentAllowed,
+    this.alreadyLiked,
   });
+
+  factory Post.fromRawJson(String str) => Post.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
     id: json["id"],
-    alreadyLiked: json["alreadyLiked"] ?? false,
     caption: json["caption"],
     imageUrl: json["image_url"],
     userId: json["userId"],
@@ -44,6 +51,8 @@ class Post {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     alreadySaved: json["alreadySaved"],
+    commentAllowed: json["commentAllowed"],
+    alreadyLiked: json["alreadyLiked"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -59,6 +68,8 @@ class Post {
     "updatedAt": updatedAt?.toIso8601String(),
     "user": user?.toJson(),
     "alreadySaved": alreadySaved,
+    "commentAllowed": commentAllowed,
+    "alreadyLiked": alreadyLiked,
   };
 }
 

@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
+import 'package:frenly_app/Widgets/custom_vlog_card.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/models/cateogry_model.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../data/repositories/api_repository.dart';
 import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../Vlog/vlog_like_commnet_share_common_view.dart';
@@ -123,7 +123,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                                 }
                                 Get.back();
                               },
-                              child: Text("All" ?? "")),
+                              child:const Text("All" ?? "")),
                           for (Category data
                               in (controller.categoryModel.value?.categories ??
                                   []))
@@ -316,7 +316,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
   Widget _vlogs() {
     return Obx(() {
       if (controller.mySavedVlogs.value == null) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(
             color: MyColor.primaryColor,
           ),
@@ -324,11 +324,11 @@ class _AllSavedScreenState extends State<AllSavedScreen>
       }
       return SizedBox(
         width: double.infinity,
-        child: controller.filteredMySavedVlogs.length == 0
+        child: controller.filteredMySavedVlogs.isEmpty
             ? Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 240.0.ah),
-                  child: Text("No data found"),
+                  child:const Text("No data found"),
                 ),
               )
             : Obx(
@@ -336,204 +336,25 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount:
-                            controller.filteredMySavedVlogs.value?.length,
-                        padding: const EdgeInsets.only(bottom: 10),
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              // print("vlogId===>${controller.mySavedVlogs.value.mySavedVlogs![index].vlog?.id.toString()}");
-                              Get.to(() => VlogFullViewNewScreen(
-                                    videoUrl: '${controller.filteredMySavedVlogs![index].vlog?.videoUrl}',
-                                    vlogId: controller.filteredMySavedVlogs![index].vlog!.id.toString(),
-                                  ));
-                              // VlogFulViewScreen
-                            },
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  height: 205.ah,
-                                  width: double.infinity,
-                                  child: Stack(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10.0, right: 10, bottom: 15),
-                                        child: CustomImageView(
-                                          height: 400.ah,
-                                          width: double.infinity,
-                                          radius: BorderRadius.circular(
-                                              15.adaptSize),
-                                          fit: BoxFit.cover,
-                                          // color: Colors.black,
-                                          imagePath: controller
-                                              .filteredMySavedVlogs![index]
-                                              .vlog
-                                              ?.thumbnailUrl,
-                                        ),
-                                      ),
-                                      vlogInLocationRow(index),
-                                      userLikeViewShare(index),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                    : Padding(
+                      padding: const EdgeInsets.only(left: 16 ,right : 16),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount: controller.filteredMySavedVlogs.value.length,
+                          padding: const EdgeInsets.only(bottom: 10),
+                          itemBuilder: (context, index) {
+                            return CustomVlogCard(vlog: controller.filteredMySavedVlogs[index].vlog!,);
+                          },
+                        ),
+                    ),
               ),
       );
     });
   }
 
-  Widget vlogInLocationRow(int index) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 15),
-      child: SizedBox(
-        height: 40.ah,
-        width: double.infinity,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Image.asset(
-                'assets/image/location-outline.png',
-                width: 21.ah,
-                height: 21.ah,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Text(
-                '${controller.filteredMySavedVlogs![index].vlog?.user?.city}, '
-                    .capitalizeFirst!,
-                style: TextStyle(
-                  color: HexColor('#FFFFFF'),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11.fSize,
-                ),
-              ),
-            ),
-            Text(
-              '${controller.filteredMySavedVlogs![index].vlog?.user?.city}, '
-                  .capitalizeFirst!,
-              style: TextStyle(
-                color: HexColor('#FFFFFF'),
-                fontWeight: FontWeight.w600,
-                fontSize: 11.fSize,
-              ),
-            ),
-            Spacer(),
-            SizedBox(
-              width: 22.aw,
-            ),
-            SizedBox(
-              width: 20,
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget userLikeViewShare(int index) {
-    DateTime currentDate = DateTime.now();
-    DateTime createdAtDate =
-        DateTime.parse("${controller.filteredMySavedVlogs![index].createdAt}");
-    int differenceInDays = currentDate.difference(createdAtDate).inDays;
-    return Padding(
-      padding: EdgeInsets.only(left: 15.0, right: 15, bottom: 15, top: 116.ah),
-      child: SizedBox(
-        height: 160.ah,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: 15.0,
-              ),
-              child: Text(
-                '${controller.filteredMySavedVlogs![index].vlog?.title}'
-                    .capitalizeFirst!,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: HexColor('#FFFFFF'),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16.fSize,
-                    height: 1.5),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 10.ah),
-                    CustomImageView(
-                      height: 30.ah,
-                      width: 30.ah,
-                      imagePath: controller
-                          .filteredMySavedVlogs![index].vlog?.user?.avatarUrl,
-                      radius: BorderRadius.circular(60),
-                      fit: BoxFit.cover,
-                    ),
-                    SizedBox(
-                      width: 89,
-                      child: Text(
-                        "  ${'${controller.filteredMySavedVlogs![index].vlog?.user?.handle} '.capitalizeFirst!}",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: const Color(0xffFFFFFF),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11.fSize,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      '${controller.filteredMySavedVlogs![index].vlog?.numberOfViews} views  ',
-                      style: TextStyle(
-                        color: HexColor('#FFFFFF'),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11.fSize,
-                      ),
-                    ),
-                    Text(
-                      '${differenceInDays} days ago',
-                      style: TextStyle(
-                        color: HexColor('#FFFFFF'),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11.fSize,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                  width: 20,
-                ),
-                VlogLikeCommentsShareView(
-                  vlog: controller.filteredMySavedVlogs![index].vlog!,
-                ),
-                Spacer()
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
 //  Blogs
 
@@ -543,18 +364,18 @@ class _AllSavedScreenState extends State<AllSavedScreen>
       child: Obx(
         () {
           if (controller.saveBlogModel.value == null) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           return Container(
             child: controller.isLoadingBlog.value
                 ? const CircularProgressIndicator()
-                : controller.filteredSaveBlogModel.length == 0
+                : controller.filteredSaveBlogModel.isEmpty
                     ? Center(
                         child: Padding(
                           padding: EdgeInsets.only(top: 240.0.ah),
-                          child: Text("No data found"),
+                          child: const Text("No data found"),
                         ),
                       )
                     : ListView.builder(
@@ -573,8 +394,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                                 const EdgeInsets.only(bottom: 10, right: 5),
                             child: InkWell(
                               onTap: () {
-                                print(
-                                    'blogsId==>${controller..filteredSaveBlogModel[index].blog?.id}');
+                                print('blogsId==>${controller..filteredSaveBlogModel[index].blog?.id}');
                                 Get.to(() => BlogsFullViewScreen(
                                       id: controller
                                           .filteredSaveBlogModel[index].blog!.id
@@ -654,7 +474,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                                               ),
                                           ],
                                         ),
-                                        Spacer(),
+                                        const Spacer(),
                                         Padding(
                                           padding:
                                               EdgeInsets.only(left: 7.0.aw),
@@ -752,7 +572,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
         child: Obx(
           () {
             if (controller.mySavedPosts.value == null) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -761,12 +581,12 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                   ? Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: 240.0.ah),
-                        child: Text("No data found"),
+                        child:const Text("No data found"),
                       ),
                     )
                   : Obx(
                       () => controller.isLoadingPosts.value
-                          ? Center(
+                          ? const Center(
                               child: CircularProgressIndicator(),
                             )
                           : StaggeredGrid.count(
@@ -778,15 +598,19 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                                 (index) => StaggeredGridTile.count(
                                   crossAxisCellCount: cont[index % 9],
                                   mainAxisCellCount: cont[index % 9],
-                                  child: Center(
-                                      child: CustomImageView(
-                                    imagePath: controller
-                                        .filteredMySavedPosts![index]
-                                        .post
-                                        ?.imageUrl,
-                                    fit: BoxFit.cover,
-                                    radius: BorderRadius.circular(10),
-                                  )),
+                                  child: InkWell(
+                                    onTap: () {
+                                     // Get.to(()=>PhotoViewAllNewScreen());
+                                    },
+                                    child: Center(child: CustomImageView(
+                                      imagePath: controller
+                                          .filteredMySavedPosts![index]
+                                          .post
+                                          ?.imageUrl,
+                                      fit: BoxFit.cover,
+                                      radius: BorderRadius.circular(10),
+                                    )),
+                                  ),
                                 ),
                               ),
                             ),

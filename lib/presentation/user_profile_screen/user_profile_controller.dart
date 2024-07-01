@@ -14,10 +14,10 @@ class UserProfileController extends GetxController{
 
   GetUserByIdModel getUserByIdModel = GetUserByIdModel();
 
-  RxBool isLoading =false.obs;
+  RxBool isLoading =true.obs;
 
   getUserById({required String userId}) async {
-    isLoading.value =true;
+    // isLoading.value =true;
     getUserByIdModel =await ApiRepository.getUserById(userId: userId);
     isLoading.value =false;
   }

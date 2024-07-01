@@ -2,13 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_vlog_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/Post_ALL/post_view_all/post_full_view.dart';
-import 'package:frenly_app/presentation/auth/my_profile_view/my_profile_controller.dart';
 import 'package:frenly_app/presentation/search/search_controller.dart';
 import 'package:get/get.dart';
 import '../../Widgets/custom_image_view.dart';
 import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../Vlog/vlog_like_commnet_share_common_view.dart';
+import '../photos/photo_view_screen.dart';
 import '../user_profile_screen/user_profile_screen.dart';
 import '../vlog_full_view/vlog_full_view.dart';
 
@@ -80,6 +79,9 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: TextFormField(
+                      onTap: () {
+
+                      },
                       controller: searchController.searchController,
                       onChanged: (value) {
                         print("tabController${tabController.index}");
@@ -263,9 +265,7 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
               try {
                 return InkWell(
                   onTap: () {
-                    Get.to(() => PostFullViewScreen(
-                        post:
-                            searchController.searchPhotosModel.posts?[index]));
+                    Get.to(() => PostFullViewScreen(loadPostByid: "${searchController.searchPhotosModel.posts?[index].id}"));
                   },
                   child: CustomImageView(
                     imagePath: searchController
@@ -476,63 +476,6 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget vlogInLocationRow(int index) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 15),
-      child: SizedBox(
-        height: 40.ah,
-        width: double.infinity,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Image.asset(
-                'assets/image/location-outline.png',
-                width: 21.ah,
-                height: 21.ah,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Text(
-                '${searchController.searchModel.vlogs![index].user?.city}, ',
-                style: TextStyle(
-                  color: const Color(0xffFFFFFF),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11.fSize,
-                ),
-              ),
-            ),
-            Text(
-              '${searchController.searchModel.vlogs![index].user?.country}',
-              style: TextStyle(
-                color: const Color(0xffFFFFFF),
-                fontWeight: FontWeight.w600,
-                fontSize: 11.fSize,
-              ),
-            ),
-            const Spacer(),
-            Builder(builder: (context) {
-              try {
-                MyProfileController controller = Get.find();
-                if (controller.getUserByIdModel.user?.id ==
-                    searchController.searchModel.vlogs![index].userId) {
-                  return Image.asset(
-                    'assets/image/more op.png',
-                    width: 22.aw,
-                  );
-                }
-              } catch (e) {}
-              return const SizedBox.shrink();
-            }),
-            const SizedBox(
-              width: 20,
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget userLikeViewShare({
     required int index,
@@ -631,17 +574,14 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
       () => ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
-        itemCount: searchController.searchUserModel.users?.length,
+        itemCount: searchController.searchUserModel.users?.length ?? 0,
         padding: const EdgeInsets.only(
           bottom: 10,
         ),
         itemBuilder: (context, index) {
           return Container(
             margin: EdgeInsets.only(
-                bottom: searchController.searchUserModel.users?.length ==
-                        (index + 1)
-                    ? 100
-                    : 0),
+                bottom: searchController.searchUserModel.users?.length == (index + 1) ? 100 : 0),
             child: InkWell(
               onTap: () {
                 Get.to(() => UserProfileScreen(

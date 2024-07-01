@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
+import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/data_sources/remote/api_client.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:intl/intl.dart';
+import '../../../../Widgets/custom_image_view.dart';
 import '../../../../core/utils/calculateTimeDifference.dart';
 import '../../../../data/models/LastSeenModel.dart';
 import '../../CustomUI/OwnMessgaeCrad.dart';
@@ -36,10 +38,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   final TextEditingController _controller = TextEditingController();
 
   Future<void> getLastSeen() async {
-    lastSeenModel = await ApiRepository.lastSeen(id: "${widget.participant.id}");
-    setState(() {
-
-    });
+    lastSeenModel =
+        await ApiRepository.lastSeen(id: "${widget.participant.id}");
+    setState(() {});
   }
 
   @override
@@ -107,7 +108,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 child: Scaffold(
                   appBar: customAppbarForChat(
                       context: context,
-                      handle: lastSeenModel?.data?.isLastSeenAllowed == false ? ""  :  lastSeenModel!.data?.lastSeen == null ? "Online" : calculateTimeDifference("${lastSeenModel!.data?.lastSeen}"),
+                      handle: lastSeenModel?.data?.isLastSeenAllowed == false
+                          ? ""
+                          : lastSeenModel!.data?.lastSeen == null
+                              ? "Online"
+                              : calculateTimeDifference(
+                                  "${lastSeenModel!.data?.lastSeen}"),
                       name: "${widget.participant.fullName}".capitalizeFirst,
                       imagepath: widget.participant.avatarUrl),
                   backgroundColor: Colors.transparent,
@@ -157,7 +163,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                     currentDate.day == yesterday.day) {
                                   formattedDate = 'Yesterday';
                                 } else {
-                                  formattedDate = DateFormat.yMMMMd().format(currentDate);
+                                  formattedDate =
+                                      DateFormat.yMMMMd().format(currentDate);
                                 }
                                 //insert date  in chat logic end
 
@@ -178,9 +185,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           ),
                                         ),
                                       OwnMessageCard(
-
-                                        message: controller.allMsg.messages![index],
-                                        createdAt: controller.allMsg.messages![index].createdAt!.toLocal(),
+                                        message:
+                                            controller.allMsg.messages![index],
+                                        createdAt: controller
+                                            .allMsg.messages![index].createdAt!
+                                            .toLocal(),
                                       ),
                                     ],
                                   );
@@ -207,102 +216,43 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: SizedBox(
-                            height: 70,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width - 60,
-                                      child: Card(
-                                        margin: const EdgeInsets.only(
-                                            left: 2, right: 2, bottom: 8),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                        ),
-                                        child: TextFormField(
-                                          controller: _controller,
-                                          focusNode: focusNode,
-                                          textAlignVertical: TextAlignVertical.center,
-                                          keyboardType: TextInputType.multiline,
-                                          maxLines: 5,
-                                          minLines: 1,
-                                          onChanged: (value) {
-                                            if (value.length > 0) {
-                                              setState(() {
-                                                sendButton = true;
-                                              });
-                                            } else {
-                                              setState(() {
-                                                sendButton = false;
-                                              });
-                                            }
-                                          },
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "Type a message",
-                                            hintStyle: const TextStyle(color: Colors.grey),
-                                            // prefixIcon: IconButton(
-                                            //   icon: Icon(
-                                            //     show
-                                            //         ? Icons.keyboard
-                                            //         : Icons
-                                            //             .emoji_emotions_outlined,
-                                            //   ),
-                                            //   onPressed: () {
-                                            //     if (!show) {
-                                            //       focusNode.unfocus();
-                                            //       focusNode.canRequestFocus =
-                                            //           false;
-                                            //     }
-                                            //     setState(() {
-                                            //       show = !show;
-                                            //     });
-                                            //   },
-                                            // ),
-                                            // suffixIcon: Row(
-                                            //   mainAxisSize: MainAxisSize.min,
-                                            //   children: [
-                                            //     IconButton(
-                                            //       icon: Icon(Icons.attach_file),
-                                            //       onPressed: () {
-                                            //         showModalBottomSheet(
-                                            //             backgroundColor:
-                                            //                 Colors.transparent,
-                                            //             context: context,
-                                            //             builder: (builder) =>
-                                            //                 bottomSheet());
-                                            //       },
-                                            //     ),
-                                            //     IconButton(
-                                            //       icon: Icon(Icons.camera_alt),
-                                            //       onPressed: () {
-                                            //         // Navigator.push(
-                                            //         //     context,
-                                            //         //     MaterialPageRoute(
-                                            //         //         builder: (builder) =>
-                                            //         //             CameraApp()));
-                                            //       },
-                                            //     ),
-                                            //   ],
-                                            // ),
-                                            contentPadding: const EdgeInsets.all(18),
-                                          ),
-                                        ),
+                                      width: 10.aw,
+                                    ),
+                                    Container(
+                                      width: 305.aw,
+                                      child: TextFormField(
+                                        controller: _controller,
+                                        focusNode: focusNode,
+                                        textAlignVertical:
+                                            TextAlignVertical.center,
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: 5,
+                                        minLines: 1,
+                                        onChanged: (value) {
+                                          if (value.length > 0) {
+                                            setState(() {
+                                              sendButton = true;
+                                            });
+                                          } else {
+                                            setState(() {
+                                              sendButton = false;
+                                            });
+                                          }
+                                        },
+                                        decoration: decoration,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 8,
-                                        right: 2,
-                                        left: 2,
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: 25,
-                                        backgroundColor: MyColor.primaryColor,
-                                        child: IconButton(
+                                    Spacer(),
+                                    CircleAvatar(
+                                      radius: 20.adaptSize,
+                                      backgroundColor: MyColor.primaryColor,
+                                      child: IconButton(
                                           icon: const Icon(
                                             Icons.send,
                                             color: Colors.white,
@@ -317,12 +267,28 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                                 sendButton = false;
                                               });
                                             }
-                                          },
-                                        ),
-                                      ),
+                                          }
+                                          // onPressed: () {
+                                          //   if (sendButton) {
+                                          //     controller.sendMessage(
+                                          //         message: sendMsgController.text,
+                                          //         chatId: widget.chatId);
+                                          //     controller.sendMsgController.clear();
+                                          //     setState(() {
+                                          //       sendButton = false;
+                                          //     });
+                                          //   }
+                                          // },
+                                          ),
+                                    ),
+                                    SizedBox(
+                                      width: 10.aw,
                                     ),
                                   ],
                                 ),
+                                SizedBox(
+                                  height: 8.ah,
+                                )
                               ],
                             ),
                           ),
@@ -336,7 +302,55 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
+  InputDecoration get decoration => InputDecoration(
+        hintText: "Message",
+        hintStyle: TextStyle(
+          color: Color(0xFFA8A8A8),
+          fontSize: 20.adaptSize,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w500,
+        ),
 
+        // prefixIcon: CustomImageView(imagePath: "assets/icon/smaily.svg",height: 60.adaptSize,onTap: () {
+        //   EmojiPickerWidget();
+        // },),
+        prefixIconConstraints: BoxConstraints(
+          maxHeight: 25.adaptSize,
+        ),
+
+//  suffixIcon: suffix,
+        // suffixIconConstraints: suffixConstraints,
+        isDense: true,
+
+        // contentPadding: EdgeInsets.symmetric(horizontal: 30.aw, vertical: 10.v,),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 10.aw,
+          vertical: 10.ah,
+        ),
+        fillColor: Colors.transparent,
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.adaptSize),
+          borderSide: BorderSide(
+            color: Colors.black.withOpacity(.50),
+            width: 1,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.adaptSize),
+          borderSide: BorderSide(
+            color: Colors.black.withOpacity(.50),
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.adaptSize),
+          borderSide: BorderSide(
+            color: Colors.black.withOpacity(.50),
+            width: 1,
+          ),
+        ),
+      );
 
   Widget iconCreation(IconData icons, Color color, String text) {
     return InkWell(
