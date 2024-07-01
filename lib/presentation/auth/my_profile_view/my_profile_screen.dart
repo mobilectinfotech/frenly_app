@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
+import 'package:frenly_app/Widgets/custom_vlog_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Post_ALL/post_view_all/post_full_view.dart';
 import 'package:frenly_app/presentation/my_follwers/my_followers.dart';
@@ -195,7 +196,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           InkWell(
             onTap: () {
 
-              Get.to(()=>const SettingScreen());
+              Get.to(()=> SettingScreen(isAccountPrivate: controller.getUserByIdModel.user?.isPrivate ?? false,));
             },
             child: Image.asset(
               'assets/image/ic_settings_24px.png',
@@ -407,50 +408,27 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   //vlogs
   Widget _vlogs() {
-    return SizedBox(
-      width: double.infinity,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: controller.getUserByIdModel.user!.vlogs!.length,
-        padding: const EdgeInsets.only(bottom: 10),
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              print("sdfghjgfdsfghj");
-            Get.to(()=>VlogFullViewNewScreen(videoUrl: '${controller.getUserByIdModel.user!.vlogs![index].videoUrl}', vlogId: controller.getUserByIdModel.user!.vlogs![index].id.toString(),));
-             // VlogFulViewScreen
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 196.ah, width: double.infinity,
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0,right: 15,bottom: 15),
-                        child: CustomImageView(
-                          height: 196.ah, width: double.infinity,
-                          radius: BorderRadius.circular(15.adaptSize),
-                          fit: BoxFit.cover,
-                         // color: Colors.black,
-                          imagePath: controller.getUserByIdModel.user!.vlogs![index].thumbnailUrl,
-                        ),
-                      ),
-                      vlogInLocationRow(index),
-                      userLikeViewShare(index),
-                    ],
-                  ),
-                ),
+    return Padding(
+      padding:  EdgeInsets.only(left: 10.0.aw ,right : 10.0.aw),
+      child: SizedBox(
+        width: double.infinity,
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemCount: controller.getUserByIdModel.user!.vlogs!.length,
+          padding: const EdgeInsets.only(bottom: 10),
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                print("sdfghjgfdsfghj");
+              Get.to(()=>VlogFullViewNewScreen(videoUrl: '${controller.getUserByIdModel.user!.vlogs![index].videoUrl}', vlogId: controller.getUserByIdModel.user!.vlogs![index].id.toString(),));
+              },
+              child: CustomVlogCard(vlog: controller.getUserByIdModel.user!.vlogs![index])
 
-
-
-              ],
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -497,6 +475,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       ),
     );
   }
+
+
+
   Widget userLikeViewShare(int index){
     DateTime currentDate = DateTime.now();
     DateTime createdAtDate = DateTime.parse("${controller.getUserByIdModel.user!.vlogs?[index].createdAt}");
@@ -568,8 +549,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       ),
     );
   }
-
-  //Blogs
   Widget _blogs() {
     return SizedBox(
       width: double.infinity,
@@ -736,7 +715,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               child: Center(
                   child: InkWell(
                     onTap: (){
-                      Get.to(()=> PostFullViewScreen(post: controller.getUserByIdModel.user?.posts![index],own: true,));
+                   //   Get.to(()=> PostFullViewScreen(post: controller.getUserByIdModel.user?.posts![index],own: true,));
                     },
                     child: CustomImageView(
                       imagePath: controller.getUserByIdModel.user?.posts![index].imageUrl,

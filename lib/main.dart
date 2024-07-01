@@ -86,8 +86,11 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       translations: LocalString(),
-      locale: const Locale('swe', 'SE'), //for setting localization strings
-      fallbackLocale: const Locale('se', 'SE'),
+      // locale: const Locale('swe', 'SE'), //for setting localization strings
+      // fallbackLocale: const Locale('se', 'SE'),
+      locale: const Locale('en', 'US'), //for setting localization strings
+      fallbackLocale: const Locale('en', 'US'),
+      // Locale('en', 'US')
       title: 'friendlily',
       initialRoute: AppRoutes.splash,
       getPages:   AppRoutes.pages,
@@ -101,6 +104,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
 
 
 

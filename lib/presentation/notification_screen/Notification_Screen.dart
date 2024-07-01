@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+import 'package:frenly_app/presentation/request_users/req_screen.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:get/get.dart';
 
@@ -64,6 +65,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
       body: ListView(
         children: [
+          SizedBox(height: 20.ah),
+            InkWell(
+              onTap: () {
+                Get.to(()=>ReqScreen());
+              },
+
+                child: Text("reqests")),
             isLading ? SizedBox(
               height: 500,
                 child: Center(child: CircularProgressIndicator(strokeWidth: 1,))):  ListView.builder(

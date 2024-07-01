@@ -6,6 +6,7 @@ import 'package:frenly_app/data/models/LiveUserModel.dart';
 import 'package:frenly_app/presentation/all_saved/MySavedPosts.dart';
 import 'package:frenly_app/presentation/all_saved/MySavedVlogs.dart';
 import 'package:frenly_app/presentation/my_block_list/BlockedUserListModel.dart';
+import 'package:frenly_app/presentation/request_users/ReqModel.dart';
 import '../../core/constants/app_dialogs.dart';
 import '../../core/utils/pref_utils.dart';
 import '../../presentation/Blog/PopularBlogModel.dart';
@@ -816,6 +817,33 @@ class ApiRepository {
     }
   }
 
+    static Future<ReqModel> getUserFollowingReqest() async {
+    Map<String, dynamic>? response = await ApiClient().getRequest(
+      endPoint: "notification/followRequests",
+    );
+    if (response != null) {
+      return ReqModel.fromJson(response);
+    }
+    return ReqModel();
+  }
+
+
+
+
+
+
+  static Future<bool> updateAccountPrivate(
+      {required bool isPrivate,}) async {
+    final response =
+    await ApiClient().patchRequest(endPoint: "user/updateProfileVisibilty", body: {
+      "isPrivate": isPrivate,});
+    if (response != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static Future<bool> deleteAccount() async {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(
       endPoint: "user",
@@ -1128,4 +1156,49 @@ class ApiRepository {
       return NotificationsModel();
     }
   }
+
+  static Future<bool> acepedReqest(
+      {required int byUserId, required int toUserId, required int notificationId }) async {
+     var data = {
+      'followerId': '${byUserId}',
+      'notificationId': '${notificationId}',
+      'userId': '${toUserId}'
+    };
+    final response = await ApiClient().postRequest(
+      endPoint: "user/acceptFollowRequest",
+      body: data,
+    );
+    if (response != null) {
+      AppDialog.taostMessage("${response["message"]}");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // var headers = {
+  //   'Content-Type': 'application/x-www-form-urlencoded',
+  //   'Authorization': '••••••'
+  // };
+  // var data = {
+  //   'followerId': '43',
+  //   'notificationId': '676',
+  //   'userId': '30'
+  // };
+  // var dio = Dio();
+  // var response = await dio.request(
+  // 'https://www.frenly.se:4000/user/acceptFollowRequest',
+  // options: Options(
+  // method: 'POST',
+  // headers: headers,
+  // ),
+  // data: data,
+  // );
+  //
+  // if (response.statusCode == 200) {
+  // print(json.encode(response.data));
+  // }
+  // else {
+  // print(response.statusMessage);
+  // }
 }

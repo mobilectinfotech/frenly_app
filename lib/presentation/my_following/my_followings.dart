@@ -33,27 +33,31 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(
-          context: context,
-          title: "Following".tr,
-        ),
-        body: Obx(
-    ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(),) : controller.followingsModel.followings?.length == 0 ? Center(child: Text("No followings Found"),) :  Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: RefreshIndicator(
-            onRefresh: _refresh,
-            child: ListView(
-              children: [
-                SizedBox(height: 10.ah),
-                gridView()
-
-              ],
-            ),
-          ),
-        ),
-      ),)
-    );
+        child: Scaffold(
+      appBar: customAppbar(
+        context: context,
+        title: "Following".tr,
+      ),
+      body: Obx(
+        () => controller.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : controller.followingsModel.followings?.length == 0
+                ? Center(
+                    child: Text("No followings Found"),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: RefreshIndicator(
+                      onRefresh: _refresh,
+                      child: ListView(
+                        children: [SizedBox(height: 10.ah), gridView()],
+                      ),
+                    ),
+                  ),
+      ),
+    ));
   }
 
   Widget gridView() {
@@ -104,8 +108,8 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
                             CustomImageView(
                               height: 104.adaptSize,
                               width: 104.adaptSize,
-                              imagePath: controller.followingsModel
-                                  .followings?[index].avatarUrl,
+                              imagePath: controller
+                                  .followingsModel.followings?[index].avatarUrl,
                               radius: BorderRadius.circular(109.ah),
                               fit: BoxFit.cover,
                             ),
@@ -142,19 +146,22 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
                               onTap: () {
                                 setState(
                                   () {
-                                    controller.followingsModel
-                                            .followings?[index].isFollowed =
-                                        !controller.followingsModel
-                                            .followings![index].isFollowed!;
                                     if (controller.followingsModel
-                                        .followings![index].isFollowed!) {
+                                            .followings![index].followState ==
+                                        0) {
+                                      controller.followingsModel
+                                          .followings![index].followState = 1;
+                                      setState(() {});
                                       ApiRepository.follow(
                                           userId:
-                                              "${controller.followingsModel.followings?[index].id!}");
+                                              "${controller.followingsModel.followings![index].id!}");
                                     } else {
+                                      controller.followingsModel
+                                          .followings![index].followState = 0;
+                                      setState(() {});
                                       ApiRepository.unfollow(
                                           userId:
-                                              "${controller.followingsModel.followings?[index].id!}");
+                                              "${controller.followingsModel.followings![index].id!}");
                                     }
                                   },
                                 );
@@ -165,21 +172,28 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
                                   color: controller.followingsModel
-                                          .followings![index].isFollowed!
+                                              .followings![index].followState ==
+                                          1
                                       ? Colors.red
                                       : HexColor('#001649'),
                                 ),
                                 child: Center(
                                   child: Text(
-                                    controller.followingsModel
-                                            .followings![index].isFollowed!
-                                        ? "UnFollow"
-                                        : "Follow",
+                                    controller
+                                                .followingsModel
+                                                .followings![index]
+                                                .followState ==
+                                            1
+                                        ? "Requested".tr
+                                        : controller
+                                                    .followingsModel
+                                                    .followings![index]
+                                                    .followState ==
+                                                0
+                                            ? "Follow".tr
+                                            : "Following",
                                     style: TextStyle(
-                                        color: controller.followingsModel
-                                                .followings![index].isFollowed!
-                                            ? Colors.white
-                                            : Colors.white,
+                                        color: Colors.white,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14.fSize),
                                   ),

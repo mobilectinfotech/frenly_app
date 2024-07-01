@@ -86,7 +86,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: AspectRatio(
-                            aspectRatio: 2,
+                        aspectRatio: _controller.value.aspectRatio,
                             child: VideoPlayer(_controller),
                           ),
                         )

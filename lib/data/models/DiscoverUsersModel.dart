@@ -56,7 +56,7 @@ class DiscoverUser {
     DateTime? createdAt;
     DateTime? updatedAt;
     int? numberOfSaves;
-    bool? isFollowed;
+    int ? followState;
 
     DiscoverUser({
         this.id,
@@ -78,7 +78,7 @@ class DiscoverUser {
         this.createdAt,
         this.updatedAt,
         this.numberOfSaves,
-        this.isFollowed,
+        this.followState,
     });
 
     factory DiscoverUser.fromJson(Map<String, dynamic> json) => DiscoverUser(
@@ -101,7 +101,7 @@ class DiscoverUser {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         numberOfSaves: json["numberOfSaves"],
-        isFollowed: json["isFollowed"],
+        followState: json["followState"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -124,6 +124,7 @@ class DiscoverUser {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "numberOfSaves": numberOfSaves,
-        "isFollowed": isFollowed,
+        "isFollowed": followState
+        ,
     };
 }

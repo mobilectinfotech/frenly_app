@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:video_player/video_player.dart';
 import '../../Widgets/custom_image_view.dart';
+import '../../Widgets/custom_user_card.dart';
 import '../../Widgets/custom_vlog_card.dart';
 import '../../core/utils/calculateTimeDifference.dart';
 import '../../core/utils/pref_utils.dart';
@@ -17,7 +18,8 @@ import '../user_profile_screen/user_profile_screen.dart';
 class VlogFullViewNewScreen extends StatefulWidget {
   String videoUrl;
   String vlogId;
-  VlogFullViewNewScreen({super.key, required this.videoUrl, required this.vlogId});
+  VlogFullViewNewScreen(
+      {super.key, required this.videoUrl, required this.vlogId});
 
   @override
   State<VlogFullViewNewScreen> createState() => _VlogFullViewNewScreenState();
@@ -38,19 +40,19 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
     });
   }
 
-  late VideoPlayerController _controller;
+  late VideoPlayerController _video_play_controller;
   VlogFullViewController controller = Get.put(VlogFullViewController());
-
 
   @override
   void initState() {
     super.initState();
     controller.getVlogById(vlogId: widget.vlogId);
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
-      ..initialize().then((_) {
-        _controller.play();
-        setState(() {});
-      });
+    _video_play_controller =
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
+          ..initialize().then((_) {
+            _video_play_controller.play();
+            setState(() {});
+          });
   }
 
   @override
@@ -60,7 +62,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    _controller.dispose();
+    _video_play_controller.dispose();
   }
 
   @override
@@ -83,30 +85,32 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  _controller.value.isPlaying
-                                      ? _controller.pause()
-                                      : _controller.play();
+                                  _video_play_controller.value.isPlaying
+                                      ? _video_play_controller.pause()
+                                      : _video_play_controller.play();
                                 });
                               },
                               child: Center(
-                                child: _controller.value.isInitialized
-                                    ? SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 200,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: VideoPlayer(_controller),
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        width: double.infinity,
-                                        height: 170.ah,
-                                        child: const Center(
-                                            child: CircularProgressIndicator()),
-                                      ),
-                              ),
+                                  child: _video_play_controller
+                                          .value.isInitialized
+                                      ? SizedBox(
+                                          width:MediaQuery.of(context).size.width,
+                                          height: 200,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: VideoPlayer(
+                                                _video_play_controller),
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          width: 200.0,
+                                          height: 100.0,
+                                          child: Container(
+                                            width:MediaQuery.of(context).size.width,
+                                            height: 200,
+                                          ),
+                                        )),
                             ),
                             // VideoProgressIndicator(
                             //     _controller,
@@ -155,7 +159,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                                     height: 34.ah,
                                     child: Row(
                                       children: [
-                                       const SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Text(
@@ -197,10 +201,8 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                                             ? const SizedBox()
                                             : InkWell(
                                                 onTap: () async {
-                                                  if (controller
-                                                          .vlogByIdModel
-                                                          .vlog!
-                                                          .isFollowed ==
+                                                  if (controller.vlogByIdModel
+                                                          .vlog!.isFollowed ==
                                                       false) {
                                                     await ApiRepository.follow(
                                                         userId:
@@ -273,28 +275,25 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                             ),
                     ),
 
-                    //user row
-
-                    //Row 517 follwers like commments
-
-
-
-                    //discover users
 
                     discoverUsers(),
                     SizedBox(
                       height: 10,
                     ),
-                    Obx(() => controller.isLoadingGetVlog.value ? Container() :
-                    ListView.builder(
-                      itemCount: controller.trendingVlogModel.vlogs?.length ?? 0,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return CustomVlogCard(vlog: controller.trendingVlogModel.vlogs![index],);
-                      },
-                    )
-                    )
+                    Obx(() => controller.isLoadingGetVlog.value
+                        ? Container()
+                        : ListView.builder(
+                            itemCount:
+                                controller.trendingVlogModel.vlogs?.length ?? 0,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return CustomVlogCard(
+                                vlog:
+                                    controller.trendingVlogModel.vlogs![index],
+                              );
+                            },
+                          ))
                   ],
                 ),
               ),
@@ -304,17 +303,17 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
             return InkWell(
               onTap: () {
                 setState(() {
-                  _controller.value.isPlaying
-                      ? _controller.pause()
-                      : _controller.play();
+                  _video_play_controller.value.isPlaying
+                      ? _video_play_controller.pause()
+                      : _video_play_controller.play();
                 });
               },
               child: Stack(
                 children: [
                   Center(
-                    child: _controller.value.isInitialized
+                    child: _video_play_controller.value.isInitialized
                         ? ClipRRect(
-                            child: VideoPlayer(_controller),
+                            child: VideoPlayer(_video_play_controller),
                           )
                         : SizedBox(
                             width: double.infinity,
@@ -367,8 +366,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                 width: 50.ah,
                 fit: BoxFit.cover,
                 radius: BorderRadius.circular(50),
-                imagePath: controller
-                    .vlogByIdModel.vlog?.user?.avatarUrl,
+                imagePath: controller.vlogByIdModel.vlog?.user?.avatarUrl,
               ),
               SizedBox(
                 width: 10.aw,
@@ -378,8 +376,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${controller.vlogByIdModel.vlog?.title}'
-                        .capitalizeFirst!,
+                    '${controller.vlogByIdModel.vlog?.title}'.capitalizeFirst!,
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 16.adaptSize,
@@ -410,7 +407,9 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                             "${controller.vlogByIdModel.vlog?.createdAt}");
 
                         return Text(
-                          '${calculateTimeDifference(controller.vlogByIdModel.vlog!.createdAt.toString())}',
+                          calculateTimeDifference(controller
+                              .vlogByIdModel.vlog!.createdAt
+                              .toString()),
                           style: TextStyle(
                             color: Colors.black.withOpacity(.50),
                             fontWeight: FontWeight.w600,
@@ -428,8 +427,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                   ? InkWell(
                       onTap: () {
                         _bottomSheetWidget3(
-                            vlogId:
-                                '${controller.vlogByIdModel.vlog?.id}');
+                            vlogId: '${controller.vlogByIdModel.vlog?.id}');
                       },
                       child: CustomImageView(
                         imagePath: "assets/image/ic_info_outline_24px.png",
@@ -480,7 +478,8 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                             ),
                             InkWell(
                               onTap: () async {
-                                await ApiRepository.deleteVlog(postId: "${vlogId}");
+                                await ApiRepository.deleteVlog(
+                                    postId: "${vlogId}");
                                 // myProfileControllerasd.getProfile();
                                 Get.back();
                               },
@@ -510,8 +509,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                               onTap: () async {
                                 //   Get.to(()=>BlogsEditScreen(getBlogByIdModel: vlogId,));
                                 Get.to(() => EditVlogScreen(
-                                      vlogByIdModel: controller
-                                          .vlogByIdModel,
+                                      vlogByIdModel: controller.vlogByIdModel,
                                     ));
                               },
                               child: Row(
@@ -560,8 +558,12 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(width: double.infinity,),
-                            const SizedBox(height: 20,),
+                            SizedBox(
+                              width: double.infinity,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
                             Center(
                                 child: Text(
                               "Description",
@@ -591,113 +593,31 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
     return SizedBox(
       height: 223.ah,
       child: Obx(
-        () => controller.isLoadingDiscoveruser.value ? Container() : ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount:
-              controller.discoverUsersModelData.value.discoverUsers?.length ??
-                  0,
-          itemBuilder: (context, index) {
-            var users =
-                controller.discoverUsersModelData.value.discoverUsers![index];
-            return Padding(
-              padding: const EdgeInsets.only(right: 14.0),
-              child: InkWell(
-                onTap: () {
-                  Get.to(() => UserProfileScreen(
-                        userId: '${users.id}',
-                      ));
+        () => controller.isLoadingDiscoveruser.value
+            ? Container()
+            : ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: controller
+                        .discoverUsersModelData.value.discoverUsers?.length ??
+                    0,
+                itemBuilder: (context, index) {
+                  var users = controller
+                      .discoverUsersModelData.value.discoverUsers![index];
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 14.0),
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(() => UserProfileScreen(
+                              userId: '${users.id}',
+                            ));
+                      },
+                      child:CustomUserCard( users: users,),
+                    ),
+                  );
                 },
-                child: Container(
-                  height: 223.ah,
-                  width: 120.aw,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(7),
-                      border: Border.all(
-                          //color: HexColor('#FFFFFF'),
-                          color: Colors.black12,
-                          width: 1)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomImageView(
-                        radius: BorderRadius.circular(100.ah),
-                        height: 100.ah,
-                        width: 100.ah,
-                        imagePath: users.coverPhotoUrl,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(height: 4.ah),
-                      Text(
-                        '${users.fullName?.capitalizeFirst}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13.fSize),
-                      ),
-                      SizedBox(height: 2.ah),
-                      Text(
-                        '${users.handle ?? ""}',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 2.ah),
-                      Text(
-                        '${users.numberOfFollower}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 10.ah),
-                      InkWell(
-                        onTap: () {
-                          setState(
-                            () {
-                              users.isFollowed = !users.isFollowed!;
-                              if (users.isFollowed!) {
-                                ApiRepository.follow(userId: "${users..id!}");
-                              } else {
-                                ApiRepository.unfollow(userId: "${users..id!}");
-                              }
-                            },
-                          );
-                        },
-                        child: Container(
-                          height: 24.ah,
-                          width: 98.aw,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: users.isFollowed!
-                                ? Colors.red
-                                : HexColor('#001649'),
-                          ),
-                          child: Center(
-                            child: Text(
-                              users.isFollowed! ? "Unfollow".tr : "Follow".tr,
-                              style: TextStyle(
-                                  color: users.isFollowed!
-                                      ? Colors.white
-                                      : Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.fSize),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
               ),
-            );
-          },
-        ),
       ),
     );
   }
 }
-

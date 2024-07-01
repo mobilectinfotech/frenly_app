@@ -17,7 +17,17 @@ class PostPostController extends GetxController{
   }
 
   TextEditingController captionController = TextEditingController();
+
+
+
+
+
+
+
+
+
   CroppedFile? coverPhoto;
+
   RxBool isLoading =false.obs;
    Future<void> postPost() async {
       isLoading.value =true;

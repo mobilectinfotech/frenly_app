@@ -129,15 +129,17 @@ class _MyFollowersScreenState extends State<MyFollowersScreen> {
                         onTap: () {
                           setState(
                                 () {
-                              controller.followingsModel.followers?[index].isFollowed =
-                              !controller.followingsModel.followers![index].isFollowed!;
-                              if (controller.followingsModel.followers![index].isFollowed!) {
-                                ApiRepository.follow(
-                                    userId: "${controller.followingsModel.followers?[index].id!}");
-                              } else {
-                                ApiRepository.unfollow(
-                                    userId: "${controller.followingsModel.followers?[index].id!}");
+                              if (controller.followingsModel.followers![index].followState == 0) {
+                                controller.followingsModel.followers![index].followState = 1;
+                                setState(() {});
+                                ApiRepository.follow(userId: "${controller.followingsModel.followers![index].id!}");
+
+                              }else{
+                                controller.followingsModel.followers![index].followState = 0;
+                                setState(() {});
+                                ApiRepository.unfollow(userId: "${controller.followingsModel.followers![index].id!}");
                               }
+
                             },
                           );
                         },
@@ -146,22 +148,12 @@ class _MyFollowersScreenState extends State<MyFollowersScreen> {
                           width: 98.aw,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: controller.followingsModel
-                                .followers![index].isFollowed!
-                                ? Colors.red
-                                : HexColor('#001649'),
+                            color:  controller.followingsModel.followers![index].followState == 1  ? Colors.red : HexColor('#001649'),
                           ),
                           child: Center(
                             child: Text(
-                              controller.followingsModel
-                                  .followers![index].isFollowed!
-                                  ? "UnFollow"
-                                  : "Follow",
-                              style: TextStyle(
-                                  color: controller.followingsModel
-                                      .followers![index].isFollowed!
-                                      ? Colors.white
-                                      : Colors.white,
+                              controller.followingsModel.followers![index].followState == 1  ? "Requested".tr : controller.followingsModel.followers![index].followState == 0  ? "Follow".tr  : "Following",                              style: TextStyle(
+                                  color:Colors.white,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14.fSize),
                             ),

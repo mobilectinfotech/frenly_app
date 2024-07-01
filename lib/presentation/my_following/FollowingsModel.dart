@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final followingsModel = followingsModelFromJson(jsonString);
-
 import 'dart:convert';
-
-FollowingsModel followingsModelFromJson(String str) => FollowingsModel.fromJson(json.decode(str));
-
-String followingsModelToJson(FollowingsModel data) => json.encode(data.toJson());
 
 class FollowingsModel {
     bool? success;
@@ -20,6 +12,10 @@ class FollowingsModel {
         this.followings,
         this.total,
     });
+
+    factory FollowingsModel.fromRawJson(String str) => FollowingsModel.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
 
     factory FollowingsModel.fromJson(Map<String, dynamic> json) => FollowingsModel(
         success: json["success"],
@@ -56,7 +52,10 @@ class Following {
     DateTime? createdAt;
     DateTime? updatedAt;
     int? numberOfSaves;
-    bool? isFollowed;
+    int? isOnline;
+    DateTime? lastSeen;
+    bool? isPrivate;
+    int? followState;
 
     Following({
         this.id,
@@ -78,8 +77,15 @@ class Following {
         this.createdAt,
         this.updatedAt,
         this.numberOfSaves,
-        this.isFollowed,
+        this.isOnline,
+        this.lastSeen,
+        this.isPrivate,
+        this.followState,
     });
+
+    factory Following.fromRawJson(String str) => Following.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
 
     factory Following.fromJson(Map<String, dynamic> json) => Following(
         id: json["id"],
@@ -101,7 +107,10 @@ class Following {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         numberOfSaves: json["numberOfSaves"],
-        isFollowed: json["isFollowed"],
+        isOnline: json["isOnline"],
+        lastSeen: json["lastSeen"] == null ? null : DateTime.parse(json["lastSeen"]),
+        isPrivate: json["isPrivate"],
+        followState: json["followState"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -124,6 +133,9 @@ class Following {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "numberOfSaves": numberOfSaves,
-        "isFollowed": isFollowed,
+        "isOnline": isOnline,
+        "lastSeen": lastSeen?.toIso8601String(),
+        "isPrivate": isPrivate,
+        "followState": followState,
     };
 }

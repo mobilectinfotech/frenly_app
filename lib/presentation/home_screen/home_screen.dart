@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
@@ -406,90 +407,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: (){
                   Get.to(()=>UserProfileScreen(userId: '${controller.homeModel.discoverUsers?[index].id}',));
                 },
-                child: Container(
-                  height: 223.ah,
-                  width: 120.aw,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(7),
-                      border: Border.all(
-                        //color: HexColor('#FFFFFF'),
-                          color: Colors.black12,
-                          width: 1)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomImageView(
-                        radius: BorderRadius.circular(100.ah),
-                        height: 100.ah,
-                        width: 100.ah,
-                        imagePath: controller.homeModel.discoverUsers?[index].coverPhotoUrl,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(height: 4.ah),
-                      Container(
-                        width: 95.aw,
-                        child: Center(
-                          child: Text(
-                             overflow: TextOverflow.ellipsis,
-                            '${controller.homeModel.discoverUsers?[index].fullName?.capitalizeFirst}',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13.fSize),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 2.ah),
-                      Text(
-                        '${controller.homeModel.discoverUsers?[index].handle ?? ""}',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 2.ah),
-                      Text(
-                        '${controller.homeModel.discoverUsers?[index].numberOfFollower}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12.fSize),
-                      ),
-                      SizedBox(height: 10.ah),
-                      InkWell(
-                        onTap:  () {
-                          setState(() {
-                            controller.homeModel.discoverUsers![index].isFollowed = !controller.homeModel.discoverUsers![index].isFollowed!;
-                            if(controller.homeModel.discoverUsers![index].isFollowed!){
-                              ApiRepository.follow(userId: "${controller.homeModel.discoverUsers![index].id!}");
-                            }else{
-                              ApiRepository.unfollow(userId: "${controller.homeModel.discoverUsers![index].id!}");
-
-                            }
-                          },
-                          );
-                        },
-                        child: Container(
-                          height: 24.ah,width: 98.aw,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: controller.homeModel.discoverUsers![index].isFollowed!  ? Colors.red : HexColor('#001649'),
-                          ),
-                          child:  Center(
-                            child: Text(controller.homeModel.discoverUsers![index].isFollowed! ?   "Unfollow".tr : "Follow".tr,
-                              style: TextStyle(
-                                  color: controller.homeModel.discoverUsers![index].isFollowed! ? Colors.white : Colors.white,
-                                  fontWeight: FontWeight.w500,fontSize:14.fSize
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                child: CustomUserCard(users: controller.homeModel.discoverUsers![index]),
               ),
             );
           },

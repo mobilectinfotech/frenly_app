@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final followersModel = followersModelFromJson(jsonString);
-
 import 'dart:convert';
-
-FollowersModel followersModelFromJson(String str) => FollowersModel.fromJson(json.decode(str));
-
-String followersModelToJson(FollowersModel data) => json.encode(data.toJson());
 
 class FollowersModel {
     bool? success;
@@ -20,6 +12,10 @@ class FollowersModel {
         this.followers,
         this.total,
     });
+
+    factory FollowersModel.fromRawJson(String str) => FollowersModel.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
 
     factory FollowersModel.fromJson(Map<String, dynamic> json) => FollowersModel(
         success: json["success"],
@@ -46,7 +42,7 @@ class Follower {
     String? fcmToken;
     String? avatarUrl;
     String? coverPhotoUrl;
-    dynamic token;
+    String? token;
     String? actToken;
     bool? isVerified;
     int? numberOfFollower;
@@ -56,7 +52,10 @@ class Follower {
     DateTime? createdAt;
     DateTime? updatedAt;
     int? numberOfSaves;
-    bool? isFollowed;
+    int? isOnline;
+    DateTime? lastSeen;
+    bool? isPrivate;
+    int? followState;
 
     Follower({
         this.id,
@@ -78,8 +77,15 @@ class Follower {
         this.createdAt,
         this.updatedAt,
         this.numberOfSaves,
-        this.isFollowed,
+        this.isOnline,
+        this.lastSeen,
+        this.isPrivate,
+        this.followState,
     });
+
+    factory Follower.fromRawJson(String str) => Follower.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
 
     factory Follower.fromJson(Map<String, dynamic> json) => Follower(
         id: json["id"],
@@ -101,7 +107,10 @@ class Follower {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         numberOfSaves: json["numberOfSaves"],
-        isFollowed: json["isFollowed"],
+        isOnline: json["isOnline"],
+        lastSeen: json["lastSeen"] == null ? null : DateTime.parse(json["lastSeen"]),
+        isPrivate: json["isPrivate"],
+        followState: json["followState"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -124,6 +133,9 @@ class Follower {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "numberOfSaves": numberOfSaves,
-        "isFollowed": isFollowed,
+        "isOnline": isOnline,
+        "lastSeen": lastSeen?.toIso8601String(),
+        "isPrivate": isPrivate,
+        "followState": followState,
     };
 }

@@ -122,27 +122,34 @@ class _DiscoverUsersScreenState extends State<DiscoverUsersScreen> {
                       SizedBox(height:10.ah),
                       InkWell(
                         onTap:  () {
-                          setState(() {
-                            controller.discoverUsersModel.discoverUsers![index].isFollowed = !controller.discoverUsersModel.discoverUsers![index].isFollowed!;
-                            if(controller.discoverUsersModel.discoverUsers![index].isFollowed!){
-                               ApiRepository.follow(userId: "${controller.discoverUsersModel.discoverUsers![index].id!}");
-                            }else{
-                              ApiRepository.unfollow(userId: "${controller.discoverUsersModel.discoverUsers![index].id!}");
+                          setState(
+                                () {
+                              if (controller.discoverUsersModel.discoverUsers![index].followState == 0) {
+                                controller.discoverUsersModel.discoverUsers![index].followState = 1;
+                                setState(() {});
+                                ApiRepository.follow(userId: "${controller.discoverUsersModel.discoverUsers![index].id!}");
 
-                            }
-                          },
+                              }else{
+                                controller.discoverUsersModel.discoverUsers![index].followState = 0;
+                                setState(() {});
+                                ApiRepository.unfollow(userId: "${controller.discoverUsersModel.discoverUsers![index].id!}");
+                              }
+
+                            },
                           );
+
                         },
                         child: Container(
                           height: 24.ah,width: 98.aw,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
-                            color: controller.discoverUsersModel.discoverUsers![index].isFollowed!  ? Colors.red : HexColor('#001649'),
+                            color:  controller.discoverUsersModel.discoverUsers![index].followState == 1  ? Colors.red : HexColor('#001649'),
                           ),
                           child:  Center(
-                            child: Text(controller.discoverUsersModel.discoverUsers![index].isFollowed! ?   "Unfollow".tr : "Follow".tr,
+                            child: Text(
+                              controller.discoverUsersModel.discoverUsers![index].followState == 1  ? "Requested".tr : controller.discoverUsersModel.discoverUsers![index].followState == 0  ? "Follow".tr  : "Following",
                               style: TextStyle(
-                                  color: controller.discoverUsersModel.discoverUsers![index].isFollowed! ? Colors.white : Colors.white,
+                                  color:  Colors.white,
                                   fontWeight: FontWeight.w500,fontSize:14.fSize
                               ),
                             ),

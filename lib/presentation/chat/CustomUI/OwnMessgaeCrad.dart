@@ -3,12 +3,9 @@ import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/constants/app_dialogs.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/data/models/PostSingleViewModel.dart';
 import 'package:frenly_app/presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
-import '../../Post_ALL/post_view_all/post_full_view.dart';
 import '../../Post_ALL/post_view_all/post_view_by_id.dart';
 import '../../vlog_full_view/vlog_full_view.dart';
 import '../Pages/chat_room/chat_room_model.dart';
