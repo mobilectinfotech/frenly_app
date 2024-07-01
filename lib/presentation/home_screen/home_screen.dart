@@ -15,6 +15,7 @@ import '../notification_screen/Notification_Screen.dart';
 import '../popular_city/popular_city_screen.dart';
 import '../popular_city/user_by_city_screen.dart';
 import '../user_profile_screen/user_profile_screen.dart';
+import '../vlog_full_view/vlog_full_view.dart';
 import 'controller/home_controller.dart';
 import 'package:get/get.dart';
 
@@ -152,27 +153,30 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: controller.homeModel.vlogs?.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding:  EdgeInsets.only(right: 10.0.aw),
-            child: SizedBox(
-              width: 180.adaptSize,
-              height: 90.adaptSize,
-              child: Stack(children: [
-                CustomImageView(
-                  width: 180.adaptSize,
-                  height: 90.adaptSize,
-                  imagePath: controller.homeModel.vlogs?[index].thumbnailUrl,
-                  radius: BorderRadius.circular(10),
-                  fit: BoxFit.cover,
-                ),
-                CustomImageView(
-                  width: 180.adaptSize,
-                  height: 90.adaptSize,
-                  imagePath: "assets/image/gradient.svg",
-                  radius: BorderRadius.circular(10),
-                  fit: BoxFit.cover,
-                )
-              ]),
+          return InkWell(
+            onTap: () {Get.to(()=>VlogFullViewNewScreen(videoUrl: '${controller.homeModel.vlogs?[index].videoUrl}', vlogId:controller.homeModel.vlogs![index].id.toString(),));},
+            child: Padding(
+              padding:  EdgeInsets.only(right: 10.0.aw),
+              child: SizedBox(
+                width: 180.adaptSize,
+                height: 90.adaptSize,
+                child: Stack(children: [
+                  CustomImageView(
+                    width: 180.adaptSize,
+                    height: 90.adaptSize,
+                    imagePath: controller.homeModel.vlogs?[index].thumbnailUrl,
+                    radius: BorderRadius.circular(10),
+                    fit: BoxFit.cover,
+                  ),
+                  CustomImageView(
+                    width: 180.adaptSize,
+                    height: 90.adaptSize,
+                    imagePath: "assets/image/gradient.svg",
+                    radius: BorderRadius.circular(10),
+                    fit: BoxFit.cover,
+                  )
+                ]),
+              ),
             ),
           );
           return CustomImageView(
