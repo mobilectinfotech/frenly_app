@@ -7,6 +7,7 @@ import 'package:frenly_app/presentation/all_saved/MySavedPosts.dart';
 import 'package:frenly_app/presentation/all_saved/MySavedVlogs.dart';
 import 'package:frenly_app/presentation/my_block_list/BlockedUserListModel.dart';
 import 'package:frenly_app/presentation/request_users/ReqModel.dart';
+import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../core/constants/app_dialogs.dart';
 import '../../core/utils/pref_utils.dart';
 import '../../presentation/Blog/PopularBlogModel.dart';
@@ -678,8 +679,7 @@ class ApiRepository {
     return GetCommentsModel();
   }
 
-  static Future<GetCommentsModel> getCommentsOnBlog(
-      {required String blogId}) async {
+  static Future<GetCommentsModel> getCommentsOnBlog({required String blogId}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "blog/comment/$blogId?page=1&limit=1000",
     );
@@ -688,6 +688,53 @@ class ApiRepository {
     }
     return GetCommentsModel();
   }
+
+//////////////////////comments//////////////////////////////////////////////////////////////////////////
+
+  static Future<GetCommentsModel> getCommentsAll({required String id,required PostType postType}) async {
+    Map<String, dynamic>? response = await ApiClient().getRequest(
+      endPoint: "${(postType.name)}/comment/$id?page=1&limit=1000",
+    );
+    if (response != null) {
+      return GetCommentsModel.fromJson(response);
+    }
+    return GetCommentsModel();
+  }
+
+
+  static Future<bool> postCommentAll({required String id,required PostType postType,required String comment,}) async {
+    Map<String, dynamic>? response = await ApiClient().postRequest(
+        endPoint: "${postType.name}/comment/$id", body: {"content": comment});
+    if (response != null) {
+      return true;
+    }
+    return false;
+  }
+
+
+  static Future<bool> deleteCommentAll({required String id,required PostType postType,required String commentId}) async {
+    Map<String, dynamic>? response = await ApiClient().deleteRequest(
+      endPoint: "${postType.name}/$id/comment/$commentId",
+      body: {},
+    );
+    if (response != null) {
+      AppDialog.taostMessage("${response["message"]}");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+///////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 
   static Future<bool> postCommentOnVlog({
     required String vlogId,

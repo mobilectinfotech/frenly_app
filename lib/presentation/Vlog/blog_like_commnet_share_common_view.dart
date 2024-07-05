@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Vlog/vlog_like_commnet_share_common_view.dart';
 import 'package:get/get.dart';
+import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
 import '../../core/constants/app_dialogs.dart';
 import '../../core/constants/my_colour.dart';
@@ -16,10 +17,10 @@ import '../chat/Pages/chats/chats_controller.dart';
 import '../dashboard_screen/dashboardcontroller.dart';
 
 class BlogLikeCommentsShareView extends StatefulWidget {
-  final Blog vlog;
+  final Blog blog;
   bool? colors;
 
-  BlogLikeCommentsShareView({super.key, required this.vlog, this.colors});
+  BlogLikeCommentsShareView({super.key, required this.blog, this.colors});
 
   @override
   State<BlogLikeCommentsShareView> createState() =>
@@ -38,15 +39,15 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
       children: [
         Column(
           children: [
-            widget.vlog.alreadyLiked == false
+            widget.blog.alreadyLiked == false
                 ? InkWell(
                     onTap: () async {
-                      widget.vlog.alreadyLiked = true;
-                      widget.vlog.numberOfLikes =
-                          widget.vlog.numberOfLikes! + 1;
+                      widget.blog.alreadyLiked = true;
+                      widget.blog.numberOfLikes =
+                          widget.blog.numberOfLikes! + 1;
                       setState(() {});
                       bool isLiked = await ApiRepository.blogLike(
-                          userId: "${widget.vlog.id}");
+                          userId: "${widget.blog.id}");
                     },
                     child: CustomImageView(
                       imagePath: widget.colors == true
@@ -58,13 +59,13 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                   )
                 : InkWell(
                     onTap: () async {
-                      widget.vlog.alreadyLiked = false;
-                      widget.vlog.numberOfLikes =
-                          widget.vlog.numberOfLikes! - 1;
+                      widget.blog.alreadyLiked = false;
+                      widget.blog.numberOfLikes =
+                          widget.blog.numberOfLikes! - 1;
 
                       setState(() {});
                       bool isLiked = await ApiRepository.blogLike(
-                          userId: "${widget.vlog.id}");
+                          userId: "${widget.blog.id}");
                     },
                     child: CustomImageView(
                       imagePath: widget.colors == true
@@ -77,7 +78,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
               height: 4,
             ),
             Text(
-              "${widget.vlog.numberOfLikes}",
+              "${widget.blog.numberOfLikes}",
               style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -87,14 +88,13 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
         ),
 
         SizedBox(width: 11.aw),
-        if (widget.vlog.commentAllowed == true)
+        if (widget.blog.commentAllowed == true)
           Column(
             children: [
               InkWell(
                 onTap: () {
                   controller.bottomBarShow.value = false;
-                  _bottomSheetWidget(
-                      vlogId: "${widget.vlog.id}", context001: context);
+                  CustomBottomSheets.commentsBottomSheet(context: context, id: '${widget.blog.id}', postType: PostType.blog);
                 },
                 child: CustomImageView(
                   imagePath: widget.colors == true
@@ -108,7 +108,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                 height: 4,
               ),
               Text(
-                "${widget.vlog.numberOfComments}",
+                "${widget.blog.numberOfComments}",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
@@ -117,12 +117,14 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
             ],
           ),
 
-        if (widget.vlog.commentAllowed == true)
+        if (widget.blog.commentAllowed == true)
           widget.colors == true ? SizedBox() : SizedBox(width: 11.aw),
+
+
+
         InkWell(
           onTap: () {
-            _bottomSheetWidget2(
-                context001: context, vlogId: '${widget.vlog.id}');
+            _bottomSheetWidget2(context001: context, vlogId: '${widget.blog.id}');
           },
           child: Column(
             children: [
@@ -135,7 +137,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                 height: 4,
               ),
               Text(
-                "${widget.vlog.numberOfShares}",
+                "${widget.blog.numberOfShares}",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
@@ -149,7 +151,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
 
         Column(
           children: [
-            widget.vlog.alreadySaved == false
+            widget.blog.alreadySaved == false
                 ? InkWell(
                  // onTap: (){
                  //   // widget.vlog.alreadySaved =true;
@@ -164,7 +166,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                         builder: (c) {
                           return CategoryWidget(
                             vlog3_Post1_Blog2: '2',
-                            vlogId: widget.vlog.id!,
+                            vlogId: widget.blog.id!,
                             contexttt: context,
                           );
                         },
@@ -173,11 +175,11 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                         print("fdsffdsffsffdsffdsfa#${value}");
                         if ("$value" == "true") {
                           print("fdsffdsffsffdsffdsfa#2345674567${value}");
-                          widget.vlog.alreadySaved = true;
-                          print("line 180${widget.vlog.alreadySaved}");
+                          widget.blog.alreadySaved = true;
+                          print("line 180${widget.blog.alreadySaved}");
                           setState(() {});
                           Future.delayed(Duration(seconds: 3)).then((value) {
-                            print("line 183${widget.vlog.alreadySaved}");
+                            print("line 183${widget.blog.alreadySaved}");
                           });
                         }
                       });
@@ -195,8 +197,8 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                       print("line189");
 
                         setState(() {
-                          ApiRepository.blogSave(userId: "${widget.vlog.id}");
-                          widget.vlog.alreadySaved =false;
+                          ApiRepository.blogSave(userId: "${widget.blog.id}");
+                          widget.blog.alreadySaved =false;
                         });
                       // ApiRepository.blogSave(userId: "${widget.vlog.id}").then((value) {
                       //   widget.vlog.alreadySaved == false;
@@ -215,7 +217,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
               height: 4,
             ),
             Text(
-              "${widget.vlog.numberOfSaves}",
+              "${widget.blog.numberOfSaves}",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -229,281 +231,6 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
     );
   }
 
-  _bottomSheetWidget(
-      {required BuildContext context001, required String vlogId}) {
-    trendingVlogController.getComments(vlogId: vlogId, isBlog: true);
-    showBottomSheet(
-        context: context001,
-        builder: (BuildContext context) {
-          return FractionallySizedBox(
-              heightFactor: .85,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.0.ah, right: 20.ah),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 20.ah,
-                        ),
-                        const Center(
-                          child: Text(
-                            'Comments',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.98,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20.ah),
-                        Obx(
-                          () => trendingVlogController.isLoadingONComments.value
-                              ? const Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 1,
-                                  ),
-                                )
-                              : Expanded(
-                                  child: Obx(
-                                    () =>
-                                        trendingVlogController.getCommentsModel
-                                                .comments!.isEmpty
-                                            ? const Center(
-                                                child: Text(
-                                                  "No comments yet",
-                                                  style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                              )
-                                            : ListView.builder(
-                                                reverse: true,
-                                                itemCount: trendingVlogController.getCommentsModel.comments?.length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 10.0.ah),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            CustomImageView(
-                                                              width:
-                                                                  40.adaptSize,
-                                                              height:
-                                                                  40.adaptSize,
-                                                              imagePath: trendingVlogController
-                                                                  .getCommentsModel
-                                                                  .comments?[
-                                                                      index]
-                                                                  .user
-                                                                  ?.avatarUrl,
-                                                              fit: BoxFit.cover,
-                                                              radius: BorderRadius
-                                                                  .circular(45
-                                                                      .adaptSize),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 18.aw,
-                                                            ),
-                                                            Container(
-                                                              width: 300.aw,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Row(
-                                                                    children: [
-                                                                      Text(
-                                                                        "${trendingVlogController.getCommentsModel.comments?[index].user?.fullName}  ",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.adaptSize,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w700,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        calculateTimeDifference(trendingVlogController
-                                                                            .getCommentsModel
-                                                                            .comments![index]
-                                                                            .createdAt!
-                                                                            .toString()),
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color: Colors
-                                                                              .black
-                                                                              .withOpacity(.50),
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        width: 250
-                                                                            .aw,
-                                                                        child:
-                                                                            Text(
-                                                                          "${trendingVlogController.getCommentsModel.comments?[index].content}",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.black.withOpacity(.50),
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontFamily:
-                                                                                'Roboto',
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      if ("${trendingVlogController.getCommentsModel.comments?[index].user?.id}" ==
-                                                                          "${PrefUtils().getUserId()}")
-                                                                        InkWell(
-                                                                          onTap:
-                                                                              () async {
-                                                                            await ApiRepository.deleteBlogComment(
-                                                                                postId: "${widget.vlog.id}",
-                                                                                commentId: "${trendingVlogController.getCommentsModel.comments?[index].id}");
-                                                                            trendingVlogController.getComments(vlogId: vlogId);
-                                                                          },
-                                                                          child:
-                                                                              Text(
-                                                                            "Delete",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: Colors.black.withOpacity(.50),
-                                                                              fontSize: 14,
-                                                                              fontFamily: 'Roboto',
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        // SizedBox(
-                                                        //   width: 280.aw,
-                                                        //   child:  Text(
-                                                        //     "${trendingVlogController.getCommentsModel.comments?[index].content}",
-                                                        //     style:
-                                                        //     TextStyle(
-                                                        //       color: Colors
-                                                        //           .black
-                                                        //           .withOpacity(
-                                                        //           .50),
-                                                        //       fontSize:
-                                                        //       14,
-                                                        //       fontFamily:
-                                                        //       'Roboto',
-                                                        //       fontWeight:
-                                                        //       FontWeight
-                                                        //           .w500,
-                                                        //     ),
-                                                        //   ),
-                                                        // ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                  ),
-                                ),
-                        ),
-                        SizedBox(
-                          height: 10.v,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 300.aw,
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.only(left: 15),
-                                      disabledBorder: InputBorder.none,
-                                      hintText: "Add a comment ..."),
-                                  onTap: () {},
-                                  onEditingComplete: () {
-                                    FocusScope.of(context).unfocus();
-                                    trendingVlogController.postCommnetOnVlog(
-                                        vlogId: vlogId, isBlog: true);
-                                  },
-                                  controller:
-                                      trendingVlogController.commentController,
-                                  textInputAction: TextInputAction.send,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.v,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  trendingVlogController.postCommnetOnVlog(
-                                      vlogId: vlogId, isBlog: true);
-                                },
-                                child: const Text(
-                                  'Post',
-                                  style: TextStyle(
-                                    color: Color(0xFF001649),
-                                    fontSize: 14,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ]),
-                ),
-              ));
-        }).closed.then((value) {
-      controller.bottomBarShow.value = true;
-    });
-  }
 
   DashBoardController trendingVlogController = Get.find();
 
@@ -553,10 +280,10 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                                           ApiRepository.sendMessage(
                                               typeBlog2VLog3Photo1: "2",
                                               message:
-                                                  ' Sent a Post by ${widget.vlog.user?.handle}',
+                                                  ' Sent a Post by ${widget.blog.user?.handle}',
                                               chatId:
                                                   '${createChatModel.payload?.id}',
-                                              isLinkId: "${widget.vlog.id}",
+                                              isLinkId: "${widget.blog.id}",
                                               isUrl: " ");
                                           Get.back();
                                         },
@@ -633,13 +360,13 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
     return InkWell(
       onTap: () {
         ApiRepository.sendMessage(
-            message: ' Sent a Blog by ${widget.vlog.user?.handle}',
+            message: ' Sent a Blog by ${widget.blog.user?.handle}',
             chatId: '${chatScreenController.chatsModel.chats![index].id}',
-            isLinkId: "${widget.vlog.id}",
+            isLinkId: "${widget.blog.id}",
             isUrl: " ",
             typeBlog2VLog3Photo1: "2");
         AppDialog.taostMessage(
-            "Blog Shared Successfully${"${widget.vlog.id}"}");
+            "Blog Shared Successfully${"${widget.blog.id}"}");
         Get.back();
       },
       child: Column(

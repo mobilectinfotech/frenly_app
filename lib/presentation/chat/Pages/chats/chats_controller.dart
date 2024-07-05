@@ -22,7 +22,7 @@ class ChatScreenController extends GetxController{
     isLoading.value=true;
     final response =await ApiClient().getRequest(endPoint: "chat");
     print("asdfghgfdsasdfgh${response}");
-    chatsModel=ChatsModel.fromJson(response);
+    chatsModel= ChatsModel.fromJson(response);
     isLoading.value=false;
   }
 

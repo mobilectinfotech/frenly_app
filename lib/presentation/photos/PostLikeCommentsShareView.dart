@@ -81,8 +81,7 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
               InkWell(
                 onTap: () {
                   controller.bottomBarShow.value = false;
-                  CustomBottomSheets.commentsBottomSheet(context001: context, id: "${widget.post?.id}");
-              //    _bottomSheetWidget(vlogId: "${widget.post?.id}", context001: context);
+                  CustomBottomSheets.commentsBottomSheet(context: context, id: '${widget.post?.id}', postType: PostType.post);
                 },
                 child: CustomImageView(
                   imagePath: "assets/image/comments_blue.png",
@@ -97,8 +96,7 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
             children: [
               InkWell(
                 onTap: () {
-                  _bottomSheetWidget2(
-                      vlogId: "${widget.post?.id}", context001: context);
+                  CustomBottomSheets.shareBottomSheet(context: context, id: '${widget.post?.id}', postType: PostType.post);
                 },
                 child: Image.asset(
                   'assets/image/Vector (1).png',
@@ -163,264 +161,7 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
     );
   }
 
-  _bottomSheetWidget(
-      {required BuildContext context001, required String vlogId}) {
-    dashBoardController.getComments(vlogId: vlogId, post: true);
-    showBottomSheet(
-        context: context001,
-        builder: (BuildContext context) {
-          return FractionallySizedBox(
-              heightFactor: .85,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.0.ah, right: 20.ah),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 20.ah,
-                        ),
-                        const Center(
-                          child: Text(
-                            'Comments',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.98,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20.ah),
-                        Obx(
-                          () => dashBoardController.isLoadingONComments.value
-                              ? const Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 1,
-                                  ),
-                                )
-                              : Expanded(
-                                  child: Obx(
-                                    () =>
-                                        dashBoardController.getCommentsModel
-                                                .comments!.isEmpty
-                                            ? const Center(
-                                                child: Text(
-                                                  "No comments yet",
-                                                  style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                              )
-                                            : ListView.builder(
-                                                reverse: true,
-                                                itemCount: dashBoardController
-                                                    .getCommentsModel
-                                                    .comments
-                                                    ?.length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return Padding(
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 10.0.ah),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            CustomImageView(
-                                                              width:
-                                                                  40.adaptSize,
-                                                              height:
-                                                                  40.adaptSize,
-                                                              imagePath: dashBoardController
-                                                                  .getCommentsModel
-                                                                  .comments?[
-                                                                      index]
-                                                                  .user
-                                                                  ?.avatarUrl,
-                                                              fit: BoxFit.cover,
-                                                              radius: BorderRadius
-                                                                  .circular(45
-                                                                      .adaptSize),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 18.aw,
-                                                            ),
-                                                            Container(
-                                                              width: 300.aw,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Row(
-                                                                    children: [
-                                                                      Text(
-                                                                        "${dashBoardController.getCommentsModel.comments?[index].user?.fullName}  ",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.adaptSize,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w700,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        calculateTimeDifference(dashBoardController
-                                                                            .getCommentsModel
-                                                                            .comments![index]
-                                                                            .createdAt!
-                                                                            .toString()),
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color: Colors
-                                                                              .black
-                                                                              .withOpacity(.50),
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      SizedBox(
-                                                                        width: 250
-                                                                            .aw,
-                                                                        child:
-                                                                            Text(
-                                                                          "${dashBoardController.getCommentsModel.comments?[index].content}",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.black.withOpacity(.50),
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontFamily:
-                                                                                'Roboto',
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      if ("${dashBoardController.getCommentsModel.comments?[index].user?.id}" ==
-                                                                          "${PrefUtils().getUserId()}")
-                                                                        InkWell(
-                                                                          onTap:
-                                                                              () async {
-                                                                            await ApiRepository.deletePostComment(
-                                                                                postId: "${widget.post?.id}",
-                                                                                commentId: "${dashBoardController.getCommentsModel.comments?[index].id}");
-                                                                            dashBoardController.getComments(vlogId: vlogId);
-                                                                          },
-                                                                          child:
-                                                                              Text(
-                                                                            "Delete",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: Colors.black.withOpacity(.50),
-                                                                              fontSize: 14,
-                                                                              fontFamily: 'Roboto',
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                  ),
-                                ),
-                        ),
-                        SizedBox(
-                          height: 10.v,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 300.aw,
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.only(left: 15),
-                                      disabledBorder: InputBorder.none,
-                                      hintText: "Add a comment ..."),
-                                  onTap: () {},
-                                  onEditingComplete: () {
-                                    FocusScope.of(context).unfocus();
-                                    dashBoardController.postCommnetOnVlog(
-                                        vlogId: vlogId, post: true);
-                                  },
-                                  controller:
-                                      dashBoardController.commentController,
-                                  textInputAction: TextInputAction.send,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.v,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  dashBoardController.postCommnetOnVlog(
-                                      vlogId: vlogId, post: true);
-                                },
-                                child: const Text(
-                                  'Post',
-                                  style: TextStyle(
-                                    color: Color(0xFF001649),
-                                    fontSize: 14,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ]),
-                ),
-              ));
-        }).closed.then((value) {
-      controller.bottomBarShow.value = true;
-    });
-  }
+
 
   _bottomSheetWidget2(
       {required BuildContext context001, required String vlogId}) {
@@ -453,15 +194,13 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
                                   )
                                 : ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: dashBoardController
-                                        .getAllFriendsModel.friends?.length,
+                                    itemCount: dashBoardController.getAllFriendsModel.friends?.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return InkWell(
                                         onTap: () async {
                                           print("qwertyuiuytrewertyuytrewertg");
-                                          CreateChatModel createChatModel =
-                                              CreateChatModel();
+                                          CreateChatModel createChatModel = CreateChatModel();
                                           createChatModel =
                                               await ApiRepository.createChat(
                                                   userId:
@@ -515,10 +254,8 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
                                         ? const Center(
                                             child: CircularProgressIndicator())
                                         : ListView.builder(
-                                            itemCount: chatScreenController
-                                                .chatsModel.chats!.length,
-                                            itemBuilder: (context, index) =>
-                                                customCard(index),
+                                            itemCount: chatScreenController.chatsModel.chats!.length,
+                                            itemBuilder: (context, index) => customCard(index),
                                           ),
                                   ),
                                 ),
@@ -535,15 +272,11 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
   }
 
   DashBoardController dashBoardController = Get.find();
+
   ChatScreenController chatScreenController = Get.put(ChatScreenController());
 
   Widget customCard(int index) {
-    int indexxx =
-        "${chatScreenController.chatsModel.chats![index].participants![0].id}" ==
-                PrefUtils().getUserId()
-            ? 1
-            : 0;
-
+    int indexxx = "${chatScreenController.chatsModel.chats![index].participants![0].id}" == PrefUtils().getUserId() ? 1 : 0;
     return InkWell(
       onTap: () async {
         final response = await ApiRepository.sendMessage(

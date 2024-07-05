@@ -19,10 +19,36 @@ class DashBoardController extends GetxController{
   GetCommentsModel get getCommentsModel => getdata.value;
 
 
-   getComments({required String vlogId,  bool ? isLoading, bool ? isBlog, bool ? post})async{
+
+
+  getCommentsNew({required String vlogId,  bool ? isLoading, bool ? isBlog, bool ? post})async{
     print("getComments========>$isBlog ");
     isLoadingONComments.value = isLoading ?? true;
-    var response = isBlog == true ? await ApiRepository.getCommentsOnBlog(blogId: vlogId) : post==true ?  await ApiRepository.getCommentsOnPosts(vlogId: vlogId) : await ApiRepository.getCommentsOnVlog(vlogId: vlogId);
+    var response = isBlog == true ?
+    await ApiRepository.getCommentsOnBlog(blogId: vlogId)
+        : post==true ?  await ApiRepository.getCommentsOnPosts(vlogId: vlogId)
+        : await ApiRepository.getCommentsOnVlog(vlogId: vlogId);
+    getdata(response);
+    getdata.refresh();
+    isLoadingONComments.value=false;
+  }
+
+
+
+
+
+
+
+
+
+
+  getComments({required String vlogId,  bool ? isLoading, bool ? isBlog, bool ? post})async{
+    print("getComments========>$isBlog ");
+    isLoadingONComments.value = isLoading ?? true;
+    var response = isBlog == true ?
+    await ApiRepository.getCommentsOnBlog(blogId: vlogId)
+        : post==true ?  await ApiRepository.getCommentsOnPosts(vlogId: vlogId)
+        : await ApiRepository.getCommentsOnVlog(vlogId: vlogId);
     getdata(response);
     getdata.refresh();
     isLoadingONComments.value=false;
@@ -43,6 +69,7 @@ class DashBoardController extends GetxController{
       getComments(vlogId: vlogId,isLoading: false, isBlog:isBlog,  post :post );
     }
   }
+
 
    RxBool isLoadingONShare = false.obs;
    Rx<AllFriendsModel> getdata1 =AllFriendsModel().obs;

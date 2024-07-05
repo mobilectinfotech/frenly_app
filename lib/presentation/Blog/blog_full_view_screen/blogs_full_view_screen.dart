@@ -168,7 +168,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
               padding: const EdgeInsets.only(left: 25.0,right: 25),
               child: SizedBox(
                   child: Column(
-                    children: [BlogLikeCommentsShareView(vlog: controller.blogByIdModel.blog!,),
+                    children: [BlogLikeCommentsShareView(blog: controller.blogByIdModel.blog!,),
                     ],
                   )),
             ),
