@@ -42,7 +42,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Form(
             key: _formKeyLogin,
             child: ListView(
-
                 children: [
                   SizedBox(height: 80.ah),
                   Padding(
@@ -60,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               fontSize: 35.fSize,
                               height: 1.2.ah),
                         ),
-                        Spacer(),
+                       // Spacer(),
                         Container(
                           height: 74.ah,
                           width: 74.aw,
@@ -71,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                   ),
-                  const Spacer(),
+                //  const Spacer(),
                   SizedBox(height: 40.ah),
                   Padding(
                     padding: EdgeInsets.only(left: 10.h, right: 10.h),
