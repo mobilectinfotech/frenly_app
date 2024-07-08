@@ -102,7 +102,7 @@ class _EditVlogScreenState extends State<EditVlogScreen> {
                     width: double.infinity,
                     height: 170.ah,
                     child: const Center(
-                        child: CircularProgressIndicator()),
+                        child: CircularProgressIndicator(strokeWidth: 1,)),
                   ),
                 ),
               ):InkWell(

@@ -31,6 +31,11 @@ class PrefUtils {
 
 
 
+  /// Sets the user Language
+  Future<void> setUserLanguage(bool isEnglish) {return _sharedPreferences!.setBool('userLanguage', isEnglish);}
+  bool getUserLanguage() {try {return _sharedPreferences!.getBool('userLanguage')!;} catch (e) {return false;}}
+
+
 
 
   /// Checks if the user is logged in

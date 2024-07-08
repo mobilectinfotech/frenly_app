@@ -77,8 +77,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ?const SizedBox(
                   height: 500,
                   child: Center(
-                      child: CircularProgressIndicator(
-                    strokeWidth: 1,
+                      child: CircularProgressIndicator(strokeWidth: 1,
+
                   )))
               : ListView.builder(
                   shrinkWrap: true,

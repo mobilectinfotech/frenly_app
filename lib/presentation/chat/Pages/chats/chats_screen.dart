@@ -43,7 +43,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                 appBar: messageAppbar(context: context,title: "Messages".tr,showImage: true,imagepath: null,back: false),
                 body:  Obx(
                       () => controller.isLoading.value
-                      ? const Center(child: CircularProgressIndicator(
+                      ? const Center(child: CircularProgressIndicator(strokeWidth: 1,
                       ),)
                       : controller.chatsModel.chats!.length==0 ? const Center(child: Text("No Chats Found"),) : ListView.builder(
                   itemCount: controller.chatsModel.chats!.length,

@@ -1,20 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/dashboard_screen/dashboardcontroller.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../core/constants/my_colour.dart';
 import '../core/utils/calculateTimeDifference.dart';
 import '../core/utils/pref_utils.dart';
 import '../data/data_sources/remote/api_client.dart';
 import '../data/models/GetCommentsModel.dart';
+import '../data/models/cateogry_model.dart';
 import '../data/repositories/api_repository.dart';
+import '../presentation/Vlog/add_new_category/add_new_cateogry_bottom_sheet.dart';
+import '../presentation/Vlog/vlog_like_commnet_share_common_view.dart';
 import '../presentation/chat/Pages/all_frined/AllFriendsModel.dart';
-import '../presentation/chat/Pages/chat_room/chat_room_page.dart';
 import '../presentation/chat/Pages/chats/chats_model.dart';
 import 'custom_image_view.dart';
 import 'package:intl/intl.dart';
+
 
 enum PostType {
   vlog,
@@ -23,6 +25,8 @@ enum PostType {
 }
 
 class CustomBottomSheets {
+
+  ///comments boottom sheet
   static Future<void> commentsBottomSheet(
       {required BuildContext context,
       required String id,
@@ -49,7 +53,7 @@ class CustomBottomSheets {
                         ),
                         const Center(
                           child: Text(
-                            'Comments_new',
+                            'Comments',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
@@ -63,8 +67,8 @@ class CustomBottomSheets {
                         Obx(
                           () => commentsController.isLoading.value
                               ? const Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 1,
+                                  child: CircularProgressIndicator(strokeWidth: 1,
+
                                   ),
                                 )
                               : Expanded(
@@ -293,11 +297,11 @@ class CustomBottomSheets {
   static Future<void> shareBottomSheet(
       {required BuildContext context,
       required String id,
-      required PostType postType}) async {
-     ShareController controller = Get.put(ShareController());
-   // controller.getFriends();
-    controller.getchats();
+      required PostType postType,
+      required String userName ,
+      }) async {
 
+    ShareController controller = Get.find<ShareController>();
     await showBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -312,7 +316,7 @@ class CustomBottomSheets {
                   child: ListView(children: [
                     const Center(
                       child: Text(
-                        'Comments_new',
+                        'Share',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.black,
@@ -324,38 +328,51 @@ class CustomBottomSheets {
                     ),
                     SizedBox(height: 20.ah),
                     Obx(
-                      ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(),) : Container(height: 100,
+                      ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Container(height: 90.adaptSize,
                         child: ListView.builder(
+                          itemCount: controller.allFriendsModel.friends?.length ?? 0,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Container(height: 80,width: 80,color:Colors.blue,
-                              child:CustomImageView(
-                                height: 65.adaptSize,
-                                width: 65.adaptSize,
-                                imagePath: controller
-                                    .allFriendsModel
-                                    .friends?[index]
-                                    .avatarUrl,
-                                fit: BoxFit.cover,
-                                radius: BorderRadius.circular(
-                                    45.adaptSize),
-                              ) ,
+                            padding:  EdgeInsets.all(10.0.adaptSize),
+                            child: InkWell(
+                              onTap: () {
+
+                              },
+                              child: Container(
+                                height: 70.adaptSize,width: 70.adaptSize,
+                                child:CustomImageView(
+                                  height: 70.adaptSize,
+                                  width: 70.adaptSize,
+                                  imagePath: controller
+                                      .allFriendsModel
+                                      .friends?[index]
+                                      .avatarUrl,
+                                  fit: BoxFit.cover,
+                                  radius: BorderRadius.circular(
+                                      45.adaptSize),
+                                ) ,
+                              ),
                             ),
                           );
                         },),
                       ),
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     Obx(()=> controller.isLoadingChatModel.value  ? Container(height: 100,width: 100,color: Colors.red,) :ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: controller.chatsModel.chats!.length,
                       itemBuilder: (context, index){
                         return InkWell(
-                          onTap: () {
-                            Get.to( ()=> ChatRoomPage(participant:controller.chatsModel.chats![index].participants![index], chatId: controller.chatsModel.chats![index].id.toString(),));
+                          onTap: () async {
+                            final response = await ApiRepository.sendMessageWithShare(
+                                message: ' Sent a ${postType.name} by $userName',
+                                chatId: '${controller.chatsModel.chats![index].id}',
+                                postType: postType,
+                                isUrl: " ",
+                                isLinkId: id);
+                            Get.back();
                           },
                           child: Column(
                             children: [
@@ -437,10 +454,118 @@ class CustomBottomSheets {
                 ),
               ));
         });
-    print("pramod");
+
     Get.find<DashBoardController>().bottomBarShow.value = true;
+
   }
 
+  static Future<bool> saveBottomSheet(
+      {required BuildContext context,
+        required String id,
+        required PostType postType,
+      }) async {
+
+
+      SaveController controller ;
+     if (Get.isRegistered<SaveController>()) {
+        controller =Get.find<SaveController>();
+     } else {
+       controller = Get.put(SaveController());
+      print("MyController is not initialized.");
+    }
+
+     bool issave  = false;
+     bool name = await showBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          Get.find<DashBoardController>().bottomBarShow.value = true;
+          return FractionallySizedBox(
+              heightFactor: .55,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  // Get.back(t);
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 20.aw,right: 20.aw,top: 20.aw,),
+                  width: double.infinity,
+                  child: ListView(
+                    children: [
+                      SizedBox(
+                        height: 6.ah,
+                      ),
+
+                      SizedBox(
+                        height: 24.ah,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Save post too...",
+                            style: GoogleFonts.roboto().copyWith(
+                                fontSize: 22.fSize,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
+                          ),
+                          const Spacer(),
+                          InkWell(
+                            onTap: () {
+                              onTapAddNewCategory(context: context);
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(Icons.add),
+                                SizedBox(
+                                  width: 5.aw,
+                                ),
+                                const Text("New Category")
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.ah,
+                      ),
+                      for (Category data in (controller.cateogoryModel.value?.categories ?? []))
+                        InkWell(
+                          onTap: () async {
+                            print("Line539==$issave");
+                            issave = await ApiRepository.saveAllById(
+                                postType: postType,
+                                id: id,
+                                categoryId: "${data.id}");
+                            print("Line544==$issave");
+                            Get.back();
+
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.check_box_outline_blank),
+                                  SizedBox(
+                                    width: 5.aw,
+                                  ),
+                                  Text(data.name ?? "")
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      SizedBox(
+                        height: 20.ah,
+                      )
+                    ],
+                  ),
+                ),
+              ));
+        }).closed.then((value) => issave);
+     return name;
+  }
+
+  
 
 
 
@@ -494,9 +619,13 @@ class ComnetsController extends GetxController {
 
 class ShareController extends GetxController {
 
-
-
-
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getFriends();
+    getchats();
+  }
 
 
   RxBool isLoading = false.obs;
@@ -518,34 +647,30 @@ class ShareController extends GetxController {
     isLoadingChatModel.value=false;
   }
 
-// GetCommentsModel getCommentsModel = GetCommentsModel();
-// RxBool isLoading = false.obs;
-//
-// TextEditingController commnetsTc =  TextEditingController();
-//
-// getComments({required String id, required PostType postType}) async {
-//   isLoading.value = true;
-//   getCommentsModel = await ApiRepository.getCommentsAll(id: id, postType: postType);
-//   isLoading.value = false;
-// }
-//
-//
-//
-//
-// RxBool isLoadingPostCommnets = false.obs;
-// postComments({required String id,required PostType postType,required String comment,}) async {
-//   isLoadingPostCommnets.value = true;
-//   await ApiRepository.postCommentAll(id: id, postType: postType, comment: comment);
-//   commnetsTc.clear();
-//   isLoadingPostCommnets.value = false;
-//   getComments(id: id, postType: postType);
-// }
-//
-// RxBool isLoadingDeletCommnets = false.obs;
-// deleteComments({required String id,required PostType postType,required String commentId,}) async {
-//   isLoadingPostCommnets.value = true;
-//   await ApiRepository.deleteCommentAll(id: id, postType: postType, commentId: commentId);
-//   isLoadingPostCommnets.value = false;
-//   getComments(id: id, postType: postType);
-// }
+
 }
+
+class SaveController extends GetxController {
+
+
+
+  Rxn<CategoryModel> cateogoryModel = Rxn();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getCategory();
+
+  }
+
+  void getCategory(){
+    ApiRepository.getCategories().then((value) {
+      cateogoryModel.value = value;
+    });
+  }
+
+
+
+}
+
+

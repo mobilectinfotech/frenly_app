@@ -6,6 +6,7 @@ import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/discover_screen/discover_all_user.dart';
+import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_appbar.dart';
 import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../Blog/popular_blogs_screen.dart';
@@ -29,6 +30,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeController controller = Get.put(HomeController());
+  ShareController notUse = Get.put(ShareController(),permanent: true);
+
 
 
   Future<void> _refresh() async {
@@ -38,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
     controller.refresh();
     setState(() {});
   }
+
+
+
 
 
   @override
@@ -55,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Obx(
             () => controller.isLoading.value
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(strokeWidth: 1,),
                   )
                 : RefreshIndicator(
                    onRefresh: _refresh,
@@ -64,23 +70,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: 10.ah),
                         checkIn(),
                         SizedBox(height: 20.ah),
-                        titleViewAll(title: 'Live'.tr, onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const PopularsCityScreen()));}),
+                        titleViewAll(title: 'Live'.tr, onTap: () {Get.to(()=> const PopularsCityScreen());}),
                         SizedBox(height: 10.ah),
                         liveUserByCountry(),
                         SizedBox(height: 20.ah),
-                        titleViewAll(title: 'Trending', onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) =>  AllVlogScreen()));}),
+                        titleViewAll(title: 'Trending'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
                         SizedBox(height: 16.ah,),
                         trending(),
                         SizedBox(height: 20.ah),
-                        titleViewAll(title: 'Popublog', onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const PopularBlogScreen()));}),
+                        titleViewAll(title: 'Popublog'.tr, onTap: () {Get.to(()=> const PopularBlogScreen());}),
                         SizedBox(height: 16.ah,),
                         popularBlog(),
                         SizedBox(height: 16.ah,),
-                        titleViewAll(title: 'Discover', onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const DiscoverUsersScreen()));}),
+                        titleViewAll(title: 'Discover'.tr, onTap: () {Get.to(()=> const DiscoverUsersScreen());}),
                         SizedBox(height: 16.ah,),
                         discoverUsers(),
                         SizedBox(height: 25.ah),
-                        titleViewAll(title: 'Posts', onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
+                        titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
                         SizedBox(height: 25.ah),
                         posts(),
                         SizedBox(height: 100.ah),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:frenly_app/Widgets/bottom_sheet_widgets.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 
@@ -19,9 +20,9 @@ class AddNewCategoryController extends GetxController {
     ApiRepository.addCategory(categoryName: textEditingController.text.trim()).then((value) {
       try {
         print("alkdfjalkdjf");
-        Get.find<AllCategoryController>().getCategory();
+        Get.find<SaveController>().getCategory();
       }  catch (e) {
-print(e);
+       print(e);
       }
     });
     Get.back();

@@ -39,16 +39,7 @@ class ReplyCard extends StatelessWidget {
                   ),
                   color: MyColor.primaryColor
                 ),
-                // decoration: AppDecoration.fillGray.copyWith(
-                //     borderRadius: BorderRadiusStyle.customBorderTL10),
-                // child: Text("$message",
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       fontSize: 16.adaptSize,
-                //       fontWeight: FontWeight.w400
-                //     ),
-                //
-                // ),
+
               child: InkWell(
                 onTap: () async {
                   print("dsafgfdsgdgsfgdgdsgdsgdsfgdgdgfdgdfgd${message.isLink}");
@@ -85,10 +76,12 @@ class ReplyCard extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: CustomImageView(imagePath: "assets/image/share.png",color: Colors.white,height: 20,),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width *.62,
+                    ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width*.70, // Set the maximum width here
+                        ),
                       child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ?   Colors.white :  Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
-                      ),
+                      )
                     ),
                   ],
                 ),

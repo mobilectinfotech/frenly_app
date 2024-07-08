@@ -10,7 +10,6 @@ import '../../presentation/all_saved/MySavedBlogs.dart';
 
 VlogByIdModel vlogByIdModelFromJson(String str) => VlogByIdModel.fromJson(json.decode(str));
 
-String vlogByIdModelToJson(VlogByIdModel data) => json.encode(data.toJson());
 
 class VlogByIdModel {
   int? status;
@@ -32,12 +31,7 @@ class VlogByIdModel {
     vlog: json["vlog"] == null ? null : Vlog.fromJson(json["vlog"]),
   );
 
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "success": success,
-    "vlog": vlog?.toJson(),
-  };
+
 }
 
 

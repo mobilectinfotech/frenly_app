@@ -28,9 +28,6 @@ class BlogLikeCommentsShareView extends StatefulWidget {
 }
 
 class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
-  DashBoardController controller = Get.find();
-  BlogFullViewController blogFullViewController = Get.put(BlogFullViewController());
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -93,8 +90,10 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
             children: [
               InkWell(
                 onTap: () {
-                  controller.bottomBarShow.value = false;
-                  CustomBottomSheets.commentsBottomSheet(context: context, id: '${widget.blog.id}', postType: PostType.blog);
+                  CustomBottomSheets.commentsBottomSheet(
+                      context: context,
+                      id: '${widget.blog.id}',
+                      postType: PostType.blog);
                 },
                 child: CustomImageView(
                   imagePath: widget.colors == true
@@ -120,11 +119,13 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
         if (widget.blog.commentAllowed == true)
           widget.colors == true ? SizedBox() : SizedBox(width: 11.aw),
 
-
-
         InkWell(
           onTap: () {
-            _bottomSheetWidget2(context001: context, vlogId: '${widget.blog.id}');
+            CustomBottomSheets.shareBottomSheet(
+                context: context,
+                id: '${widget.blog.id}',
+                postType: PostType.blog,
+                userName: '${widget.blog.user?.handle}');
           },
           child: Column(
             children: [
@@ -153,36 +154,21 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
           children: [
             widget.blog.alreadySaved == false
                 ? InkWell(
-                 // onTap: (){
-                 //   // widget.vlog.alreadySaved =true;
-                 //   setState(() {
-                 //
-                 //   });
-                 // },
                     onTap: () async {
-                      print("line158");
-                      showModalBottomSheet(
+                      print("line_119${widget.blog?.alreadySaved}");
+                      bool name = await CustomBottomSheets.saveBottomSheet(
                         context: context,
-                        builder: (c) {
-                          return CategoryWidget(
-                            vlog3_Post1_Blog2: '2',
-                            vlogId: widget.blog.id!,
-                            contexttt: context,
-                          );
-                        },
-                      ).then((value) async {
-                        print("line169");
-                        print("fdsffdsffsffdsffdsfa#${value}");
-                        if ("$value" == "true") {
-                          print("fdsffdsffsffdsffdsfa#2345674567${value}");
-                          widget.blog.alreadySaved = true;
-                          print("line 180${widget.blog.alreadySaved}");
-                          setState(() {});
-                          Future.delayed(Duration(seconds: 3)).then((value) {
-                            print("line 183${widget.blog.alreadySaved}");
-                          });
-                        }
-                      });
+                        id: "${widget.blog.id ?? 0}",
+                        postType: PostType.blog,
+                      );
+                      print("$name ==>dfsdfsfsfsf ");
+                      if (name) {
+                        widget.blog.numberOfSaves =
+                            widget.blog.numberOfSaves! + 1;
+                        widget.blog.alreadySaved = true;
+                      }
+
+                      setState(() {});
                     },
                     child: CustomImageView(
                       imagePath: widget.colors == true
@@ -194,16 +180,15 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                   )
                 : InkWell(
                     onTap: () async {
-                      print("line189");
-
-                        setState(() {
-                          ApiRepository.blogSave(userId: "${widget.blog.id}");
-                          widget.blog.alreadySaved =false;
-                        });
-                      // ApiRepository.blogSave(userId: "${widget.vlog.id}").then((value) {
-                      //   widget.vlog.alreadySaved == false;
-                      //   setState(() {});
-                      // });
+                      print("line_130${widget.blog.alreadySaved}");
+                      widget.blog.alreadySaved = false;
+                      widget.blog.numberOfSaves =
+                          widget.blog.numberOfSaves! - 1;
+                      await ApiRepository.saveAllById(
+                          postType: PostType.blog,
+                          id: "${widget.blog.id ?? 0}",
+                          categoryId: "0");
+                      setState(() {});
                     },
                     child: CustomImageView(
                       imagePath: widget.colors == true
@@ -213,242 +198,79 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                       height: 21.aw,
                     ),
                   ),
-            const SizedBox(
-              height: 4,
-            ),
             Text(
-              "${widget.blog.numberOfSaves}",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12),
+              "${widget.blog?.numberOfSaves}",
+              style: TextStyle(color: Colors.white),
             )
+            // widget.blog.alreadySaved == false
+            //     ? InkWell(
+            //         onTap: () async {
+            //           print("line158");
+            //           showModalBottomSheet(
+            //             context: context,
+            //             builder: (c) {
+            //               return CategoryWidget(
+            //                 vlog3_Post1_Blog2: '2',
+            //                 vlogId: "${widget.blog.id}",
+            //                 contexttt: context, postType: PostType.blog,
+            //               );
+            //             },
+            //           ).then((value) async {
+            //             print("line169");
+            //             print("fdsffdsffsffdsffdsfa#${value}");
+            //             if ("$value" == "true") {
+            //               print("fdsffdsffsffdsffdsfa#2345674567${value}");
+            //               widget.blog.alreadySaved = true;
+            //               print("line 180${widget.blog.alreadySaved}");
+            //               setState(() {});
+            //               Future.delayed(Duration(seconds: 3)).then((value) {
+            //                 print("line 183${widget.blog.alreadySaved}");
+            //               });
+            //             }
+            //           });
+            //         },
+            //         child: CustomImageView(
+            //           imagePath: widget.colors == true
+            //               ? "assets/image/save_false_blue.svg"
+            //               : 'assets/image/save_false_white.svg',
+            //           width: 21.aw,
+            //           height: 21.aw,
+            //         ),
+            //       )
+            //     : InkWell(
+            //         onTap: () async {
+            //           print("line189");
+            //
+            //             setState(() {
+            //               ApiRepository.blogSave(userId: "${widget.blog.id}");
+            //               widget.blog.alreadySaved =false;
+            //             });
+            //           // ApiRepository.blogSave(userId: "${widget.vlog.id}").then((value) {
+            //           //   widget.vlog.alreadySaved == false;
+            //           //   setState(() {});
+            //           // });
+            //         },
+            //         child: CustomImageView(
+            //           imagePath: widget.colors == true
+            //               ? "assets/image/save_true_blue.svg"
+            //               : 'assets/image/save_true_white.svg',
+            //           width: 21.aw,
+            //           height: 21.aw,
+            //         ),
+            //       ),
+            // const SizedBox(
+            //   height: 4,
+            // ),
+            // Text(
+            //   "${widget.blog.numberOfSaves}",
+            //   style:const TextStyle(
+            //       color: Colors.white,
+            //       fontWeight: FontWeight.w500,
+            //       fontSize: 12),
+            // )
           ],
         ),
-
-        //save end
       ],
-    );
-  }
-
-
-  DashBoardController trendingVlogController = Get.find();
-
-  _bottomSheetWidget2(
-      {required BuildContext context001, required String vlogId}) {
-    dashBoardController.getFriends();
-    showBottomSheet(
-        context: context001,
-        builder: (BuildContext context) {
-          return FractionallySizedBox(
-              heightFactor: .65,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.0.ah, right: 20.ah),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 45.ah,
-                        ),
-                        SizedBox(
-                          height: 74.ah,
-                          child: Obx(
-                            () => dashBoardController.isLoadingONShare.value
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 1,
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: dashBoardController
-                                        .getAllFriendsModel.friends?.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return InkWell(
-                                        onTap: () async {
-                                          CreateChatModel createChatModel =
-                                              CreateChatModel();
-                                          createChatModel =
-                                              await ApiRepository.createChat(
-                                                  userId:
-                                                      "${dashBoardController.getAllFriendsModel.friends?[index].id}");
-                                          ApiRepository.sendMessage(
-                                              typeBlog2VLog3Photo1: "2",
-                                              message:
-                                                  ' Sent a Post by ${widget.blog.user?.handle}',
-                                              chatId:
-                                                  '${createChatModel.payload?.id}',
-                                              isLinkId: "${widget.blog.id}",
-                                              isUrl: " ");
-                                          Get.back();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 10.0),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: CustomImageView(
-                                              height: 65.adaptSize,
-                                              width: 65.adaptSize,
-                                              imagePath: dashBoardController
-                                                  .getAllFriendsModel
-                                                  .friends?[index]
-                                                  .avatarUrl,
-                                              fit: BoxFit.cover,
-                                              radius: BorderRadius.circular(
-                                                  45.adaptSize),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                          ),
-                        ),
-                        Container(
-                          height: 20.ah,
-                        ),
-                        Obx(
-                          () => dashBoardController.isLoadingONShare.value
-                              ? const Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 1,
-                                  ),
-                                )
-                              : Expanded(
-                                  child: Obx(
-                                    () => allFriendController.isLoading.value
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : ListView.builder(
-                                            itemCount: chatScreenController
-                                                .chatsModel.chats!.length,
-                                            itemBuilder: (context, index) =>
-                                                customCard(index),
-                                          ),
-                                  ),
-                                ),
-                        ),
-                        SizedBox(
-                          height: 10.v,
-                        ),
-                      ]),
-                ),
-              ));
-        }).closed.then((value) {
-      controller.bottomBarShow.value = true;
-    });
-  }
-
-  DashBoardController dashBoardController = Get.find();
-  AllFriendController allFriendController = Get.put(AllFriendController());
-
-  ChatScreenController chatScreenController = Get.put(ChatScreenController());
-
-  Widget customCard(int index) {
-    int indexxx =
-        "${chatScreenController.chatsModel.chats![index].participants![0].id}" ==
-                PrefUtils().getUserId()
-            ? 1
-            : 0;
-
-    return InkWell(
-      onTap: () {
-        ApiRepository.sendMessage(
-            message: ' Sent a Blog by ${widget.blog.user?.handle}',
-            chatId: '${chatScreenController.chatsModel.chats![index].id}',
-            isLinkId: "${widget.blog.id}",
-            isUrl: " ",
-            typeBlog2VLog3Photo1: "2");
-        AppDialog.taostMessage(
-            "Blog Shared Successfully${"${widget.blog.id}"}");
-        Get.back();
-      },
-      child: Column(
-        children: [
-          ListTile(
-            leading: CustomImageView(
-              radius: BorderRadius.circular(30),
-              height: 55,
-              width: 55,
-              imagePath: chatScreenController
-                  .chatsModel.chats![index].participants![indexxx].avatarUrl,
-              fit: BoxFit.cover,
-            ),
-            title: Text(
-              "${chatScreenController.chatsModel.chats![index].participants![indexxx].fullName}"
-                  .capitalizeFirst!,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Row(
-              children: [
-                if (chatScreenController.chatsModel.chats![index].unreadCount ==
-                    0)
-                  if (chatScreenController
-                          .chatsModel.chats![index].lastMessage?.content !=
-                      null)
-                    const Icon(Icons.done_all),
-                const SizedBox(
-                  width: 3,
-                ),
-                Text(
-                  chatScreenController
-                          .chatsModel.chats![index].lastMessage?.content ??
-                      "",
-                  style: const TextStyle(
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-            trailing: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                //  Text(DateFormat('hh:mm a').format(controller.chatsModel.chats![index].lastMessage?.createdAt!.toLocal() ?? DateTime.now()),),
-                const SizedBox(
-                  height: 8,
-                ),
-                if (chatScreenController.chatsModel.chats![index].unreadCount !=
-                    0)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: MyColor.primaryColor),
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 4.0, bottom: 4, left: 9, right: 9),
-                          child: Text(
-                            "${chatScreenController.chatsModel.chats![index].unreadCount}",
-                            style: TextStyle(
-                                fontSize: 12.adaptSize, color: Colors.white),
-                          ),
-                        )),
-                      ),
-                    ],
-                  )
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(right: 20, left: 80),
-            child: Divider(
-              thickness: 1,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

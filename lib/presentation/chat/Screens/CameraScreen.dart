@@ -52,7 +52,7 @@ class _CameraScreenState extends State<CameraScreen> {
                       child: CameraPreview(_cameraController));
                 } else {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(strokeWidth: 1,),
                   );
                 }
               }),

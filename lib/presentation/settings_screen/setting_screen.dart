@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
@@ -28,397 +29,418 @@ class _SettingScreenState extends State<SettingScreen> {
 
   bool isChecked = true;
 
-  final List locale = [
-    {'name': 'ENGLISH', 'locale': const Locale('en', 'US')},
-    {'name': 'SWEDISH', 'locale': const Locale('swe', 'SE')},
-  ];
-
-  updateLanguage(Locale locale) {
-    Get.back();
-    Get.updateLocale(locale);
-  }
-
-  buildLanguageDialog(BuildContext context) {
+  void _showLanguageDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            shadowColor: Colors.white,
-            //elevation: 5,
-            title: Text(
-              'Chooseyo'.tr,
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-            ),
-            // ignore: sized_box_for_whitespace
-            content: Container(
-              width: double.maxFinite,
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        child: Text(locale[index]['name']),
-                        onTap: () {
-                          updateLanguage(locale[index]['locale']);
-                        },
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider(
-                      color: Colors.blue,
-                    );
-                  },
-                  itemCount: locale.length),
-            ),
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Choose Language'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: Text('English'),
+                onTap: () {
+                  PrefUtils().setUserLanguage(true);
+                  Get.updateLocale(Locale('en', 'US'));
+                  Get.back();
+
+                },
+              ),
+              ListTile(
+                title: Text('Swedish'),
+                onTap: () {
+                  PrefUtils().setUserLanguage(true);
+                  Get.updateLocale(Locale('swe', 'SE'));
+                  Get.back();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
+
+  // buildLanguageDialog(BuildContext context) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (builder) {
+  //         return AlertDialog(
+  //           shadowColor: Colors.white,
+  //           title: Text(
+  //             'Chooseyo'.tr,
+  //             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+  //           ),
+  //           // ignore: sized_box_for_whitespace
+  //           content: Container(
+  //             width: double.maxFinite,
+  //             child: ListView.separated(
+  //                 shrinkWrap: true,
+  //                 itemBuilder: (context, index) {
+  //                   return Padding(
+  //                     padding: const EdgeInsets.all(8.0),
+  //                     child: GestureDetector(
+  //                       child: Text(locale[index]['name']),
+  //                       onTap: () {
+  //                         _showLanguageDialog(context);
+  //
+  //                       },
+  //                     ),
+  //                   );
+  //                 },
+  //                 separatorBuilder: (context, index) {
+  //                   return const Divider(
+  //                     color: Colors.blue,
+  //                   );
+  //                 },
+  //                 itemCount: locale.length),
+  //           ),
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(context: context, title: "Settings".tr ),
-        body: Obx(
-              () => controller.isLoading.value
-              ? const Center(
-            child: CircularProgressIndicator(),
-          )
-              : Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(height: 10.ah),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Last'.tr,
-                                style: TextStyle(
-                                    color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+    return Scaffold(
+      appBar: appBarPrimary( title: "Settings".tr ),
+      body: Obx(
+            () => controller.isLoading.value
+            ? const Center(
+          child: CircularProgressIndicator(strokeWidth: 1,),
+        )
+            : Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 10.ah),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Last'.tr,
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                            Transform.scale(
+                              scale: 0.4,
+                              child: CupertinoSwitch(
+                                activeColor: Colors.blueGrey,
+                                trackColor: Colors.grey,
+                                onLabelColor: Colors.brown,
+                                offLabelColor: Colors.red,
+                                thumbColor: const Color(0xff001649),
+                                value: controller.mySettingModel!.userSetting.lastSeen,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    controller.mySettingModel!.userSetting.lastSeen =
+                                    !controller.mySettingModel!.userSetting.lastSeen;
+                                    controller.mySettingsUpdate();
+                                  });
+                                },
                               ),
-                              Transform.scale(
-                                scale: 0.4,
-                                child: CupertinoSwitch(
-                                  activeColor: Colors.blueGrey,
-                                  trackColor: Colors.grey,
-                                  onLabelColor: Colors.brown,
-                                  offLabelColor: Colors.red,
-                                  thumbColor: const Color(0xff001649),
-                                  value: controller.mySettingModel!.userSetting.lastSeen,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      controller.mySettingModel!.userSetting.lastSeen =
-                                      !controller.mySettingModel!.userSetting.lastSeen;
-                                      controller.mySettingsUpdate();
-                                    });
-                                  },
-                                ),
-                              ),
-                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
-                            ],
-                          ),
-                          SizedBox(height: 10.ah),
+                            ),
+                            //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                          ],
+                        ),
+                        SizedBox(height: 10.ah),
 
-                          //profile private public
+                        //profile private public
 
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Private Account'.tr,
-                                style: TextStyle(
-                                    color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Private Account'.tr,
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                            Transform.scale(
+                              scale: 0.4,
+                              child: CupertinoSwitch(
+                                activeColor: Colors.blueGrey,
+                                trackColor: Colors.grey,
+                                onLabelColor: Colors.brown,
+                                offLabelColor: Colors.red,
+                                thumbColor: const Color(0xff001649),
+                                value: widget.isAccountPrivate,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    widget.isAccountPrivate = !widget.isAccountPrivate;
+                                    ApiRepository.updateAccountPrivate(isPrivate: widget.isAccountPrivate);
+                                  });
+                                },
                               ),
-                              Transform.scale(
-                                scale: 0.4,
-                                child: CupertinoSwitch(
-                                  activeColor: Colors.blueGrey,
-                                  trackColor: Colors.grey,
-                                  onLabelColor: Colors.brown,
-                                  offLabelColor: Colors.red,
-                                  thumbColor: const Color(0xff001649),
-                                  value: widget.isAccountPrivate,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      widget.isAccountPrivate = !widget.isAccountPrivate;
-                                      ApiRepository.updateAccountPrivate(isPrivate: widget.isAccountPrivate);
-                                    });
-                                  },
-                                ),
+                            ),
+                            //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                          ],
+                        ),
+                        SizedBox(height: 10.ah),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'CommentsonP'.tr,
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                            // Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
+                            Transform.scale(
+                              scale: 0.4,
+                              child: CupertinoSwitch(
+                                activeColor: Colors.blueGrey,
+                                trackColor: Colors.grey,
+                                onLabelColor: Colors.brown,
+                                offLabelColor: Colors.red,
+                                thumbColor: const Color(0xff001649),
+                                value: controller.mySettingModel!.userSetting.commentsAllowed,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    controller.mySettingModel!.userSetting.commentsAllowed = value;
+                                    controller.mySettingsUpdate();
+                                  });
+                                },
                               ),
-                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
-                            ],
-                          ),
-                          SizedBox(height: 10.ah),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'CommentsonP'.tr,
-                                style: TextStyle(
-                                    color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                              ),
-                              // Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
-                              Transform.scale(
-                                scale: 0.4,
-                                child: CupertinoSwitch(
-                                  activeColor: Colors.blueGrey,
-                                  trackColor: Colors.grey,
-                                  onLabelColor: Colors.brown,
-                                  offLabelColor: Colors.red,
-                                  thumbColor: const Color(0xff001649),
-                                  value: controller.mySettingModel!.userSetting.commentsAllowed,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      controller.mySettingModel!.userSetting.commentsAllowed = value;
-                                      controller.mySettingsUpdate();
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.ah),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.ah),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 20.ah),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'ACCOUNT'.tr,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontFamily: 'inter',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.fSize),
+                ),
+                SizedBox(height: 20.ah),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'ACCOUNT'.tr,
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontFamily: 'inter',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.fSize),
+                        ),
+                        SizedBox(height: 20.ah),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => const AllSavedScreen()));
+                          },
+                          child: Text(
+                            'Saved Items'.tr,
+                            style:
+                            TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                           ),
-                          SizedBox(height: 20.ah),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => const AllSavedScreen()));
-                            },
-                            child: Text(
-                              'Saved Items'.tr,
-                              style:
-                              TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                            ),
-                          ),
-                          SizedBox(height: 20.ah),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.to(() => const MyBlockedUserListScreen());
-                                },
-                                child: Text(
-                                  'Blocked List'.tr,
-                                  style: TextStyle(
-                                      color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                                ),
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    ''.tr,
-                                    style: TextStyle(
-                                        color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                                  ),
-                                  SizedBox(width: 10.aw),
-                                  Text(
-                                    'Contacts'.tr,
-                                    style: TextStyle(
-                                        color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.ah),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Languagegg'.tr,
+                        ),
+                        SizedBox(height: 20.ah),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Get.to(() => const MyBlockedUserListScreen());
+                              },
+                              child: Text(
+                                'Blocked List'.tr,
                                 style: TextStyle(
                                     color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  buildLanguageDialog(context);
-                                },
-                                child: Text(
-                                  'Eng'.tr,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  ''.tr,
                                   style: TextStyle(
                                       color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.ah),
-                          InkWell(
-                            onTap: () {
-                              _showDeleteConfirmationDialog(context);
-                            },
-                            child: Text(
-                              'Delete Account'.tr,
-                              style:
-                              TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                            ),
-                          ),
-                          SizedBox(height: 20.ah),
-                          InkWell(
-                            onTap: () {
-                              Get.to(All_Categories());
-                            },
-                            child: Text(
-                              'AllCategory'.tr,
-                              style:
-                              TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                            ),
-                          ),
-                          SizedBox(height: 20.ah),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20.ah),
-                  Container(
-                    height: 142.ah,
-                    width: MediaQuery.of(context).size.width,
-                    //width:351.aw ,
-                    decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'NOTIFICATIONS'.tr,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontFamily: 'inter',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.fSize),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Chat Notification'.tr,
-                                style: TextStyle(
-                                    color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                              ),
-                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
-                              Transform.scale(
-                                scale: 0.4,
-                                child: CupertinoSwitch(
-                                  activeColor: Colors.blueGrey,
-                                  trackColor: Colors.grey,
-                                  onLabelColor: Colors.brown,
-                                  offLabelColor: Colors.red,
-                                  thumbColor: const Color(0xff001649),
-                                  value: controller.mySettingModel!.userSetting.chatNotification,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      controller.mySettingModel!.userSetting.chatNotification = value;
-                                      controller.mySettingsUpdate();
-                                    });
-                                  },
+                                SizedBox(width: 10.aw),
+                                Text(
+                                  'Contacts'.tr,
+                                  style: TextStyle(
+                                      color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Feedd'.tr,
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.ah),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Languagegg'.tr,
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _showLanguageDialog(context);
+                              },
+                              child: Text(
+                                'Eng'.tr,
                                 style: TextStyle(
-                                    color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                    color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                               ),
-                              //Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
-                              // SizedBox(width: 50.aw),
-                              Transform.scale(
-                                scale: 0.4,
-                                child: CupertinoSwitch(
-                                  activeColor: Colors.blueGrey,
-                                  trackColor: Colors.grey,
-                                  onLabelColor: Colors.brown,
-                                  offLabelColor: Colors.red,
-                                  thumbColor: const Color(0xff001649),
-                                  value: controller.mySettingModel!.userSetting.feedNotification,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      controller.mySettingModel!.userSetting.feedNotification = value;
-                                      controller.mySettingsUpdate();
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.ah),
+                        InkWell(
+                          onTap: () {
+                            _showDeleteConfirmationDialog(context);
+                          },
+                          child: Text(
+                            'Delete Account'.tr,
+                            style:
+                            TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 20.ah),
+                        InkWell(
+                          onTap: () {
+                            Get.to(All_Categories());
+                          },
+                          child: Text(
+                            'AllCategory'.tr,
+                            style:
+                            TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                          ),
+                        ),
+                        SizedBox(height: 20.ah),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 60.ah,
-                  ),
-                  Center(
-                    child: CustomPrimaryBtn1(
-                      title: 'Logout'.tr,
-                      isLoading: false,
-                      onTap: () {
-                        PrefUtils().logout();
-                        Get.offAll(() => const LoginScreen());
-                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => Video_Post_Screen()));
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
-                      },
+                ),
+                SizedBox(height: 20.ah),
+                Container(
+                  height: 142.ah,
+                  width: MediaQuery.of(context).size.width,
+                  //width:351.aw ,
+                  decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'NOTIFICATIONS'.tr,
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontFamily: 'inter',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.fSize),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Chat Notification'.tr,
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                            //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                            Transform.scale(
+                              scale: 0.4,
+                              child: CupertinoSwitch(
+                                activeColor: Colors.blueGrey,
+                                trackColor: Colors.grey,
+                                onLabelColor: Colors.brown,
+                                offLabelColor: Colors.red,
+                                thumbColor: const Color(0xff001649),
+                                value: controller.mySettingModel!.userSetting.chatNotification,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    controller.mySettingModel!.userSetting.chatNotification = value;
+                                    controller.mySettingsUpdate();
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Feedd'.tr,
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                            //Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
+                            // SizedBox(width: 50.aw),
+                            Transform.scale(
+                              scale: 0.4,
+                              child: CupertinoSwitch(
+                                activeColor: Colors.blueGrey,
+                                trackColor: Colors.grey,
+                                onLabelColor: Colors.brown,
+                                offLabelColor: Colors.red,
+                                thumbColor: const Color(0xff001649),
+                                value: controller.mySettingModel!.userSetting.feedNotification,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    controller.mySettingModel!.userSetting.feedNotification = value;
+                                    controller.mySettingsUpdate();
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 40,),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 60.ah,
+                ),
+                Center(
+                  child: CustomPrimaryBtn1(
+                    title: 'Logout'.tr,
+                    isLoading: false,
+                    onTap: () {
+                      PrefUtils().logout();
+                      Get.offAll(() => const LoginScreen());
+                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => Video_Post_Screen()));
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                    },
+                  ),
+                ),
+                SizedBox(height: 40,),
+              ],
             ),
           ),
         ),

@@ -8,6 +8,7 @@ import 'package:frenly_app/presentation/Blog/blog_full_view_screen/blogs_full_vi
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../Widgets/custom_blog_card.dart';
 import '../../data/repositories/api_repository.dart';
 import '../photos/photo_view_screen.dart';
 import '../user_follwers/user_followers_screen.dart';
@@ -68,203 +69,199 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: Obx(
         () => controller.isLoading.value
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(strokeWidth: 1,),
               )
-            : MediaQuery.removePadding(
-                removeTop: true,
-                removeBottom: true,
-                context: context,
-                child: ListView(
-                  children: [
-                    imageView(),
-                    SizedBox(height: 10.ah),
-                    bioTexts(),
-                    SizedBox(height: 20.ah),
-                    ((controller.getUserByIdModel.user?.isPrivate == true &&
-                                controller.getUserByIdModel.user!.followState ==
-                                    0) ||
-                            (controller.getUserByIdModel.user?.isPrivate ==
-                                    true &&
-                                controller.getUserByIdModel.user!.followState ==
-                                    1))
-                        ? Container(
-                            child: Column(
-                              children: [
-                                Divider(),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 20.0.aw, right: 16.aw, top: 40.ah),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          width: 45.adaptSize,
-                                          height: 45.adaptSize,
-                                          child:
-                                              Icon(Icons.lock_outline_rounded),
-                                          decoration: ShapeDecoration(
-                                            color: Colors.white,
-                                            shape: OvalBorder(
-                                                side: BorderSide(width: 2)),
+            : ListView(
+             padding: EdgeInsets.zero,
+              children: [
+                imageView(),
+                SizedBox(height: 10.ah),
+                bioTexts(),
+                SizedBox(height: 20.ah),
+                ((controller.getUserByIdModel.user?.isPrivate == true &&
+                            controller.getUserByIdModel.user!.followState ==
+                                0) ||
+                        (controller.getUserByIdModel.user?.isPrivate ==
+                                true &&
+                            controller.getUserByIdModel.user!.followState ==
+                                1))
+                    ? Container(
+                        child: Column(
+                          children: [
+                            Divider(),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20.0.aw, right: 16.aw, top: 40.ah),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      width: 45.adaptSize,
+                                      height: 45.adaptSize,
+                                      child:
+                                          Icon(Icons.lock_outline_rounded),
+                                      decoration: ShapeDecoration(
+                                        color: Colors.white,
+                                        shape: OvalBorder(
+                                            side: BorderSide(width: 2)),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5.0.aw),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 6.ah,
+                                        ),
+                                        Text(
+                                          'This Account is Private',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14.09,
+                                            fontFamily: 'Roboto',
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(width: 5.0.aw),
-                                      Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 6.ah,
-                                            ),
-                                            Text(
-                                              'This Account is Private',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14.09,
-                                                fontFamily: 'Roboto',
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5.ah,
-                                            ),
-                                            Opacity(
-                                              opacity: 0.50,
-                                              child: Text(
-                                                'Follow this account to see their photos \nand videos.',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14.09,
-                                                  fontFamily: 'Roboto',
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                        SizedBox(
+                                          height: 5.ah,
                                         ),
-                                      ),
-                                    ],
+                                        Opacity(
+                                          opacity: 0.50,
+                                          child: Text(
+                                            'Follow this account to see their photos \nand videos.',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14.09,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Padding(
+                        padding:
+                            EdgeInsets.only(left: 16.0.aw, right: 16.aw),
+                        child: Container(
+                          height: 52.ah,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.circular(10.adaptSize)),
+                          child: Padding(
+                            padding: EdgeInsets.all(6.0.adaptSize),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    activeIndex = 0;
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 112,
+                                    decoration: BoxDecoration(
+                                        color: activeIndex == 0
+                                            ? const Color(0xff001649)
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                            9.adaptSize)),
+                                    child: Center(
+                                        child: Text(
+                                      'Vlogs'.tr,
+                                      style: TextStyle(
+                                          color: activeIndex == 0
+                                              ? Colors.white
+                                              : Colors.black54),
+                                    )),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    activeIndex = 1;
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 112,
+                                    decoration: BoxDecoration(
+                                        color: activeIndex == 1
+                                            ? const Color(0xff001649)
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                            9.adaptSize)),
+                                    child: Center(
+                                        child: Text(
+                                      'Blogs'.tr,
+                                      style: TextStyle(
+                                          color: activeIndex == 1
+                                              ? Colors.white
+                                              : Colors.black54),
+                                    )),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    activeIndex = 2;
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 112,
+                                    decoration: BoxDecoration(
+                                        color: activeIndex == 2
+                                            ? const Color(0xff001649)
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                            9.adaptSize)),
+                                    child: Center(
+                                        child: Text(
+                                      'Photos'.tr,
+                                      style: TextStyle(
+                                          color: activeIndex == 2
+                                              ? Colors.white
+                                              : Colors.black54),
+                                    )),
                                   ),
                                 ),
                               ],
                             ),
-                          )
-                        : Padding(
-                            padding:
-                                EdgeInsets.only(left: 16.0.aw, right: 16.aw),
-                            child: Container(
-                              height: 52.ah,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.circular(10.adaptSize)),
-                              child: Padding(
-                                padding: EdgeInsets.all(6.0.adaptSize),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        activeIndex = 0;
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        height: 40,
-                                        width: 112,
-                                        decoration: BoxDecoration(
-                                            color: activeIndex == 0
-                                                ? const Color(0xff001649)
-                                                : Colors.transparent,
-                                            borderRadius: BorderRadius.circular(
-                                                9.adaptSize)),
-                                        child: Center(
-                                            child: Text(
-                                          'Vlogs'.tr,
-                                          style: TextStyle(
-                                              color: activeIndex == 0
-                                                  ? Colors.white
-                                                  : Colors.black54),
-                                        )),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        activeIndex = 1;
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        height: 40,
-                                        width: 112,
-                                        decoration: BoxDecoration(
-                                            color: activeIndex == 1
-                                                ? const Color(0xff001649)
-                                                : Colors.transparent,
-                                            borderRadius: BorderRadius.circular(
-                                                9.adaptSize)),
-                                        child: Center(
-                                            child: Text(
-                                          'Blogs'.tr,
-                                          style: TextStyle(
-                                              color: activeIndex == 1
-                                                  ? Colors.white
-                                                  : Colors.black54),
-                                        )),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        activeIndex = 2;
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        height: 40,
-                                        width: 112,
-                                        decoration: BoxDecoration(
-                                            color: activeIndex == 2
-                                                ? const Color(0xff001649)
-                                                : Colors.transparent,
-                                            borderRadius: BorderRadius.circular(
-                                                9.adaptSize)),
-                                        child: Center(
-                                            child: Text(
-                                          'Photos'.tr,
-                                          style: TextStyle(
-                                              color: activeIndex == 2
-                                                  ? Colors.white
-                                                  : Colors.black54),
-                                        )),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                           ),
-                    SizedBox(height: 20.ah),
-                    Column(
-                      children: [
-                        activeIndex == 0 ? _vlogs() : const SizedBox(),
-                        activeIndex == 1 ? _blogs() : const SizedBox(),
-                        activeIndex == 2 ? _photos() : const SizedBox(),
-                      ],
-                    )
+                        ),
+                      ),
+                SizedBox(height: 20.ah),
+                Column(
+                  children: [
+                    activeIndex == 0 ? _vlogs() : const SizedBox(),
+                    activeIndex == 1 ? _blogs() : const SizedBox(),
+                    activeIndex == 2 ? _photos() : const SizedBox(),
                   ],
-                ),
-              ),
+                )
+              ],
+            ),
       ),
     );
   }
 
   Widget backAndSettingIconRow() {
     return Padding(
-      padding: EdgeInsets.only(left: 20.0.aw, right: 20.aw, top: 60.ah),
+      padding: EdgeInsets.only(left: 20.0.aw, right: 20.aw, top: 10.ah),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -291,12 +288,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Widget imageView() {
     return SizedBox(
-      height: 290 + 50.ah,
+      height: 290 + 100.ah,
       width: double.infinity,
       child: Stack(
         children: [
           Container(
-            height: 217 + 50.ah,
+            height: 217 + 100.ah,
             width: double.infinity,
             child: CustomImageView(
               radius: BorderRadius.only(
@@ -580,146 +577,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           String jsonString =
               "${controller.getUserByIdModel.user!.blogs![index].tags}";
           List<String> tagsList = json.decode(jsonString).cast<String>();
-          return InkWell(
-            onTap: () {
-              Get.to(() => BlogsFullViewScreen(
-                  id: "${controller.getUserByIdModel.user!.blogs![index].id}"));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 10, right: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      CustomImageView(
-                        height: 144.ah,
-                        width: 144.ah,
-                        fit: BoxFit.cover,
-                        radius: BorderRadius.circular(10),
-                        imagePath: controller
-                            .getUserByIdModel.user?.blogs![index].imageUrl,
-                      ),
-                      SizedBox(
-                        width: 10.aw,
-                      ),
-                      SizedBox(
-                        height: 144.ah,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 10.ah,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                for (int i = 0;
-                                    i <
-                                        (tagsList.length < 2
-                                            ? tagsList.length
-                                            : 2);
-                                    i++)
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 5.0.aw),
-                                    child: Container(
-                                      height: 20.ah,
-                                      width: 60.aw,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.black, width: 0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.transparent),
-                                      child: Center(
-                                        child: Text(
-                                          tagsList[i].tr,
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 10.fSize),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            const Spacer(),
-                            Padding(
-                              padding: EdgeInsets.only(left: 7.0.aw),
-                              child: SizedBox(
-                                width: 220.aw,
-                                child: Text(
-                                  '${controller.getUserByIdModel.user?.blogs?[index].title}'
-                                      .tr,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18.fSize),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 5.ah),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(width: 5.aw),
-                                CustomImageView(
-                                  height: 35.ah,
-                                  width: 35.ah,
-                                  fit: BoxFit.cover,
-                                  imagePath: controller
-                                      .getUserByIdModel.user?.avatarUrl,
-                                  radius: BorderRadius.circular(32),
-                                ),
-                                SizedBox(width: 10.aw),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${controller.getUserByIdModel.user?.fullName}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14.fSize,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${controller.getUserByIdModel.user?.handle}',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12.fSize,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.aw),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
+          return CustomBlogCard(blog: controller.getUserByIdModel.user!.blogs![index], tagsList: tagsList,);
+
         },
       ),
     );
@@ -745,26 +604,28 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         crossAxisSpacing: 4,
         children: List.generate(
           controller.getUserByIdModel.user!.posts!.length,
-          (index) => StaggeredGridTile.count(
+              (index) => StaggeredGridTile.count(
             crossAxisCellCount: cont[index % 9],
             mainAxisCellCount: cont[index % 9],
             child: Center(
                 child: InkWell(
-              onTap: () {
-                Get.to(()=>PostFullViewScreen( loadPostByid: "${controller.getUserByIdModel.user?.posts![index]}", ));
-              },
-              child: CustomImageView(
-                imagePath:
+                  onTap: () {
+                    Get.to(()=>PostFullViewScreen( loadPostByid: "${controller.getUserByIdModel.user?.posts![index]}", ));
+                  },
+                  child: CustomImageView(
+                    imagePath:
                     controller.getUserByIdModel.user?.posts![index].imageUrl,
-                fit: BoxFit.cover,
-                radius: BorderRadius.circular(10),
-              ),
-            )),
+                    fit: BoxFit.cover,
+                    radius: BorderRadius.circular(10),
+                  ),
+                )),
           ),
         ),
       ),
     );
   }
+
+
 
   _bottomSheetWidget2(
       {required BuildContext context001, required String vlogId}) {

@@ -24,26 +24,24 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(context: context,title: "Popular".tr ,),
-        body: Obx(
-            ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(),) : Padding(
-            padding: const EdgeInsets.only(left: 10,right: 10,),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 10,),
-                Text('Allcit'.tr,
-                  style: const TextStyle(
-                      color: Colors.black,fontWeight: FontWeight.w600,fontSize:24
-                  ),
+    return Scaffold(
+      appBar: appBarPrimary( title: "Popular".tr ,),
+      body: Obx(
+          ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Padding(
+          padding: const EdgeInsets.only(left: 10,right: 10,),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 10,),
+              Text('Allcit'.tr,
+                style: const TextStyle(
+                    color: Colors.black,fontWeight: FontWeight.w600,fontSize:24
                 ),
-                allCity(),
-              ],
-            ),
+              ),
+              allCity(),
+            ],
           ),
         ),
       ),

@@ -45,7 +45,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
           appBar: AppBar(),
-          body:  Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator()) : Padding(
+          body:  Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,)) : Padding(
             padding: const EdgeInsets.only(left: 10.0,right: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -159,7 +159,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
               ],
             ),
           )),
-          bottomNavigationBar: Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator()) : BottomAppBar(
+          bottomNavigationBar: Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,)) : BottomAppBar(
             color: HexColor('#001649'),
 
             height: 108.ah,

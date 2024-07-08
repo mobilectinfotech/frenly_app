@@ -102,7 +102,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       body: Obx(
         () => controller.isLoading.value
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(strokeWidth: 1,),
               )
             : SafeArea(
                 child: Scaffold(

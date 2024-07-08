@@ -726,6 +726,64 @@ class ApiRepository {
   }
 
 
+  static Future<bool> shareAllBlogPostVlog({required String shareId,required PostType postType}) async {
+    final response = await ApiClient().postRequest(
+      endPoint: "${postType.name}/share/${shareId}",
+      body: {},
+    );
+    if (response != null) {
+      AppDialog.taostMessage("${response["message"]}");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  static Future<bool> sendMessageWithShare({
+        required String message,
+        required String chatId,
+        required String isLinkId,
+        required String isUrl,
+        required PostType postType ,}) async {
+    var isLinkIdd = 0 ;
+      if( postType.name == "post") {isLinkIdd = 1;}
+      if(postType.name ==  "vlog") {isLinkIdd = 3;}
+      if(postType.name ==  "blog") {isLinkIdd = 2;}
+    final response = await ApiClient().postRequest(endPoint: "message/${chatId}", body: {
+      "content": message,
+      "isLink": isLinkIdd,
+      "isLinkId": isLinkId,
+      "isUrl": isUrl
+    });
+    if (response != null) {
+      shareAllBlogPostVlog(shareId: isLinkId, postType: postType);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  static Future<bool> saveAllById(
+      {required String id, required String categoryId ,required PostType postType}) async {
+    print("postType ${postType}");
+    final response = await ApiClient().postRequest(
+      endPoint: "/${postType.name}/save/$id",
+      body: {"categoryId": int.parse(categoryId) },
+      // endPoint: "/vlog/save/$vlogId",
+      // body: {"categoryId": categoryId},
+    );
+    if (response != null) {
+      AppDialog.taostMessage("${response["message"]}");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 
@@ -1092,46 +1150,6 @@ class ApiRepository {
 
 
 
-
-  static Future<bool> sendMessage(
-      {
-        required String message,
-      required String chatId,
-      required String isLinkId,
-      required String isUrl,
-      required String typeBlog2VLog3Photo1}) async {
-    final response = await ApiClient().postRequest(endPoint: "message/${chatId}", body: {
-      "content": message,
-      "isLink": typeBlog2VLog3Photo1,
-      "isLinkId": isLinkId,
-      "isUrl": isUrl
-    });
-    if (response != null) {
-      AppDialog.taostMessage("Shared Successfully");
-      if(typeBlog2VLog3Photo1 =="1"){
-        print("sharePost");
-        sharePost(shareId: isLinkId);
-      }
-      if(typeBlog2VLog3Photo1 =="2"){
-        print("shareBlog");
-        shareBlog(shareId: isLinkId);
-      }
-      if(typeBlog2VLog3Photo1 =="3"){
-        print("shareBlog");
-        shareVlog(shareId: isLinkId);
-      }
-
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-
-
-
-
-
   static Future<BlockedUserListModel> myBlockList() async {
     final response = await ApiClient().getRequest(
       endPoint: "user/blocked?page=1&limit=4000",
@@ -1170,57 +1188,6 @@ class ApiRepository {
   }
 
 
-
-
-  static Future<bool> shareBlog({required String shareId}) async {
-    final response = await ApiClient().postRequest(
-      endPoint: "blog/share/${shareId}",
-      body: {},
-    );
-    if (response != null) {
-      AppDialog.taostMessage("${response["message"]}");
-      return true;
-    } else {
-      return false;
-    }
-  }
-  static Future<bool> sharePost({required String shareId}) async {
-    final response = await ApiClient().postRequest(
-      endPoint: "post/share/${shareId}",
-      body: {},
-    );
-    if (response != null) {
-      AppDialog.taostMessage("${response["message"]}");
-      return true;
-    } else {
-      return false;
-    }
-  }
-  static Future<bool> shareVlog({required String shareId}) async {
-    final response = await ApiClient().postRequest(
-      endPoint: "vlog/share/${shareId}",
-      body: {},
-    );
-    if (response != null) {
-      AppDialog.taostMessage("${response["message"]}");
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
   static Future<CategoryModel> getCategories() async {
     final response = await ApiClient().getRequest(
       endPoint: "user/getCategories",
@@ -1234,7 +1201,7 @@ class ApiRepository {
   }
 
   static Future<bool> saveVlogBYId(
-      {required int vlogId, required int categoryId}) async {
+      {required String vlogId, required String categoryId}) async {
     final response = await ApiClient().postRequest(
       endPoint: "/vlog/save/$vlogId",
       body: {"categoryId": categoryId},
@@ -1248,7 +1215,7 @@ class ApiRepository {
   }
 
   static Future<bool> saveBlogBYid(
-      {required int vlogId, required int categoryId}) async {
+      {required String vlogId, required String categoryId}) async {
     final response = await ApiClient().postRequest(
       endPoint: "/blog/save/$vlogId",
       body: {"categoryId": categoryId},
@@ -1262,7 +1229,7 @@ class ApiRepository {
   }
 
   static Future<bool> savePostBYid(
-      {required int vlogId, required int categoryId}) async {
+      {required String vlogId, required String categoryId}) async {
     final response = await ApiClient().postRequest(
       endPoint: "/post/save/$vlogId",
       body: {"categoryId": categoryId},

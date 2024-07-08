@@ -7,7 +7,6 @@ import '../../data/models/vlog_model.dart';
 
 TrendingVlogModel trendingVlogModelFromJson(String str) => TrendingVlogModel.fromJson(json.decode(str));
 
-String trendingVlogModelToJson(TrendingVlogModel data) => json.encode(data.toJson());
 
 class TrendingVlogModel {
     bool? success;
@@ -29,12 +28,7 @@ class TrendingVlogModel {
         vlogs: json["vlogs"] == null ? [] : List<Vlog>.from(json["vlogs"]!.map((x) => Vlog.fromJson(x))),
     );
 
-    Map<String, dynamic> toJson() => {
-        "success": success,
-        "status": status,
-        "message": message,
-        "vlogs": vlogs == null ? [] : List<dynamic>.from(vlogs!.map((x) => x.toJson())),
-    };
+
 }
 
 

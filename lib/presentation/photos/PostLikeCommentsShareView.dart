@@ -96,7 +96,7 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
             children: [
               InkWell(
                 onTap: () {
-                  CustomBottomSheets.shareBottomSheet(context: context, id: '${widget.post?.id}', postType: PostType.post);
+                //  CustomBottomSheets.shareBottomSheet(context: context, id: '${widget.post?.id}', postType: PostType.post,userName:'${widget.post?.user?.handle}' );
                 },
                 child: Image.asset(
                   'assets/image/Vector (1).png',
@@ -113,27 +113,15 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
               widget.post?.alreadySaved == false
                   ? InkWell(
                       onTap: () async {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (c) {
-                            return CategoryWidget(
-                              vlogId: widget.post?.id ?? 0,
-                              vlog3_Post1_Blog2: '1',
-                              contexttt: context,
-                            );
-                          },
-                        ).then((value) {
-                          print('sdfghjkhgfdfghj,$value');
-                          if (value == true) {
-                            widget.post?.alreadySaved = true;
-                            setState(() {});
-                          }
-                          setState(() {});
-                        });
-                        // widget.vlog.alreadySaved = true;
-                        // setState(() {});
-                        // bool isLiked = await  ApiRepository.vlogSave(userId:"${widget.vlog.id}" );
-                      },
+                        print("line_119${widget.post?.alreadySaved}");
+                        bool name  =   await  CustomBottomSheets.saveBottomSheet(context: context, id: "${widget.post?.id ?? 0}", postType: PostType.post, );
+                         print(  "$name ==>dfsdfsfsfsf ");
+                        if(name){
+                          widget.post!.numberOfSaves  = widget.post!.numberOfSaves! + 1;
+                          widget.post?.alreadySaved = true;
+                        }
+
+                         setState(() {});},
                       child: CustomImageView(
                         imagePath: "assets/image/save_false_blue.svg",
                         width: 21.aw,
@@ -142,10 +130,11 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
                     )
                   : InkWell(
                       onTap: () async {
+                        print("line_130${widget.post?.alreadySaved}");
                         widget.post?.alreadySaved = false;
+                        widget.post!.numberOfSaves  = widget.post!.numberOfSaves! - 1;
+                       await ApiRepository.saveAllById(postType: PostType.post, id: "${widget.post?.id ?? 0}", categoryId: "0");
                         setState(() {});
-                        bool isLiked = await ApiRepository.postSave(
-                            userId: "${widget.post?.id}");
                       },
                       child: CustomImageView(
                         imagePath: "assets/image/save_true_blue.svg",
@@ -163,210 +152,7 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
 
 
 
-  _bottomSheetWidget2(
-      {required BuildContext context001, required String vlogId}) {
-    dashBoardController.getFriends();
-    showBottomSheet(
-        context: context001,
-        builder: (BuildContext context) {
-          return FractionallySizedBox(
-              heightFactor: .65,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.0.ah, right: 20.ah),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 45.ah,
-                        ),
-                        SizedBox(
-                          height: 74.ah,
-                          child: Obx(
-                            () => dashBoardController.isLoadingONShare.value
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 1,
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: dashBoardController.getAllFriendsModel.friends?.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return InkWell(
-                                        onTap: () async {
-                                          print("qwertyuiuytrewertyuytrewertg");
-                                          CreateChatModel createChatModel = CreateChatModel();
-                                          createChatModel =
-                                              await ApiRepository.createChat(
-                                                  userId:
-                                                      "${dashBoardController.getAllFriendsModel.friends?[index].id}");
-                                          ApiRepository.sendMessage(
-                                              typeBlog2VLog3Photo1: "2",
-                                              message:
-                                                  ' Sent a Post by ${widget.post?.user?.handle}',
-                                              chatId:
-                                                  '${createChatModel.payload?.id}',
-                                              isLinkId: "${widget.post?.id}",
-                                              isUrl: " ");
-                                          Get.back();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 10.0),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: CustomImageView(
-                                              height: 65.adaptSize,
-                                              width: 65.adaptSize,
-                                              imagePath: dashBoardController
-                                                  .getAllFriendsModel
-                                                  .friends?[index]
-                                                  .avatarUrl,
-                                              fit: BoxFit.cover,
-                                              radius: BorderRadius.circular(
-                                                  45.adaptSize),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                          ),
-                        ),
-                        Container(
-                          height: 20.ah,
-                        ),
-                        Obx(
-                          () => dashBoardController.isLoadingONShare.value
-                              ? const Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 1,
-                                  ),
-                                )
-                              : Expanded(
-                                  child: Obx(
-                                    () => allFriendController.isLoading.value
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : ListView.builder(
-                                            itemCount: chatScreenController.chatsModel.chats!.length,
-                                            itemBuilder: (context, index) => customCard(index),
-                                          ),
-                                  ),
-                                ),
-                        ),
-                        SizedBox(
-                          height: 10.v,
-                        ),
-                      ]),
-                ),
-              ));
-        }).closed.then((value) {
-      controller.bottomBarShow.value = true;
-    });
-  }
 
-  DashBoardController dashBoardController = Get.find();
 
-  ChatScreenController chatScreenController = Get.put(ChatScreenController());
 
-  Widget customCard(int index) {
-    int indexxx = "${chatScreenController.chatsModel.chats![index].participants![0].id}" == PrefUtils().getUserId() ? 1 : 0;
-    return InkWell(
-      onTap: () async {
-        final response = await ApiRepository.sendMessage(
-            message: ' Sent a Post by ${widget.post?.user?.handle}',
-            chatId: '${chatScreenController.chatsModel.chats![index].id}',
-            typeBlog2VLog3Photo1: "1",
-            isUrl: " ",
-            isLinkId: "${widget.post?.id}");
-        Get.back();
-      },
-      child: Column(
-        children: [
-          ListTile(
-            leading: CustomImageView(
-              radius: BorderRadius.circular(30),
-              height: 55,
-              width: 55,
-              imagePath: chatScreenController
-                  .chatsModel.chats![index].participants![indexxx].avatarUrl,
-              fit: BoxFit.cover,
-            ),
-            title: Text(
-              "${chatScreenController.chatsModel.chats![index].participants![indexxx].fullName}"
-                  .capitalizeFirst!,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Row(
-              children: [
-                if (chatScreenController.chatsModel.chats![index].unreadCount ==
-                    0)
-                  if (chatScreenController
-                          .chatsModel.chats![index].lastMessage?.content !=
-                      null)
-                    const Icon(Icons.done_all),
-                const SizedBox(
-                  width: 3,
-                ),
-                Text(
-                  chatScreenController
-                          .chatsModel.chats![index].lastMessage?.content ??
-                      "",
-                  style: const TextStyle(
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-            trailing: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                //  Text(DateFormat('hh:mm a').format(controller.chatsModel.chats![index].lastMessage?.createdAt!.toLocal() ?? DateTime.now()),),
-                const SizedBox(
-                  height: 8,
-                ),
-                if (chatScreenController.chatsModel.chats![index].unreadCount !=
-                    0)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: MyColor.primaryColor),
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 4.0, bottom: 4, left: 9, right: 9),
-                          child: Text(
-                            "${chatScreenController.chatsModel.chats![index].unreadCount}",
-                            style: TextStyle(
-                                fontSize: 12.adaptSize, color: Colors.white),
-                          ),
-                        )),
-                      ),
-                    ],
-                  )
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(right: 20, left: 80),
-            child: Divider(
-              thickness: 1,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

@@ -68,7 +68,7 @@ class _AddNewCategoryBottomSheetState extends State<AddNewCategoryBottomSheet> {
             ],
           ),
           SizedBox(
-            height: 5.ah,
+            height: 20.ah,
           ),
           CustomTextFormField(
             validator: (value) {
@@ -80,7 +80,7 @@ class _AddNewCategoryBottomSheetState extends State<AddNewCategoryBottomSheet> {
             controller: controller.textEditingController,
           ),
           SizedBox(
-            height: 10.h,
+            height: 30.h,
           ),
           InkWell(
             onTap: () {
@@ -90,7 +90,7 @@ class _AddNewCategoryBottomSheetState extends State<AddNewCategoryBottomSheet> {
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 10.aw, vertical: 10.ah),
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: MyColor.primaryColor),
+              decoration: BoxDecoration(color: MyColor.primaryColor,borderRadius: BorderRadius.circular(20)),
               child: Text(
                 "Add New Category",
                 style: GoogleFonts.roboto().copyWith(color: Colors.white),
@@ -98,7 +98,7 @@ class _AddNewCategoryBottomSheetState extends State<AddNewCategoryBottomSheet> {
             ),
           ),
           SizedBox(
-            height: 20.ah,
+            height: 60.ah,
           )
         ],
       ),

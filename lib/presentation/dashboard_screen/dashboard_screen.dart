@@ -4,7 +4,7 @@ import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/upload/post_blogs/post_blog_screen.dart';
 import '../chat/Pages/chats/chats_screen.dart';
 import '../home_screen/home_screen.dart';
-import '../search/new.dart';
+import '../search/search_page.dart';
 import '../auth/my_profile_view/my_profile_screen.dart';
 import 'package:circular_menu/circular_menu.dart';
 import 'package:get/get.dart';

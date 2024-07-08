@@ -33,7 +33,7 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
     return  Scaffold(
       appBar: AppBar(title:Text("selectfriend".tr) ,),
       body: Obx(
-        ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator()) :ListView.builder(
+        ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,)) :ListView.builder(
           itemCount: controller.allFriendsModel.friends!.length,
           itemBuilder: (context, index) => customCard(index),
         ),

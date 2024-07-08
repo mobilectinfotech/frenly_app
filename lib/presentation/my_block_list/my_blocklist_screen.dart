@@ -56,7 +56,7 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
     return Obx(
       () => controller.isLoading.value
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(strokeWidth: 1,),
             )
           : RefreshIndicator(
               onRefresh: () async {

@@ -7,12 +7,12 @@ import 'dart:convert';
 import 'package:frenly_app/data/models/post_model.dart';
 import 'package:frenly_app/data/models/vlog_model.dart';
 
+import '../../presentation/all_saved/MySavedBlogs.dart';
 import '../../presentation/all_saved/MySavedPosts.dart';
 import 'DiscoverUsersModel.dart';
 
 HomeModel homeModelFromJson(String str) => HomeModel.fromJson(json.decode(str));
 
-String homeModelToJson(HomeModel data) => json.encode(data.toJson());
 
 class HomeModel {
     bool? success;
@@ -46,85 +46,10 @@ class HomeModel {
         posts: json["posts"] == null ? [] : List<Post>.from(json["posts"]!.map((x) => Post.fromJson(x))),
     );
 
-    Map<String, dynamic> toJson() => {
-        "success": success,
-        "message": message,
-        "status": status,
-        "usersInCities": usersInCities == null ? [] : List<dynamic>.from(usersInCities!.map((x) => x.toJson())),
-        "vlogs": vlogs == null ? [] : List<dynamic>.from(vlogs!.map((x) => x.toJson())),
-        "blogs": blogs == null ? [] : List<dynamic>.from(blogs!.map((x) => x.toJson())),
-        "discoverUsers": discoverUsers == null ? [] : List<dynamic>.from(discoverUsers!.map((x) => x.toJson())),
-        "posts": posts == null ? [] : List<dynamic>.from(posts!.map((x) => x.toJson())),
-    };
+
 }
 
-class Blog {
-    int? id;
-    String? body;
-    String? title;
-    String? tags;
-    dynamic city;
-    String? imageUrl;
-    dynamic country;
-    int? userId;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    int? numberOfLikes;
-    int? numberOfShares;
-    int? numberOfComments;
-    int? numberOfSaves;
 
-    Blog({
-        this.id,
-        this.body,
-        this.title,
-        this.tags,
-        this.city,
-        this.imageUrl,
-        this.country,
-        this.userId,
-        this.createdAt,
-        this.updatedAt,
-        this.numberOfLikes,
-        this.numberOfShares,
-        this.numberOfComments,
-        this.numberOfSaves,
-    });
-
-    factory Blog.fromJson(Map<String, dynamic> json) => Blog(
-        id: json["id"],
-        body: json["body"],
-        title: json["title"],
-        tags: json["tags"],
-        city: json["city"],
-        imageUrl: json["image_url"],
-        country: json["country"],
-        userId: json["userId"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        numberOfLikes: json["numberOfLikes"],
-        numberOfShares: json["numberOfShares"],
-        numberOfComments: json["numberOfComments"],
-        numberOfSaves: json["numberOfSaves"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "body": body,
-        "title": title,
-        "tags": tags,
-        "city": city,
-        "image_url": imageUrl,
-        "country": country,
-        "userId": userId,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "numberOfLikes": numberOfLikes,
-        "numberOfShares": numberOfShares,
-        "numberOfComments": numberOfComments,
-        "numberOfSaves": numberOfSaves,
-    };
-}
 
 
 

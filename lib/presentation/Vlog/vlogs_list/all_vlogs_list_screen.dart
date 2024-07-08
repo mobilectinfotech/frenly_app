@@ -17,23 +17,21 @@ class _AllVlogScreenState extends State<AllVlogScreen> {
 
   @override
   Widget build(BuildContext contexttt) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(context: context, title: 'Trendingvloggs'.tr),
-        body: Obx(() => controller.isLoading.value
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Padding(
-              padding:  EdgeInsets.only(left: 14.0.aw,right: 14.aw),
-              child: ListView.builder(
-                itemCount: controller.trendingVlogModel.vlogs?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return CustomVlogCard(vlog: controller.trendingVlogModel.vlogs![index],);
-                },
-              ),
-            )),
-      ),
+    return Scaffold(
+      appBar: appBarPrimary(title: 'Trendingvloggs'.tr),
+      body: Obx(() => controller.isLoading.value
+          ? const Center(
+              child: CircularProgressIndicator(strokeWidth: 1,),
+            )
+          : Padding(
+            padding:  EdgeInsets.only(left: 14.0.aw,right: 14.aw),
+            child: ListView.builder(
+              itemCount: controller.trendingVlogModel.vlogs?.length ?? 0,
+              itemBuilder: (context, index) {
+                return CustomVlogCard(vlog: controller.trendingVlogModel.vlogs![index],);
+              },
+            ),
+          )),
     );
   }
 }

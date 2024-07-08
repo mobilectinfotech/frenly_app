@@ -31,31 +31,29 @@ class _UserByCityScreenState extends State<UserByCityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(context: context,title: "Discover"),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 15,right: 15,top:10),
-          child: ListView(
-            children: [
-              SizedBox(height: 10.ah),
-              Text('Profile'.tr,
-                style: const TextStyle(
-                    color: Colors.black,fontWeight: FontWeight.w600,fontSize:24
-                ),),
-              SizedBox(height: 20.ah),
-             gridView(),
-            ],
-          ),
+    return Scaffold(
+      appBar: appBarPrimary(title: "Discover".tr),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 15,right: 15,top:10),
+        child: ListView(
+          children: [
+            SizedBox(height: 10.ah),
+            Text('Profile'.tr,
+              style: const TextStyle(
+                  color: Colors.black,fontWeight: FontWeight.w600,fontSize:24
+              ),),
+            SizedBox(height: 20.ah),
+           gridView(),
+          ],
         ),
-
       ),
+
     );
   }
 
  Widget gridView(){
     return Obx(
-        ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(),): GridView.builder(
+        ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),): GridView.builder(
           itemCount: controller.getUserByCityModel.users?.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

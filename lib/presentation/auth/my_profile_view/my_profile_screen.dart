@@ -11,6 +11,7 @@ import 'package:frenly_app/presentation/settings_screen/setting_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../../../Widgets/custom_blog_card.dart';
 import '../../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../../Vlog/vlog_like_commnet_share_common_view.dart';
 import '../../my_following/my_followings.dart';
@@ -49,131 +50,118 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color(0xffE8E8E8),
-        body: Obx(
-          () => controller.isLoading.value
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : MediaQuery.removePadding(
-                  removeTop: true,
-                  removeBottom: true,
-                  context: context,
-                  child: ListView(
-                    children: [
-                      imageView(),
-                      SizedBox(height: 10.ah),
-                      bioTexts(),
-                      SizedBox(height: 20.ah),
-                      Padding(
-                        padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
-                        child: Container(
-                          height: 52.ah,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.circular(10.adaptSize)),
-                          child: Padding(
-                            padding: EdgeInsets.all(6.0.adaptSize),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    activeIndex = 0;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                        color: activeIndex == 0
-                                            ? Color(0xff001649)
-                                            : Colors.transparent,
-                                        borderRadius:
-                                            BorderRadius.circular(9.adaptSize)),
-                                    child: Center(
-                                        child: Text(
-                                      'Vlogs'.tr,
-                                      style: TextStyle(
-                                          color: activeIndex == 0
-                                              ? Colors.white
-                                              : Colors.black54),
-                                    )),
-                                  ),
-                                ),
-
-                                InkWell(
-                                  onTap: () {
-                                    activeIndex = 1;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                        color: activeIndex == 1
-                                            ? Color(0xff001649)
-                                            : Colors.transparent,
-                                        borderRadius:
-                                            BorderRadius.circular(9.adaptSize)),
-                                    child: Center(
-                                        child: Text(
-                                      'Blogs'.tr,
-                                      style: TextStyle(
-                                          color: activeIndex == 1
-                                              ? Colors.white
-                                              : Colors.black54),
-                                    )),
-                                  ),
-                                ),
-
-                                InkWell(
-                                  onTap: () {
-                                    activeIndex = 2;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                        color: activeIndex == 2
-                                            ? Color(0xff001649)
-                                            : Colors.transparent,
-                                        borderRadius:
-                                            BorderRadius.circular(9.adaptSize)),
-                                    child: Center(
-                                        child: Text(
-                                      'Photos'.tr,
-                                      style: TextStyle(
-                                          color: activeIndex == 2
-                                              ? Colors.white
-                                              : Colors.black54),
-                                    )),
-                                  ),
-                                ),
-
-                              ],
+    return Obx(
+      () => controller.isLoading.value
+          ? const Center(
+              child: CircularProgressIndicator(strokeWidth: 1,),
+            )
+          : ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                imageView(),
+                SizedBox(height: 10.ah),
+                bioTexts(),
+                SizedBox(height: 20.ah),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
+                  child: Container(
+                    height: 52.ah,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.adaptSize)),
+                    child: Padding(
+                      padding: EdgeInsets.all(6.0.adaptSize),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              activeIndex = 0;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 112,
+                              decoration: BoxDecoration(
+                                  color: activeIndex == 0
+                                      ? Color(0xff001649)
+                                      : Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.circular(9.adaptSize)),
+                              child: Center(
+                                  child: Text(
+                                'Vlogs'.tr,
+                                style: TextStyle(
+                                    color: activeIndex == 0
+                                        ? Colors.white
+                                        : Colors.black54),
+                              )),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 20.ah),
-                      Column(
-                        children: [
-                          activeIndex == 0 ? _vlogs() : SizedBox(),
-                          activeIndex == 1 ? _blogs() : SizedBox(),
-                          activeIndex == 2 ? _photos() : SizedBox(),
+                          InkWell(
+                            onTap: () {
+                              activeIndex = 1;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 112,
+                              decoration: BoxDecoration(
+                                  color: activeIndex == 1
+                                      ? Color(0xff001649)
+                                      : Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.circular(9.adaptSize)),
+                              child: Center(
+                                  child: Text(
+                                'Blogs'.tr,
+                                style: TextStyle(
+                                    color: activeIndex == 1
+                                        ? Colors.white
+                                        : Colors.black54),
+                              )),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              activeIndex = 2;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 112,
+                              decoration: BoxDecoration(
+                                  color: activeIndex == 2
+                                      ? Color(0xff001649)
+                                      : Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.circular(9.adaptSize)),
+                              child: Center(
+                                  child: Text(
+                                'Photos'.tr,
+                                style: TextStyle(
+                                    color: activeIndex == 2
+                                        ? Colors.white
+                                        : Colors.black54),
+                              )),
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(height: 80.ah),
-                    ],
+                    ),
                   ),
                 ),
-        ),
-      ),
+                SizedBox(height: 20.ah),
+                Column(
+                  children: [
+                    activeIndex == 0 ? _vlogs() : SizedBox(),
+                    activeIndex == 1 ? _blogs() : SizedBox(),
+                    activeIndex == 2 ? _photos() : SizedBox(),
+                  ],
+                ),
+                SizedBox(height: 80.ah),
+              ],
+            ),
     );
   }
 
@@ -206,12 +194,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   Widget imageView() {
     return Container(
-      height: 290 + 50.ah,
+      height: 390 ,
       width: double.infinity,
       child: Stack(
         children: [
           Container(
-            height: 217 + 50.ah,
+            height: 217 + 100.ah,
             width: double.infinity,
             child: CustomImageView(
               radius: BorderRadius.only(
@@ -240,7 +228,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ),
             ),
           ),
-          Positioned(top: 0, right: 10, child: backAndSettingIconRow()),
+          Positioned(top: 30, right: 10, child: backAndSettingIconRow()),
         ],
       ),
     );
@@ -578,140 +566,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           String jsonString =
               "${controller.getUserByIdModel.user!.blogs![index].tags}";
           List<String> tagsList = json.decode(jsonString).cast<String>();
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10, right: 5),
-            child: InkWell(
-              onTap: () {
-                print(
-                    'blogsId==>${controller.getUserByIdModel.user?.blogs?[index].id}');
-                Get.to(() => BlogsFullViewScreen(
-                      id: controller.getUserByIdModel.user!.blogs![index].id
-                          .toString(),
-                      isOwn: true,
-                    ));
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  CustomImageView(
-                    height: 144.ah,
-                    width: 144.ah,
-                    fit: BoxFit.cover,
-                    radius: BorderRadius.circular(10),
-                    imagePath: controller
-                        .getUserByIdModel.user?.blogs![index].imageUrl,
-                  ),
-                  SizedBox(
-                    width: 10.aw,
-                  ),
-                  SizedBox(
-                    height: 144.ah,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 10.ah,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            for (int i = 0;
-                                i < (tagsList.length < 2 ? tagsList.length : 2);
-                                i++)
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0.aw),
-                                child: Container(
-                                  height: 20.ah,
-                                  width: 60.aw,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.black, width: 0.3),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.transparent),
-                                  child: Center(
-                                    child: Text(
-                                      tagsList[i].tr,
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10.fSize),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.only(left: 7.0.aw),
-                          child: SizedBox(
-                            width: 220.aw,
-                            child: Text(
-                              '${controller.getUserByIdModel.user?.blogs?[index].title}'
-                                  .tr,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18.fSize),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 5.ah),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(width: 5.aw),
-                            CustomImageView(
-                              height: 35.ah,
-                              width: 35.ah,
-                              fit: BoxFit.cover,
-                              imagePath:
-                                  controller.getUserByIdModel.user?.avatarUrl,
-                              radius: BorderRadius.circular(32),
-                            ),
-                            SizedBox(width: 10.aw),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${controller.getUserByIdModel.user?.fullName}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.fSize,
-                                  ),
-                                ),
-                                Text(
-                                  '${controller.getUserByIdModel.user?.handle}',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.fSize,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.aw),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          return CustomBlogCard(
+            blog: controller.getUserByIdModel.user!.blogs![index],
+            tagsList: tagsList,
           );
         },
       ),
@@ -745,9 +602,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               child: Center(
                   child: InkWell(
                 onTap: () {
-                  Get.to(()=>PostFullViewScreen(loadPostByid:  "${controller.getUserByIdModel.user?.posts![index].id}",own: true,));
-                  // Get.to(()=> PhotoViewAllNewScreen());
-                   // Get.to(()=> PhotoViewAllNewScreen(: controller.getUserByIdModel.user?.posts![index],own: true,));
+                  Get.to(() => PostFullViewScreen(
+                        loadPostByid:
+                            "${controller.getUserByIdModel.user?.posts![index].id}",
+                        own: true,
+                      ));
                 },
                 child: CustomImageView(
                   imagePath:

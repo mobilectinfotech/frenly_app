@@ -9,7 +9,6 @@ import '../../data/models/vlog_model.dart';
 
 MySavedVlogs mySavedVlogsFromJson(String str) => MySavedVlogs.fromJson(json.decode(str));
 
-String mySavedVlogsToJson(MySavedVlogs data) => json.encode(data.toJson());
 
 class MySavedVlogs {
     int? status;
@@ -31,12 +30,7 @@ class MySavedVlogs {
         mySavedVlogs: json["mySavedVlogs"] == null ? [] : List<MySavedVlog>.from(json["mySavedVlogs"]!.map((x) => MySavedVlog.fromJson(x))),
     );
 
-    Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-        "success": success,
-        "mySavedVlogs": mySavedVlogs == null ? [] : List<dynamic>.from(mySavedVlogs!.map((x) => x.toJson())),
-    };
+
 }
 
 class MySavedVlog {
@@ -68,15 +62,7 @@ class MySavedVlog {
         vlog: json["vlog"] == null ? null : Vlog.fromJson(json["vlog"]),
     );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "vlogId": vlogId,
-        "saveByUserId": saveByUserId,
-        "categoryId": categoryId,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "vlog": vlog?.toJson(),
-    };
+
 }
 
 

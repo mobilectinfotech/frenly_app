@@ -63,24 +63,5 @@ class Vlog {
     commentAllowed: json["commentAllowed"],
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "description": description,
-    "video_url": videoUrl,
-    "thumbnail_url": thumbnailUrl,
-    "userId": userId,
-    "numberOfLikes": numberOfLikes,
-    "numberOfShares": numberOfShares,
-    "numberOfComments": numberOfComments,
-    "numberOfSaves": numberOfSaves,
-    "numberOfViews": numberOfViews,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "user": user?.toJson(),
-    "isFollowed": isFollowed,
-    "alreadyLiked": alreadyLiked,
-    "alreadySaved": alreadySaved,
-    "commentAllowed": commentAllowed,
-  };
+
 }

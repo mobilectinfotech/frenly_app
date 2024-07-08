@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/vlog_full_view/vlog_full_view_controller.dart';
 import 'package:get/get.dart';
@@ -192,7 +193,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
         if (orientation == Orientation.portrait) {
           _isFullScreen = true;
           return Scaffold(
-            appBar: AppBar(),
+            appBar: appBarPrimary(),
             body: Padding(
               padding:  EdgeInsets.only(left: 18.0.aw ,right: 18.0.aw ,),
               child: ListView(
@@ -541,7 +542,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                             width: double.infinity,
                             height: 170.ah,
                             child:
-                                const Center(child: CircularProgressIndicator()),
+                                const Center(child: CircularProgressIndicator(strokeWidth: 1,)),
                           ),
                   ),
                   Positioned(

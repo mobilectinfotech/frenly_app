@@ -190,7 +190,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
         body: Obx(
           () => controller.isLoading.value
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(strokeWidth: 1,),
                 )
               : MediaQuery.removePadding(
                   removeTop: true,
@@ -317,7 +317,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
     return Obx(() {
       if (controller.mySavedVlogs.value == null) {
         return const Center(
-          child: CircularProgressIndicator(
+          child: CircularProgressIndicator(strokeWidth: 1,
             color: MyColor.primaryColor,
           ),
         );
@@ -334,7 +334,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
             : Obx(
                 () => controller.isLoadingVlogs.value
                     ? const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(strokeWidth: 1,),
                       )
                     : Padding(
                       padding: const EdgeInsets.only(left: 16 ,right : 16),
@@ -365,12 +365,12 @@ class _AllSavedScreenState extends State<AllSavedScreen>
         () {
           if (controller.saveBlogModel.value == null) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(strokeWidth: 1,),
             );
           }
           return Container(
             child: controller.isLoadingBlog.value
-                ? const CircularProgressIndicator()
+                ? const CircularProgressIndicator(strokeWidth: 1,)
                 : controller.filteredSaveBlogModel.isEmpty
                     ? Center(
                         child: Padding(
@@ -573,7 +573,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
           () {
             if (controller.mySavedPosts.value == null) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(strokeWidth: 1,),
               );
             }
             return Container(
@@ -587,7 +587,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                   : Obx(
                       () => controller.isLoadingPosts.value
                           ? const Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(strokeWidth: 1,),
                             )
                           : StaggeredGrid.count(
                               crossAxisCount: 3,

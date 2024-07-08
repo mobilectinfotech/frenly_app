@@ -42,12 +42,10 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-      
-
      return  Scaffold(
        appBar: AppBar(),
-      body:   Obx(
-        ()=> isLoading.value ? Center(child: CircularProgressIndicator(),) : Column(
+       body:   Obx(
+        ()=> isLoading.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

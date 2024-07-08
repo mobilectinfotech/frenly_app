@@ -88,32 +88,6 @@ class UserDaitails {
     isFollowed: json["isFollowed"],
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "email": email,
-    "password": password,
-    "full_name": fullName,
-    "bio": bio,
-    "handle": handle,
-    "fcm_token": fcmToken,
-    "avatar_url": avatarUrl,
-    "cover_photo_url": coverPhotoUrl,
-    "token": token,
-    "act_token": actToken,
-    "isVerified": isVerified,
-    "numberOfFollower": numberOfFollower,
-    "numberOfFollowing": numberOfFollowing,
-    "city": city,
-    "country": country,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "numberOfSaves": numberOfSaves,
-    "posts": posts == null ? [] : List<dynamic>.from(posts!.map((x) => x.toJson())),
-    "vlogs": vlogs == null ? [] : List<dynamic>.from(vlogs!.map((x) => x.toJson())),
-    "blogs": blogs == null ? [] : List<dynamic>.from(blogs!.map((x) => x.toJson())),
-    "numberOfPosts": numberOfPosts,
-    "isFollowed": isFollowed,
-  };
 }
 
 class Blog {

@@ -46,34 +46,31 @@ class _UserFollowersScreenState extends State<UserFollowersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(
-          context: context,
-          title: "Followers".tr,
-        ),
-        body: Obx(
-          () => isLoading.value
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : followersModel.followers?.length == 0
-                  ? Center(
-                      child: Text("No Followers Found"),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: RefreshIndicator(
-                        onRefresh: _refresh,
-                        child: ListView(
-                          children: [
-                            SizedBox(height: 10.ah),
-                            gridView(),
-                          ],
-                        ),
+    return Scaffold(
+      appBar: appBarPrimary(
+        title: "Followers".tr,
+      ),
+      body: Obx(
+        () => isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(strokeWidth: 1,),
+              )
+            : followersModel.followers?.length == 0
+                ? Center(
+                    child: Text("No Followers Found"),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: RefreshIndicator(
+                      onRefresh: _refresh,
+                      child: ListView(
+                        children: [
+                          SizedBox(height: 10.ah),
+                          gridView(),
+                        ],
                       ),
                     ),
-        ),
+                  ),
       ),
     );
   }
@@ -82,7 +79,7 @@ class _UserFollowersScreenState extends State<UserFollowersScreen> {
     return Obx(
       () => isLoading.value
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(strokeWidth: 1,),
             )
           : RefreshIndicator(
               onRefresh: () async {

@@ -10,6 +10,32 @@ import 'package:get/get.dart';
 import '../presentation/auth/my_profile_view/my_profile_controller.dart';
 import '../presentation/chat/Pages/all_frined/all_friends_page.dart';
 
+
+
+
+AppBar appBarPrimary({String ? title}){
+  return AppBar(
+    elevation: 0,
+    centerTitle: false,
+    title:  Text(
+        title ?? "",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: const Color(0xFF111111),
+          fontSize: 32.adaptSize,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+  );
+}
+
+
+
+
+
+
+
 PreferredSizeWidget customAppbar(
     {required BuildContext context,
     String? title,
@@ -21,8 +47,7 @@ PreferredSizeWidget customAppbar(
     Widget? rightSideWidget}) {
 
   return PreferredSize(
-      preferredSize:
-          Size.fromHeight(200.ah), // preferred height for the app bar
+      preferredSize: Size.fromHeight(200.ah), // preferred height for the app bar
       child: SizedBox(
         height: 70.ah,
         child: Row(

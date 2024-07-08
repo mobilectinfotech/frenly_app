@@ -13,7 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'messaing_service/messaging_service.dart';
 
-// ...
+Locale locale = const Locale('swe', 'SE');
 
 
 Future<void> main() async {
@@ -59,7 +59,6 @@ Future<void> main() async {
   ///for crushAnalitics  end
 
 
-
   runApp( const MyApp());
 
 
@@ -75,25 +74,26 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
+  }
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   statusBarIconBrightness:Brightness.dark,
-    //   statusBarColor: Colors.white, //
-    // ));
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       translations: LocalString(),
-      // locale: const Locale('swe', 'SE'), //for setting localization strings
-      // fallbackLocale: const Locale('se', 'SE'),
-      locale: const Locale('en', 'US'), //for setting localization strings
-      fallbackLocale: const Locale('en', 'US'),
+      locale: locale, //for setting localization strings
+      fallbackLocale: locale,
+      // locale: const Locale('en', 'US'), //for setting localization strings
+      // fallbackLocale: const Locale('en', 'US'),
       // Locale('en', 'US')
       title: 'friendlily',
      home: SplashScreen(),
-
      initialBinding: InitialBindings(),
       theme: ThemeData(
         highlightColor: Colors.transparent,

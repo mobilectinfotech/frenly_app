@@ -32,7 +32,8 @@ class CustomImageView extends StatelessWidget {
     this.radius,
     this.margin,
     this.border,
-    this.placeHolder = "assets/image/image_not_found.webp",
+   // this.placeHolder = "assets/image/image_not_found.webp",
+    this.placeHolder = "assets/icons/default_profile.png",
   });
 
   @override

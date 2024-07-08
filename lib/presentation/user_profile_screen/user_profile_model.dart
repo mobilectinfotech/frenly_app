@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import '../../data/models/HomePageModel.dart';
 import '../../data/models/PostSingleViewModel.dart';
+import '../../data/models/blog_model.dart';
 import '../../data/models/post_model.dart';
 import '../../data/models/vlog_model.dart';
 
@@ -20,7 +21,7 @@ class GetUserByIdModel {
 
   factory GetUserByIdModel.fromRawJson(String str) => GetUserByIdModel.fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
+
 
   factory GetUserByIdModel.fromJson(Map<String, dynamic> json) => GetUserByIdModel(
     status: json["status"],
@@ -29,12 +30,7 @@ class GetUserByIdModel {
     user: json["user"] == null ? null : ProfileUser.fromJson(json["user"]),
   );
 
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "success": success,
-    "user": user?.toJson(),
-  };
+
 }
 
 class ProfileUser {
@@ -100,7 +96,7 @@ class ProfileUser {
 
   factory ProfileUser.fromRawJson(String str) => ProfileUser.fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
+
 
   factory ProfileUser.fromJson(Map<String, dynamic> json) => ProfileUser(
     id: json["id"],
@@ -133,36 +129,7 @@ class ProfileUser {
     followState: json["followState"],
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "email": email,
-    "password": password,
-    "full_name": fullName,
-    "bio": bio,
-    "handle": handle,
-    "fcm_token": fcmToken,
-    "avatar_url": avatarUrl,
-    "cover_photo_url": coverPhotoUrl,
-    "token": token,
-    "act_token": actToken,
-    "isVerified": isVerified,
-    "numberOfFollower": numberOfFollower,
-    "numberOfFollowing": numberOfFollowing,
-    "city": city,
-    "country": country,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "numberOfSaves": numberOfSaves,
-    "isOnline": isOnline,
-    "lastSeen": lastSeen?.toIso8601String(),
-    "isPrivate": isPrivate,
-    "posts": posts == null ? [] : List<dynamic>.from(posts!.map((x) => x.toJson())),
-    "vlogs": vlogs == null ? [] : List<dynamic>.from(vlogs!.map((x) => x.toJson())),
-    "blogs": blogs == null ? [] : List<dynamic>.from(blogs!.map((x) => x.toJson())),
-    "numberOfPosts": numberOfPosts,
-    "commentsAllowed": commentsAllowed,
-    "followState": followState,
-  };
+
 }
 
 

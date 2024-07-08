@@ -22,17 +22,20 @@ class CustomPrimaryBtn1 extends StatelessWidget {
       child: Container(
         height: 50.ah,
         width: 333.aw,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            colors: [HexColor('#001649'), HexColor('#000C27')],
+          ),
+        ),
         child: Center(
           child: isLoading
-              ? Container(
+              ?  SizedBox(
                   height: 34.adaptSize,
                   width: 34.adaptSize,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ))
+                  child: const CircularProgressIndicator(strokeWidth: 1,))
               : Text(
-                  '$title',
+                  title,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.adaptSize,
@@ -42,12 +45,6 @@ class CustomPrimaryBtn1 extends StatelessWidget {
                     letterSpacing: 0.90,
                   ),
                 ),
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            colors: [HexColor('#001649'), HexColor('#000C27')],
-          ),
         ),
       ),
     );

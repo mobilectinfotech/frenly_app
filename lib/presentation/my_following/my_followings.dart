@@ -33,36 +33,35 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: customAppbar(context: context, title: "Following".tr,),
-            body: Obx(
-        () => controller.isLoading.value
-            ? const Center(
-                child: CircularProgressIndicator(),
+    return Scaffold(
+        appBar: appBarPrimary( title: "Followings".tr,),
+        body: Obx(
+    () => controller.isLoading.value
+        ? const Center(
+            child: CircularProgressIndicator(strokeWidth: 1,),
+          )
+        : controller.followingsModel.followings?.length == 0
+            ? Center(
+                child: Text("No followings Found"),
               )
-            : controller.followingsModel.followings?.length == 0
-                ? Center(
-                    child: Text("No followings Found"),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: RefreshIndicator(
-                      onRefresh: _refresh,
-                      child: ListView(
-                        children: [SizedBox(height: 10.ah), gridView()],
-                      ),
-                    ),
+            : Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  child: ListView(
+                    children: [SizedBox(height: 10.ah), gridView()],
                   ),
-      ),
-    ));
+                ),
+              ),
+          ),
+        );
   }
 
   Widget gridView() {
     return Obx(
       () => controller.isLoading.value
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(strokeWidth: 1,),
             )
           : RefreshIndicator(
               onRefresh: () async {

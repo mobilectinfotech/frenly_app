@@ -109,7 +109,7 @@ class _All_CategoriesState extends State<All_Categories> {
                       return Obx(() {
                         if (controller.categoryModel.value == null) {
                           return const Center(
-                            child: CircularProgressIndicator(
+                            child: CircularProgressIndicator(strokeWidth: 1,
                               color: MyColor.primaryColor,
                             ),
                           );
