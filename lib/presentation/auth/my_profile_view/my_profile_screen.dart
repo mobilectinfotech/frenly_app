@@ -563,10 +563,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         itemCount: controller.getUserByIdModel.user!.blogs!.length,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: (context, index) {
-          String jsonString =
-              "${controller.getUserByIdModel.user!.blogs![index].tags}";
+          String jsonString = "${controller.getUserByIdModel.user!.blogs![index].tags}";
           List<String> tagsList = json.decode(jsonString).cast<String>();
           return CustomBlogCard(
+            isown: true,
             blog: controller.getUserByIdModel.user!.blogs![index],
             tagsList: tagsList,
           );

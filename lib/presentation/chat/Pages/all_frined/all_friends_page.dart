@@ -77,9 +77,8 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
             ),
             subtitle: Row(
               children: [
-
                 Text(
-                  "qwertyuiop",
+                  "${controller.allFriendsModel.friends?[index].handle?.capitalizeFirst!}",
                   style: TextStyle(
                     fontSize: 13,
                   ),

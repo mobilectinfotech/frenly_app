@@ -13,7 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'messaing_service/messaging_service.dart';
 
-Locale locale = const Locale('swe', 'SE');
+// Locale locale = const Locale('swe', 'SE');
+Locale locale = const Locale('en', 'US');
 
 
 Future<void> main() async {

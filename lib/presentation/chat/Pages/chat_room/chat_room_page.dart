@@ -259,10 +259,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           ),
                                           onPressed: () {
                                             if (sendButton) {
+
                                               controller.sendMessage(
-                                                  message: _controller.text,
+                                                  message: _controller.text.trim(),
                                                   chatId: widget.chatId);
                                               _controller.clear();
+                                              FocusScope.of(context).unfocus();
+
                                               setState(() {
                                                 sendButton = false;
                                               });

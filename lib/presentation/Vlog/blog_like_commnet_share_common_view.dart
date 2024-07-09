@@ -122,6 +122,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
         InkWell(
           onTap: () {
             CustomBottomSheets.shareBottomSheet(
+              isUrl: "",
                 context: context,
                 id: '${widget.blog.id}',
                 postType: PostType.blog,

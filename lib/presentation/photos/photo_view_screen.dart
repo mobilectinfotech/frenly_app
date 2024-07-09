@@ -29,6 +29,91 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
        postSingleViewModel = await   ApiRepository.getPostsByID(id: '$id');
       isLoading.value=false;
 
+
+  }
+
+
+  void deleteFun(
+      BuildContext context,
+      ) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              title: Text('Are you sure, you want to delete this post?',
+                style: TextStyle(
+                  color: const Color(0XFF111111),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.adaptSize,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              actions: <Widget>[
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color:Color(0xff001649),width: 1.aw)),
+                          child: Center(
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                color: const Color(0XFF001649),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 15.aw),
+                      InkWell(
+                        onTap: () async{
+                          await   ApiRepository.deletePost(postId: "${postSingleViewModel?.post?.id}");
+                          Get.back();
+                          Get.back();
+                          if(Get.isRegistered<MyProfileController>()) {
+                            Get.find<MyProfileController>().getProfile(); //asdfg
+                          }
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xff001649),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: const Color(0XFFFFFFFF),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]);
+        });
   }
 
    @override
@@ -79,16 +164,17 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                           style: TextStyle(
                             color: Colors.grey,fontWeight: FontWeight.w500,fontSize:14.fSize,
                           ),),
-                      ],
+                      ]
                     ),
                     Spacer(),
                     widget.own ==true ? InkWell(
                         onTap: () async{
-                        await   ApiRepository.deletePost(postId: "${postSingleViewModel?.post?.id}");
-                        Get.back();
-                        if(Get.isRegistered<MyProfileController>()) {
-                          Get.find<MyProfileController>().getProfile(); //asdfg
-                        }
+                          deleteFun(context);
+                        // await   ApiRepository.deletePost(postId: "${postSingleViewModel?.post?.id}");
+                        // Get.back();
+                        // if(Get.isRegistered<MyProfileController>()) {
+                        //   Get.find<MyProfileController>().getProfile(); //asdfg
+                        // }
                         },
                         child: const Icon(
                           Icons.delete_outline,

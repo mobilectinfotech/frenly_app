@@ -133,8 +133,9 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
                         print("line_130${widget.post?.alreadySaved}");
                         widget.post?.alreadySaved = false;
                         widget.post!.numberOfSaves  = widget.post!.numberOfSaves! - 1;
-                       await ApiRepository.saveAllById(postType: PostType.post, id: "${widget.post?.id ?? 0}", categoryId: "0");
                         setState(() {});
+                       await ApiRepository.saveAllById(postType: PostType.post, id: "${widget.post?.id ?? 0}", categoryId: "0");
+
                       },
                       child: CustomImageView(
                         imagePath: "assets/image/save_true_blue.svg",

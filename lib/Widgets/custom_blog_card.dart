@@ -10,9 +10,10 @@ import '../presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import 'custom_image_view.dart';
 
 class CustomBlogCard extends StatefulWidget {
+  bool ? isown;
   Blog blog ;
   List<String> tagsList;
-   CustomBlogCard({super.key,required this.blog,required this.tagsList});
+   CustomBlogCard({super.key,required this.blog,required this.tagsList,this.isown});
 
   @override
   State<CustomBlogCard> createState() => _CustomBlogCardState();
@@ -23,8 +24,7 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
   Widget build(BuildContext context) {
     return   InkWell(
       onTap: () {
-        Get.to(() => BlogsFullViewScreen(
-          id: widget.blog.id.toString(),
+        Get.to(() => BlogsFullViewScreen(id: widget.blog.id.toString(),isOwn: widget.isown ?? false,
         ));
       },
       child: Padding(

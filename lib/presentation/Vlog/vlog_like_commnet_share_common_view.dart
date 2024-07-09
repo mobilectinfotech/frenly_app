@@ -94,7 +94,13 @@ class _VlogLikeCommentsShareViewState extends State<VlogLikeCommentsShareView> {
             ? SizedBox()
             : InkWell(
                 onTap: () {
-                  CustomBottomSheets.shareBottomSheet(context: context, id: '${widget.vlog.id}', postType: PostType.vlog,userName:'${widget.vlog.user?.handle}' );
+                  CustomBottomSheets.shareBottomSheet(
+                      context: context,
+                      id: '${widget.vlog.id}',
+                      postType: PostType.vlog,
+                      userName:'${widget.vlog.user?.handle}',
+                      isUrl: "${widget.vlog.videoUrl}"
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.only(left: 11.aw),

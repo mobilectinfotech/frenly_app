@@ -41,15 +41,104 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
   }
 
 
+  void deleteFun(
+      BuildContext context,
+      ) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              title: Text('Are you sure, you want to delete this post?',
+                style: TextStyle(
+                  color: const Color(0XFF111111),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.adaptSize,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              actions: <Widget>[
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color:Color(0xff001649),width: 1.aw)),
+                          child: Center(
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                color: const Color(0XFF001649),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 15.aw),
+                      InkWell(
+                        onTap: () async{
+                          Get.back();
+                          Get.back();
+                          await  ApiRepository.deleteBlog(blogId: "${controller.blogByIdModel.blog?.id}");
+                          if(Get.isRegistered<MyProfileController>()) {
+                            Get.find<MyProfileController>().getProfile(); //done
+                          }
+                          // await   ApiRepository.deletePost(postId: "${postSingleViewModel?.post?.id}");
+                          // Get.back();
+                          // Get.back();
+                          // if(Get.isRegistered<MyProfileController>()) {
+                          //   Get.find<MyProfileController>().getProfile(); //asdfg
+                          // }
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xff001649),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: const Color(0XFFFFFFFF),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]);
+        });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
           appBar: AppBar(),
           body:  Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,)) : Padding(
-            padding: const EdgeInsets.only(left: 10.0,right: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.only(left: 10.0,right: 10,top: 10),
+            child: ListView(
+
               children: [
                 InkWell(
                   onTap: () {
@@ -99,10 +188,9 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
 
                             }
                             if(result=="2"){
-                              await  ApiRepository.deleteBlog(blogId: "${controller.blogByIdModel.blog?.id}");
-                              if(Get.isRegistered<MyProfileController>()) {
-                                Get.find<MyProfileController>().getProfile(); //done
-                              }                            }
+                              // Get.back();
+                              deleteFun(context);
+                            }
 
                           },
                           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

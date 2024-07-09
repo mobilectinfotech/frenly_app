@@ -299,6 +299,7 @@ class CustomBottomSheets {
       required String id,
       required PostType postType,
       required String userName ,
+      required String isUrl,
       }) async {
 
     ShareController controller = Get.find<ShareController>();
@@ -359,7 +360,13 @@ class CustomBottomSheets {
                       ),
                     ),
                     const SizedBox(height: 20,),
-                    Obx(()=> controller.isLoadingChatModel.value  ? Container(height: 100,width: 100,color: Colors.red,) :ListView.builder(
+                    Obx(()=> controller.isLoadingChatModel.value  ? Container(height: 100,width: 100,color: Colors.red,) :
+
+                    controller.chatsModel.chats!.length == 0 ? Center(child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Text("No chats found"),
+                    ),) :
+                    ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: controller.chatsModel.chats!.length,
@@ -370,7 +377,7 @@ class CustomBottomSheets {
                                 message: ' Sent a ${postType.name} by $userName',
                                 chatId: '${controller.chatsModel.chats![index].id}',
                                 postType: postType,
-                                isUrl: " ",
+                                isUrl: isUrl,
                                 isLinkId: id);
                             Get.back();
                           },
@@ -527,6 +534,7 @@ class CustomBottomSheets {
                       SizedBox(
                         height: 10.ah,
                       ),
+
                       for (Category data in (controller.cateogoryModel.value?.categories ?? []))
                         InkWell(
                           onTap: () async {
@@ -663,10 +671,14 @@ class SaveController extends GetxController {
 
   }
 
+   var isloading = false.obs;
+
   void getCategory(){
+    isloading.value = true;
     ApiRepository.getCategories().then((value) {
       cateogoryModel.value = value;
     });
+    isloading.value = false;
   }
 
 
