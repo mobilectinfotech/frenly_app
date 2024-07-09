@@ -1,4 +1,3 @@
-import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/presentation/dashboard_screen/dashboard_screen.dart';

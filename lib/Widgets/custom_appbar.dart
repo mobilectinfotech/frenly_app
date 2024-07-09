@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
-import 'package:frenly_app/core/constants/my_assets.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 // ignore: unused_import
 import 'package:frenly_app/presentation/Blog/blog_edit/blogs_edit_screen.dart';
 import 'package:get/get.dart';
 
-import '../presentation/auth/my_profile_view/my_profile_controller.dart';
 import '../presentation/chat/Pages/all_frined/all_friends_page.dart';
 
 

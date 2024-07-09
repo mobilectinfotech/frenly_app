@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import '../../data/models/user_model.dart';
 import '../../data/models/vlog_model.dart';
 
 MySavedVlogs mySavedVlogsFromJson(String str) => MySavedVlogs.fromJson(json.decode(str));

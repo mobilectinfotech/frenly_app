@@ -1,23 +1,13 @@
-import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:frenly_app/core/constants/app_dialogs.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
-import '../../core/constants/my_colour.dart';
-import '../../core/utils/calculateTimeDifference.dart';
-import '../../core/utils/pref_utils.dart';
-import '../../data/data_sources/remote/api_client.dart';
 import '../../data/models/post_model.dart';
 import '../../data/repositories/api_repository.dart';
-import '../Vlog/vlog_like_commnet_share_common_view.dart';
-import '../chat/Pages/all_frined/CreateChatModel.dart';
 import '../chat/Pages/all_frined/all_friend_controller.dart';
-import '../chat/Pages/chats/chats_controller.dart';
 import '../dashboard_screen/dashboardcontroller.dart';
 
 class PostLikeCommentsShareView extends StatefulWidget {

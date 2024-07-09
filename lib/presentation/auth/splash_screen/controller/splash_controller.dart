@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
-import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
-import '../../../../main.dart';
 import '../../../../messaing_service/messaging_service.dart';
 import '../../../dashboard_screen/dashboard_screen.dart';
-import '../../../settings_screen/MySettingModel.dart';
 import '../../onboard/onboard.dart';
 class SplashController extends GetxController {
 

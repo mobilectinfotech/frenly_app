@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/upload/post_blogs/post_blog_screen.dart';
 import '../chat/Pages/chats/chats_screen.dart';
 import '../home_screen/home_screen.dart';

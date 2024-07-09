@@ -14,9 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Widgets/custom_blog_card.dart';
 import '../../data/repositories/api_repository.dart';
 import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
-import '../Vlog/vlog_like_commnet_share_common_view.dart';
 import '../photos/photo_view_screen.dart';
-import '../vlog_full_view/vlog_full_view.dart';
 import 'my_saved_controller.dart';
 
 class AllSavedScreen extends StatefulWidget {

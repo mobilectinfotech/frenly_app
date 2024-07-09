@@ -4,7 +4,6 @@ import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../data/models/HomePageModel.dart';
 import '../data/models/blog_model.dart';
 import '../presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import 'custom_image_view.dart';

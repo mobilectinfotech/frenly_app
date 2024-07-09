@@ -1,7 +1,6 @@
 
 import 'package:get/get.dart';
 import '../../../data/repositories/api_repository.dart';
-import '../my_following/FollowingsModel.dart';
 import 'BlockedUserListModel.dart';
 
 class MyBlockListController extends GetxController{

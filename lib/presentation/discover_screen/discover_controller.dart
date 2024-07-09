@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:frenly_app/data/models/DiscoverUsersModel.dart';
 import 'package:get/get.dart';
 import '../../../data/repositories/api_repository.dart';
-import '../../data/models/GetCommentsModel.dart';
 
 class DiscoverController extends GetxController{
 

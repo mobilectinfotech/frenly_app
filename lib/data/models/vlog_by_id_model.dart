@@ -6,7 +6,6 @@ import 'dart:convert';
 
 import 'package:frenly_app/data/models/vlog_model.dart';
 
-import '../../presentation/all_saved/MySavedBlogs.dart';
 
 VlogByIdModel vlogByIdModelFromJson(String str) => VlogByIdModel.fromJson(json.decode(str));
 

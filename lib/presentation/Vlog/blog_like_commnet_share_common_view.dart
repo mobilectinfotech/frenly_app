@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/Vlog/vlog_like_commnet_share_common_view.dart';
-import 'package:get/get.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
-import '../../core/constants/app_dialogs.dart';
-import '../../core/constants/my_colour.dart';
-import '../../core/utils/calculateTimeDifference.dart';
-import '../../core/utils/pref_utils.dart';
 import '../../data/models/blog_model.dart';
 import '../../data/repositories/api_repository.dart';
-import '../Blog/blog_full_view_screen/blog_full_view_controller.dart';
-import '../chat/Pages/all_frined/CreateChatModel.dart';
-import '../chat/Pages/all_frined/all_friend_controller.dart';
-import '../chat/Pages/chats/chats_controller.dart';
-import '../dashboard_screen/dashboardcontroller.dart';
 
 class BlogLikeCommentsShareView extends StatefulWidget {
   final Blog blog;

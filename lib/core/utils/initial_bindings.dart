@@ -5,7 +5,6 @@ import 'package:frenly_app/core/utils/pref_utils.dart';
 import '../../data/data_sources/remote/api_client.dart';
 import 'package:get/get.dart';
 
-import '../../main.dart';
 
 class InitialBindings extends Bindings {
   @override

@@ -12,7 +12,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../../Widgets/custom_blog_card.dart';
-import '../../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../../Vlog/vlog_like_commnet_share_common_view.dart';
 import '../../my_following/my_followings.dart';
 import '../../photos/photo_view_screen.dart';

@@ -1,6 +1,5 @@
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
-import '../../../data/models/PostSingleViewModel.dart';
 import 'PhotosListModel.dart';
 import 'PhotosListModel.dart';
 

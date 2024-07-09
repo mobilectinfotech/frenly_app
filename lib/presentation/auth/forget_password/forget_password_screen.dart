@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/auth/create_password/create_password.dart';
 import 'package:frenly_app/presentation/auth/login_screen/login_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../core/constants/my_textfield.dart';

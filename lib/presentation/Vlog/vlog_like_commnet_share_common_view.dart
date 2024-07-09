@@ -1,21 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/data/models/cateogry_model.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
 import '../../core/constants/my_colour.dart';
-import '../../core/utils/calculateTimeDifference.dart';
-import '../../core/utils/pref_utils.dart';
 import '../../data/models/vlog_model.dart';
 import '../../data/repositories/api_repository.dart';
-import '../chat/Pages/all_frined/CreateChatModel.dart';
-import '../chat/Pages/all_frined/all_friend_controller.dart';
-import '../chat/Pages/chats/chats_controller.dart';
 import '../dashboard_screen/dashboardcontroller.dart';
-import 'add_new_category/add_new_cateogry_bottom_sheet.dart';
 
 class VlogLikeCommentsShareView extends StatefulWidget {
   final Vlog vlog;

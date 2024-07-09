@@ -5,8 +5,6 @@ import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Blog/popular_blog_controller.dart';
 import 'package:get/get.dart';
 import '../../Widgets/custom_blog_card.dart';
-import '../../Widgets/custom_image_view.dart';
-import 'blog_full_view_screen/blogs_full_view_screen.dart';
 
 
 class PopularBlogScreen extends StatefulWidget {

@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import '../../data/models/HomePageModel.dart';
-import '../../data/models/PostSingleViewModel.dart';
 import '../../data/models/blog_model.dart';
 import '../../data/models/post_model.dart';
 import '../../data/models/vlog_model.dart';

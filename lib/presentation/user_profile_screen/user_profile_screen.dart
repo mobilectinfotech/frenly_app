@@ -4,7 +4,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/Widgets/custom_vlog_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_controller.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';

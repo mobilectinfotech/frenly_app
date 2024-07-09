@@ -6,7 +6,6 @@ import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/data_sources/remote/api_client.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:intl/intl.dart';
-import '../../../../Widgets/custom_image_view.dart';
 import '../../../../core/utils/calculateTimeDifference.dart';
 import '../../../../data/models/LastSeenModel.dart';
 import '../../CustomUI/OwnMessgaeCrad.dart';

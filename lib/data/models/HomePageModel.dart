@@ -7,8 +7,6 @@ import 'dart:convert';
 import 'package:frenly_app/data/models/post_model.dart';
 import 'package:frenly_app/data/models/vlog_model.dart';
 
-import '../../presentation/all_saved/MySavedBlogs.dart';
-import '../../presentation/all_saved/MySavedPosts.dart';
 import 'DiscoverUsersModel.dart';
 import 'blog_model.dart';
 

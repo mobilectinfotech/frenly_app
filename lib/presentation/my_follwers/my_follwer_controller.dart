@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:frenly_app/data/models/DiscoverUsersModel.dart';
 import 'package:get/get.dart';
 import '../../../data/repositories/api_repository.dart';
-import '../../data/models/GetCommentsModel.dart';
-import '../my_following/FollowingsModel.dart';
 import 'FollowersModel.dart';
 
 class MyFollowersController extends GetxController{

@@ -3,7 +3,6 @@ import 'package:frenly_app/Widgets/bottom_sheet_widgets.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 
-import '../../all_category/all_cateogry_controller.dart';
 
 class AddNewCategoryController extends GetxController {
   TextEditingController textEditingController = TextEditingController();
