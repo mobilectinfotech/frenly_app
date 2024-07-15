@@ -370,7 +370,7 @@ packages:
     source: hosted
     version: "0.5.7+4"
   firebase_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_core
       sha256: "4aef2a23d0f3265545807d68fbc2f76a6b994ca3c778d88453b99325abd63284"
@@ -846,7 +846,7 @@ packages:
     source: hosted
     version: "0.2.1+1"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
@@ -1442,6 +1442,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
+  unused_import_remover:
+    dependency: "direct dev"
+    description:
+      name: unused_import_remover
+      sha256: dd2e7e37e704a35461a8092489f4579ee02f8f5aae0632525a9020b2a080419f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   uuid:
     dependency: transitive
     description:

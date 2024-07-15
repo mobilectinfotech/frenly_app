@@ -11,14 +11,17 @@ import 'data/data_sources/local/app_localization.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'localservice/local_service.dart';
+import 'localservice/messages_local.dart';
 import 'messaing_service/messaging_service.dart';
 
 // Locale locale = const Locale('swe', 'SE');
-Locale locale = const Locale('en', 'US');
-
+// Locale locale = const Locale('en', 'US');
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final localeService = LocaleService();
+  final locale = await localeService.getLocale();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -60,39 +63,23 @@ Future<void> main() async {
   ///for crushAnalitics  end
 
 
-  runApp( const MyApp());
+  runApp(MyApp(locale: locale));
 
 
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
+class MyApp extends StatelessWidget {
+  final Locale? locale;
+  MyApp({this.locale});
 
   @override
   Widget build(BuildContext context) {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      translations: LocalString(),
-      locale: locale, //for setting localization strings
-      fallbackLocale: locale,
-      // locale: const Locale('en', 'US'), //for setting localization strings
-      // fallbackLocale: const Locale('en', 'US'),
-      // Locale('en', 'US')
+      translations: Messages(),
+      locale: locale ??  Locale('swe', 'SE'), // Default locale if no saved locale
+      fallbackLocale:  Locale('swe', 'SE'),
       title: 'friendlily',
      home: SplashScreen(),
      initialBinding: InitialBindings(),

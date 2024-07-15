@@ -39,9 +39,8 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                 radius: BorderRadius.circular(10),
                 imagePath:widget.blog.imageUrl,
               ),
-            SizedBox(
-              width: 10.aw,
-            ),
+            SizedBox(width: 10.aw),
+
             SizedBox(
               height: 144.ah,
               child: Column(
@@ -96,7 +95,6 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                   ),
                   Spacer(),
                   SizedBox(height: 5.ah),
-
                   Row(
                     mainAxisAlignment:
                     MainAxisAlignment.spaceBetween,

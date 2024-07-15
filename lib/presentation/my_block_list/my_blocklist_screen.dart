@@ -75,12 +75,12 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserProfileScreen(
-                                      userId: '${controller.blockUserList.myBlockedUserList?[index].id}',
-                                    )));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => UserProfileScreen(
+                        //               userId: '${controller.blockUserList.myBlockedUserList?[index].id}',
+                        //             )));
                       },
                       child: Container(
                         height: 220.ah,
@@ -100,7 +100,7 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                               height: 104.adaptSize,
                               width: 104.adaptSize,
                               imagePath: controller.blockUserList
-                                  .myBlockedUserList?[index].coverPhotoUrl,
+                                  .myBlockedUserList?[index].avatarUrl,
                               radius: BorderRadius.circular(109.ah),
                               fit: BoxFit.cover,
                             ),
@@ -177,8 +177,8 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                                             .blockUserList
                                             .myBlockedUserList![index]
                                             .isFollowed!
-                                        ? "Unblock"
-                                        : "Block",
+                                        ? "unblock".tr
+                                        : "block".tr,
                                     style: TextStyle(
                                         color: controller
                                                 .blockUserList

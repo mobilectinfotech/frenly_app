@@ -60,28 +60,24 @@ class _AddNewCategoryBottomSheetState extends State<AddNewCategoryBottomSheet> {
           ),
           Row(
             children: [
-              Text(
-                "Category Name",
+              Text("categories_name".tr,
                 style:
                 GoogleFonts.roboto().copyWith(fontSize: 22.fSize, fontWeight: FontWeight.w700, color: Colors.black),
               ),
             ],
           ),
-          SizedBox(
-            height: 20.ah,
-          ),
+          SizedBox(height: 20.ah,),
           CustomTextFormField(
             validator: (value) {
               if (value!.trim().isEmpty) {
-                return "Category Name Can't be empty";
+                return "categories_name_cant".tr;
               }
+              return null;
             },
             context: context,
             controller: controller.textEditingController,
           ),
-          SizedBox(
-            height: 30.h,
-          ),
+          SizedBox( height: 30.h,),
           InkWell(
             onTap: () {
               controller.onTapCategoryBtn();
@@ -91,8 +87,7 @@ class _AddNewCategoryBottomSheetState extends State<AddNewCategoryBottomSheet> {
               padding: EdgeInsets.symmetric(horizontal: 10.aw, vertical: 10.ah),
               alignment: Alignment.center,
               decoration: BoxDecoration(color: MyColor.primaryColor,borderRadius: BorderRadius.circular(20)),
-              child: Text(
-                "Add New Category",
+              child: Text("add_categories_new".tr,
                 style: GoogleFonts.roboto().copyWith(color: Colors.white),
               ),
             ),

@@ -52,7 +52,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     return Obx(
       () => controller.isLoading.value
           ? const Center(
-              child: CircularProgressIndicator(strokeWidth: 1,),
+              child: CircularProgressIndicator(strokeWidth: 1),
             )
           : ListView(
               padding: EdgeInsets.zero,
@@ -311,16 +311,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    '${controller.getUserByIdModel.user?.numberOfPosts}',
+                  Text('${controller.getUserByIdModel.user?.numberOfPosts}',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                       fontSize: 16.fSize,
                     ),
                   ),
-                  Text(
-                    'Posts'.tr,
+                  Text('Posts'.tr,
                     style: TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.w500,
@@ -329,6 +327,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   ),
                 ],
               ),
+
               InkWell(
                 onTap: () {
                   Get.to(() => const MyFollowersScreen());

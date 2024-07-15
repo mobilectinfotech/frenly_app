@@ -86,7 +86,8 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
             children: [
               InkWell(
                 onTap: () {
-                //  CustomBottomSheets.shareBottomSheet(context: context, id: '${widget.post?.id}', postType: PostType.post,userName:'${widget.post?.user?.handle}' );
+               //   CustomBottomSheets.shareBottomSheet(context: context, id: '${widget.post?.id}', postType: PostType.post,userName:'${widget.post?.user?.handle}' );
+                  CustomBottomSheets.shareBottomSheet(context: context, id: '${widget.post?.id}', postType: PostType.post, userName: '${widget.post?.user?.handle}', isUrl: " ");
                 },
                 child: Image.asset(
                   'assets/image/Vector (1).png',

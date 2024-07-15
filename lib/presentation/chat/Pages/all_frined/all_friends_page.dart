@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../../../../Widgets/custom_image_view.dart';
@@ -30,9 +31,10 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(title:Text("selectfriend".tr) ,),
+      appBar: appBarPrimary(title:"selectfriend".tr) ,
       body: Obx(
-        ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,)) :ListView.builder(
+        ()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,)) :
+        controller.allFriendsModel.friends?.length==0?Center(child:Text("no_friends_found".tr)):ListView.builder(
           itemCount: controller.allFriendsModel.friends!.length,
           itemBuilder: (context, index) => customCard(index),
         ),
@@ -52,12 +54,12 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
         createChatModel = await ApiRepository.createChat(userId: "${controller.allFriendsModel.friends?[index].id}");
         int indexxx =  "${createChatModel.payload?.participants?[0].id}" == PrefUtils().getUserId() ? 1 : 0 ;
 
-        Get.off( ()=>ChatRoomPage(participant:createChatModel.payload!.participants![indexxx], chatId: createChatModel.payload!.id.toString(),));
+        Get.off( ()=> ChatRoomPage(participant:createChatModel.payload!.participants![indexxx], chatId: createChatModel.payload!.id.toString(),));
 
         //  Get.to( ()=>ChatRoomPage(participant:controller.chatsModel.chats![index].participants![indexxx], chatId: controller.chatsModel.chats![index].id.toString(),));
 
       },
-      child: Column(
+      child:  Column(
         children: [
           ListTile(
             leading: CustomImageView(

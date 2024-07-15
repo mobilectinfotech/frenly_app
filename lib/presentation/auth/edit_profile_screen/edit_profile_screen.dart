@@ -40,144 +40,173 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffE8E8E8),
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          imageView(),
-          Padding(
-            padding:  EdgeInsets.only(left: 28.0.aw,right: 28.aw),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 45.ah,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Text(
-                    'fullnm'.tr,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.fSize),
+      body: Form(
+       key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            imageView(),
+            Padding(
+              padding:  EdgeInsets.only(left: 28.0.aw,right: 28.aw),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 45.ah,
                   ),
-                ),
-                SizedBox(
-                  height: 10.ah,
-                ),
-                CustomTextFormField(
-                    fillColor: Colors.transparent,
-                    hintText: 'fullnm'.tr, controller: controller.fullController, context: context),
-                SizedBox(
-                  height: 10.ah,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Text(
-                    'emailn'.tr,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.fSize),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.ah,
-                ),
-                CustomTextFormField(
-                  fillColor: Colors.transparent,
-                  hintText: 'emailno'.tr, controller: controller.emailController, context: context),
-                SizedBox(
-                  height: 15.ah,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Text(
-                    'Bio'.tr,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.fSize),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.ah,
-                ),
-                CustomTextFormField(
-                  fillColor: Colors.transparent,
-                    hintText: 'Enteruserbio'.tr, controller: controller.bioController, context: context,maxLines: 2,),
-                SizedBox(
-                  height: 15.ah,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Text(
-                    'Username'.tr,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.fSize),
-                  ),
-                ),
-                SizedBox(height: 10.ah,),
-
-                CustomTextFormField(fillColor: Colors.transparent, hintText: 'Enter username', controller: controller.handleController, context: context,),
-
-                SizedBox(height: 10.ah,),
-                Container(decoration: BoxDecoration(color: Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(25),),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(width: 10,),
-                        CustomImageView(
-                         imagePath:  'assets/image/Accept.svg',
-                          height: 20.adaptSize,
-                          width: 20.adaptSize,
-                          fit: BoxFit.cover,
-                        ),
-                        const SizedBox(width: 10,),
-                        Text(
-                          'Handlle'.tr,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12.fSize),
-                        ),
-                      const  SizedBox(width: 10,),
-                      ],
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Text(
+                      'fullnm'.tr,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15.fSize),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 30.ah,
-                ),
-                Center(
-                  child: CustomPrimaryBtn1(
-                    title: 'Saveid'.tr,
-                    isLoading: false,
-                    onTap: () {
-                      controller.editProfile();
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp_Screen()));
-                    },
+                  SizedBox(
+                    height: 10.ah,
                   ),
-                ),
-                SizedBox(
-                  height: 30.ah,
-                ),
-              ],
-            ),
-          ),
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter full name';
+                      }
+                      return null;
+                    },
 
-        ],
+                      fillColor: Colors.transparent,
+                      hintText: 'fullnm'.tr, controller: controller.fullController, context: context),
+                  SizedBox(
+                    height: 10.ah,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Text(
+                      'emailn'.tr,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15.fSize),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.ah,
+                  ),
+                  CustomTextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Email';
+                        }
+                        return null;
+                      },
+                    fillColor: Colors.transparent,
+                    hintText: 'emailno'.tr, controller: controller.emailController, context: context),
+                  SizedBox(
+                    height: 15.ah,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Text('Bio'.tr,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15.fSize),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.ah,
+                  ),
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Bio';
+                      }
+                      return null;
+                    },
+                    fillColor: Colors.transparent,
+                      hintText: 'Enteruserbio'.tr, controller: controller.bioController, context: context,maxLines: 2,),
+                  SizedBox(
+                    height: 15.ah,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Text(
+                      'Username'.tr,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15.fSize),
+                    ),
+                  ),
+                  SizedBox(height: 10.ah,),
+
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter  Username';
+                      }
+                      return null;
+                    },
+                    fillColor: Colors.transparent, hintText: 'Enter username', controller: controller.handleController, context: context,),
+
+                  SizedBox(height: 10.ah,),
+                  Container(decoration: BoxDecoration(color: Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(25),),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(width: 10,),
+                          CustomImageView(
+                           imagePath:  'assets/image/Accept.svg',
+                            height: 20.adaptSize,
+                            width: 20.adaptSize,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(width: 10,),
+                          Text(
+                            'Handlle'.tr,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.fSize),
+                          ),
+                        const  SizedBox(width: 10,),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.ah,
+                  ),
+                  Center(
+                    child: CustomPrimaryBtn1(
+                      title: 'Saveid'.tr,
+                      isLoading: false,
+                      onTap: () {
+                        if (_formKey.currentState!.validate()){
+                          controller.editProfile();
+                        }
+                      //
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.ah,
+                  ),
+                ],
+              ),
+            ),
+
+          ],
+        ),
       ),
 
     );

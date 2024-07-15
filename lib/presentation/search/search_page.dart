@@ -156,6 +156,7 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
+
                     Tab(
                       child: Container(
                         height: 40.ah,
@@ -172,6 +173,7 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
+
                     Tab(
                       child: Container(
                         height: 40.ah,
@@ -188,6 +190,7 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
+
                     Tab(
                       //icon: Icon(Icons.chat_bubble),
                       child: Container(
@@ -223,12 +226,12 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
                             child: CircularProgressIndicator(strokeWidth: 1,),
                           )
                         : _blogs()),
-                    Obx(() => searchController.isLoadingBlog.value
+                    Obx(() => searchController.isLoadingPosts.value
                         ? const Center(
                             child: CircularProgressIndicator(strokeWidth: 1,),
                           )
                         : photos()),
-                    Obx(() =>  searchController.isLoadingBlog.value
+                    Obx(() =>  searchController.isLoadingUsers.value
                         ? const Center(
                             child: CircularProgressIndicator(strokeWidth: 1,),
                           )
@@ -280,6 +283,7 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
   //     ),
   //   );
   // }
+
   Widget photos() {
     List<int> cont = [
       1,
@@ -294,7 +298,8 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
     ];
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: ListView(
+      child: searchController.searchPhotosModel.posts!.length==0 ? Center(child:Text("No data found"),)
+      : ListView(
         padding: EdgeInsets.only(bottom : 100),
         children: [
           StaggeredGrid.count(
@@ -309,7 +314,7 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
                 child: Center(
                     child: InkWell(
                       onTap: () {
-                        Get.to(()=>PostFullViewScreen( loadPostByid: "${searchController.searchPhotosModel.posts![index]}", ));
+                        Get.to(()=>PostFullViewScreen( loadPostByid: "${searchController.searchPhotosModel.posts![index].id}", ));
                       },
                       child: CustomImageView(
                         imagePath:
@@ -330,7 +335,8 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
     return SizedBox(
       width: double.infinity,
       child: Obx(
-        () => ListView.builder(
+        () => searchController.searchBlogModel.blogs!.length==0 ? Center(child:Text("No data found"),)
+            : ListView.builder(
           shrinkWrap: true,
           // physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -356,7 +362,8 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
           left: 15.0,
           right: 15,
         ),
-        child: ListView.builder(
+        child:searchController.searchModel.vlogs!.length==0 ? Center(child:Text("No data found"),)
+            : ListView.builder(
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -374,7 +381,8 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
 
   Widget users() {
     return Obx(
-      () => ListView.builder(
+      () => searchController.searchUserModel.users!.length==0 ? Center(child:Text("No data found"),)
+          :ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         itemCount: searchController.searchUserModel.users?.length ?? 0,
@@ -390,10 +398,7 @@ class _NewState extends State<New> with SingleTickerProviderStateMixin {
                     : 0),
             child: InkWell(
               onTap: () {
-                Get.to(() => UserProfileScreen(
-                      userId:
-                          '${searchController.searchUserModel.users?[index].id}',
-                    ));
+                Get.to(() => UserProfileScreen(userId: '${searchController.searchUserModel.users?[index].id}',));
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

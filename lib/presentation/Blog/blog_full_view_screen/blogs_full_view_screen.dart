@@ -138,7 +138,6 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
           body:  Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,)) : Padding(
             padding: const EdgeInsets.only(left: 10.0,right: 10,top: 10),
             child: ListView(
-
               children: [
                 InkWell(
                   onTap: () {
@@ -206,7 +205,6 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                         ),
                       ) : SizedBox(),
                       SizedBox(width: 10.aw),
-
                     ],
                   ),
                 ),
@@ -219,7 +217,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                     radius: BorderRadius.circular(25),
                     fit: BoxFit.cover,
                   ),
-                ),
+                 ),
                 SizedBox(height: 20.ah),
                 tags(),
                 SizedBox(height: 20.ah),
@@ -231,7 +229,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w700,
                       height: 1.2),
-                ),
+               ),
                 SizedBox(height: 20.ah),
                 Text(
                   "${controller.blogByIdModel.blog?.body!.capitalizeFirst}".tr,
@@ -247,21 +245,24 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
               ],
             ),
           )),
-          bottomNavigationBar: Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,)) : BottomAppBar(
+
+
+          bottomNavigationBar: Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,)) :
+          BottomAppBar(
             color: HexColor('#001649'),
-
             height: 108.ah,
-
             child: Padding(
               padding: const EdgeInsets.only(left: 25.0,right: 25),
               child: SizedBox(
                   child: Column(
-                    children: [BlogLikeCommentsShareView(blog: controller.blogByIdModel.blog!,),
+                    children: [
+                      BlogLikeCommentsShareView(blog: controller.blogByIdModel.blog!,),
                     ],
                   )),
             ),
           )));
   }
+
   Widget tags(){
     String jsonString = "${controller.blogByIdModel.blog?.tags}";
     List<String> tagsList = json.decode(jsonString).cast<String>();

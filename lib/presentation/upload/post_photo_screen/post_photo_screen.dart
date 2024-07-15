@@ -83,7 +83,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
                 ),
               ),
               SizedBox(height: 20.ah,),
-              CustomTextFormField(context: context,hintText: "Enter caption",controller: controller.captionController,maxLines: 3,validator: Validator.notEmpty,),
+              CustomTextFormField(context: context,hintText: "enter_caption".tr,controller: controller.captionController,maxLines: 3,validator: Validator.notEmpty,),
               SizedBox(height: 60.ah,),
               Center(
                 child: Obx(

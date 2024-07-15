@@ -36,8 +36,8 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
             children: [
               const SizedBox(height: 10,),
               Text('Allcit'.tr,
-                style: const TextStyle(
-                    color: Colors.black,fontWeight: FontWeight.w600,fontSize:24
+                style:  TextStyle(
+                    color: Colors.black,fontWeight: FontWeight.w600,fontSize:24.fSize
                 ),
               ),
               allCity(),
@@ -56,7 +56,7 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
         color: Colors.white,
         width: MediaQuery.of(context).size.width,
         height: 165.ah,
-        child:   controller.liveUserModel.activeFriends?.length == 0 ? const Center(child:Text("No active user found"),): ListView.builder(
+        child:   controller.liveUserModel.activeFriends?.length == 0 ?  Center(child:Text("no_active_user_found".tr),): ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           itemCount: controller.liveUserModel.activeFriends?.length,
@@ -64,7 +64,7 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: (){
-                String city = "${controller.liveUserModel.activeFriends?[index].city}";
+                String city = "${controller.liveUserModel.activeFriends?[index].city??''}";
                 Get.to(()=> UserByCityScreen(city: city,));
               },
               child: Padding(
@@ -77,11 +77,11 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('${controller.liveUserModel.activeFriends?[index].city}',
+                        Text('${controller.liveUserModel.activeFriends?[index].city??''}',
                           style: TextStyle(
                             color: Colors.black,fontWeight: FontWeight.w700,fontSize:17.fSize,
                           ),),
-                        Text('${controller.liveUserModel.activeFriends?[index].country}',
+                        Text('${controller.liveUserModel.activeFriends?[index].country??''}',
                           style: TextStyle(
                             color: Colors.grey,fontWeight: FontWeight.w500,fontSize:15.fSize,
                           ),),
@@ -113,7 +113,7 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
                           ),
                         ),
                         SizedBox(width:10.aw,),
-                        Text('${controller.liveUserModel.activeFriends![index].userCount}\nActives'.tr,
+                        Text('${controller.liveUserModel.activeFriends![index].userCount}\nactives'.tr,
                           style: TextStyle(
                             color: HexColor('#111111'),fontWeight: FontWeight.w600,fontSize:12.3.fSize,
                           ),

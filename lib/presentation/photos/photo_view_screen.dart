@@ -67,8 +67,7 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(color:Color(0xff001649),width: 1.aw)),
                           child: Center(
-                            child: Text(
-                              'Cancel',
+                            child: Text('Cancel',
                               style: TextStyle(
                                 color: const Color(0XFF001649),
                                 fontWeight: FontWeight.w700,
@@ -82,12 +81,13 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                       SizedBox(width: 15.aw),
                       InkWell(
                         onTap: () async{
-                          await   ApiRepository.deletePost(postId: "${postSingleViewModel?.post?.id}");
                           Get.back();
                           Get.back();
+                          await ApiRepository.deletePost(postId: "${postSingleViewModel?.post?.id}");
                           if(Get.isRegistered<MyProfileController>()) {
                             Get.find<MyProfileController>().getProfile(); //asdfg
                           }
+
                         },
                         child: Container(
                           height: 44.adaptSize,
@@ -97,8 +97,7 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                             color: const Color(0xff001649),
                           ),
                           child: Center(
-                            child: Text(
-                              'Delete',
+                            child: Text('Delete',
                               style: TextStyle(
                                 color: const Color(0XFFFFFFFF),
                                 fontWeight: FontWeight.w700,
@@ -138,7 +137,10 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
               padding:  EdgeInsets.all(8.0.adaptSize),
               child: InkWell(
                 onTap: () {
-                   Get.to(()=> UserProfileScreen(userId: "${postSingleViewModel?.post?.user?.id}"));
+                  if(widget.own ==true){
+                  }else{
+                    Get.to(()=> UserProfileScreen(userId: "${postSingleViewModel?.post?.user?.id}"));
+                  }
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,8 +182,7 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                           Icons.delete_outline,
                           size: 30,
                         )) : SizedBox(),
-                    SizedBox(width: 10.aw),
-
+                          SizedBox(width: 10.aw),
                   ],
                 ),
               ),
@@ -192,7 +193,6 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                 CustomImageView(
                   width: MediaQuery.of(context).size.width,
                   imagePath:postSingleViewModel?.post?.imageUrl,
-
                   fit: BoxFit.cover,
                 ),
                 InkWell(
@@ -208,7 +208,9 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                           SizedBox(height: 335.adaptSize,),
                           Padding(
                             padding: const EdgeInsets.only(left: 15,right: 15),
-                            child: Text("${postSingleViewModel?.post?.caption}".capitalizeFirst!,overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16.adaptSize ,fontWeight: FontWeight.w400,color: Colors.white),),
+                            child: Text("${postSingleViewModel?.post?.caption}".capitalizeFirst!,overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 16.adaptSize ,
+                                  fontWeight: FontWeight.w400,color: Colors.white),),
                           ),
                         ],
                       )

@@ -45,271 +45,269 @@ class _AllSavedScreenState extends State<AllSavedScreen>
       statusBarColor: Colors.transparent, // Change this to your desired color
     ));
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(
-            context: context,
-            title: "AllSaved".tr,
-            rightSideWidget: InkWell(
-              onTap: () {
-                ApiRepository.getCategories().then((value) {
-                  print("line 18");
-                  controller.categoryModel.value = value;
-                });
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      padding: EdgeInsets.only(left: 20.aw,top: 20.aw,right: 20.aw),
-                      width: double.infinity,
-                      child: ListView(
+    return Scaffold(
+      appBar: customAppbar(
+          context: context,
+          title: "AllSaved".tr,
+          rightSideWidget: InkWell(
+            onTap: () {
+              ApiRepository.getCategories().then((value) {
+                print("line 18");
+                controller.categoryModel.value = value;
+              });
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Container(
+                    padding: EdgeInsets.only(left: 20.aw,top: 20.aw,right: 20.aw),
+                    width: double.infinity,
+                    child: ListView(
 
-                        children: [
-                          SizedBox(
-                            height: 6.ah,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Opacity(
-                                opacity: 0.50,
-                                child: Container(
-                                  width: 48.aw,
-                                  height: 5.ah,
-                                  decoration: ShapeDecoration(
-                                    color: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
+                      children: [
+                        SizedBox(
+                          height: 6.ah,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Opacity(
+                              opacity: 0.50,
+                              child: Container(
+                                width: 48.aw,
+                                height: 5.ah,
+                                decoration: ShapeDecoration(
+                                  color: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 24.ah,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 24.ah,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
 
-                            children: [
-                              Text(
-                                "Category",
-                                style: GoogleFonts.roboto().copyWith(
-                                    fontSize: 22.fSize,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black),
-                              ),
-                            ],
-                          ),
+                          children: [
+                            Text(
+                              "Category",
+                              style: GoogleFonts.roboto().copyWith(
+                                  fontSize: 22.fSize,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              if (activeIndex == 0) {
+                                controller.filteredMySavedVlogs.clear();
+                                controller.mySavedVlogs.value?.mySavedVlogs
+                                    ?.forEach((element) {
+                                  controller.filteredMySavedVlogs
+                                      .add(element);
+                                });
+                              }
+                              if (activeIndex == 1) {
+                                controller.filteredSaveBlogModel.clear();
+                                controller.saveBlogModel.value?.mySavedBlogs
+                                    ?.forEach((element) {
+                                  controller.filteredSaveBlogModel
+                                      .add(element);
+                                });
+                              }
+                              if (activeIndex == 2) {
+                                controller.filteredMySavedPosts.clear();
+                                controller.mySavedPosts.value?.mySavedPosts
+                                    ?.forEach((element) {
+                                  controller.filteredMySavedPosts
+                                      .add(element);
+                                });
+                              }
+                              Get.back();
+                            },
+                            child:const Text("All" ?? "")),
+                        for (Category data
+                            in (controller.categoryModel.value?.categories ??
+                                []))
                           TextButton(
                               onPressed: () {
                                 if (activeIndex == 0) {
                                   controller.filteredMySavedVlogs.clear();
                                   controller.mySavedVlogs.value?.mySavedVlogs
                                       ?.forEach((element) {
-                                    controller.filteredMySavedVlogs
-                                        .add(element);
+                                    if (element.categoryId == data.id) {
+                                      controller.filteredMySavedVlogs
+                                          .add(element);
+                                    }
                                   });
                                 }
                                 if (activeIndex == 1) {
                                   controller.filteredSaveBlogModel.clear();
                                   controller.saveBlogModel.value?.mySavedBlogs
                                       ?.forEach((element) {
-                                    controller.filteredSaveBlogModel
-                                        .add(element);
+                                    if (element.categoryId == data.id) {
+                                      controller.filteredSaveBlogModel
+                                          .add(element);
+                                    }
                                   });
                                 }
                                 if (activeIndex == 2) {
                                   controller.filteredMySavedPosts.clear();
                                   controller.mySavedPosts.value?.mySavedPosts
                                       ?.forEach((element) {
-                                    controller.filteredMySavedPosts
-                                        .add(element);
+                                    if (element.categoryId == data.id) {
+                                      controller.filteredMySavedPosts
+                                          .add(element);
+                                    }
                                   });
                                 }
                                 Get.back();
+                                // controller.filteredMySavedVlogs.clear();
+                                // controller.mySavedVlogs.value?.mySavedVlogs?.forEach((element) {
+                                //   if (element.categoryId == data.id) {
+                                //     controller.filteredMySavedVlogs.add(element);
+                                //   }
+                                // });
+                                // Get.back();
                               },
-                              child:const Text("All" ?? "")),
-                          for (Category data
-                              in (controller.categoryModel.value?.categories ??
-                                  []))
-                            TextButton(
-                                onPressed: () {
-                                  if (activeIndex == 0) {
-                                    controller.filteredMySavedVlogs.clear();
-                                    controller.mySavedVlogs.value?.mySavedVlogs
-                                        ?.forEach((element) {
-                                      if (element.categoryId == data.id) {
-                                        controller.filteredMySavedVlogs
-                                            .add(element);
-                                      }
-                                    });
-                                  }
-                                  if (activeIndex == 1) {
-                                    controller.filteredSaveBlogModel.clear();
-                                    controller.saveBlogModel.value?.mySavedBlogs
-                                        ?.forEach((element) {
-                                      if (element.categoryId == data.id) {
-                                        controller.filteredSaveBlogModel
-                                            .add(element);
-                                      }
-                                    });
-                                  }
-                                  if (activeIndex == 2) {
-                                    controller.filteredMySavedPosts.clear();
-                                    controller.mySavedPosts.value?.mySavedPosts
-                                        ?.forEach((element) {
-                                      if (element.categoryId == data.id) {
-                                        controller.filteredMySavedPosts
-                                            .add(element);
-                                      }
-                                    });
-                                  }
-                                  Get.back();
-                                  // controller.filteredMySavedVlogs.clear();
-                                  // controller.mySavedVlogs.value?.mySavedVlogs?.forEach((element) {
-                                  //   if (element.categoryId == data.id) {
-                                  //     controller.filteredMySavedVlogs.add(element);
-                                  //   }
-                                  // });
-                                  // Get.back();
-                                },
-                                child: Text(data.name ?? "")),
-                          SizedBox(
-                            height: 5.ah,
-                          ),
-                          SizedBox(
-                            height: 20.ah,
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Image.asset(
-                "assets/icons/filter_icon.png",
-                width: 38.aw,
-              ),
-            )),
-        backgroundColor: const Color(0xffE8E8E8),
-        body: Obx(
-          () => controller.isLoading.value
-              ? const Center(
-                  child: CircularProgressIndicator(strokeWidth: 1,),
-                )
-              : ListView(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
-                    child: Container(
-                      height: 52.ah,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.circular(10.adaptSize)),
-                      child: Padding(
-                        padding: EdgeInsets.all(6.0.adaptSize),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                activeIndex = 0;
-                                setState(() {});
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 112,
-                                decoration: BoxDecoration(
-                                    color: activeIndex == 0
-                                        ? const Color(0xff001649)
-                                        : Colors.transparent,
-                                    borderRadius:
-                                        BorderRadius.circular(9.adaptSize)),
-                                child: Center(
-                                    child: Text(
-                                  'Vlogs'.tr,
-                                  style: TextStyle(
-                                      color: activeIndex == 0
-                                          ? Colors.white
-                                          : Colors.black54),
-                                )),
-                              ),
-                            ),
-                            //
-                            InkWell(
-                              onTap: () {
-                                activeIndex = 1;
-                                setState(() {});
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 112,
-                                decoration: BoxDecoration(
-                                    color: activeIndex == 1
-                                        ? Color(0xff001649)
-                                        : Colors.transparent,
-                                    borderRadius:
-                                        BorderRadius.circular(9.adaptSize)),
-                                child: Center(
-                                    child: Text(
-                                  'Blogs'.tr,
-                                  style: TextStyle(
-                                      color: activeIndex == 1
-                                          ? Colors.white
-                                          : Colors.black54),
-                                )),
-                              ),
-                            ),
-                            //
-                            InkWell(
-                              onTap: () {
-                                activeIndex = 2;
-                                setState(() {});
-                              },
-                              child: Container(
-                                height: 40,
-                                width: 112,
-                                decoration: BoxDecoration(
-                                    color: activeIndex == 2
-                                        ? Color(0xff001649)
-                                        : Colors.transparent,
-                                    borderRadius:
-                                        BorderRadius.circular(9.adaptSize)),
-                                child: Center(
-                                    child: Text(
-                                  'Photos'.tr,
-                                  style: TextStyle(
-                                      color: activeIndex == 2
-                                          ? Colors.white
-                                          : Colors.black54),
-                                )),
-                              ),
-                            ),
-
-                            // Container(height: 40,width: 112,
-                            //   decoration: BoxDecoration(
-                            //       borderRadius: BorderRadius.circular(9.adaptSize)
-                            //   ),
-                            //   child: Center(child: Text('Vlogs'.tr)),),
-                          ],
+                              child: Text(data.name ?? "")),
+                        SizedBox(
+                          height: 5.ah,
                         ),
+                        SizedBox(
+                          height: 20.ah,
+                        )
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            child: Image.asset(
+              "assets/icons/filter_icon.png",
+              width: 38.aw,
+            ),
+          )),
+      backgroundColor: const Color(0xffE8E8E8),
+      body: Obx(
+        () => controller.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(strokeWidth: 1,),
+              )
+            : ListView(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
+                  child: Container(
+                    height: 52.ah,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.circular(10.adaptSize)),
+                    child: Padding(
+                      padding: EdgeInsets.all(6.0.adaptSize),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              activeIndex = 0;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 112,
+                              decoration: BoxDecoration(
+                                  color: activeIndex == 0
+                                      ? const Color(0xff001649)
+                                      : Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.circular(9.adaptSize)),
+                              child: Center(
+                                  child: Text(
+                                'Vlogs'.tr,
+                                style: TextStyle(
+                                    color: activeIndex == 0
+                                        ? Colors.white
+                                        : Colors.black54),
+                              )),
+                            ),
+                          ),
+                          //
+                          InkWell(
+                            onTap: () {
+                              activeIndex = 1;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 112,
+                              decoration: BoxDecoration(
+                                  color: activeIndex == 1
+                                      ? Color(0xff001649)
+                                      : Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.circular(9.adaptSize)),
+                              child: Center(
+                                  child: Text(
+                                'Blogs'.tr,
+                                style: TextStyle(
+                                    color: activeIndex == 1
+                                        ? Colors.white
+                                        : Colors.black54),
+                              )),
+                            ),
+                          ),
+                          //
+                          InkWell(
+                            onTap: () {
+                              activeIndex = 2;
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 112,
+                              decoration: BoxDecoration(
+                                  color: activeIndex == 2
+                                      ? Color(0xff001649)
+                                      : Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.circular(9.adaptSize)),
+                              child: Center(
+                                  child: Text(
+                                'Photos'.tr,
+                                style: TextStyle(
+                                    color: activeIndex == 2
+                                        ? Colors.white
+                                        : Colors.black54),
+                              )),
+                            ),
+                          ),
+
+                          // Container(height: 40,width: 112,
+                          //   decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(9.adaptSize)
+                          //   ),
+                          //   child: Center(child: Text('Vlogs'.tr)),),
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.ah),
-                  Column(
-                    children: [
-                      activeIndex == 0 ? _vlogs() : SizedBox(),
-                      activeIndex == 1 ? _blogs() : SizedBox(),
-                      activeIndex == 2 ? _photos() : SizedBox(),
-                    ],
-                  ),
-                  SizedBox(height: 80.ah),
-                ],
-              ),
-        ),
+                ),
+                SizedBox(height: 20.ah),
+                Column(
+                  children: [
+                    activeIndex == 0 ? _vlogs() : SizedBox(),
+                    activeIndex == 1 ? _blogs() : SizedBox(),
+                    activeIndex == 2 ? _photos() : SizedBox(),
+                  ],
+                ),
+                SizedBox(height: 80.ah),
+              ],
+            ),
       ),
     );
   }

@@ -387,6 +387,7 @@ class ApiRepository {
     return PostSingleViewModel();
   }
 
+  //1234567890
   static Future<AllFriendsModel> getFriends() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "home/friends",
@@ -396,6 +397,8 @@ class ApiRepository {
     }
     return AllFriendsModel();
   }
+
+
 
   static Future<CreateChatModel> createChat({required String userId}) async {
     Map<String, dynamic>? response =
@@ -750,7 +753,9 @@ class ApiRepository {
       if( postType.name == "post") {isLinkIdd = 1;}
       if(postType.name ==  "vlog") {isLinkIdd = 3;}
       if(postType.name ==  "blog") {isLinkIdd = 2;}
-    final response = await ApiClient().postRequest(endPoint: "message/${chatId}", body: {
+    final response = await ApiClient().postRequest(
+        endPoint: "message/${chatId}",
+        body: {
       "content": message,
       "isLink": isLinkIdd,
       "isLinkId": isLinkId,
@@ -1104,6 +1109,22 @@ class ApiRepository {
   }) async {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(
       endPoint: "post/$postId",
+      body: {},
+    );
+    if (response != null) {
+      AppDialog.taostMessage("${response["message"]}");
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> deleteNotificationAll({
+    required String postId,
+  }) async {
+    Map<String, dynamic>? response = await ApiClient().deleteRequest(
+      endPoint: "notification/deleteAll",
       body: {},
     );
     if (response != null) {

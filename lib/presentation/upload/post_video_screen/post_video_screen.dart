@@ -42,7 +42,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Video post'.tr,
+          'create_vlog'.tr,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
@@ -73,7 +73,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.black12,
                       ),
-                      child: Center(child: const Text("Please select video")),
+                      child: Center(child:  Text("select_video".tr)),
                     ):InkWell(
                       onTap: () {
                         setState(() {
@@ -117,7 +117,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  'Title'.tr,
+                  'title'.tr,
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -129,7 +129,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
               ),
               CustomTextFormField(
                 context: context,
-                hintText: "Enter title",
+                hintText: "enter_title".tr,
                 controller: controller.titleController,
                 validator: Validator.notEmpty,
               ),
@@ -151,7 +151,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
               ),
               CustomTextFormField(
                 context: context,
-                hintText: "Description",
+                hintText: "enterdescription".tr,
                 controller: controller.desController,
                 maxLines: 4,
                 validator: Validator.notEmpty,

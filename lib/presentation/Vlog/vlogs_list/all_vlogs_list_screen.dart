@@ -18,7 +18,7 @@ class _AllVlogScreenState extends State<AllVlogScreen> {
   @override
   Widget build(BuildContext contexttt) {
     return Scaffold(
-      appBar: appBarPrimary(title: 'Trendingvloggs'.tr),
+      appBar: appBarPrimary(title: 'Trendingvlog'.tr),
       body: Obx(() => controller.isLoading.value
           ? const Center(
               child: CircularProgressIndicator(strokeWidth: 1,),

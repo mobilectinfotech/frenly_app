@@ -46,56 +46,58 @@ PreferredSizeWidget customAppbar(
 
   return PreferredSize(
       preferredSize: Size.fromHeight(200.ah), // preferred height for the app bar
-      child: SizedBox(
-        height: 70.ah,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 10.aw,
-            ),
-            back == false
-                ? Container()
-                : InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SizedBox(
-                        height: 36.ah,
-                        width: 40.ah,
-                        child: const Icon(Icons.arrow_back_outlined)),
-                  ),
-            SizedBox(
-              width: 16.aw,
-            ),
-            Text(
-              title ?? "caption",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: const Color(0xFF111111),
-                fontSize: 32.adaptSize,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w700,
+      child: SafeArea(
+        child: SizedBox(
+          height: 70.ah,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 10.aw,
               ),
-            ),
-            Spacer(),
-            if (showImage ?? false)
-              Obx(
-                () => CustomImageView(
-                  width: 38.adaptSize,
-                  height: 38.adaptSize,
-                  radius: BorderRadius.circular(36),
-                  fit: BoxFit.cover,
-                  imagePath:null,
+              back == false
+                  ? Container()
+                  : InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: SizedBox(
+                          height: 36.ah,
+                          width: 40.ah,
+                          child: const Icon(Icons.arrow_back_outlined)),
+                    ),
+              SizedBox(
+                width: 16.aw,
+              ),
+              Text(
+                title ?? "caption",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: const Color(0xFF111111),
+                  fontSize: 32.adaptSize,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-            if (rightSideWidget != null) rightSideWidget,
-            SizedBox(
-              width: 16.aw,
-            ),
-          ],
+              Spacer(),
+              if (showImage ?? false)
+                Obx(
+                  () => CustomImageView(
+                    width: 38.adaptSize,
+                    height: 38.adaptSize,
+                    radius: BorderRadius.circular(36),
+                    fit: BoxFit.cover,
+                    imagePath:null,
+                  ),
+                ),
+              if (rightSideWidget != null) rightSideWidget,
+              SizedBox(
+                width: 16.aw,
+              ),
+            ],
+          ),
         ),
       ));
 }

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/Widgets/custom_vlog_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/user_profile_screen/user_profile_controller.dart';
+import 'package:frenly_app/presentation/user_profile_screen/user_profile_model.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../Widgets/custom_blog_card.dart';
@@ -14,50 +15,35 @@ import '../user_follwers/user_followers_screen.dart';
 import '../user_follwings_page/user_followings_screen.dart';
 import '../vlog_full_view/vlog_full_view.dart';
 
-//
-// class UserProfileScreen extends StatefulWidget {
-//   final String userId;
-//
-//   const UserProfileScreen({super.key, required this.userId});
-//
-//   @override
-//   State<UserProfileScreen> createState() => _UserProfileScreenState();
-// }
-//
-// class _UserProfileScreenState extends State<UserProfileScreen> {
-//   UserProfileController controller = Get.put(UserProfileController());
-//
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     controller.getUserById(userId: widget.userId);
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-//         backgroundColor: Color(0xffE8E8E8), body: asdklfjnlkasd());
-//   }
-// }
 
 class UserProfileScreen extends StatefulWidget {
   final String userId;
+  final bool ? isOwnn;
 
-  const UserProfileScreen({super.key, required this.userId});
+  const UserProfileScreen({super.key, required this.userId, this.isOwnn});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  UserProfileController controller = Get.put(UserProfileController());
+
+  GetUserByIdModel getUserByIdModel = GetUserByIdModel();
+
+  RxBool isLoadingUserById =true.obs;
+  RxBool isLoadingGetProfile =true.obs;
+
+  getUserById({required String userId}) async {
+    isLoadingUserById.value =true;
+    getUserByIdModel =await ApiRepository.getUserById(userId: userId);
+    isLoadingUserById.value =false;
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.getUserById(userId: widget.userId);
+    getUserById(userId: widget.userId);
   }
 
   int activeIndex = 0;
@@ -66,7 +52,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () => controller.isLoading.value
+        () => isLoadingUserById.value
             ? const Center(
                 child: CircularProgressIndicator(strokeWidth: 1,),
               )
@@ -77,12 +63,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 SizedBox(height: 10.ah),
                 bioTexts(),
                 SizedBox(height: 20.ah),
-                ((controller.getUserByIdModel.user?.isPrivate == true &&
-                            controller.getUserByIdModel.user!.followState ==
+                ((getUserByIdModel.user?.isPrivate == true &&
+                            getUserByIdModel.user!.followState ==
                                 0) ||
-                        (controller.getUserByIdModel.user?.isPrivate ==
+                        (getUserByIdModel.user?.isPrivate ==
                                 true &&
-                            controller.getUserByIdModel.user!.followState ==
+                            getUserByIdModel.user!.followState ==
                                 1))
                     ? Container(
                         child: Column(
@@ -119,8 +105,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         SizedBox(
                                           height: 6.ah,
                                         ),
-                                        Text(
-                                          'This Account is Private',
+                                        Text('this_account'.tr,
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 14.09,
@@ -134,7 +119,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         Opacity(
                                           opacity: 0.50,
                                           child: Text(
-                                            'Follow this account to see their photos \nand videos.',
+                                            'follow this account'.tr,
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 14.09,
@@ -260,7 +245,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Widget backAndSettingIconRow() {
     return Padding(
-      padding: EdgeInsets.only(left: 20.0.aw, right: 20.aw, top: 10.ah),
+      padding: EdgeInsets.only(left: 10.0.aw, right: 10.aw, top: 0.ah),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -271,15 +256,38 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               },
               child: Image.asset('assets/image/arrow.png',
                   height: 20.aw, width: 20.aw)),
-          SizedBox(
-              height: 20.aw,
-              width: 20.aw,
-              child: InkWell(
-                  onTap: () {
-                    _bottomSheetWidget2(context001: context, vlogId: '2');
-                    // ApiRepository.blockUser(userId: "${ controller.getUserByIdModel.user?.id}");
+          Container(
+            child: InkWell(
+                onTap: () {
+                  //_bottomSheetWidget2(context001: context, vlogId: '2');
+                   ApiRepository.blockUser(userId: "${ getUserByIdModel.user?.id}");
+                },
+                child: PopupMenuButton<String>(
+                  surfaceTintColor: Colors.white,
+                  color: Colors.white,
+                  icon: SvgPicture.asset('assets/icons/more option.svg',height: 23,fit: BoxFit.cover,),
+                  onSelected: (String result) async{
+                    // Handle the selection from the menu
+                    print(result);
+                    if(result=="1"){
+                      ApiRepository.blockUser(userId: "${ getUserByIdModel.user?.id}");
+                      Get.back();
+                      Get.back();
+                      // Get.to(()=> BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
+                    }
+
                   },
-                  child: const Icon(Icons.more_vert_outlined))),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                     PopupMenuItem<String>(
+                      value: '1',
+                      child: Text('block_this'.tr),
+                    ),
+
+                  ],
+                )
+                //const Icon(Icons.more_vert_outlined)
+            ),
+          ),
         ],
       ),
     );
@@ -299,7 +307,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   bottomRight: Radius.circular(25.adaptSize),
                   bottomLeft: Radius.circular(25.adaptSize)),
               fit: BoxFit.cover,
-              imagePath: controller.getUserByIdModel.user?.coverPhotoUrl,
+              imagePath: getUserByIdModel.user?.coverPhotoUrl,
             ),
           ),
           Positioned(
@@ -315,7 +323,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   width: 140.ah,
                   height: 140.ah,
                   fit: BoxFit.cover,
-                  imagePath: controller.getUserByIdModel.user?.avatarUrl,
+                  imagePath: getUserByIdModel.user?.avatarUrl,
                   radius: BorderRadius.circular(100),
                 ),
               ),
@@ -345,7 +353,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${controller.getUserByIdModel.user?.fullName?.trim()}'
+                    '${getUserByIdModel.user?.fullName?.trim()}'
                         .capitalizeFirst!,
                     style: TextStyle(
                         color: Colors.black,
@@ -353,7 +361,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         fontSize: 25.fSize),
                   ),
                   Text(
-                    controller.getUserByIdModel.user?.handle?.trim() ?? "",
+                    getUserByIdModel.user?.handle?.trim() ?? "",
                     style: TextStyle(
                         color: Colors.black54,
                         fontWeight: FontWeight.w700,
@@ -365,16 +373,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 onTap: () {
                   setState(
                     () {
-                      if (controller.getUserByIdModel.user?.followState == 0) {
-                        controller.getUserByIdModel.user?.followState = 1;
+                      if (getUserByIdModel.user?.followState == 0) {
+                        getUserByIdModel.user?.followState = 1;
                         setState(() {});
                         ApiRepository.follow(
-                            userId: "${controller.getUserByIdModel.user!.id!}");
+                            userId: "${getUserByIdModel.user!.id!}");
                       } else {
-                        controller.getUserByIdModel.user?.followState = 0;
+                        getUserByIdModel.user?.followState = 0;
                         setState(() {});
                         ApiRepository.unfollow(
-                            userId: "${controller.getUserByIdModel.user!.id!}");
+                            userId: "${getUserByIdModel.user!.id!}");
                       }
                     },
                   );
@@ -388,13 +396,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      controller.getUserByIdModel.user?.followState == 1
-                          ? controller.getUserByIdModel.user?.isPrivate == false
-                              ? "Following"
+                      getUserByIdModel.user?.followState == 1
+                          ? getUserByIdModel.user?.isPrivate == false
+                              ? "Following".tr
                               : "Requested".tr
-                          : controller.getUserByIdModel.user?.followState == 0
+                          : getUserByIdModel.user?.followState == 0
                               ? "Follow".tr
-                              : "Following",
+                              : "Following".tr,
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
@@ -406,9 +414,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ],
           ),
           Text(
-            "${controller.getUserByIdModel.user?.bio}${controller.getUserByIdModel.user?.isPrivate} "
-                    .capitalizeFirst ??
-                "",
+            (getUserByIdModel.user?.bio??'').capitalizeFirst ?? "",
             style: TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.w400,
@@ -424,7 +430,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '${controller.getUserByIdModel.user?.numberOfPosts}',
+                    '${getUserByIdModel.user?.numberOfPosts}',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -443,15 +449,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
               InkWell(
                 onTap: () {
-                  if (controller.getUserByIdModel.user!.isPrivate!) {
-                    if (controller.getUserByIdModel.user!.followState == 2) {
+                  if (getUserByIdModel.user!.isPrivate!) {
+                    if (getUserByIdModel.user!.followState == 2) {
                       Get.to(() => UserFollowersScreen(
-                            userId: '${controller.getUserByIdModel.user!.id}',
+                            userId: '${getUserByIdModel.user!.id}',
                           ));
                     }
                   } else {
                     Get.to(() => UserFollowersScreen(
-                          userId: '${controller.getUserByIdModel.user!.id}',
+                          userId: '${getUserByIdModel.user!.id}',
                         ));
                   }
                 },
@@ -460,7 +466,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '${controller.getUserByIdModel.user?.numberOfFollower}',
+                      '${getUserByIdModel.user?.numberOfFollower}',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
@@ -481,15 +487,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
               InkWell(
                 onTap: () {
-                  if (controller.getUserByIdModel.user!.isPrivate!) {
-                    if (controller.getUserByIdModel.user!.followState == 2) {
+                  if (getUserByIdModel.user!.isPrivate!) {
+                    if (getUserByIdModel.user!.followState == 2) {
                       Get.to(() => UserFollowingsScreen(
-                            userId: '${controller.getUserByIdModel.user!.id}',
+                            userId: '${getUserByIdModel.user!.id}',
                           ));
                     }
                   } else {
                     Get.to(() => UserFollowingsScreen(
-                          userId: '${controller.getUserByIdModel.user!.id}',
+                          userId: '${getUserByIdModel.user!.id}',
                         ));
                   }
                 },
@@ -498,7 +504,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '${controller.getUserByIdModel.user?.numberOfFollowing}',
+                      '${getUserByIdModel.user?.numberOfFollowing}',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
@@ -540,20 +546,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
-          itemCount: controller.getUserByIdModel.user!.vlogs!.length,
+          itemCount: getUserByIdModel.user!.vlogs!.length,
           padding: const EdgeInsets.only(bottom: 10),
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
                 Get.to(() => VlogFullViewNewScreen(
                       videoUrl:
-                          '${controller.getUserByIdModel.user!.vlogs![index].videoUrl}',
-                      vlogId: controller.getUserByIdModel.user!.vlogs![index].id
+                          '${getUserByIdModel.user!.vlogs![index].videoUrl}',
+                      vlogId: getUserByIdModel.user!.vlogs![index].id
                           .toString(),
                     ));
               },
               child: CustomVlogCard(
-                vlog: controller.getUserByIdModel.user!.vlogs![index],
+                vlog: getUserByIdModel.user!.vlogs![index],
               ),
             );
           },
@@ -570,13 +576,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        itemCount: controller.getUserByIdModel.user!.blogs!.length,
+        itemCount: getUserByIdModel.user!.blogs!.length,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: (context, index) {
           String jsonString =
-              "${controller.getUserByIdModel.user!.blogs![index].tags}";
+              "${getUserByIdModel.user!.blogs![index].tags}";
           List<String> tagsList = json.decode(jsonString).cast<String>();
-          return CustomBlogCard(blog: controller.getUserByIdModel.user!.blogs![index], tagsList: tagsList,);
+          return CustomBlogCard(blog: getUserByIdModel.user!.blogs![index], tagsList: tagsList,);
 
         },
       ),
@@ -602,18 +608,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
         children: List.generate(
-          controller.getUserByIdModel.user!.posts!.length,
+          getUserByIdModel.user!.posts!.length,
               (index) => StaggeredGridTile.count(
             crossAxisCellCount: cont[index % 9],
             mainAxisCellCount: cont[index % 9],
             child: Center(
                 child: InkWell(
                   onTap: () {
-                    Get.to(()=>PostFullViewScreen( loadPostByid: "${controller.getUserByIdModel.user?.posts![index]}", ));
+                    Get.to(()=>PostFullViewScreen( loadPostByid: "${getUserByIdModel.user?.posts![index].id}", ));
                   },
                   child: CustomImageView(
                     imagePath:
-                    controller.getUserByIdModel.user?.posts![index].imageUrl,
+                    getUserByIdModel.user?.posts![index].imageUrl,
                     fit: BoxFit.cover,
                     radius: BorderRadius.circular(10),
                   ),
@@ -654,7 +660,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               onTap: () async {
                                 await ApiRepository.blockUser(
                                     userId:
-                                        "${controller.getUserByIdModel.user?.id}");
+                                        "${getUserByIdModel.user?.id}");
                                 Get.back();
                               },
                               child: Row(

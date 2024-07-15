@@ -31,7 +31,7 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarPrimary( title: "Followings".tr,),
+        appBar: appBarPrimary( title: "Following".tr,),
         body: Obx(
     () => controller.isLoading.value
         ? const Center(

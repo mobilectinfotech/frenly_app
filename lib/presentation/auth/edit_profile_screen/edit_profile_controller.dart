@@ -32,10 +32,6 @@ class EditProfileController extends GetxController {
   }
 
   editProfile() async {
-    if (bioController.text.trim().isEmpty) {
-      Get.snackbar("Warning", "Bio can't be empty");
-      return;
-    }
     bool isUpdate = await ApiRepository.editProfile(
         bio: bioController.text,
         coverPhotoPath: coverPhoto?.path,

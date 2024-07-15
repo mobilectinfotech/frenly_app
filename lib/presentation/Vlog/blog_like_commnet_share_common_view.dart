@@ -48,7 +48,6 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                       widget.blog.alreadyLiked = false;
                       widget.blog.numberOfLikes =
                           widget.blog.numberOfLikes! - 1;
-
                       setState(() {});
                       bool isLiked = await ApiRepository.blogLike(
                           userId: "${widget.blog.id}");
@@ -59,7 +58,9 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                           : 'assets/image/love_true_white.svg',
                       width: 21.aw,
                       height: 21.aw,
-                    )),
+                    )
+
+            ),
             SizedBox(
               height: 4,
             ),
@@ -97,10 +98,8 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
               ),
               Text(
                 "${widget.blog.numberOfComments}",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12),
+                style: TextStyle(color: Colors.white,
+                    fontWeight: FontWeight.w500, fontSize: 12),
               )
             ],
           ),
@@ -151,13 +150,12 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                         id: "${widget.blog.id ?? 0}",
                         postType: PostType.blog,
                       );
-                      print("$name ==>dfsdfsfsfsf ");
+                      print("$name ==>viratkohli ");
                       if (name) {
                         widget.blog.numberOfSaves =
                             widget.blog.numberOfSaves! + 1;
                         widget.blog.alreadySaved = true;
                       }
-
                       setState(() {});
                     },
                     child: CustomImageView(
@@ -192,6 +190,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
               "${widget.blog?.numberOfSaves}",
               style: TextStyle(color: Colors.white),
             )
+
             // widget.blog.alreadySaved == false
             //     ? InkWell(
             //         onTap: () async {
@@ -258,6 +257,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
             //       fontWeight: FontWeight.w500,
             //       fontSize: 12),
             // )
+
           ],
         ),
       ],

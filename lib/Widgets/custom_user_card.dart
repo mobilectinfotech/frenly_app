@@ -36,7 +36,7 @@ class _CustomUserCardState extends State<CustomUserCard> {
             radius: BorderRadius.circular(100.ah),
             height: 100.ah,
             width: 100.ah,
-            imagePath: widget.users.coverPhotoUrl,
+            imagePath: widget.users.avatarUrl,
             fit: BoxFit.cover,
           ),
           SizedBox(height: 4.ah),
@@ -93,7 +93,7 @@ class _CustomUserCardState extends State<CustomUserCard> {
               ),
               child: Center(
                 child: Text(
-                  widget.users.followState == 1  ? widget.users.isPrivate == false ? "Following"  : "Requested".tr : widget.users.followState == 0  ? "Follow".tr  : "Following",
+                  widget.users.followState == 1  ? widget.users.isPrivate == false ? "Following".tr  : "Requested".tr : widget.users.followState == 0  ? "Follow".tr  : "Following".tr,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,

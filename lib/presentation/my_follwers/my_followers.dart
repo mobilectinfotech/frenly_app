@@ -32,7 +32,7 @@ class _MyFollowersScreenState extends State<MyFollowersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: appBarPrimary(title: "Followers"),
+       appBar: appBarPrimary(title: "Followers".tr),
       // appBar: customAppbar(
       //   context: context,
       //   title: "Followers".tr,

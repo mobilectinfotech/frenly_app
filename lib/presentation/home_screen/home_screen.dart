@@ -31,6 +31,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeController controller = Get.put(HomeController());
   ShareController notUse = Get.put(ShareController(),permanent: true);
+  SaveController notuse1 = Get.put(SaveController(),permanent: true);
 
 
 
@@ -50,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:customAppbarHomepage(context: context,title: "Foru".tr ,onTap: () {
+        appBar:customAppbarHomepage(context: context,title: "Foru".tr ,
+          onTap: () {
           Get.to(()=>NotificationScreen());
         },),
         body: Padding(
@@ -74,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: 10.ah),
                         liveUserByCountry(),
                         SizedBox(height: 20.ah),
-                        titleViewAll(title: 'Trending'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
+                        titleViewAll(title: 'Trendingvlog'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
                         SizedBox(height: 16.ah,),
                         trending(),
                         SizedBox(height: 20.ah),
@@ -200,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 176.ah,
-      child:   controller.homeModel.usersInCities?.length == 0 ? const Center(child:Text("No active user found"),): ListView.builder(
+      child:   controller.homeModel.usersInCities?.length == 0 ?  Center(child:Text("no_active_user_found".tr),): ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: controller.homeModel.usersInCities?.length,

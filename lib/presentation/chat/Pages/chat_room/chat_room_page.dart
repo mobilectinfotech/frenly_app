@@ -91,7 +91,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   void dispose() {
-    socket.disconnect(); // Disconnect the socket when the widget is disposed
     super.dispose();
   }
 
@@ -305,7 +304,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
   InputDecoration get decoration => InputDecoration(
-        hintText: "Message",
+        hintText: "Messages".tr,
         hintStyle: TextStyle(
           color: Color(0xFFA8A8A8),
           fontSize: 20.adaptSize,

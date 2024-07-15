@@ -98,13 +98,11 @@ class _UserFollowersScreenState extends State<UserFollowersScreen> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserProfileScreen(
-                                      userId:
-                                          '${followersModel.followers?[index].id}',
-                                    )));
+                        Get.to(()=>UserProfileScreen(
+                          userId:
+                          '${followersModel.followers?[index].id}',
+                        ));
+
                       },
                       child:  CustomUserCard(users: followersModel.followers![index],),
                     );

@@ -98,6 +98,7 @@ class CustomVlogCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
+
                               Text(
                                 '${vlog.numberOfViews} views  ',
                                 style: TextStyle(
@@ -106,6 +107,7 @@ class CustomVlogCard extends StatelessWidget {
                                   fontSize: 11.fSize,
                                 ),
                               ),
+
                               Text(calculateTimeDifference(vlog.createdAt!.toString()),
                                 style: TextStyle(
                                   color: const Color(0xffFFFFFF),
@@ -113,6 +115,7 @@ class CustomVlogCard extends StatelessWidget {
                                   fontSize: 11.fSize,
                                 ),
                               ),
+
                               const Spacer(),
                               VlogLikeCommentsShareView(vlog: vlog,),
                             ],

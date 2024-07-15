@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/auth/signup_screen/signup_screen.dart';
+import 'package:get/get.dart';
  import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'widgets/onboard_first.dart';
 import 'widgets/onboard_second.dart';
@@ -71,9 +72,8 @@ class _OnBoardState extends State<OnBoard> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(11),
                       )),
-                  child:Text("Join",style: TextStyle(color: Colors.white),),
-                ),
-                SizedBox(height: 50,)
+                  child:Text("Join".tr,style: TextStyle(color: Colors.white),)),
+                SizedBox(height: 50)
 
               ],
             ),
