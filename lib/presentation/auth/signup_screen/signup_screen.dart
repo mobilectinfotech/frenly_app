@@ -104,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
 
                             SizedBox(height: 20.ah),
-                            names("Username"),
+                            names("user_name".tr),
                             SizedBox(height: 10.ah,),
 
                             CustomTextFormField(

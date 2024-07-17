@@ -128,8 +128,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       appBar: AppBar(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
-        title: Text(
-          'Notifications'.tr,
+        title: Text('Notifications'.tr,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w700,
@@ -142,8 +141,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             },
             child: Padding(
               padding: EdgeInsets.only(right: 15.h),
-              child: Text(
-                'clear_all'.tr,
+              child: Text('Clearall'.tr,
                 style: TextStyle(
                     color: Color(0xFF001649),
                     fontWeight: FontWeight.w700,

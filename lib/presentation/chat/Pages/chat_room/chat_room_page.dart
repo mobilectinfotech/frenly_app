@@ -108,7 +108,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       context: context,
                       handle: lastSeenModel?.data?.isLastSeenAllowed == false
                           ? ""
-                          : lastSeenModel!.data?.lastSeen == null
+                          : lastSeenModel?.data?.lastSeen == null
                               ? "Online"
                               : calculateTimeDifference(
                                   "${lastSeenModel!.data?.lastSeen}"),

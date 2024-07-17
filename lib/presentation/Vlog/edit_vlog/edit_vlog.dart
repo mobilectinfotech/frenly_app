@@ -55,7 +55,7 @@ class _EditVlogScreenState extends State<EditVlogScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Video post'.tr,
+          'edit_vlog'.tr,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
@@ -158,7 +158,7 @@ class _EditVlogScreenState extends State<EditVlogScreen> {
               ),
               CustomTextFormField(
                 context: context,
-                hintText: "Enter title",
+                hintText: "enter_title".tr,
                 controller: controller.titleController,
                 validator: Validator.notEmpty,
               ),
@@ -180,7 +180,7 @@ class _EditVlogScreenState extends State<EditVlogScreen> {
               ),
               CustomTextFormField(
                 context: context,
-                hintText: "Description",
+                hintText: "enterdescription".tr,
                 controller: controller.desController,
                 maxLines: 4,
                 validator: Validator.notEmpty,
@@ -191,7 +191,7 @@ class _EditVlogScreenState extends State<EditVlogScreen> {
               Center(
                 child: Obx(
                       ()=> CustomPrimaryBtn1(
-                    title: 'Update Vlog'.tr,
+                    title: 'update_vlog'.tr,
                     isLoading: controller.isLoading.value,
                     onTap: () {
                       if (_formKeyLogin.currentState!.validate()) {

@@ -51,7 +51,8 @@ class OwnMessageCard extends StatelessWidget {
                   onTap: () async {
                     if(message.isLink==3){
                       if(message.isLinkId!=null){
-                        Get.to(()=>VlogFullViewNewScreen(videoUrl: "${message.isUrl}", vlogId: "${message.isLinkId}"));
+                        Get.to(()=>VlogFullViewNewScreen(videoUrl: "${message.isUrl}",
+                            vlogId: "${message.isLinkId}"));
                       }else{
                         AppDialog.taostMessage("Vlog not Found");
                       }

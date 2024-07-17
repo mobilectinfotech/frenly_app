@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'DiscoverUsersModel.dart';
+
 GetUserByCityModel getUserByCityModelFromJson(String str) => GetUserByCityModel.fromJson(json.decode(str));
 
 String getUserByCityModelToJson(GetUserByCityModel data) => json.encode(data.toJson());
@@ -12,7 +14,7 @@ class GetUserByCityModel {
     int? status;
     String? message;
     bool? success;
-    List<User>? users;
+    List<DiscoverUser>? users;
     int? userCount;
 
     GetUserByCityModel({
@@ -27,7 +29,7 @@ class GetUserByCityModel {
         status: json["status"],
         message: json["message"],
         success: json["success"],
-        users: json["users"] == null ? [] : List<User>.from(json["users"]!.map((x) => User.fromJson(x))),
+        users: json["users"] == null ? [] : List<DiscoverUser>.from(json["users"]!.map((x) => DiscoverUser.fromJson(x))),
         userCount: json["userCount"],
     );
 
@@ -40,38 +42,3 @@ class GetUserByCityModel {
     };
 }
 
-class User {
-    int? id;
-    String? avatarUrl;
-    String? fullName;
-    String? handle;
-    bool? isFollowed;
-    int? numberOfFollower;
-
-    User({
-        this.id,
-        this.avatarUrl,
-        this.fullName,
-        this.handle,
-        this.isFollowed,
-        this.numberOfFollower,
-    });
-
-    factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        avatarUrl: json["avatar_url"],
-        fullName: json["full_name"],
-        handle: json["handle"],
-        isFollowed: json["isFollowed"],
-        numberOfFollower: json["numberOfFollower"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "avatar_url": avatarUrl,
-        "full_name": fullName,
-        "handle": handle,
-        "isFollowed": isFollowed,
-        "numberOfFollower": numberOfFollower,
-    };
-}

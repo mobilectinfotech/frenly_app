@@ -117,7 +117,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         ),
                         child: Center(child: Padding(
                           padding: const EdgeInsets.only(top: 4.0,bottom: 4,left: 9,right: 9),
-                          child: Text("${controller.chatsModel.chats![index].unreadCount}" , style: TextStyle(fontSize: 12.adaptSize,color: Colors.white),),
+                          child: Text("${controller.chatsModel.chats![index].unreadCount}" ,
+                            style: TextStyle(fontSize: 12.adaptSize,color: Colors.white),),
                         )),
                       ),
                     ],

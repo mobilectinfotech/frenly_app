@@ -39,6 +39,7 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                 radius: BorderRadius.circular(10),
                 imagePath:widget.blog.imageUrl,
               ),
+
             SizedBox(width: 10.aw),
 
             SizedBox(

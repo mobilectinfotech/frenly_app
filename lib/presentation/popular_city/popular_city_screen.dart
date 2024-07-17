@@ -113,7 +113,7 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
                           ),
                         ),
                         SizedBox(width:10.aw,),
-                        Text('${controller.liveUserModel.activeFriends![index].userCount}\nactives'.tr,
+                        Text('${controller.liveUserModel.activeFriends![index].userCount}\n${"active".tr}',
                           style: TextStyle(
                             color: HexColor('#111111'),fontWeight: FontWeight.w600,fontSize:12.3.fSize,
                           ),

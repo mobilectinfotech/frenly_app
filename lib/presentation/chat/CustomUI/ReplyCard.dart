@@ -63,7 +63,6 @@ class ReplyCard extends StatelessWidget {
                     if(message.isLinkId!=null){
                       PostSingleViewModel post = await  ApiRepository.getPostsByID(id: "${message.isLinkId}");
                       Get.to(()=>PostFullViewScreen(  loadPostByid: "${post.post?.id}",));
-
                     }else{
                       AppDialog.taostMessage("Photo not Found");
                     }
@@ -74,19 +73,20 @@ class ReplyCard extends StatelessWidget {
                   children: [
                     message.isLink== 0 ? const SizedBox() : Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: CustomImageView(imagePath: "assets/image/share.png",color: Colors.white,height: 20,),
+                      child:
+                      //Container()
+                      CustomImageView(imagePath: "assets/image/share.png",color: Colors.white,height: 20,),
                     ),
                     ConstrainedBox(
                         constraints: BoxConstraints(
                           maxWidth: MediaQuery.of(context).size.width*.70, // Set the maximum width here
                         ),
-                      child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ?   Colors.white :  Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
+                      child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ? Colors.white : Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
                       )
                     ),
                   ],
                 ),
               ),
-
             ),
             SizedBox(height: 3.v),
             Opacity(
@@ -94,9 +94,7 @@ class ReplyCard extends StatelessWidget {
                 child: Padding(
                     padding: EdgeInsets.only(left: 10.h),
                     child: Text("  ${DateFormat('hh:mm a').format(createdAt ?? DateTime.now())}",
-                      style: TextStyle(fontSize: 12.adaptSize),
-                    )
-
+                      style: TextStyle(fontSize: 12.adaptSize))
                 )),
             SizedBox(height: 10.v),
 

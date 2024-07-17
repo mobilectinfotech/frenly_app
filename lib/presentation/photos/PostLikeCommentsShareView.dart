@@ -37,6 +37,8 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
                   ? InkWell(
                       onTap: () async {
                         widget.post?.alreadyLiked = true;
+                        widget.post?.numberOfLikes =  (widget.post!.numberOfLikes! + 1);
+
                         setState(() {});
                         bool isLiked = await ApiRepository.postLike(
                             userId: "${widget.post?.id}");
@@ -52,6 +54,7 @@ class _PostLikeCommentsShareViewState extends State<PostLikeCommentsShareView> {
                   : InkWell(
                       onTap: () async {
                         widget.post?.alreadyLiked = false;
+                        widget.post?.numberOfLikes =  (widget.post!.numberOfLikes! - 1);
                         setState(() {});
                         bool isLiked = await ApiRepository.postLike(
                             userId: "${widget.post?.id}");

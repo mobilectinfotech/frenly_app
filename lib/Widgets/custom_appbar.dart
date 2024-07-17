@@ -11,7 +11,7 @@ import '../presentation/chat/Pages/all_frined/all_friends_page.dart';
 
 
 
-AppBar appBarPrimary({String ? title}){
+AppBar appBarPrimary({String ? title,Function()? onTapLeading}){
   return AppBar(
     elevation: 0,
     centerTitle: false,
@@ -25,6 +25,19 @@ AppBar appBarPrimary({String ? title}){
           fontWeight: FontWeight.w700,
         ),
       ),
+    actions:[
+      if(onTapLeading != null)
+      InkWell(
+        onTap: onTapLeading,
+        child: Container(
+        height: 40,
+        width: 40,
+        child: Icon(Icons.more_vert_sharp),
+            ),
+      ),
+      SizedBox(width: 20,),
+
+    ]
   );
 }
 

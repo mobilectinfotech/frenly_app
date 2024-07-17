@@ -92,8 +92,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                           mainAxisAlignment: MainAxisAlignment.center,
 
                           children: [
-                            Text(
-                              "Category",
+                            Text("categoryy".tr,
                               style: GoogleFonts.roboto().copyWith(
                                   fontSize: 22.fSize,
                                   fontWeight: FontWeight.w700,
@@ -129,7 +128,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                               }
                               Get.back();
                             },
-                            child:const Text("All" ?? "")),
+                            child: Text("all".tr ?? "")),
                         for (Category data
                             in (controller.categoryModel.value?.categories ??
                                 []))
@@ -187,10 +186,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                 },
               );
             },
-            child: Image.asset(
-              "assets/icons/filter_icon.png",
-              width: 38.aw,
-            ),
+            child: Image.asset("assets/icons/filter_icon.png", width: 38.aw),
           )),
       backgroundColor: const Color(0xffE8E8E8),
       body: Obx(
@@ -327,7 +323,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
             ? Center(
           child: Padding(
             padding: EdgeInsets.only(top: 240.0.ah),
-            child:const Text("No data found"),
+            child: Text("no_data_found".tr),
           ),
         )
             : Obx(
@@ -353,10 +349,6 @@ class _AllSavedScreenState extends State<AllSavedScreen>
     });
   }
 
-
-
-//  Blogs
-
   Widget _blogs() {
     return SizedBox(
       width: double.infinity,
@@ -374,7 +366,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                 ? Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 240.0.ah),
-                child: const Text("No data found"),
+                child:  Text("no_data_found".tr),
               ),
             )
                 : ListView.builder(
@@ -438,7 +430,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                   ? Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 240.0.ah),
-                  child:const Text("No data found"),
+                  child: Text("No data found".tr),
                 ),
               )
                   : Obx(

@@ -49,7 +49,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              title: Text('Are you sure, you want to delete this post?',
+              title: Text('delete_post'.tr,
                 style: TextStyle(
                   color: const Color(0XFF111111),
                   fontWeight: FontWeight.w600,
@@ -76,7 +76,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                               border: Border.all(color:Color(0xff001649),width: 1.aw)),
                           child: Center(
                             child: Text(
-                              'Cancel',
+                              'cancel'.tr,
                               style: TextStyle(
                                 color: const Color(0XFF001649),
                                 fontWeight: FontWeight.w700,
@@ -112,7 +112,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              'Delete',
+                              'Delete'.tr,
                               style: TextStyle(
                                 color: const Color(0XFFFFFFFF),
                                 fontWeight: FontWeight.w700,
@@ -193,13 +193,13 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
 
                           },
                           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                            const PopupMenuItem<String>(
+                             PopupMenuItem<String>(
                               value: '1',
-                              child: Text('Edit'),
+                              child: Text('edit_blog'.tr),
                             ),
-                            const PopupMenuItem<String>(
+                             PopupMenuItem<String>(
                               value: '2',
-                              child: Text('Delete'),
+                              child: Text('Delete'.tr),
                             ),
                           ],
                         ),
