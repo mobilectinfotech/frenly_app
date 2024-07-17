@@ -89,6 +89,21 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   LastSeenModel? lastSeenModel;
 
+  String formatTimestamp(DateTime timestamp) {
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(timestamp);
+
+    if (difference.inDays == 0) {
+      return 'today'.tr;
+    } else if (difference.inDays == 1) {
+      return 'yesterday'.tr;
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} ${"days ago".tr}';
+    } else {
+      return DateFormat('d MMMM').format(timestamp); // e.g., 15 August
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -100,7 +115,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       body: Obx(
         () => controller.isLoading.value
             ? const Center(
-                child: CircularProgressIndicator(strokeWidth: 1,),
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                ),
               )
             : SafeArea(
                 child: Scaffold(
@@ -108,8 +125,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       context: context,
                       handle: lastSeenModel?.data?.isLastSeenAllowed == false
                           ? ""
-                          : lastSeenModel!.data?.lastSeen == null
-                              ? "Online"
+                          : lastSeenModel?.data?.lastSeen == null
+                              ? "online".tr
                               : calculateTimeDifference(
                                   "${lastSeenModel!.data?.lastSeen}"),
                       name: "${widget.participant.fullName}".capitalizeFirst,
@@ -129,59 +146,37 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                               reverse: true,
                               itemCount: controller.allMsg.messages!.length,
                               itemBuilder: (context, index) {
-                                DateTime? currentDate = controller
-                                    .allMsg.messages![index].createdAt;
-                                DateTime? previousDate = index > 0
-                                    ? controller
-                                        .allMsg.messages![index - 1].createdAt
-                                    : null;
-                                if (currentDate == null) {
-                                  return const SizedBox
-                                      .shrink(); // Skip if datetime is null
-                                }
-
-                                bool showDate = previousDate == null ||
-                                    currentDate.year != previousDate.year ||
-                                    currentDate.month != previousDate.month ||
-                                    currentDate.day != previousDate.day;
-
-                                DateTime today = DateTime.now();
-                                DateTime yesterday =
-                                    DateTime.now().subtract(Duration(days: 1));
-
-                                //today Yesterday logic
-                                String formattedDate;
-
-                                if (currentDate.year == today.year &&
-                                    currentDate.month == today.month &&
-                                    currentDate.day == today.day) {
-                                  formattedDate = 'Today';
-                                } else if (currentDate.year == yesterday.year &&
-                                    currentDate.month == yesterday.month &&
-                                    currentDate.day == yesterday.day) {
-                                  formattedDate = 'Yesterday';
-                                } else {
-                                  formattedDate =
-                                      DateFormat.yMMMMd().format(currentDate);
-                                }
-                                //insert date  in chat logic end
-
                                 if ("${controller.allMsg.messages![index].senderId}" !=
                                     "${widget.participant.id}") {
                                   return Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      if (false)
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            formattedDate,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
+                                      Builder(
+                                        builder: (context) {
+                                          try {
+                                            return formatTimestamp(controller
+                                                        .allMsg
+                                                        .messages![index]
+                                                        .createdAt!) ==
+                                                    formatTimestamp(controller
+                                                        .allMsg
+                                                        .messages![index + 1]
+                                                        .createdAt!)
+                                                ? const SizedBox.shrink()
+                                                : Text(
+                                                  formatTimestamp(controller.allMsg.messages![index].createdAt!).capitalizeFirst!,
+                                                  style: TextStyle(
+                                                    fontSize: 15.adaptSize,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontFamily: "Roboto",
+                                                  ),
+                                                );
+                                          } catch (e) {
+                                            // TODO
+                                          }
+                                          return SizedBox.shrink();
+                                        },
+                                      ),
                                       OwnMessageCard(
                                         message:
                                             controller.allMsg.messages![index],
@@ -199,14 +194,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                         .toLocal(),
                                   );
                                 }
-                                // if (messages[index].type == "source") {
-                                //   return OwnMessageCard(
-                                //     message: messages[index].message,
-                                //     time: messages[index].time,
-                                //   );
-                                // } else {
-
-                                // }
                               },
                             ),
                           ),
@@ -257,9 +244,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           ),
                                           onPressed: () {
                                             if (sendButton) {
-
                                               controller.sendMessage(
-                                                  message: _controller.text.trim(),
+                                                  message:
+                                                      _controller.text.trim(),
                                                   chatId: widget.chatId);
                                               _controller.clear();
                                               FocusScope.of(context).unfocus();

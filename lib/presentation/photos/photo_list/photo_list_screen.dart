@@ -24,6 +24,13 @@ class _PhotoViewAllNewScreenState extends State<PhotoViewAllNewScreen> {
   PostAllViewController controller = Get.put(PostAllViewController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.getAllPost();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarPrimary(title: "Posts".tr ,),

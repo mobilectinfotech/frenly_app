@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -61,9 +62,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                        // Spacer(),
                         Container(
-                          height: 74.ah,
-                          width: 74.aw,
-                          child: Image.asset("assets/logo/transparent_bakgrund_logo.png"),
+                          height: 100.ah,
+                          width: 100.aw,
+                          child: CustomImageView(imagePath: "assets/icons/transparent bakgrund.svg"),
                         ),
                         SizedBox(width: 20.aw),
                         // Image.asset('assets/image/image 1.png',height: 74.ah,width:74.aw,)
@@ -104,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
 
                             SizedBox(height: 20.ah),
-                            names("Username"),
+                            names("user_name".tr),
                             SizedBox(height: 10.ah,),
 
                             CustomTextFormField(

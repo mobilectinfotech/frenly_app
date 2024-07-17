@@ -49,54 +49,104 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar:customAppbarHomepage(context: context,title: "Foru".tr ,
-          onTap: () {
-          Get.to(()=>NotificationScreen());
-        },),
-        body: Padding(
-          padding: EdgeInsets.only(
-            left: 10.h,
-            right: 10.h,
-          ),
-          child: Obx(
-            () => controller.isLoading.value
-                ? const Center(
-                    child: CircularProgressIndicator(strokeWidth: 1,),
-                  )
-                : RefreshIndicator(
-                   onRefresh: _refresh,
-                  child: ListView(
-                      children: [
-                        SizedBox(height: 10.ah),
-                        checkIn(),
-                        SizedBox(height: 20.ah),
-                        titleViewAll(title: 'Live'.tr, onTap: () {Get.to(()=> const PopularsCityScreen());}),
-                        SizedBox(height: 10.ah),
-                        liveUserByCountry(),
-                        SizedBox(height: 20.ah),
-                        titleViewAll(title: 'Trendingvlog'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
-                        SizedBox(height: 16.ah,),
-                        trending(),
-                        SizedBox(height: 20.ah),
-                        titleViewAll(title: 'Popublog'.tr, onTap: () {Get.to(()=> const PopularBlogScreen());}),
-                        SizedBox(height: 16.ah,),
-                        popularBlog(),
-                        SizedBox(height: 16.ah,),
-                        titleViewAll(title: 'Discover'.tr, onTap: () {Get.to(()=> const DiscoverUsersScreen());}),
-                        SizedBox(height: 16.ah,),
-                        discoverUsers(),
-                        SizedBox(height: 25.ah),
-                        titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
-                        SizedBox(height: 25.ah),
-                        posts(),
-                        SizedBox(height: 100.ah),
-                  
-                      ],
-                    ),
+    return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(2000.ah), // preferred height for the app bar
+          child: Container(
+            color: Color(0xFF001649),
+            child: SafeArea(
+              child: Container(
+                color: Color(0xFF001649),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 10.aw,
+                      ),
+                      CustomImageView(
+                         imagePath: "assets/icons/person_app_logo.svg",
+                      ),
+                      SizedBox(
+                        width: 16.aw,
+                      ),
+                      Text(
+                         "Foru".tr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: const Color(0xFFFBFBD7),
+                          fontSize: 28.adaptSize,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Spacer(),
+                      CustomImageView(
+                        onTap: () {
+                          Get.to(()=>NotificationScreen());
+                        },
+                        width: 30.adaptSize,
+                        height: 30.adaptSize,
+                        radius: BorderRadius.circular(36),
+                        fit: BoxFit.cover,
+                        imagePath: "assets/icons/bell-ringing-04.svg",
+                      ),
+                      SizedBox(
+                        width: 16.aw,
+                      ),
+                    ],
+                  ),
                 ),
-          ),
+              ),
+            ),
+          )),
+      // appBar:customAppbarHomepage(context: context,title: "Foru".tr ,
+      //   onTap: () {
+      //   Get.to(()=>NotificationScreen());
+      // },),
+      body: Padding(
+        padding: EdgeInsets.only(
+          left: 10.h,
+          right: 10.h,
+        ),
+        child: Obx(
+          () => controller.isLoading.value
+              ? const Center(
+                  child: CircularProgressIndicator(strokeWidth: 1,),
+                )
+              : RefreshIndicator(
+                 onRefresh: _refresh,
+                child: ListView(
+                    children: [
+                      SizedBox(height: 20.ah),
+                      checkIn(),
+                      SizedBox(height: 20.ah),
+                      titleViewAll(title: 'Live'.tr, onTap: () {Get.to(()=> const PopularsCityScreen());}),
+                      SizedBox(height: 10.ah),
+                      liveUserByCountry(),
+                      SizedBox(height: 20.ah),
+                      titleViewAll(title: 'Trendingvlog'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
+                      SizedBox(height: 16.ah,),
+                      trending(),
+                      SizedBox(height: 20.ah),
+                      titleViewAll(title: 'Popublog'.tr, onTap: () {Get.to(()=> const PopularBlogScreen());}),
+                      SizedBox(height: 16.ah,),
+                      popularBlog(),
+                      SizedBox(height: 16.ah,),
+                      titleViewAll(title: 'Discover'.tr, onTap: () {Get.to(()=> const DiscoverUsersScreen());}),
+                      SizedBox(height: 16.ah,),
+                      discoverUsers(),
+                      SizedBox(height: 25.ah),
+                      titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
+                      SizedBox(height: 25.ah),
+                      posts(),
+                      SizedBox(height: 100.ah),
+
+                    ],
+                  ),
+              ),
         ),
       ),
     );

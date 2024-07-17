@@ -27,7 +27,7 @@ class OnBoardFirst extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomImageView(
-              imagePath: "assets/logo/app_logo.png",
+              imagePath: "assets/icons/app_icon.png",
               height: 45.ah,
               width: 45.ah,
             ),

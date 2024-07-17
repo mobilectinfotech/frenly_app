@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/auth/forget_password/forget_password_screen.dart';
 import 'package:frenly_app/presentation/auth/signup_screen/signup_screen.dart';
@@ -63,8 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 60.ah),
                   Center(
                     child: SizedBox(
-                      width: 200,
-                        child: Image.asset("assets/logo/transparent_bakgrund_logo.png")),
+                        height: 150,
+                        child: CustomImageView(imagePath:  "assets/icons/transparent bakgrund.svg")),
                     // Image.asset('assets/image/image 1.png',height: 151.ah,width: 148.aw,)
                   ),
                   Spacer(),

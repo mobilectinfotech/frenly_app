@@ -114,7 +114,7 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
                     ),
 
                     SizedBox(height: 10.ah,),
-                    CustomTextFormField(hintText: "Enter title",controller: controller.titleController,validator: Validator.notEmpty, context: context,),
+                    CustomTextFormField(hintText: "enter_title".tr,controller: controller.titleController,validator: Validator.notEmpty, context: context,),
                     SizedBox(height: 10.ah,),
                     Padding(
                       padding: const EdgeInsets.only(left:10),
@@ -125,11 +125,11 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
                       ),
                     ),
                     SizedBox(height: 10.ah,),
-                    CustomTextFormField(context: context,hintText: "Enter body",controller: controller.bodyController,maxLines: 8,validator: Validator.notEmpty,),
+                    CustomTextFormField(context: context,hintText: "enter_body".tr,controller: controller.bodyController,maxLines: 8,validator: Validator.notEmpty,),
                     SizedBox(height: 20.ah,),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: Text('Tags'.tr,
+                      child: Text('tags'.tr,
                         style: TextStyle(
                             color: Colors.black,fontWeight: FontWeight.w700,fontSize: 15.fSize
                         ),),
@@ -139,7 +139,7 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
                       children: [
                         SizedBox(
                           width: 280.aw,
-                          child:CustomTextFormField(context: context,hintText: "Enter Tags",controller: controller.tagcontroller,),
+                          child:CustomTextFormField(context: context,hintText: "enter_tags".tr,controller: controller.tagcontroller,),
                         ),
                         IconButton(
                           icon: Icon(Icons.add),
@@ -175,7 +175,7 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
                     Center(
                       child: Obx(
                             ()=> CustomPrimaryBtn1(
-                          title:'Update'.tr,
+                          title:'update'.tr,
                           isLoading: controller.isLoading.value,
                           onTap: () {
                             if (_formKeyLogin.currentState!.validate()) {

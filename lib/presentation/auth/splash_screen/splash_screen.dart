@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
             Padding(
               padding:  EdgeInsets.all(80.0.adaptSize),
               child: CustomImageView(
-                imagePath: "assets/logo/bakgrund_logo.png",
+                imagePath: "assets/icons/app_icon.png",
               ),
             ),
           ],

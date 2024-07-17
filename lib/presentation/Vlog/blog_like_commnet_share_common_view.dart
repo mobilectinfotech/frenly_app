@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
+import 'package:get/get.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
 import '../../data/models/blog_model.dart';
@@ -84,6 +85,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                       context: context,
                       id: '${widget.blog.id}',
                       postType: PostType.blog);
+
                 },
                 child: CustomImageView(
                   imagePath: widget.colors == true
@@ -110,7 +112,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
         InkWell(
           onTap: () {
             CustomBottomSheets.shareBottomSheet(
-              isUrl: "",
+              isUrl: "aa",
                 context: context,
                 id: '${widget.blog.id}',
                 postType: PostType.blog,
@@ -187,7 +189,7 @@ class _BlogLikeCommentsShareViewState extends State<BlogLikeCommentsShareView> {
                     ),
                   ),
             Text(
-              "${widget.blog?.numberOfSaves}",
+              "${widget.blog.numberOfSaves}",
               style: TextStyle(color: Colors.white),
             )
 

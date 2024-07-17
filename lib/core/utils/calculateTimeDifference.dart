@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 String calculateTimeDifference(String ? createdAt) {
 
   if(createdAt==""){
@@ -20,13 +22,13 @@ String calculateTimeDifference(String ? createdAt) {
     // Construct the result string based on the conditions
     String result = '';
     if (minutesDifference < 60) {
-      result = '${minutesDifference}m ago';
+      result = '${minutesDifference}${"months_ago".tr}';
     } else if (hoursDifference < 24) {
-      result = '${hoursDifference}h ago';
+      result = '${hoursDifference}${"hours_ago".tr}';
     } else if (daysDifference < 7) {
-      result = '${daysDifference}d ago';
+      result = '${daysDifference}${"days_ago".tr}';
     } else {
-      result = '${weeksDifference}w ago'  ;
+      result = '${weeksDifference}${"weeks_ago".tr}'  ;
     }
 
     return result;

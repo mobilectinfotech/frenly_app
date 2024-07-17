@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../data/models/blog_model.dart';
 import '../presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
+import '../presentation/search/search_page.dart';
+import 'bottom_sheet_widgets.dart';
 import 'custom_image_view.dart';
 
 class CustomBlogCard extends StatefulWidget {
@@ -39,6 +38,7 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                 radius: BorderRadius.circular(10),
                 imagePath:widget.blog.imageUrl,
               ),
+
             SizedBox(width: 10.aw),
 
             SizedBox(
@@ -55,25 +55,30 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       for (int i = 0; i < (widget.tagsList.length < 2 ? widget.tagsList.length : 2); i++)
-                        Padding(
-                          padding: EdgeInsets.only(right: 5.0.aw),
-                          child: Container(
-                            height: 20.ah,
-                            width: 60.aw,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.black,
-                                    width: 0.3),
-                                borderRadius:
-                                BorderRadius.circular(5),
-                                color: Colors.transparent),
-                            child: Center(
-                              child: Text(
-                                widget.tagsList[i],
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10.fSize),
+                        InkWell(
+                          onTap: () {
+                            Get.to(()=>SearchScreen(hastag:widget.tagsList[i],postType: PostType.blog,));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 5.0.aw),
+                            child: Container(
+                              height: 20.ah,
+                              width: 60.aw,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.black,
+                                      width: 0.3),
+                                  borderRadius:
+                                  BorderRadius.circular(5),
+                                  color: Colors.transparent),
+                              child: Center(
+                                child: Text(
+                                  widget.tagsList[i],
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10.fSize),
+                                ),
                               ),
                             ),
                           ),

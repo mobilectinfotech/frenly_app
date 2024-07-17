@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/dashboard_screen/dashboardcontroller.dart';
+import 'package:frenly_app/presentation/user_profile_screen/user_profile_model.dart';
+import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../core/constants/my_colour.dart';
 import '../core/utils/calculateTimeDifference.dart';
 import '../core/utils/pref_utils.dart';
-import '../data/data_sources/remote/api_client.dart';
 import '../data/models/GetCommentsModel.dart';
 import '../data/models/cateogry_model.dart';
 import '../data/repositories/api_repository.dart';
+import '../presentation/Blog/blog_full_view_screen/blog_full_view_controller.dart';
 import '../presentation/Vlog/add_new_category/add_new_cateogry_bottom_sheet.dart';
 import '../presentation/chat/Pages/all_frined/AllFriendsModel.dart';
 import '../presentation/chat/Pages/all_frined/CreateChatModel.dart';
-import '../presentation/chat/Pages/chat_room/chat_room_page.dart';
-import '../presentation/chat/Pages/chats/chats_model.dart';
+import '../presentation/photos/photo_list/post_view_all_contorller.dart';
 import 'custom_image_view.dart';
-import 'package:intl/intl.dart';
 
 enum PostType {
   vlog,
@@ -38,7 +37,7 @@ class CustomBottomSheets {
               heightFactor: .55,
               child: GestureDetector(
                 onTap: () {
-                  Get.back();
+                 // Get.back();
                 },
                 child: Padding(
                   padding: EdgeInsets.only(left: 20.0.aw, right: 20.aw),
@@ -49,7 +48,7 @@ class CustomBottomSheets {
                      Center(
                       child: Text('comments'.tr,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 20.98,
                           fontFamily: 'Roboto',
@@ -90,10 +89,13 @@ class CustomBottomSheets {
                                                   CustomImageView(
                                                     width: 40.adaptSize,
                                                     height: 40.adaptSize,
-                                                    imagePath: commentsController
-                                                        .getCommentsModel.comments?[index].user?.avatarUrl,
+                                                    imagePath: commentsController.getCommentsModel.comments?[index].user?.avatarUrl,
                                                     fit: BoxFit.cover,
                                                     radius: BorderRadius.circular(45.adaptSize),
+                                                    onTap: () {
+                                                      Get.back();
+                                                      Get.to(() => UserProfileScreen(userId: "${commentsController.getCommentsModel.comments?[index].user?.id}"));
+                                                    },
                                                   ),
                                                   SizedBox(
                                                     width: 18.aw,
@@ -295,9 +297,26 @@ class CustomBottomSheets {
                                     CreateChatModel  createChatModel = await ApiRepository.createChat(userId: "${controller.allFriendsModel.friends?[index].id}");
                                     int indexxx =  "${createChatModel.payload?.participants?[0].id}" == PrefUtils().getUserId() ? 1 : 0 ;
                                      print("chatId $indexxx");
+                                    // "send_a_vlog": "Send a Vlog of",
+                                    // "send_a_blog": "Send a blog of",
+                                    // "send_a_post": "Send a post of",
+                                    //
+                                        var msg = ".";
+                                       var post = "send_a_post".tr ;
+                                       var vlog = "send_a_vlog".tr ;
+                                       var blog = "send_a_blog".tr ;
+                                       if(postType.name == "post"){
+                                         msg = "${post} $userName";
+                                       }
+                                       if(postType.name == "vlog"){
+                                         msg = "${vlog} $userName";
+                                       }
+                                       if(postType.name == "blog"){
+                                         msg = "${blog} $userName";
+                                       }
 
                                     final response = await ApiRepository.sendMessageWithShare(
-                                        message: ' Sent a ${postType.name} of $userName',
+                                        message: msg,
                                         chatId: createChatModel.payload!.id.toString(),
                                         postType: postType,
                                         isUrl: isUrl,
@@ -454,10 +473,12 @@ class ComnetsController extends GetxController {
   RxBool isLoading = false.obs;
 
   TextEditingController commnetsTc = TextEditingController();
+  RxInt numberOfCommnets = 0.obs;
 
   getComments({required String id, required PostType postType}) async {
     isLoading.value = true;
     getCommentsModel = await ApiRepository.getCommentsAll(id: id, postType: postType);
+    numberOfCommnets.value = getCommentsModel.comments?.length ?? 2000 ;
     isLoading.value = false;
   }
 
@@ -471,6 +492,12 @@ class ComnetsController extends GetxController {
     isLoadingPostCommnets.value = true;
     await ApiRepository.postCommentAll(id: id, postType: postType, comment: comment);
     commnetsTc.clear();
+    if(postType.name == "blog"){
+      Get.find<BlogFullViewController>().getBlogById(id: id);
+    }
+    if(postType.name == "post"){
+      Get.find<PostAllViewController>().getPostByid(id: id);
+    }
     isLoadingPostCommnets.value = false;
     getComments(id: id, postType: postType);
   }

@@ -105,7 +105,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(DateFormat('hh:mm a').format(controller.chatsModel.chats![index].lastMessage?.createdAt!.toLocal() ?? DateTime.now()),),
+                  Text("${controller.chatsModel.chats![index].lastMessage?.createdAt!.hour}:${(controller.chatsModel.chats![index].lastMessage?.createdAt!.minute ?? 0)  < 10 ? "0${controller.chatsModel.chats![index].lastMessage?.createdAt!.minute}" : controller.chatsModel.chats![index].lastMessage?.createdAt!.minute}"),
                   const SizedBox(height: 8,),
                   if(controller.chatsModel.chats![index].unreadCount != 0)Row(
                     mainAxisSize: MainAxisSize.min,
@@ -117,7 +117,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         ),
                         child: Center(child: Padding(
                           padding: const EdgeInsets.only(top: 4.0,bottom: 4,left: 9,right: 9),
-                          child: Text("${controller.chatsModel.chats![index].unreadCount}" , style: TextStyle(fontSize: 12.adaptSize,color: Colors.white),),
+                          child: Text("${controller.chatsModel.chats![index].unreadCount}" ,
+                            style: TextStyle(fontSize: 12.adaptSize,color: Colors.white),),
                         )),
                       ),
                     ],

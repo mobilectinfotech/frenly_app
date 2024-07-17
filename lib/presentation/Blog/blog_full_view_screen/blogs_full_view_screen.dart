@@ -3,10 +3,12 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frenly_app/Widgets/bottom_sheet_widgets.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Blog/blog_edit/blogs_edit_screen.dart';
+import 'package:frenly_app/presentation/search/search_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 
@@ -49,7 +51,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              title: Text('Are you sure, you want to delete this post?',
+              title: Text('delete_post'.tr,
                 style: TextStyle(
                   color: const Color(0XFF111111),
                   fontWeight: FontWeight.w600,
@@ -76,7 +78,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                               border: Border.all(color:Color(0xff001649),width: 1.aw)),
                           child: Center(
                             child: Text(
-                              'Cancel',
+                              'cancel'.tr,
                               style: TextStyle(
                                 color: const Color(0XFF001649),
                                 fontWeight: FontWeight.w700,
@@ -112,7 +114,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              'Delete',
+                              'Delete'.tr,
                               style: TextStyle(
                                 color: const Color(0XFFFFFFFF),
                                 fontWeight: FontWeight.w700,
@@ -193,13 +195,13 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
 
                           },
                           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                            const PopupMenuItem<String>(
+                             PopupMenuItem<String>(
                               value: '1',
-                              child: Text('Edit'),
+                              child: Text('edit_blog'.tr),
                             ),
-                            const PopupMenuItem<String>(
+                             PopupMenuItem<String>(
                               value: '2',
-                              child: Text('Delete'),
+                              child: Text('Delete'.tr),
                             ),
                           ],
                         ),
@@ -273,29 +275,35 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
         for (int i = 0;
         i < (tagsList.length);
         i++)
-          Padding(
-            padding: EdgeInsets.only(left: 5.0.aw),
-            child: Container(
-              width: 60,
-              height: 20,
-              decoration: ShapeDecoration(
-                color: Color(0xFFEEEEEE),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 0.30),
-                  borderRadius: BorderRadius.circular(5),
+          InkWell(
+            onTap: () {
+              print("object$i");
+              Get.to(()=>SearchScreen(hastag:tagsList[i],postType: PostType.blog,));
+            },
+            child: Padding(
+              padding: EdgeInsets.only(left: 5.0.aw),
+              child: Container(
+                width: 60,
+                height: 20,
+                decoration: ShapeDecoration(
+                  color: Color(0xFFEEEEEE),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 0.30),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Opacity(
-                  opacity: .50,
-                  child: Text(
-                    tagsList[i].tr,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      height: 0.08,
+                child: Center(
+                  child: Opacity(
+                    opacity: .50,
+                    child: Text(
+                      tagsList[i].tr,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w500,
+                        height: 0.08,
+                      ),
                     ),
                   ),
                 ),

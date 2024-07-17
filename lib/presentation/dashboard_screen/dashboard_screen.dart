@@ -61,7 +61,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   int _selectedIndex = 0;
   List _items = [
     const HomeScreen(),
-    const New(),
+     SearchScreen(),
     const SizedBox(),
     ChatsScreen(
       chatmodels: [],
@@ -103,7 +103,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               boxShadow: [],
               iconSize: 20,
               icon: Icons.image_outlined,
-              color: const Color(0xffE52C42),
+              color: Color(0xFF001649),
               onTap: () {
                 print("Circular menu item");
                 key.currentState?.reverseAnimation();
@@ -113,7 +113,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               boxShadow: [],
               iconSize: 20,
               icon: Icons.video_camera_back_outlined,
-              color: const Color(0xffE52C42),
+              color: Color(0xFF001649),
               onTap: () {
                 key.currentState?.reverseAnimation();
                 print("Circular menu item");
@@ -123,7 +123,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               boxShadow: [],
               iconSize: 18,
               icon: Icons.edit_note_outlined,
-              color: const Color(0xffE52C42),
+              color: Color(0xFF001649),
               onTap: () {
                 print("Circular menu item");
                 key.currentState?.reverseAnimation();
@@ -134,201 +134,198 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         backgroundWidget: Stack(
           children: [
             Scaffold(
-              bottomNavigationBar: Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 20.0.ah, left: 10.aw, right: 10.aw),
-                  child: Container(
-                      width: double.infinity,
-                      height: 60.0.adaptSize,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 0),
-                      decoration: ShapeDecoration(
-                        color: const Color(0xFF001649),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            width: 2,
-                            color: Colors.white.withOpacity(0.5),
+              bottomNavigationBar: Container(
+                  width: double.infinity,
+                  height: 75.0.adaptSize,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 0),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF001649),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                    )
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0,right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _selectedIndex == 0
+                            ? Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/ichome.png',
+                                  ),
+                                  onPressed: () => _onItemTapped(0),
+                                ),
+                              )
+                            : Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.transparent,
+                                ),
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/icoohome.png',
+                                  ),
+                                  onPressed: () => _onItemTapped(0),
+                                ),
+                              ),
+                        _selectedIndex == 1
+                            ? Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/serch.png',
+                                  ),
+                                  onPressed: () => _onItemTapped(1),
+                                ),
+                              )
+                            : Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/Icon.png',
+                                  ),
+                                  // Icon(Icons.notifications),
+                                  onPressed: () => _onItemTapped(1),
+                                ),
+                              ),
+                        SizedBox(
+                          height: 70.adaptSize,
+                          width: 70.adaptSize,
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                  child: Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(200),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(6.adaptSize),
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Color(0xFF001649),
+                                      size: 35,
+                                    ),
+                                  ),
+                                ),
+                              )),
+                              // CircularMenu(
+                              //   // key: key,
+                              //   toggleButtonSize: 25,
+                              //   toggleButtonColor: Colors.transparent,
+                              //   toggleButtonIconColor: Colors.transparent,
+                              //   items: [
+                              //     CircularMenuItem(
+                              //         color: Colors.transparent, onTap: () {}),
+                              //     CircularMenuItem(
+                              //         boxShadow: [],
+                              //         iconSize: 20,
+                              //         icon: Icons.image_outlined,
+                              //         color: const Color(0xffE52C42),
+                              //         onTap: () {
+                              //           print("Circular menu item");
+                              //           Get.to(() => const PostPostScreen());
+                              //         }),
+                              //     CircularMenuItem(
+                              //         boxShadow: [],
+                              //         iconSize: 20,
+                              //         icon: Icons.video_camera_back_outlined,
+                              //         color: const Color(0xffE52C42),
+                              //         onTap: () {
+                              //           print("Circular menu item");
+                              //           Get.to(() => const PostVideoScreen());
+                              //         }),
+                              //     CircularMenuItem(
+                              //         boxShadow: [],
+                              //         iconSize: 18,
+                              //         icon: Icons.edit_note_outlined,
+                              //         color: const Color(0xffE52C42),
+                              //         onTap: () {
+                              //           print("Circular menu item");
+                              //           Get.to(() => const PostBlogScreen());
+                              //         }),
+                              //     CircularMenuItem(
+                              //         color: Colors.transparent, onTap: () {})
+                              //   ],
+                              // ),
+                            ],
                           ),
-                          borderRadius: BorderRadius.circular(80),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          _selectedIndex == 0
-                              ? Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
+                        _selectedIndex == 3
+                            ? Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/proIcon.png',
+                                  ),
+                                  onPressed: () => _onItemTapped(3),
+                                ),
+                              )
+                            : Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/message_icon.png',
                                     color: Colors.white,
                                   ),
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/ichome.png',
-                                    ),
-                                    onPressed: () => _onItemTapped(1),
-                                  ),
-                                )
-                              : Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.transparent,
-                                  ),
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/icoohome.png',
-                                    ),
-                                    onPressed: () => _onItemTapped(0),
-                                  ),
+                                  onPressed: () => _onItemTapped(3),
                                 ),
-                          _selectedIndex == 1
-                              ? Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
+                              ),
+                        _selectedIndex == 4
+                            ? Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/personVector.png',
+                                  ),
+                                  onPressed: () => _onItemTapped(4),
+                                ),
+                              )
+                            : Container(
+                                height: 38.adaptSize,
+                                width: 38.adaptSize,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/image/Vector.png',
                                     color: Colors.white,
                                   ),
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/serch.png',
-                                    ),
-                                    onPressed: () => _onItemTapped(1),
-                                  ),
-                                )
-                              : Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/Icon.png',
-                                    ),
-                                    // Icon(Icons.notifications),
-                                    onPressed: () => _onItemTapped(1),
-                                  ),
+                                  onPressed: () => _onItemTapped(4),
                                 ),
-                          SizedBox(
-                            height: 70.adaptSize,
-                            width: 70.adaptSize,
-                            child: Stack(
-                              children: [
-                                Positioned.fill(
-                                    child: Center(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(200),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(6.adaptSize),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Color(0xFF001649),
-                                        size: 35,
-                                      ),
-                                    ),
-                                  ),
-                                )),
-                                // CircularMenu(
-                                //   // key: key,
-                                //   toggleButtonSize: 25,
-                                //   toggleButtonColor: Colors.transparent,
-                                //   toggleButtonIconColor: Colors.transparent,
-                                //   items: [
-                                //     CircularMenuItem(
-                                //         color: Colors.transparent, onTap: () {}),
-                                //     CircularMenuItem(
-                                //         boxShadow: [],
-                                //         iconSize: 20,
-                                //         icon: Icons.image_outlined,
-                                //         color: const Color(0xffE52C42),
-                                //         onTap: () {
-                                //           print("Circular menu item");
-                                //           Get.to(() => const PostPostScreen());
-                                //         }),
-                                //     CircularMenuItem(
-                                //         boxShadow: [],
-                                //         iconSize: 20,
-                                //         icon: Icons.video_camera_back_outlined,
-                                //         color: const Color(0xffE52C42),
-                                //         onTap: () {
-                                //           print("Circular menu item");
-                                //           Get.to(() => const PostVideoScreen());
-                                //         }),
-                                //     CircularMenuItem(
-                                //         boxShadow: [],
-                                //         iconSize: 18,
-                                //         icon: Icons.edit_note_outlined,
-                                //         color: const Color(0xffE52C42),
-                                //         onTap: () {
-                                //           print("Circular menu item");
-                                //           Get.to(() => const PostBlogScreen());
-                                //         }),
-                                //     CircularMenuItem(
-                                //         color: Colors.transparent, onTap: () {})
-                                //   ],
-                                // ),
-                              ],
-                            ),
-                          ),
-                          _selectedIndex == 3
-                              ? Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/proIcon.png',
-                                    ),
-                                    onPressed: () => _onItemTapped(1),
-                                  ),
-                                )
-                              : Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/message_icon.png',
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () => _onItemTapped(3),
-                                  ),
-                                ),
-                          _selectedIndex == 4
-                              ? Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/personVector.png',
-                                    ),
-                                    onPressed: () => _onItemTapped(1),
-                                  ),
-                                )
-                              : Container(
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  child: IconButton(
-                                    icon: Image.asset(
-                                      'assets/image/Vector.png',
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () => _onItemTapped(4),
-                                  ),
-                                ),
-                        ],
-                      ))),
+                              ),
+                      ],
+                    ),
+                  )),
               body: Center(child: _items[_selectedIndex]),
               // body: CircularMenu(
               //     toggleButtonColor: Colors.transparent,

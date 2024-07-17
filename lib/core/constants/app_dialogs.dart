@@ -14,7 +14,7 @@ class AppDialog {
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 2,
-      backgroundColor: Colors.blue,
+      backgroundColor: Color(0xff001649),
       textColor:Colors.white,
     );
   }

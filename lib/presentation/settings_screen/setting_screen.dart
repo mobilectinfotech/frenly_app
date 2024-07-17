@@ -10,7 +10,6 @@ import 'package:frenly_app/presentation/settings_screen/setting_controller.dart'
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../core/constants/my_textfield.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../core/utils/pref_utils.dart';
@@ -59,12 +58,12 @@ class _SettingScreenState extends State<SettingScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Choose Language'),
+          title: Text('choose_language'.tr),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                title: Text('English'),
+                title: Text('english'.tr),
                 onTap: () async{
                   final newLocale = Locale('en', 'US');
                   await localeService.saveLocale(newLocale);
@@ -76,7 +75,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 },
               ),
               ListTile(
-                title: Text('Swedish'),
+                title: Text('swedish'.tr),
                 onTap: () async{
                   final newLocale = Locale('swe', 'SE');
                   await localeService.saveLocale(newLocale);
@@ -456,24 +455,24 @@ class _SettingScreenState extends State<SettingScreen> {
       barrierDismissible: false, // Dialog is dismissible by tapping on the barrier
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const SingleChildScrollView(
+          title:  Text('confirm_deletion'.tr),
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to delete your account?'),
+                Text('Are_you_delete_account'.tr),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child:  Text('cancel'.tr),
               onPressed: () {
                 // Close the dialog and do nothing
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Delete'),
+              child: Text('Delete'.tr),
               onPressed: () async {
                 Navigator.of(context).pop();
                 bool isDeleted = await ApiRepository.deleteAccount();

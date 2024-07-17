@@ -51,7 +51,8 @@ class OwnMessageCard extends StatelessWidget {
                   onTap: () async {
                     if(message.isLink==3){
                       if(message.isLinkId!=null){
-                        Get.to(()=>VlogFullViewNewScreen(videoUrl: "${message.isUrl}", vlogId: "${message.isLinkId}"));
+                        Get.to(()=>VlogFullViewNewScreen(videoUrl: "${message.isUrl}",
+                            vlogId: "${message.isLinkId}"));
                       }else{
                         AppDialog.taostMessage("Vlog not Found");
                       }
@@ -94,7 +95,7 @@ class OwnMessageCard extends StatelessWidget {
                 opacity: 0.5,
                 child: Padding(
                     padding: EdgeInsets.only(left: 10.h),
-                    child: Text("${DateFormat('hh:mm a').format(createdAt ?? DateTime.now())}    ",
+                    child: Text("${createdAt.hour}:${createdAt.minute < 10 ? "0${createdAt.minute}" : createdAt.minute}    ",
                       style: TextStyle(fontSize: 12.adaptSize),
 
                       )

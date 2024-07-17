@@ -33,9 +33,12 @@ class CustomVlogCard extends StatelessWidget {
               width: double.infinity,
               child: Stack(
                 children: [
+                  // Container(color: Colors.black,
+                  //  height: 196.ah,
+                  //  width: MediaQuery.of(context).size.width,),
                   CustomImageView(
                     height: 196.ah,
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     radius: BorderRadius.circular(15.adaptSize),
                     fit: BoxFit.cover,
                     // color: Colors.black,
@@ -43,7 +46,7 @@ class CustomVlogCard extends StatelessWidget {
                   ),
                   Container(
                     height: 196.ah,
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     decoration: ShapeDecoration(
                       gradient: LinearGradient(
                         end: const Alignment(-0.45, 0.87),
@@ -58,10 +61,10 @@ class CustomVlogCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                   vlogInLocationRow(vlog),
+                  vlogInLocationRow(vlog,context),
                   SizedBox(
                     height: 196.ah,
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding:  EdgeInsets.all(10.0.adaptSize),
                       child: Column(
@@ -77,6 +80,7 @@ class CustomVlogCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 5,),
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               CustomImageView(
                                 height: 30.ah,
@@ -98,25 +102,48 @@ class CustomVlogCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              Spacer(),
+                              //
 
-                              Text(
-                                '${vlog.numberOfViews} views  ',
-                                style: TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 11.fSize,
-                                ),
-                              ),
+                              // Container(
+                              //
+                              //   height: 30.ah,
+                              //   width: MediaQuery.of(context).size.width/4,
+                              //   child: Row(
+                              //     children: [
+                              //       SizedBox(
+                              //         width: MediaQuery.of(context).size.width/8,
+                              //         child: Text(
+                              //             overflow: TextOverflow.ellipsis,
+                              //           '${vlog.numberOfViews} ${'views'.tr}  ',
+                              //           style: TextStyle(
+                              //             color: Color(0xffFFFFFF),
+                              //             fontWeight: FontWeight.w600,
+                              //             fontSize: 11.fSize,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //
+                              //       SizedBox(
+                              //         width: MediaQuery.of(context).size.width/8,
+                              //         child: Text(
+                              //           overflow: TextOverflow.ellipsis,
+                              //           calculateTimeDifference(vlog.createdAt!.toString()),
+                              //           style: TextStyle(
+                              //             color: const Color(0xffFFFFFF),
+                              //             fontWeight: FontWeight.w600,
+                              //             fontSize: 11.fSize,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //
+                              //
+                              //     ],
+                              //   ),
+                              //
+                              // ),
 
-                              Text(calculateTimeDifference(vlog.createdAt!.toString()),
-                                style: TextStyle(
-                                  color: const Color(0xffFFFFFF),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 11.fSize,
-                                ),
-                              ),
 
-                              const Spacer(),
                               VlogLikeCommentsShareView(vlog: vlog,),
                             ],
                           ),
@@ -132,44 +159,77 @@ class CustomVlogCard extends StatelessWidget {
       ),
     );
   }
-  Widget vlogInLocationRow(Vlog vlog) {
+  Widget vlogInLocationRow(Vlog vlog,BuildContext context) {
     return SizedBox(
       height: 40.ah,
       width: double.infinity,
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Image.asset(
-              'assets/image/location-outline.png',
-              width: 21.ah,
-              height: 21.ah,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Text(
-              '${vlog.user?.city}, ',
-              style: TextStyle(
-                color: HexColor('#FFFFFF'),
-                fontWeight: FontWeight.w600,
-                fontSize: 11.fSize,
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Image.asset(
+                  'assets/image/location-outline.png',
+                  width: 21.ah,
+                  height: 21.ah,
+                ),
               ),
-            ),
-          ),
-          Text(
-            '${vlog.user?.country}',
-            style: TextStyle(
-              color: HexColor('#FFFFFF'),
-              fontWeight: FontWeight.w600,
-              fontSize: 11.fSize,
-            ),
+              Container(
+                // color: Colors.red,
+                width: MediaQuery.of(context).size.width/2.5,
+                child: RichText(
+                  overflow: TextOverflow.ellipsis,
+                    text:TextSpan(children: [
+                  TextSpan(text: '${vlog.user?.city}, ',style: TextStyle(
+                    color: HexColor('#FFFFFF'),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.fSize,
+                  )),
+                  TextSpan(text: '${vlog.user?.country}',style: TextStyle(
+                    color: HexColor('#FFFFFF'),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.fSize,
+                  )),
+                ]) ),
+              ),
+
+            ],
           ),
           const Spacer(),
           // Image.asset(
           //   'assets/image/more op.png',
           //   width: 22.aw,
           // ),
+          Container(
+            height: 30.ah,
+            child: Row(
+              children: [
+                Text(
+                  overflow: TextOverflow.ellipsis,
+                  '${vlog.numberOfViews} ${'views'.tr}  ',
+                  style: TextStyle(
+                    color: Color(0xffFFFFFF),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.fSize,
+                  ),
+                ),
+
+                Text(
+                  overflow: TextOverflow.ellipsis,
+                  calculateTimeDifference(vlog.createdAt!.toString()),
+                  style: TextStyle(
+                    color: const Color(0xffFFFFFF),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.fSize,
+                  ),
+                ),
+
+
+              ],
+            ),
+
+          ),
           const SizedBox(
             width: 20,
           )

@@ -521,7 +521,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       ),
                     ),
                     Text(
-                      '${controller.getUserByIdModel.user?.vlogs![index].numberOfViews} views  ',
+                      '${controller.getUserByIdModel.user?.vlogs![index].numberOfViews} "${"views".tr}"  ',
                       style: TextStyle(
                         color: HexColor('#FFFFFF'),
                         fontWeight: FontWeight.w600,
@@ -529,7 +529,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       ),
                     ),
                     Text(
-                      '${differenceInDays} days ago',
+                      '${differenceInDays} ${"days_ago".tr}',
                       style: TextStyle(
                         color: HexColor('#FFFFFF'),
                         fontWeight: FontWeight.w600,

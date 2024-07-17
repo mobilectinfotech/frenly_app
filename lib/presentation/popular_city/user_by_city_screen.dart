@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
+import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
@@ -78,70 +79,16 @@ class _UserByCityScreenState extends State<UserByCityScreen> {
                         width:1
                     )
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomImageView(
-                      height: 104.adaptSize,width: 104.adaptSize,
-                      imagePath: controller.getUserByCityModel.users?[index].avatarUrl,
-                      radius: BorderRadius.circular(109.ah),
-                      fit: BoxFit.cover,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text('${controller.getUserByCityModel.users?[index].fullName ?? ''}',
-                        overflow:TextOverflow.ellipsis ,
-                        style: TextStyle(
-                            color: Colors.black,fontWeight: FontWeight.w500,fontSize:13.fSize
-                        ),),
-                    ),
-                    Text( '${controller.getUserByCityModel.users?[index].handle ?? ''}',
-                      style: TextStyle(
-                          color: Colors.grey,fontWeight: FontWeight.w600,fontSize:12.fSize
-                      ),),
-                    SizedBox(height:4.ah),
-                    Text('${controller.getUserByCityModel.users?[index].numberOfFollower ?? ''}',
-                      style: TextStyle(
-                          color: Colors.black,fontWeight: FontWeight.w500,fontSize:12.fSize
-                      ),),
-
-                    SizedBox(height:10.ah),
-                    InkWell(
-                      onTap:  () {
-                        setState(() {
-                          controller.getUserByCityModel.users?[index].isFollowed = !controller.getUserByCityModel.users![index].isFollowed!;
-                          if(controller.getUserByCityModel.users![index].isFollowed!){
-                             ApiRepository.follow(userId: "${controller.getUserByCityModel.users![index].id!}");
-                          }else{
-                            ApiRepository.unfollow(userId: "${controller.getUserByCityModel.users![index].id!}");
-
-                          }
-                        },
-                        );
-                      },
-                      //http://192.168.29.177:3001
-                      child: Container(
-                        height: 24.ah,width: 98.aw,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: controller.getUserByCityModel.users![index].isFollowed!  ? Colors.red : HexColor('#001649'),
-                        ),
-                        child:  Center(
-                          child: Text(controller.getUserByCityModel.users![index].isFollowed! ?   "UnFollow" :"Follow",
-                            style: TextStyle(
-                                color: controller.getUserByCityModel.users![index].isFollowed! ? Colors.white : Colors.white,
-                                fontWeight: FontWeight.w500,fontSize:14.fSize
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                child: CustomUserCard(
+                  users: controller.getUserByCityModel.users![index],
                 ),
               ),
             );
           }),
     );
   }
+
+
 }
+
+

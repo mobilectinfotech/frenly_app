@@ -27,7 +27,7 @@ class SearchVlogController extends GetxController{
 
   searchVlogg(String text,bool ? load)async{
     isLoadingVlog.value=load ??true;
-    var response =  await ApiRepository.searchVlog(searchText:searchController.text );
+    var response =  await ApiRepository.searchVlog(searchText:text.replaceAll("#", "") );
     getData(response);
     getData.refresh();
     isLoadingVlog.value=false;
@@ -39,9 +39,10 @@ class SearchVlogController extends GetxController{
   Rx<PopularBlogModel> getBlogData =PopularBlogModel().obs;
   PopularBlogModel get searchBlogModel => getBlogData.value;
   RxBool isLoadingBlog =false.obs;
-  searchBlog(String text, bool ? load)async{
+
+  Future<void> searchBlog(String text, bool ? load)async{
     isLoadingBlog.value =load ?? true;
-    final response =await ApiRepository.searchBlog(searchText:searchController.text );
+    final response =await ApiRepository.searchBlog(searchText:text.replaceAll("#", ""));
     getBlogData(response);
     getBlogData.refresh();
     isLoadingBlog.value =false;
@@ -56,7 +57,7 @@ class SearchVlogController extends GetxController{
 
   searchPhotos(String text, bool ? load)async{
     isLoadingPosts.value =load ?? true;
-    final response =await ApiRepository.searchPosts(searchText:searchController.text );
+    final response =await ApiRepository.searchPosts(searchText:text.replaceAll("#", "") );
     getPostData(response);
     getPostData.refresh();
     isLoadingPosts.value =false;
@@ -69,8 +70,10 @@ class SearchVlogController extends GetxController{
   SertchUserModel get searchUserModel => getUserData.value;
   RxBool isLoadingUsers =false.obs;
   searchUsers(String text, bool ? load)async{
+
+
     isLoadingUsers.value =load ?? true;
-    final response =await ApiRepository.searchUser(searchText:searchController.text );
+    final response =await ApiRepository.searchUser(searchText: text.replaceAll("#", ""));
     getUserData(response);
     getUserData.refresh();
     isLoadingUsers.value =false;

@@ -121,7 +121,7 @@ class MessagingService {
 ////////////////////local notification   start
 
   // show a simple notification
-  static Future showSimpleNotification({
+  static Future  showSimpleNotification({
     required String title,
     required String body,
     required String payload,
