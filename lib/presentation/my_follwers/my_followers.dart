@@ -39,7 +39,7 @@ class _MyFollowersScreenState extends State<MyFollowersScreen> {
       // ),
       body: Obx(
             ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),)
-            : controller.followingsModel.followers?.length == 0 ? Center(child: Text("No Followers Found"),) : Padding(
+            : controller.followingsModel.followers?.length == 0 ? Center(child: Text("You don't have any followers yet".tr),) : Padding(
           padding: const EdgeInsets.only(left: 15, right: 15),
           child: RefreshIndicator(
             onRefresh:_refresh ,

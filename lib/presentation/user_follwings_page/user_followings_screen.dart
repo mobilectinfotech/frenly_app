@@ -55,8 +55,8 @@ class _UserFollowingsScreenState extends State<UserFollowingsScreen> {
                 child: CircularProgressIndicator(strokeWidth: 1,),
               )
             : followingsModel.followings?.length == 0
-                ? Center(
-                    child: Text("No followings Found"),
+                ?  Center(
+                    child: Text("No followers found for this user.".tr),
                   )
                 : Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),

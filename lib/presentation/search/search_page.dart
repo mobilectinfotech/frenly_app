@@ -59,8 +59,21 @@ class _SearchScreenState extends State<SearchScreen>
       print("object" );
       searchController.searchBlog("${widget.hastag}", true).then((value) {
         _onItemTapped(1);
-        searchController.searchController.text = "#${widget.hastag}"?? "";
       });
+      Future.delayed(Duration(seconds: 1)).then((value) {
+        searchController.searchController.text = "${widget.hastag}";
+      });
+    }
+
+    if(widget.postType?.name == PostType.post.name){
+      print("object" );
+      searchController.searchPhotos("${widget.hastag}", true).then((value) {
+        _onItemTapped(2);
+      });
+      Future.delayed(Duration(seconds: 1)).then((value) {
+        searchController.searchController.text = "${widget.hastag}";
+      });
+
     }
 
   }
@@ -93,6 +106,7 @@ class _SearchScreenState extends State<SearchScreen>
               SizedBox(height: 15),
               Expanded(
                 child: PageView(
+                  physics: NeverScrollableScrollPhysics(),
                   controller: _pageController,
                   onPageChanged: (index) {
                     setState(() {
@@ -119,7 +133,7 @@ class _SearchScreenState extends State<SearchScreen>
 
         if (indexxx == 0) {
           searchController.searchController.clear();
-          searchController.searchVlogg(searchController.searchController.text, false);
+          searchController.searchVlogg(searchController.searchController.text, true);
         }
         if (indexxx== 1) {
           searchController.searchController.clear();
@@ -214,7 +228,7 @@ class _SearchScreenState extends State<SearchScreen>
       child: Obx(
         () => searchController.isLoadingBlog.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) :  searchController.searchBlogModel.blogs!.length == 0
             ? Center(
-                child: Text("No data found"),
+                child: Text("No results match your search criteria.".tr),
               )
             : ListView.builder(
                 shrinkWrap: true,
@@ -246,7 +260,7 @@ class _SearchScreenState extends State<SearchScreen>
         ),
         child: searchController.searchModel.vlogs!.isEmpty
             ? Center(
-                child: Text("No data found"),
+                child: Text("No results match your search criteria.".tr),
               )
             : ListView.builder(
                 shrinkWrap: true,

@@ -57,7 +57,7 @@ class _UserFollowersScreenState extends State<UserFollowersScreen> {
               )
             : followersModel.followers?.length == 0
                 ? Center(
-                    child: Text("No Followers Found"),
+                    child: Text("You don't have any followers yet".tr),
                   )
                 : Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),

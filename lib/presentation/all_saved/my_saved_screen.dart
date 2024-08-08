@@ -41,9 +41,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // Change this to your desired color
-    ));
+
 
     return Scaffold(
       appBar: customAppbar(
@@ -92,7 +90,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                           mainAxisAlignment: MainAxisAlignment.center,
 
                           children: [
-                            Text("categoryy".tr,
+                            Text("category".tr,
                               style: GoogleFonts.roboto().copyWith(
                                   fontSize: 22.fSize,
                                   fontWeight: FontWeight.w700,
@@ -324,7 +322,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
             ? Center(
           child: Padding(
             padding: EdgeInsets.only(top: 240.0.ah),
-            child: Text("no_data_found".tr),
+            child: Text("No vlog saved".tr),
           ),
         )
             : Obx(
@@ -431,7 +429,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                   ? Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 240.0.ah),
-                  child: Text("No data found".tr),
+                  child: Text("No results match your search criteria.".tr),
                 ),
               )
                   : Obx(

@@ -39,7 +39,7 @@ class _MyFollowingScreenState extends State<MyFollowingScreen> {
           )
         : controller.followingsModel.followings?.length == 0
             ? Center(
-                child: Text("No followings Found"),
+                child: Text("You don't have any followers yet".tr),
               )
             : Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),

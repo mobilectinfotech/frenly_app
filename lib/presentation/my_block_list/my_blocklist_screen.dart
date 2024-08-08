@@ -33,19 +33,17 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: customAppbar(
-          context: context,
-          title: "BList".tr,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: RefreshIndicator(
-            onRefresh: _refresh,
-            child: ListView(
-              children: [SizedBox(height: 10.ah), gridView()],
-            ),
+    return Scaffold(
+      appBar: customAppbar(
+        context: context,
+        title: "BList".tr,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: RefreshIndicator(
+          onRefresh: _refresh,
+          child: ListView(
+            children: [SizedBox(height: 10.ah), gridView()],
           ),
         ),
       ),
@@ -62,7 +60,7 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
               onRefresh: () async {
                 controller.myFollowers();
               },
-              child: GridView.builder(
+              child:  controller.blockUserList.myBlockedUserList?.length == 0 ? Center(child: SizedBox(height: MediaQuery.of(context).size.height*0.7,child: Center(child: Text("You don't have any blocked users".tr)))) : GridView.builder(
                   itemCount: controller.blockUserList.myBlockedUserList?.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

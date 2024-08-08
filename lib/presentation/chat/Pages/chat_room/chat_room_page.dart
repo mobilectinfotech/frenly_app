@@ -154,14 +154,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                       Builder(
                                         builder: (context) {
                                           try {
-                                            return formatTimestamp(controller
-                                                        .allMsg
-                                                        .messages![index]
-                                                        .createdAt!) ==
-                                                    formatTimestamp(controller
-                                                        .allMsg
-                                                        .messages![index + 1]
-                                                        .createdAt!)
+                                            return formatTimestamp(controller.allMsg.messages![index].createdAt!) == formatTimestamp(controller.allMsg.messages![index + 1].createdAt!)
                                                 ? const SizedBox.shrink()
                                                 : Text(
                                                   formatTimestamp(controller.allMsg.messages![index].createdAt!).capitalizeFirst!,
@@ -180,9 +173,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                       OwnMessageCard(
                                         message:
                                             controller.allMsg.messages![index],
-                                        createdAt: controller
-                                            .allMsg.messages![index].createdAt!
-                                            .toLocal(),
+                                        createdAt: controller.allMsg.messages![index].createdAt!.toLocal(),
                                       ),
                                     ],
                                   );
@@ -245,8 +236,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           onPressed: () {
                                             if (sendButton) {
                                               controller.sendMessage(
-                                                  message:
-                                                      _controller.text.trim(),
+                                                  message:   _controller.text.trim(),
                                                   chatId: widget.chatId);
                                               _controller.clear();
                                               FocusScope.of(context).unfocus();

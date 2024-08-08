@@ -39,6 +39,7 @@ class ChatRoomController extends GetxController {
       {required String message, required String chatId}) async {
     final response = await ApiClient().postRequest(
         endPoint: "message/${chatId}", body: {"content": "${message}"});
+
     var msggg = response["message"];
     SingleMessage getSingleMsgModel = SingleMessage.fromJson(msggg);
     allMsg.messages!.insert(0, getSingleMsgModel);
