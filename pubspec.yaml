@@ -66,7 +66,7 @@ dependencies:
 
 
 
-  circular_menu: ^3.0.0
+  circular_menu: ^4.0.0
   velocity_x: ^4.1.2
 
 
@@ -83,9 +83,12 @@ dependencies:
   firebase_crashlytics: ^3.5.4
   firebase_messaging: any
   flutter_local_notifications: ^17.1.1
+  timeago: ^3.7.0
 
   intl: any
   firebase_core: any
+  connectivity_plus: ^6.0.5
+  win32: ^5.5.4
 
 dev_dependencies:
   flutter_test:

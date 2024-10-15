@@ -28,7 +28,7 @@ class MessagingService {
     await fMessaging.getToken().then((t) {
       if (t != null) {
         // me.pushToken = t;
-        log('Push Token: $t');
+       // log('Push Token: $t');
       }
     });
   }
@@ -50,7 +50,7 @@ class MessagingService {
 
     // Retrieving the FCM token
     fcmToken = await _fcm.getToken();
-    log('fcmToken: $fcmToken');
+    // log('fcmToken: $fcmToken');
 
     // Handling background messages using the specified handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

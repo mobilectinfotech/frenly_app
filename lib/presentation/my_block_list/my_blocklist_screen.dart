@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';

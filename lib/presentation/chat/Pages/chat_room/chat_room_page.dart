@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:intl/intl.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/data_sources/remote/api_client.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
-import 'package:intl/intl.dart';
-import '../../../../core/utils/calculateTimeDifference.dart';
-import '../../../../data/models/LastSeenModel.dart';
+import 'package:frenly_app/data/models/LastSeenModel.dart';
+import 'package:frenly_app/socket_service/socket_service.dart';
+import 'package:frenly_app/presentation/chat/Pages/chat_room/chat_room_controller.dart';
+import 'package:frenly_app/presentation/chat/Pages/chat_room/chat_room_model.dart';
+import 'package:frenly_app/presentation/chat/Pages/chats/chats_model.dart';
 import '../../CustomUI/OwnMessgaeCrad.dart';
 import '../../CustomUI/ReplyCard.dart';
-import 'chat_room_controller.dart';
-import '../chats/chats_model.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'chat_room_model.dart';
-import 'package:get/get.dart';
 
 class ChatRoomPage extends StatefulWidget {
-  const ChatRoomPage(
-      {Key? key, required this.participant, required this.chatId})
-      : super(key: key);
+  const ChatRoomPage({
+    Key? key,
+    required this.participant,
+    required this.chatId,
+  }) : super(key: key);
 
   final Participant participant;
   final String chatId;
@@ -29,65 +31,53 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
-  ChatRoomController controller = Get.put(ChatRoomController());
+  final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
 
+  final FocusNode focusNode = FocusNode();
+  final TextEditingController _messageController = TextEditingController();
+  String lastSeenUser = '';
   bool show = false;
-  FocusNode focusNode = FocusNode();
   bool sendButton = false;
-  final TextEditingController _controller = TextEditingController();
-
-  Future<void> getLastSeen() async {
-    lastSeenModel =
-        await ApiRepository.lastSeen(id: "${widget.participant.id}");
-    setState(() {});
-  }
+  LastSeenModel? lastSeenModel;
 
   @override
   void initState() {
-    getLastSeen();
     super.initState();
+    _initializeChat();
+    focusNode.addListener(_handleFocusChange);
+  }
+
+  void _initializeChat() {
+    SocketService().activeChatId.value = int.parse(widget.chatId);
     controller.getAllMsg(chatId: widget.chatId);
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        setState(() {
-          show = false;
-        });
+    _getLastSeen();
+  }
+
+  Future<void> _getLastSeen() async {
+    try {
+      lastSeenModel = await ApiRepository.lastSeen(id: widget.participant.id.toString());
+
+      if (lastSeenModel?.data?.isLastSeenAllowed == false) {
+        lastSeenUser = "lastSeenHide";
+      } else if (lastSeenModel?.data?.lastSeen == null) {
+        lastSeenUser = "online";
+      } else {
+        lastSeenUser = timeago.format(lastSeenModel!.data!.lastSeen!.toLocal());
       }
-    });
-    connect();
+
+      setState(() {});
+    } catch (e) {
+      print("Error fetching last seen: $e");
+    }
   }
 
-  late IO.Socket socket;
-  int coiubt = 0;
-
-  Future<void> connect() async {
-    Map<String, dynamic> headers = {
-      'Authorization': 'Bearer ${PrefUtils().getAuthToken()}', // Example header
-    };
-    socket = IO.io(
-      ApiClient.mainUrl,
-      <String, dynamic>{
-        "transports": ["websocket"],
-        "extraHeaders": headers,
-        "autoConnect": false,
-      },
-    );
-    socket.connect();
-    socket.onConnect((data) {
-      socket.on("messageReceived", (msg) {
-        print("messageReceived${coiubt++}");
-        try {
-          SingleMessage getSingleMsgModel = SingleMessage.fromJson(msg);
-          controller.allMsg.messages!.insert(0, getSingleMsgModel);
-          controller.allMsgNOTUSE.refresh();
-        } catch (e, log) {
-          print("catch==>${e.toString()}");
-        }
+  void _handleFocusChange() {
+    if (focusNode.hasFocus) {
+      setState(() {
+        show = false;
       });
-    });
+    }
   }
-
-  LastSeenModel? lastSeenModel;
 
   String formatTimestamp(DateTime timestamp) {
     DateTime now = DateTime.now();
@@ -100,12 +90,15 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     } else if (difference.inDays < 7) {
       return '${difference.inDays} ${"days ago".tr}';
     } else {
-      return DateFormat('d MMMM').format(timestamp); // e.g., 15 August
+      return DateFormat('d MMMM').format(timestamp);
     }
   }
 
   @override
   void dispose() {
+    focusNode.removeListener(_handleFocusChange);
+    _messageController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -113,249 +106,187 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () => controller.isLoading.value
+            () => controller.isLoading.value
             ? const Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 1,
-                ),
-              )
+          child: CircularProgressIndicator(strokeWidth: 1),
+        )
             : SafeArea(
-                child: Scaffold(
-                  appBar: customAppbarForChat(
-                      context: context,
-                      handle: lastSeenModel?.data?.isLastSeenAllowed == false
-                          ? ""
-                          : lastSeenModel?.data?.lastSeen == null
-                              ? "online".tr
-                              : calculateTimeDifference(
-                                  "${lastSeenModel!.data?.lastSeen}"),
-                      name: "${widget.participant.fullName}".capitalizeFirst,
-                      imagepath: widget.participant.avatarUrl),
-                  backgroundColor: Colors.transparent,
-                  body: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          // height: MediaQuery.of(context).size.height - 150,
-                          child: Obx(
-                            () => ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: flipAxis(Axis.horizontal),
-                              reverse: true,
-                              itemCount: controller.allMsg.messages!.length,
-                              itemBuilder: (context, index) {
-                                if ("${controller.allMsg.messages![index].senderId}" !=
-                                    "${widget.participant.id}") {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Builder(
-                                        builder: (context) {
-                                          try {
-                                            return formatTimestamp(controller.allMsg.messages![index].createdAt!) == formatTimestamp(controller.allMsg.messages![index + 1].createdAt!)
-                                                ? const SizedBox.shrink()
-                                                : Text(
-                                                  formatTimestamp(controller.allMsg.messages![index].createdAt!).capitalizeFirst!,
-                                                  style: TextStyle(
-                                                    fontSize: 15.adaptSize,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontFamily: "Roboto",
-                                                  ),
-                                                );
-                                          } catch (e) {
-                                            // TODO
-                                          }
-                                          return SizedBox.shrink();
-                                        },
-                                      ),
-                                      OwnMessageCard(
-                                        message:
-                                            controller.allMsg.messages![index],
-                                        createdAt: controller.allMsg.messages![index].createdAt!.toLocal(),
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return ReplyCard(
-                                    message: controller.allMsg.messages![index],
-                                    createdAt: controller
-                                        .allMsg.messages![index].createdAt!
-                                        .toLocal(),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: SizedBox(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 10.aw,
-                                    ),
-                                    Container(
-                                      width: 305.aw,
-                                      child: TextFormField(
-                                        controller: _controller,
-                                        focusNode: focusNode,
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        keyboardType: TextInputType.multiline,
-                                        maxLines: 5,
-                                        minLines: 1,
-                                        onChanged: (value) {
-                                          if (value.length > 0) {
-                                            setState(() {
-                                              sendButton = true;
-                                            });
-                                          } else {
-                                            setState(() {
-                                              sendButton = false;
-                                            });
-                                          }
-                                        },
-                                        decoration: decoration,
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    CircleAvatar(
-                                      radius: 20.adaptSize,
-                                      backgroundColor: MyColor.primaryColor,
-                                      child: IconButton(
-                                          icon: const Icon(
-                                            Icons.send,
-                                            color: Colors.white,
-                                          ),
-                                          onPressed: () {
-                                            if (sendButton) {
-                                              controller.sendMessage(
-                                                  message:   _controller.text.trim(),
-                                                  chatId: widget.chatId);
-                                              _controller.clear();
-                                              FocusScope.of(context).unfocus();
-
-                                              setState(() {
-                                                sendButton = false;
-                                              });
-                                            }
-                                          }
-                                          // onPressed: () {
-                                          //   if (sendButton) {
-                                          //     controller.sendMessage(
-                                          //         message: sendMsgController.text,
-                                          //         chatId: widget.chatId);
-                                          //     controller.sendMsgController.clear();
-                                          //     setState(() {
-                                          //       sendButton = false;
-                                          //     });
-                                          //   }
-                                          // },
-                                          ),
-                                    ),
-                                    SizedBox(
-                                      width: 10.aw,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8.ah,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+          child: Scaffold(
+            appBar: _buildCustomAppBar(context),
+            backgroundColor: Colors.transparent,
+            body: Column(
+              children: [
+                Expanded(
+                  child: _buildMessageList(),
                 ),
-              ),
+                _buildMessageInput(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  InputDecoration get decoration => InputDecoration(
-        hintText: "Messages".tr,
-        hintStyle: TextStyle(
-          color: Color(0xFFA8A8A8),
-          fontSize: 20.adaptSize,
-          fontFamily: 'Roboto',
-          fontWeight: FontWeight.w500,
-        ),
+  PreferredSizeWidget _buildCustomAppBar(BuildContext context) {
+    return customAppbarForChat(
+      context: context,
+      handle: lastSeenUser,
+      name: widget.participant.fullName?.capitalizeFirst,
+      imagepath: widget.participant.avatarUrl,
+    );
+  }
 
-        // prefixIcon: CustomImageView(imagePath: "assets/icon/smaily.svg",height: 60.adaptSize,onTap: () {
-        //   EmojiPickerWidget();
-        // },),
-        prefixIconConstraints: BoxConstraints(
-          maxHeight: 25.adaptSize,
-        ),
+  Widget _buildMessageList() {
+    return Obx(
+          () => ListView.builder(
+        reverse: true,
+        itemCount: controller.allMsg.messages?.length ?? 0,
+        itemBuilder: (context, index) {
+          final message = controller.allMsg.messages![index];
+          final isOwnMessage = message.senderId != widget.participant.id;
 
-//  suffixIcon: suffix,
-        // suffixIconConstraints: suffixConstraints,
-        isDense: true,
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildTimestamp(index),
+              isOwnMessage
+                  ? OwnMessageCard(
+                message: message,
+                createdAt: message.createdAt!.toLocal(),
+              )
+                  : ReplyCard(
+                message: message,
+                createdAt: message.createdAt!.toLocal(),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
-        // contentPadding: EdgeInsets.symmetric(horizontal: 30.aw, vertical: 10.v,),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 10.aw,
-          vertical: 10.ah,
-        ),
-        fillColor: Colors.transparent,
-        filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.adaptSize),
-          borderSide: BorderSide(
-            color: Colors.black.withOpacity(.50),
-            width: 1,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.adaptSize),
-          borderSide: BorderSide(
-            color: Colors.black.withOpacity(.50),
-            width: 1,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.adaptSize),
-          borderSide: BorderSide(
-            color: Colors.black.withOpacity(.50),
-            width: 1,
-          ),
-        ),
-      );
+  Widget _buildTimestamp(int index) {
+    try {
+      final currentMessage = controller.allMsg.messages![index];
+      final previousMessage = controller.allMsg.messages![index + 1];
 
-  Widget iconCreation(IconData icons, Color color, String text) {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: color,
-            child: Icon(
-              icons,
-              // semanticLabel: "Help",
-              size: 29,
-              color: Colors.white,
-            ),
+      if (formatTimestamp(currentMessage.createdAt!) != formatTimestamp(previousMessage.createdAt!)) {
+        return Text(
+          formatTimestamp(currentMessage.createdAt!).capitalizeFirst!,
+          style: TextStyle(
+            fontSize: 15.adaptSize,
+            fontWeight: FontWeight.w600,
+            fontFamily: "Roboto",
           ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 12,
-              // fontWeight: FontWeight.w100,
-            ),
-          )
-        ],
+        );
+      }
+    } catch (e) {
+      return const SizedBox.shrink();
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildMessageInput() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.ah),
+        child: Row(
+          children: [
+            SizedBox(width: 10.aw),
+            _buildTextInput(),
+            const Spacer(),
+            _buildSendButton(),
+            SizedBox(width: 10.aw),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextInput() {
+    return Container(
+      width: 305.aw,
+      child: TextFormField(
+        controller: _messageController,
+        focusNode: focusNode,
+        textAlignVertical: TextAlignVertical.center,
+        keyboardType: TextInputType.multiline,
+        maxLines: 5,
+        minLines: 1,
+        onChanged: (value) {
+          setState(() {
+            sendButton = value.isNotEmpty;
+          });
+        },
+        decoration: _inputDecoration(),
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration() {
+    return InputDecoration(
+      hintText: "Messages".tr,
+      hintStyle: TextStyle(
+        color: Color(0xFFA8A8A8),
+        fontSize: 20.adaptSize,
+        fontFamily: 'Roboto',
+        fontWeight: FontWeight.w500,
+      ),
+      prefixIconConstraints: BoxConstraints(
+        maxHeight: 25.adaptSize,
+      ),
+      isDense: true,
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 10.aw,
+        vertical: 10.ah,
+      ),
+      fillColor: Colors.transparent,
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.adaptSize),
+        borderSide: BorderSide(
+          color: Colors.black.withOpacity(.50),
+          width: 1,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.adaptSize),
+        borderSide: BorderSide(
+          color: Colors.black.withOpacity(.50),
+          width: 1,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.adaptSize),
+        borderSide: BorderSide(
+          color: Colors.black.withOpacity(.50),
+          width: 1,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSendButton() {
+    return CircleAvatar(
+      radius: 20.adaptSize,
+      backgroundColor: MyColor.primaryColor,
+      child: IconButton(
+        icon: const Icon(Icons.send, color: Colors.white),
+        onPressed: sendButton
+            ? () {
+          controller.sendMessage(
+            message: _messageController.text.trim(),
+            chatId: widget.chatId,
+          );
+          _messageController.clear();
+          FocusScope.of(context).unfocus();
+          setState(() {
+            sendButton = false;
+          });
+        }
+            : null,
       ),
     );
   }

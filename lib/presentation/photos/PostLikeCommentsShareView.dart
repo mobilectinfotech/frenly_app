@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
 import '../../data/models/post_model.dart';
-import '../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import '../chat/Pages/all_frined/all_friend_controller.dart';
 import '../dashboard_screen/dashboardcontroller.dart';
 

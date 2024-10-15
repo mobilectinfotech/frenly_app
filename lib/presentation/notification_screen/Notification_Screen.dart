@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:frenly_app/presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:frenly_app/presentation/vlog_full_view/vlog_full_view.dart';

@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 
 import '../../data/models/DiscoverUsersModel.dart';
 import '../../data/models/vlog_by_id_model.dart';
-import '../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import '../Vlog/TrendingVlogModel.dart';
 
 class VlogFullViewController extends GetxController{

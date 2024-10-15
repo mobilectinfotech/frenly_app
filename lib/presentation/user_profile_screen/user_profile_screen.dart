@@ -9,7 +9,8 @@ import 'package:frenly_app/presentation/user_profile_screen/user_profile_model.d
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../Widgets/custom_blog_card.dart';
-import '../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import '../photos/photo_view_screen.dart';
 import '../user_follwers/user_followers_screen.dart';
 import '../user_follwings_page/user_followings_screen.dart';
@@ -60,8 +61,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
              padding: EdgeInsets.zero,
               children: [
                 imageView(),
-                SizedBox(height: 10.ah),
-                bioTexts(),
+                Obx(
+                    ()=> AnimatedContainer(
+                    duration:const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    height:  _isZoomed.value? 130.h : 10.ah,
+                  ),
+                ),
+               // Obx(() => SizedBox(height: _isZoomed.value? 125.h : 10.ah)),
+                 bioTexts(),
                 SizedBox(height: 20.ah),
                 ((getUserByIdModel.user?.isPrivate == true &&
                             getUserByIdModel.user!.followState ==
@@ -313,21 +321,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           Positioned(
             bottom: 0,
             left: 121.aw,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(500)),
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: CustomImageView(
-                  width: 140.ah,
-                  height: 140.ah,
-                  fit: BoxFit.cover,
-                  imagePath: getUserByIdModel.user?.avatarUrl,
-                  radius: BorderRadius.circular(100),
-                ),
-              ),
-            ),
+            child:  ProfileZoom(imageUrl: getUserByIdModel.user?.avatarUrl,),
+            // child: InkWell(
+            //   onTap: () {
+            //     ProfileZoom(imageUrl: getUserByIdModel.user?.avatarUrl ??"",);
+            //     // showDialog(context: context, builder: (BuildContext context) {
+            //     //   return CustomImageView(
+            //     //     width: 140.ah,
+            //     //     height: 140.ah,
+            //     //     fit: BoxFit.cover,
+            //     //     imagePath: getUserByIdModel.user?.avatarUrl,
+            //     //     radius: BorderRadius.circular(100),
+            //     //   );
+            //     // });
+            //   },
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.circular(500)),
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(4.0),
+            //       child: CustomImageView(
+            //         width: 140.ah,
+            //         height: 140.ah,
+            //         fit: BoxFit.cover,
+            //         imagePath: getUserByIdModel.user?.avatarUrl,
+            //         radius: BorderRadius.circular(100),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ),
           SafeArea(
             child: backAndSettingIconRow(),
@@ -632,58 +655,80 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
 
 
-  _bottomSheetWidget2(
-      {required BuildContext context001, required String vlogId}) {
-    showBottomSheet(
-        context: context001,
-        builder: (BuildContext context) {
-          return FractionallySizedBox(
-              heightFactor: .15,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                  child: Container(
-                    // color: Colors.white,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.0.ah, right: 20.ah),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 40,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                await ApiRepository.blockUser(
-                                    userId:
-                                        "${getUserByIdModel.user?.id}");
-                                Get.back();
-                              },
-                              child: Row(
-                                children: [
-                                  CustomImageView(
-                                    height: 38,
-                                    width: 38,
-                                    imagePath: "assets/image/delete (1).png",
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  const SizedBox(
-                                    child: Text("Block this user"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ]),
-                    ),
+}
+
+
+RxBool _isZoomed = false.obs;
+class ProfileZoom extends StatefulWidget {
+   String ? imageUrl;
+
+  ProfileZoom({required this.imageUrl});
+
+  @override
+  _ProfileZoomState createState() => _ProfileZoomState();
+}
+
+class _ProfileZoomState extends State<ProfileZoom> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _animation = Tween<double>(begin: 1.0, end: 3.0).animate(_controller);
+  }
+
+  void _zoomImage() {
+    setState(() {
+      if (_isZoomed.value) {
+        _controller.reverse();
+      } else {
+        _controller.forward();
+      }
+      _isZoomed.value = !_isZoomed.value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _zoomImage,
+      child: Center(
+        child: AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _animation.value,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(500)),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: CustomImageView(
+                    width: 140.ah,
+                    height: 140.ah,
+                    fit: BoxFit.cover,
+                    imagePath: widget.imageUrl,
+                    radius: BorderRadius.circular(100),
                   ),
                 ),
-              ));
-        }).closed.then((value) {});
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

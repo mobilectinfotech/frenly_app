@@ -30,8 +30,8 @@ class AppDialog {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(strokeWidth: 1,),
-              SizedBox(height: 8),
+             const CircularProgressIndicator(strokeWidth: 1,),
+              const SizedBox(height: 8),
               Text(message ?? 'Loading...'),
             ],
           ),

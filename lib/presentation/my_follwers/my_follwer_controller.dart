@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import '../../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'FollowersModel.dart';
 
 class MyFollowersController extends GetxController{

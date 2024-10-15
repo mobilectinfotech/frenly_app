@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
+import '../../../../socket_service/socket_service.dart';
 import '../../../dashboard_screen/dashboard_screen.dart';
 
 
@@ -24,7 +25,9 @@ class LoginController extends GetxController {
     bool login = await ApiRepository.loginWithEmailPassword(email: emaillController.text, password: passworddController.text);
       isLoading(false);
       if (login) {
-      Get.offAll(() => const DashBoardScreen());
+        SocketService().socketDisconnect();
+        SocketService().socketConnect();
+        Get.offAll(() => const DashBoardScreen());
     }
   }
 }

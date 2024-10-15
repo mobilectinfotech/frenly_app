@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import '../../../Widgets/custom_image_view.dart';
 import '../../../core/constants/app_dialogs.dart';
 import '../../../data/models/PostSingleViewModel.dart';
-import '../../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import '../../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../../photos/photo_view_screen.dart';
 import '../Pages/chat_room/chat_room_model.dart';

@@ -13,7 +13,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/blog_model.dart';
-import '../../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
 import '../../Vlog/blog_like_commnet_share_common_view.dart';
 import '../../Vlog/vlog_like_commnet_share_common_view.dart';
 import '../../auth/my_profile_view/my_profile_controller.dart';
@@ -283,26 +283,29 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
             child: Padding(
               padding: EdgeInsets.only(left: 5.0.aw),
               child: Container(
-                width: 60,
+                // width: 60,
                 height: 20,
                 decoration: ShapeDecoration(
-                  color: Color(0xFFEEEEEE),
+                  color: const Color(0xFFEEEEEE),
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 0.30),
+                    side:const BorderSide(width: 0.30),
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 child: Center(
                   child: Opacity(
                     opacity: .50,
-                    child: Text(
-                      tagsList[i].tr,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
-                        height: 0.08,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5.0, right: 5),
+                      child: Text(
+                        tagsList[i].tr,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w500,
+                          height: 0.08,
+                        ),
                       ),
                     ),
                   ),

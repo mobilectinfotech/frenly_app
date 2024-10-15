@@ -1,11 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/bottom_sheet_widgets.dart';
+import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/search/search_page.dart';
 import 'package:get/get.dart';
 import '../../Widgets/custom_image_view.dart';
-import '../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import '../auth/my_profile_view/my_profile_controller.dart';
 import '../user_profile_screen/user_profile_screen.dart';
 import 'PostLikeCommentsShareView.dart';
@@ -192,20 +194,39 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                   onTap: () {
                  //   Get.to(()=>PostFullViewScreen(post: widget.post!));
                   },
-                  child: Container(
-                      width: 385.adaptSize,
-                      height: 385.adaptSize,
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 335.adaptSize,),
-                         // HashtagText(caption:"${controller.postSingleViewModel?.post?.caption}"),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15,right: 15),
-                            child: Text("${controller.postSingleViewModel?.post?.caption}".capitalizeFirst!,overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 16.adaptSize ,
-                                  fontWeight: FontWeight.w400,color: Colors.white),),
+                         const Spacer(),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+
+                            decoration: BoxDecoration(
+                              //color: Colors.red,
+                             boxShadow: [
+                               BoxShadow(
+                                 color: Colors.black.withOpacity(0.25),
+                                 spreadRadius: -1,
+                                 blurRadius: 2,
+                                 offset: Offset(0, 2),
+                               ),
+                             ]
+                            ),
+                            child: Padding(
+                            padding: const EdgeInsets.only(left: 15,right: 15,bottom: 10,top: 10),
+                              child: HashtagText(caption:"${controller.postSingleViewModel?.post?.caption}" ),
+                            ),
                           ),
+
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15,right: 15),
+                          //   child: Text("${controller.postSingleViewModel?.post?.caption}".capitalizeFirst!,overflow: TextOverflow.ellipsis,
+                          //     style: TextStyle(fontSize: 16.adaptSize ,
+                          //         fontWeight: FontWeight.w400,color: Colors.white),),
+                          // ),
                         ],
                       )
 
@@ -223,50 +244,50 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
   }
 
 }
-// class HashtagText extends StatelessWidget {
-//   final String caption;
-//
-//   HashtagText({required this.caption});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Regular expression to match hashtags
-//     final RegExp hashtagRegExp = RegExp(r"(#[a-zA-Z0-9_]+)");
-//
-//     // Splitting the text into parts to handle each word
-//     List<TextSpan> spans = [];
-//     caption.splitMapJoin(
-//       hashtagRegExp,
-//       onMatch: (Match match) {
-//         // On matching a hashtag, create a green TextSpan with a GestureRecognizer
-//         spans.add(
-//           TextSpan(
-//             text: match.group(0),
-//             style: TextStyle(color: Colors.green),
-//             recognizer: TapGestureRecognizer()
-//               ..onTap = () {
-//               Get.to(()=>SearchScreen(postType: PostType.post,hastag: "${match.group(0)}",));
-//                 // Action on hashtag click
-//                 print('Clicked on ${match.group(0)}');
-//               },
-//           ),
-//         );
-//         return '';
-//       },
-//       onNonMatch: (String nonMatch) {
-//         // For non-hashtag parts, create a regular TextSpan
-//         spans.add(TextSpan(text: nonMatch));
-//         return '';
-//       },
-//     );
-//
-//     return RichText(
-//       text: TextSpan(
-//         children: spans,
-//         style: TextStyle(fontSize: 16.adaptSize ,
-//             fontWeight: FontWeight.w400,color: Colors.white), // Default text color
-//       ),
-//     );
-//   }
-// }
+class HashtagText extends StatelessWidget {
+  final String caption;
+
+  HashtagText({required this.caption});
+
+  @override
+  Widget build(BuildContext context) {
+    // Regular expression to match hashtags
+    final RegExp hashtagRegExp = RegExp(r"(#[a-zA-Z0-9_]+)");
+
+    // Splitting the text into parts to handle each word
+    List<TextSpan> spans = [];
+    caption.splitMapJoin(
+      hashtagRegExp,
+      onMatch: (Match match) {
+        // On matching a hashtag, create a green TextSpan with a GestureRecognizer
+        spans.add(
+          TextSpan(
+            text: match.group(0),
+            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18.adaptSize ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+              Get.to(()=>SearchScreen(postType: PostType.post,hastag: "${match.group(0)}",));
+                // Action on hashtag click
+                print('Clicked on ${match.group(0)}');
+              },
+          ),
+        );
+        return '';
+      },
+      onNonMatch: (String nonMatch) {
+        // For non-hashtag parts, create a regular TextSpan
+        spans.add(TextSpan(text: nonMatch));
+        return '';
+      },
+    );
+
+    return RichText(
+      text: TextSpan(
+        children: spans,
+        style: TextStyle(fontSize: 16.adaptSize ,
+            fontWeight: FontWeight.w400,color: Colors.white), // Default text color
+      ),
+    );
+  }
+}
 

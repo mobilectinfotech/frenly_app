@@ -6,7 +6,7 @@ import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
 import '../../core/constants/my_colour.dart';
 import '../../data/models/vlog_model.dart';
-import '../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
 import '../dashboard_screen/dashboardcontroller.dart';
 
 class VlogLikeCommentsShareView extends StatefulWidget {

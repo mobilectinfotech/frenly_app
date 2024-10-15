@@ -12,7 +12,7 @@ import 'package:frenly_app/data/models/cateogry_model.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Widgets/custom_blog_card.dart';
-import '../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
 import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../photos/photo_view_screen.dart';
 import 'my_saved_controller.dart';
@@ -41,8 +41,6 @@ class _AllSavedScreenState extends State<AllSavedScreen>
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: customAppbar(
           context: context,
@@ -57,10 +55,10 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                 context: context,
                 builder: (context) {
                   return Container(
-                    padding: EdgeInsets.only(left: 20.aw,top: 20.aw,right: 20.aw),
+                    padding:
+                        EdgeInsets.only(left: 20.aw, top: 20.aw, right: 20.aw),
                     width: double.infinity,
                     child: ListView(
-
                       children: [
                         SizedBox(
                           height: 6.ah,
@@ -88,9 +86,9 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-
                           children: [
-                            Text("category".tr,
+                            Text(
+                              "category".tr,
                               style: GoogleFonts.roboto().copyWith(
                                   fontSize: 22.fSize,
                                   fontWeight: FontWeight.w700,
@@ -104,24 +102,21 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                                 controller.filteredMySavedVlogs.clear();
                                 controller.mySavedVlogs.value?.mySavedVlogs
                                     ?.forEach((element) {
-                                  controller.filteredMySavedVlogs
-                                      .add(element);
+                                  controller.filteredMySavedVlogs.add(element);
                                 });
                               }
                               if (activeIndex == 1) {
                                 controller.filteredSaveBlogModel.clear();
                                 controller.saveBlogModel.value?.mySavedBlogs
                                     ?.forEach((element) {
-                                  controller.filteredSaveBlogModel
-                                      .add(element);
+                                  controller.filteredSaveBlogModel.add(element);
                                 });
                               }
                               if (activeIndex == 2) {
                                 controller.filteredMySavedPosts.clear();
                                 controller.mySavedPosts.value?.mySavedPosts
                                     ?.forEach((element) {
-                                  controller.filteredMySavedPosts
-                                      .add(element);
+                                  controller.filteredMySavedPosts.add(element);
                                 });
                               }
                               Get.back();
@@ -190,119 +185,120 @@ class _AllSavedScreenState extends State<AllSavedScreen>
       body: Obx(
         () => controller.isLoading.value
             ? const Center(
-                child: CircularProgressIndicator(strokeWidth: 1,),
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                ),
               )
             : ListView(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
-                  child: Container(
-                    height: 52.ah,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            BorderRadius.circular(10.adaptSize)),
-                    child: Padding(
-                      padding: EdgeInsets.all(6.0.adaptSize),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              activeIndex = 0;
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 40.ah,
-                              width: 105.aw,
-                              decoration: BoxDecoration(
-                                  color: activeIndex == 0
-                                      ? const Color(0xff001649)
-                                      : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(9.adaptSize)),
-                              child: Center(
-                                  child: Text(
-                                'Vlogs'.tr,
-                                style: TextStyle(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
+                    child: Container(
+                      height: 52.ah,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.adaptSize)),
+                      child: Padding(
+                        padding: EdgeInsets.all(6.0.adaptSize),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                activeIndex = 0;
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 40.ah,
+                                width: 105.aw,
+                                decoration: BoxDecoration(
                                     color: activeIndex == 0
-                                        ? Colors.white
-                                        : Colors.black54),
-                              )),
+                                        ? const Color(0xff001649)
+                                        : Colors.transparent,
+                                    borderRadius:
+                                        BorderRadius.circular(9.adaptSize)),
+                                child: Center(
+                                    child: Text(
+                                  'Vlogs'.tr,
+                                  style: TextStyle(
+                                      color: activeIndex == 0
+                                          ? Colors.white
+                                          : Colors.black54),
+                                )),
+                              ),
                             ),
-                          ),
-                          //
-                          InkWell(
-                            onTap: () {
-                              activeIndex = 1;
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 40.ah,
-                              width: 105.aw,
-                              decoration: BoxDecoration(
-                                  color: activeIndex == 1
-                                      ? Color(0xff001649)
-                                      : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(9.adaptSize)),
-                              child: Center(
-                                  child: Text(
-                                'Blogs'.tr,
-                                style: TextStyle(
+                            //
+                            InkWell(
+                              onTap: () {
+                                activeIndex = 1;
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 40.ah,
+                                width: 105.aw,
+                                decoration: BoxDecoration(
                                     color: activeIndex == 1
-                                        ? Colors.white
-                                        : Colors.black54),
-                              )),
+                                        ? Color(0xff001649)
+                                        : Colors.transparent,
+                                    borderRadius:
+                                        BorderRadius.circular(9.adaptSize)),
+                                child: Center(
+                                    child: Text(
+                                  'Blogs'.tr,
+                                  style: TextStyle(
+                                      color: activeIndex == 1
+                                          ? Colors.white
+                                          : Colors.black54),
+                                )),
+                              ),
                             ),
-                          ),
-                          //
-                          InkWell(
-                            onTap: () {
-                              activeIndex = 2;
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 40.ah,
-                              width: 105.aw,
-                              decoration: BoxDecoration(
-                                  color: activeIndex == 2
-                                      ? Color(0xff001649)
-                                      : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(9.adaptSize)),
-                              child: Center(
-                                  child: Text(
-                                'Photos'.tr,
-                                style: TextStyle(
+                            //
+                            InkWell(
+                              onTap: () {
+                                activeIndex = 2;
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 40.ah,
+                                width: 105.aw,
+                                decoration: BoxDecoration(
                                     color: activeIndex == 2
-                                        ? Colors.white
-                                        : Colors.black54),
-                              )),
+                                        ? Color(0xff001649)
+                                        : Colors.transparent,
+                                    borderRadius:
+                                        BorderRadius.circular(9.adaptSize)),
+                                child: Center(
+                                    child: Text(
+                                  'Photos'.tr,
+                                  style: TextStyle(
+                                      color: activeIndex == 2
+                                          ? Colors.white
+                                          : Colors.black54),
+                                )),
+                              ),
                             ),
-                          ),
 
-                          // Container(height: 40,width: 112,
-                          //   decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(9.adaptSize)
-                          //   ),
-                          //   child: Center(child: Text('Vlogs'.tr)),),
-                        ],
+                            // Container(height: 40,width: 112,
+                            //   decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(9.adaptSize)
+                            //   ),
+                            //   child: Center(child: Text('Vlogs'.tr)),),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20.ah),
-                Column(
-                  children: [
-                    activeIndex == 0 ? _vlogs() : SizedBox(),
-                    activeIndex == 1 ? _blogs() : SizedBox(),
-                    activeIndex == 2 ? _photos() : SizedBox(),
-                  ],
-                ),
-                SizedBox(height: 80.ah),
-              ],
-            ),
+                  SizedBox(height: 20.ah),
+                  Column(
+                    children: [
+                      activeIndex == 0 ? _vlogs() : SizedBox(),
+                      activeIndex == 1 ? _blogs() : SizedBox(),
+                      activeIndex == 2 ? _photos() : SizedBox(),
+                    ],
+                  ),
+                  SizedBox(height: 80.ah),
+                ],
+              ),
       ),
     );
   }
@@ -311,7 +307,8 @@ class _AllSavedScreenState extends State<AllSavedScreen>
     return Obx(() {
       if (controller.mySavedVlogs.value == null) {
         return const Center(
-          child: CircularProgressIndicator(strokeWidth: 1,
+          child: CircularProgressIndicator(
+            strokeWidth: 1,
             color: MyColor.primaryColor,
           ),
         );
@@ -320,30 +317,36 @@ class _AllSavedScreenState extends State<AllSavedScreen>
         width: double.infinity,
         child: controller.filteredMySavedVlogs.isEmpty
             ? Center(
-          child: Padding(
-            padding: EdgeInsets.only(top: 240.0.ah),
-            child: Text("No vlog saved".tr),
-          ),
-        )
+                child: Padding(
+                  padding: EdgeInsets.only(top: 240.0.ah),
+                  child: Text("no_vlogs_found".tr),
+                ),
+              )
             : Obx(
-              () => controller.isLoadingVlogs.value
-              ? const Center(
-            child: CircularProgressIndicator(strokeWidth: 1,),
-          )
-              : Padding(
-            padding: const EdgeInsets.only(left: 16 ,right : 16),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: controller.filteredMySavedVlogs.value.length,
-              padding: const EdgeInsets.only(bottom: 10),
-              itemBuilder: (context, index) {
-                return CustomVlogCard(vlog: controller.filteredMySavedVlogs[index].vlog!,);
-              },
-            ),
-          ),
-        ),
+                () => controller.isLoadingVlogs.value
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount:
+                              controller.filteredMySavedVlogs.value.length,
+                          padding: const EdgeInsets.only(bottom: 10),
+                          itemBuilder: (context, index) {
+                            return CustomVlogCard(
+                              vlog:
+                                  controller.filteredMySavedVlogs[index].vlog!,
+                            );
+                          },
+                        ),
+                      ),
+              ),
       );
     });
   }
@@ -352,51 +355,58 @@ class _AllSavedScreenState extends State<AllSavedScreen>
     return SizedBox(
       width: double.infinity,
       child: Obx(
-            () {
+        () {
           if (controller.saveBlogModel.value == null) {
             return const Center(
-              child: CircularProgressIndicator(strokeWidth: 1,),
+              child: CircularProgressIndicator(
+                strokeWidth: 1,
+              ),
             );
           }
           return Container(
             child: controller.isLoadingBlog.value
-                ? const CircularProgressIndicator(strokeWidth: 1,)
+                ? const CircularProgressIndicator(
+                    strokeWidth: 1,
+                  )
                 : controller.filteredSaveBlogModel.isEmpty
-                ? Center(
-              child: Padding(
-                padding: EdgeInsets.only(top: 240.0.ah),
-                child:  Text("no_data_found".tr),
-              ),
-            )
-                : ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: controller.filteredSaveBlogModel.length,
-              padding: const EdgeInsets.only(bottom: 10),
-              itemBuilder: (context, index) {
-                String jsonString = "${controller.filteredSaveBlogModel[index].blog?.tags}";
-                List<String> tagsList = json.decode(jsonString).cast<String>();
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 10, right: 5),
-                  child: InkWell(
-                    onTap: () {
-                      print('blogsId==>${controller..filteredSaveBlogModel[index].blog?.id}');
-                      Get.to(() => BlogsFullViewScreen(
-                        id: controller
-                            .filteredSaveBlogModel[index].blog!.id
-                            .toString(),
-                      ));
-                    },
-                    child: CustomBlogCard(
-                      blog: controller.filteredSaveBlogModel[index].blog!, tagsList: tagsList,
-
-
-                    ),
-                  ),
-                );
-              },
-            ),
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 240.0.ah),
+                          child: Text("no_blogs_found".tr),
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: controller.filteredSaveBlogModel.length,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        itemBuilder: (context, index) {
+                          String jsonString =
+                              "${controller.filteredSaveBlogModel[index].blog?.tags}";
+                          List<String> tagsList =
+                              json.decode(jsonString).cast<String>();
+                          return Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: 10, right: 5),
+                            child: InkWell(
+                              onTap: () {
+                                print('blogsId==>${controller..filteredSaveBlogModel[index].blog?.id}');
+                                Get.to(() => BlogsFullViewScreen(
+                                      id: controller
+                                          .filteredSaveBlogModel[index].blog!.id
+                                          .toString(),
+                                    ));
+                              },
+                              child: CustomBlogCard(
+                                blog: controller
+                                    .filteredSaveBlogModel[index].blog!,
+                                tagsList: tagsList,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
           );
         },
       ),
@@ -418,51 +428,59 @@ class _AllSavedScreenState extends State<AllSavedScreen>
     return Padding(
         padding: const EdgeInsets.all(10.0),
         child: Obx(
-              () {
+          () {
             if (controller.filteredMySavedPosts.value == null) {
               return const Center(
-                child: CircularProgressIndicator(strokeWidth: 1,),
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                ),
               );
             }
             return Container(
               child: controller.filteredMySavedPosts.isEmpty
                   ? Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 240.0.ah),
-                  child: Text("No results match your search criteria.".tr),
-                ),
-              )
-                  : Obx(
-                    () => controller.isLoadingPosts.value
-                    ? const Center(
-                  child: CircularProgressIndicator(strokeWidth: 1,),
-                )
-                    : StaggeredGrid.count(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 4,
-                  crossAxisSpacing: 4,
-                  children: List.generate(
-                    controller.filteredMySavedPosts!.length,
-                        (index) => StaggeredGridTile.count(
-                      crossAxisCellCount: cont[index % 9],
-                      mainAxisCellCount: cont[index % 9],
-                      child: InkWell(
-                        onTap: () {
-                          Get.to(()=> PostFullViewScreen(loadPostByid: "${controller.filteredMySavedPosts![index].post?.id}",));
-                        },
-                        child: Center(child: CustomImageView(
-                          imagePath: controller
-                              .filteredMySavedPosts![index]
-                              .post
-                              ?.imageUrl,
-                          fit: BoxFit.cover,
-                          radius: BorderRadius.circular(10),
-                        )),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 240.0.ah),
+                        child: Text("no_photos_found".tr),
                       ),
+                    )
+                  : Obx(
+                      () => controller.isLoadingPosts.value
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 1,
+                              ),
+                            )
+                          : StaggeredGrid.count(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 4,
+                              crossAxisSpacing: 4,
+                              children: List.generate(
+                                controller.filteredMySavedPosts.length,
+                                (index) => StaggeredGridTile.count(
+                                  crossAxisCellCount: cont[index % 9],
+                                  mainAxisCellCount: cont[index % 9],
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.to(() => PostFullViewScreen(
+                                            loadPostByid:
+                                                "${controller.filteredMySavedPosts[index].post?.id}",
+                                          ));
+                                    },
+                                    child: Center(
+                                        child: CustomImageView(
+                                      imagePath: controller
+                                          .filteredMySavedPosts[index]
+                                          .post
+                                          ?.imageUrl,
+                                      fit: BoxFit.cover,
+                                      radius: BorderRadius.circular(10),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                            ),
                     ),
-                  ),
-                ),
-              ),
             );
           },
         ));

@@ -22,13 +22,13 @@ String calculateTimeDifference(String ? createdAt) {
     // Construct the result string based on the conditions
     String result = '';
     if (minutesDifference < 60) {
-      result = '${minutesDifference}${"months_ago".tr}';
+      result = '${minutesDifference} ${"minutes_ago".tr}';
     } else if (hoursDifference < 24) {
-      result = '${hoursDifference}${"hours_ago".tr}';
+      result = '${hoursDifference} ${"hours_ago".tr}';
     } else if (daysDifference < 7) {
-      result = '${daysDifference}${"days_ago".tr}';
+      result = '${daysDifference} ${"days_ago".tr}';
     } else {
-      result = '${weeksDifference}${"weeks_ago".tr}'  ;
+      result = '${weeksDifference} ${"weeks_ago".tr}'  ;
     }
 
     return result;

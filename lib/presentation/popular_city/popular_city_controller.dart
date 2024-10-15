@@ -1,6 +1,7 @@
 
 import 'package:frenly_app/data/models/LiveUserModel.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:get/get.dart';
 
 class PopularController extends GetxController{

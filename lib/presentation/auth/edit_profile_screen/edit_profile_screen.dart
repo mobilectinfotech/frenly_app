@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_textfield.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -20,7 +19,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   EditProfileController controller = Get.put(EditProfileController());
 
@@ -75,7 +74,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   CustomTextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter full name';
+                        return 'please_enter_your_full_name'.tr;
                       }
                       return null;
                     },
@@ -101,12 +100,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   CustomTextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Email';
+                          return 'please_enter_a_valid_email'.tr;
                         }
                         return null;
                       },
                     fillColor: Colors.transparent,
-                    hintText: 'emailno'.tr, controller: controller.emailController, context: context),
+                    hintText: 'johnsmith@gmail.com', controller: controller.emailController, context: context),
                   SizedBox(
                     height: 15.ah,
                   ),
@@ -125,7 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   CustomTextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter Bio';
+                        return 'please_enter_your_bio'.tr;
                       }
                       return null;
                     },
@@ -149,11 +148,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   CustomTextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter  Username';
+                        return 'please_enter_your_username'.tr;
                       }
                       return null;
                     },
-                    fillColor: Colors.transparent, hintText: 'Enter username', controller: controller.handleController, context: context,),
+                    fillColor: Colors.transparent, hintText: 'jonesmith004', controller: controller.handleController, context: context,),
 
                   SizedBox(height: 10.ah,),
                   Container(decoration: BoxDecoration(color: Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(25),),
@@ -217,6 +216,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       width: double.infinity,
       child: Stack(
         children: [
+          // ( widget.getUserByIdModel.user?.avatarUrl) == null ? Center(
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //         color: MyColor.primaryColor.withOpacity(.1),
+          //         borderRadius: BorderRadius.only(
+          //             bottomRight: Radius.circular(25.adaptSize),
+          //             bottomLeft: Radius.circular(25.adaptSize))
+          //     ),
+          //
+          //     height: 217 + 100.ah,
+          //     width: double.infinity,
+          //     child: Icon(Icons.photo_camera_back_outlined,size: 100.ah,color: Colors.black26,),
+          //   ),
+          // ) :
           SizedBox(
             height: 217+100.ah,
             width: double.infinity,
@@ -241,7 +254,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   width: 140.ah,
                   height: 140.ah,
                   fit: BoxFit.cover,
-                  imagePath: controller.profilePhoto==null ? widget.getUserByIdModel.user?.avatarUrl : controller.profilePhoto!.path,
+                  imagePath: controller.profilePhoto == null ? widget.getUserByIdModel.user?.avatarUrl : controller.profilePhoto!.path,
                   radius: BorderRadius.circular(100),
                 ),
               ),
@@ -324,7 +337,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 children: <Widget>[
                   ListTile(
                       leading: const Icon(Icons.photo_library),
-                      title: const Text('Gallery '),
+                      title:  Text('gallery'.tr),
                       onTap: () async {
                         controller.coverPhoto = await  imagePicker(source: ImageSource.gallery,cropAspectRatio: cropAspectRatio);
                         Navigator.of(context).pop();
@@ -332,7 +345,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       }),
                   ListTile(
                     leading: const Icon(Icons.video_camera_back_rounded),
-                    title: const Text('Camera'),
+                    title:  Text('camera'.tr),
                     onTap: () async {
                       controller.coverPhoto = await    imagePicker(source: ImageSource.camera,cropAspectRatio: cropAspectRatio);
 
@@ -357,7 +370,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 children: <Widget>[
                   ListTile(
                       leading: const Icon(Icons.photo_library),
-                      title: const Text('Gallery '),
+                      title:  Text('gallery'.tr),
                       onTap: () async {
                         controller.profilePhoto = await  imagePicker(source: ImageSource.gallery,cropAspectRatio: cropAspectRatio);
                         Navigator.of(context).pop();
@@ -365,7 +378,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       }),
                   ListTile(
                     leading: const Icon(Icons.video_camera_back_rounded),
-                    title: const Text('Camera'),
+                    title:  Text('camera'.tr),
                     onTap: () async {
                       controller.profilePhoto = await    imagePicker(source: ImageSource.camera,cropAspectRatio: cropAspectRatio);
 

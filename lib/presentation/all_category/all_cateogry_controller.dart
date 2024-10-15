@@ -1,5 +1,6 @@
 import 'package:frenly_app/data/models/cateogry_model.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 
 import '../../Widgets/bottom_sheet_widgets.dart';

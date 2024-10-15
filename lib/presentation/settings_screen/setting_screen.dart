@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:frenly_app/presentation/all_category/all_category_screen.dart';
 import 'package:frenly_app/presentation/all_saved/my_saved_screen.dart';
 import 'package:frenly_app/presentation/settings_screen/setting_controller.dart';
@@ -362,7 +363,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Chat Notification'.tr,
+                                    'Chat notification'.tr,
                                     style:
                                         TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),

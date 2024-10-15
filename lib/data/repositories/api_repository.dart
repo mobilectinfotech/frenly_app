@@ -1,35 +1,39 @@
+
 import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:frenly_app/data/models/GetBlogByIdModel.dart';
-import 'package:frenly_app/data/models/GetCommentsModel.dart';
-import 'package:frenly_app/data/models/LiveUserModel.dart';
-import 'package:frenly_app/presentation/all_saved/MySavedPosts.dart';
-import 'package:frenly_app/presentation/all_saved/MySavedVlogs.dart';
-import 'package:frenly_app/presentation/my_block_list/BlockedUserListModel.dart';
-import 'package:frenly_app/presentation/request_users/ReqModel.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../core/constants/app_dialogs.dart';
 import '../../core/utils/pref_utils.dart';
 import '../../presentation/Blog/PopularBlogModel.dart';
 import '../../presentation/Vlog/TrendingVlogModel.dart';
 import '../../presentation/all_saved/MySavedBlogs.dart';
+import '../../presentation/all_saved/MySavedPosts.dart';
+import '../../presentation/all_saved/MySavedVlogs.dart';
 import '../../presentation/chat/Pages/all_frined/AllFriendsModel.dart';
 import '../../presentation/chat/Pages/all_frined/CreateChatModel.dart';
+import '../../presentation/my_block_list/BlockedUserListModel.dart';
 import '../../presentation/my_following/FollowingsModel.dart';
 import '../../presentation/my_follwers/FollowersModel.dart';
 import '../../presentation/notification_screen/NotificationsModel.dart';
 import '../../presentation/photos/photo_list/PhotosListModel.dart';
+import '../../presentation/request_users/ReqModel.dart';
 import '../../presentation/settings_screen/MySettingModel.dart';
 import '../../presentation/user_follwers/UserFollowersModel.dart';
 import '../../presentation/user_follwings_page/UserFollowersModel.dart';
 import '../../presentation/user_profile_screen/user_profile_model.dart';
+import '../data_sources/remote/api_client.dart';
 import '../models/DiscoverUsersModel.dart';
+import '../models/GetBlogByIdModel.dart';
+import '../models/GetCommentsModel.dart';
 import '../models/HomePageModel.dart';
 import '../models/LastSeenModel.dart';
+import '../models/LiveUserModel.dart';
 import '../models/LoginWithEmailModel.dart';
-import '../data_sources/remote/api_client.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:dio/dio.dart';
 import '../models/PostSingleViewModel.dart';
 import '../models/SertchUserModel.dart';
 import '../models/UserByCityModel.dart';
@@ -64,21 +68,13 @@ class ApiRepository {
     final response =
         await ApiClient().postRequest(endPoint: "user/login", body: data);
     if (response != null) {
-      PrefUtils()
-          .setAuthToken("${LoginWithEmailModel.fromJson(response).token}");
-      PrefUtils().setUserFirstName(
-          "${LoginWithEmailModel.fromJson(response).user!.fullName}");
-      PrefUtils().setUserProfileUrl(
-          "${LoginWithEmailModel.fromJson(response).user!.avatarUrl}");
-      PrefUtils()
-          .setUserId("${LoginWithEmailModel.fromJson(response).user!.id}");
-      print("useriddddgegegeggegegegftrdfjkfsdkjfds" + PrefUtils().getUserId());
-      PrefUtils().setUserCoverUrl(
-          "${LoginWithEmailModel.fromJson(response).user!.coverPhotoUrl}");
-      PrefUtils()
-          .setUserCity("${LoginWithEmailModel.fromJson(response).user!.city}");
-      PrefUtils().setUserCountry(
-          "${LoginWithEmailModel.fromJson(response).user!.country}");
+      PrefUtils().setAuthToken("${LoginWithEmailModel.fromJson(response).token}");
+      PrefUtils().setUserFirstName("${LoginWithEmailModel.fromJson(response).user!.fullName}");
+      PrefUtils().setUserProfileUrl("${LoginWithEmailModel.fromJson(response).user!.avatarUrl}");
+      PrefUtils().setUserId("${LoginWithEmailModel.fromJson(response).user!.id}");
+      PrefUtils().setUserCoverUrl("${LoginWithEmailModel.fromJson(response).user!.coverPhotoUrl}");
+      PrefUtils().setUserCity("${LoginWithEmailModel.fromJson(response).user!.city}");
+      PrefUtils().setUserCountry("${LoginWithEmailModel.fromJson(response).user!.country}");
       return true;
     }
     return false;
@@ -98,13 +94,14 @@ class ApiRepository {
     };
     Map<String, dynamic>? response =
         await ApiClient().postRequest(endPoint: "user/signup", body: data);
+
     if (response != null) {
       AppDialog.taostMessage(
         "${response["message"]}",
       );
       return true;
     }
-    return true;
+    return false;
   }
 
   Future<void> forgetPassword() async {}
@@ -1004,7 +1001,8 @@ class ApiRepository {
       },
     );
     if (response != null) {
-      AppDialog.taostMessage("${response["message"]}");
+      var msg ="password_reset_link_sent_successfully_please_check_your_email".tr;
+      AppDialog.taostMessage(msg);
 
       return true;
     } else {
@@ -1323,29 +1321,5 @@ class ApiRepository {
     }
   }
 
-  // var headers = {
-  //   'Content-Type': 'application/x-www-form-urlencoded',
-  //   'Authorization': '••••••'
-  // };
-  // var data = {
-  //   'followerId': '43',
-  //   'notificationId': '676',
-  //   'userId': '30'
-  // };
-  // var dio = Dio();
-  // var response = await dio.request(
-  // 'https://www.frenly.se:4000/user/acceptFollowRequest',
-  // options: Options(
-  // method: 'POST',
-  // headers: headers,
-  // ),
-  // data: data,
-  // );
-  //
-  // if (response.statusCode == 200) {
-  // print(json.encode(response.data));
-  // }
-  // else {
-  // print(response.statusMessage);
-  // }
+
 }

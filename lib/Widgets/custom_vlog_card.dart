@@ -181,7 +181,7 @@ class CustomVlogCard extends StatelessWidget {
                 child: RichText(
                   overflow: TextOverflow.ellipsis,
                     text:TextSpan(children: [
-                  TextSpan(text: '${vlog.user?.city}, ',style: TextStyle(
+                  TextSpan(text: "${vlog.user?.city ?? ""}",style: TextStyle(
                     color: HexColor('#FFFFFF'),
                     fontWeight: FontWeight.w600,
                     fontSize: 11.fSize,

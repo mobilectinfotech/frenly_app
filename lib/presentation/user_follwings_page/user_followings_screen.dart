@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:get/get.dart';
 import '../../../Widgets/custom_appbar.dart';
@@ -48,7 +48,7 @@ class _UserFollowingsScreenState extends State<UserFollowingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarPrimary(title: "Followings".tr,),
+      appBar: appBarPrimary(title: "Following".tr,),
       body: Obx(
         () => isLoading.value
             ? const Center(

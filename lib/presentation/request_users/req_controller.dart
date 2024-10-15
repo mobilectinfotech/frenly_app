@@ -1,4 +1,5 @@
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import 'ReqModel.dart';

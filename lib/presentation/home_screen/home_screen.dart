@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:frenly_app/presentation/discover_screen/discover_all_user.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_appbar.dart';
@@ -127,6 +127,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 10.ah),
                       liveUserByCountry(),
                       SizedBox(height: 20.ah),
+
+                      titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
+                      SizedBox(height: 20.ah),
+                      posts(),
+                      SizedBox(height: 25.ah),
+
+
+
                       titleViewAll(title: 'Trendingvlog'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
                       SizedBox(height: 16.ah,),
                       trending(),
@@ -139,9 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 16.ah,),
                       discoverUsers(),
                       SizedBox(height: 25.ah),
-                      titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
-                      SizedBox(height: 25.ah),
-                      posts(),
+
                       SizedBox(height: 100.ah),
 
                     ],
@@ -327,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${controller.homeModel.usersInCities![index].city}',
+                      '${controller.homeModel.usersInCities![index].city ?? ""}',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w700,
@@ -335,7 +341,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Text(
-                      '${controller.homeModel.usersInCities![index].country}',
+                      '${controller.homeModel.usersInCities![index].country ?? ""}',
                       style: TextStyle(
                         color: const Color(0xffAAAAAA),
                         fontWeight: FontWeight.w600,
@@ -474,9 +480,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
   Widget posts() {
-    return SizedBox(
+    return Container(
+
       width: MediaQuery.of(context).size.width,
-      height: 125.ah,
+      height: 135.ah,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -502,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       imagePath: controller.homeModel.posts?[index].imageUrl,
                       radius:  BorderRadius.all(Radius.circular(10.adaptSize),
                       )),
-                  SizedBox(height: 10.ah),
+                  SizedBox(height: 15.ah),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,

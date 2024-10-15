@@ -231,7 +231,7 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
                 children: <Widget>[
                   ListTile(
                       leading: const Icon(Icons.photo_library),
-                      title: const Text('Gallery '),
+                      title:  Text('gallery'.tr),
                       onTap: () async {
                         controller.coverPhoto = await  imagePicker(source: ImageSource.gallery,);
                         Navigator.of(context).pop();
@@ -239,7 +239,7 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
                       }),
                   ListTile(
                     leading: const Icon(Icons.video_camera_back_rounded),
-                    title: const Text('Camera'),
+                    title:  Text('camera'.tr),
                     onTap: () async {
                       controller.coverPhoto = await    imagePicker(source: ImageSource.camera,);
                       Navigator.of(context).pop();

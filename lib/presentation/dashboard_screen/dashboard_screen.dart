@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import '../upload/post_photo_screen/post_photo_screen.dart';
 import '../upload/post_video_screen/post_video_screen.dart';
 import 'dashboardcontroller.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -23,29 +22,6 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   DashBoardController controller = Get.put(DashBoardController());
-
-
-  late IO.Socket socket;
-
-  Future<void> connect() async {
-    Map<String, dynamic> headers = {
-      'Authorization': 'Bearer ${PrefUtils().getAuthToken()}', // Example header
-    };
-    socket = IO.io(
-      ApiClient.mainUrl,
-      <String, dynamic>{
-        "transports": ["websocket"],
-        "extraHeaders": headers,
-        "autoConnect": false,
-      },
-    );
-    socket.connect();
-    socket.onConnect((data) {
-      socket.on("messageReceived", (msg) {
-      });
-    });
-  }
-
 
 
 
@@ -59,13 +35,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
 
   int _selectedIndex = 0;
-  List _items = [
+  final List _items = [
     const HomeScreen(),
      SearchScreen(),
     const SizedBox(),
-    ChatsScreen(
-      chatmodels: [],
-    ),
+     ChatsScreen(),
     const MyProfileScreen(),
   ];
 
@@ -81,8 +55,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   void initState() {
     super.initState();
-    connect();
-    print("line 350");
   }
 
   @override

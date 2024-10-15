@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../../../../Widgets/custom_image_view.dart';
 import '../../../../core/utils/pref_utils.dart';
-import '../../../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
 import '../chat_room/chat_room_page.dart';
 import 'CreateChatModel.dart';
 import 'all_friend_controller.dart';

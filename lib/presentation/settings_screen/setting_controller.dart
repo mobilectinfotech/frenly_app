@@ -1,4 +1,5 @@
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'MySettingModel.dart';

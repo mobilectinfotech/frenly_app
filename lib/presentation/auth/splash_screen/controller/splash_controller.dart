@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:get/get.dart';
 import '../../../../messaing_service/messaging_service.dart';
@@ -28,8 +29,6 @@ class SplashController extends GetxController {
     MessagingService.localNotiInit(Get.context!);
     Future.delayed(const Duration(seconds:2 ), () async {
       bool isLoggedIn =await PrefUtils().isLoggedIn();
-      var token =await PrefUtils().getAuthToken();
-      print("isLoggedIn${isLoggedIn}$token");
       if (isLoggedIn) {
         Get.offAll(()=>DashBoardScreen());
       }
@@ -39,3 +38,32 @@ class SplashController extends GetxController {
     });
   }
 }
+
+class TestDem0 extends StatelessWidget {
+  const TestDem0({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      body:Column(
+        children: [
+        Container(
+        color: Colors.blue,
+        child: Builder(
+          builder: (context) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final size = context.size;
+              print("Container Width: ${size?.width}");
+              print("Container Height: ${size?.height}");
+            });
+            return Text("Check console for size");
+          },
+        ),)
+        ],
+      )
+    );
+  }
+}
+
+
+

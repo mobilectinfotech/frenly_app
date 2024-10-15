@@ -61,7 +61,7 @@ class ChatRoomController extends GetxController {
   @override
   void onClose() {
     print("line 61");
-    chatScreenController.getchats();
+    // chatScreenController.getchats();
     // TODO: implement onClose
     super.onClose();
     print("line 62");

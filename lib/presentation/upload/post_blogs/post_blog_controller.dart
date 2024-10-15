@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import '../../auth/my_profile_view/my_profile_controller.dart';

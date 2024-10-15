@@ -26,7 +26,7 @@ class ApiClient {
         baseUrl: mainUrl);
     dio = Dio(baseOptions);
     options = Options(headers: {"Authorization": "Bearer ${PrefUtils().getAuthToken()}"});
-    dio.interceptors.add(PrettyDioLogger(requestBody: true, requestHeader: true));
+     dio.interceptors.add(PrettyDioLogger(requestBody: true, requestHeader: true));
   }
 
   /// get Request
@@ -37,6 +37,8 @@ class ApiClient {
       Response<dynamic> response = await dio.get(endPoint, options: options);
       return _processResponse(response);
     }  on DioException catch (e) {
+      print("line41${e.toString()}") ;
+      print("line41${e.response?.data}") ;
       Response<dynamic> response = createErrorEntity(e);
       return _processResponse(response);
     }
@@ -49,6 +51,8 @@ class ApiClient {
       Response<dynamic> response = await dio.post(endPoint, data: body, options: options);
       return _processResponse(response);
     } on DioException catch (e) {
+      print("line41${e.toString()}") ;
+      print("line41${e.response?.data}") ;
       Response<dynamic> response = createErrorEntity(e);
       return _processResponse(response);
     }
@@ -85,6 +89,7 @@ class ApiClient {
 
 Response createErrorEntity(DioException error) {
   switch (error.type) {
+
     case DioExceptionType.badResponse:
       switch (error.response!.statusCode) {
         case 400:
@@ -155,25 +160,20 @@ Response createErrorEntity(DioException error) {
 
 Future<Map<String, dynamic>?> _processResponse(
     Response<dynamic> response) async {
-  print("response===>${response.data} ");
   switch (response.statusCode) {
     case 200:
       return response.data;
     case 201:
       return response.data;
     case 400:
-      AppDialog.taostMessage("${response.data["message"]}", );
-      print("fdsffsfsfsf");
+      AppDialog.taostMessage("${response.data["message"]}",);
       return Future.value(null);
     case 401:
-      // PrefUtils().logout();
-      // Get.offAll(()=>LoginScreen());
-      print("response===>401${response.data} ");
       return Future.value(null);
       case 403:
       PrefUtils().logout();
       Get.offAll(()=>const LoginScreen());
-      print("response===>401${response.data} ");
+
       return Future.value(null);
 
     case 404:

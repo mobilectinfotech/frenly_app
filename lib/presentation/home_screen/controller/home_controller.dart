@@ -3,6 +3,7 @@
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:frenly_app/data/models/HomePageModel.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import 'package:get/get.dart';
 
 
@@ -36,7 +37,6 @@ class HomeController extends GetxController {
      final response   = await ApiRepository.homePage();
      homeData(response);
      homeData.refresh();
-      print("fsdfsfjhfsdhjf");
     }catch(e){
       print("edsffsf${e.toString()}");
 

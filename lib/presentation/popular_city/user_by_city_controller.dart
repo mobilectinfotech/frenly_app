@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import '../../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
+
 import '../../data/models/UserByCityModel.dart';
 
 class UserByCityController extends GetxController{

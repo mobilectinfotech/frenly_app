@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -68,12 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: CustomImageView(imagePath:  "assets/icons/transparent bakgrund.svg")),
                     // Image.asset('assets/image/image 1.png',height: 151.ah,width: 148.aw,)
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding:  EdgeInsets.only(left: 10.h, right: 10.h),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
+                      decoration:const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(35),
@@ -122,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(height: 10.ah,),
                             Obx(() => CustomTextFormField(
-                                validator: Validator.validatePassword,
+                                validator: Validator.notEmpty,
                                 controller: loginController.passworddController,
                                 textInputAction: TextInputAction.done,
                                 suffix: InkWell(

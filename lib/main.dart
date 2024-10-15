@@ -3,25 +3,22 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:frenly_app/core/utils/initial_bindings.dart';
+import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:frenly_app/presentation/auth/splash_screen/splash_screen.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'data/data_sources/local/app_localization.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'LifeCycleManager/life_cycle_manager.dart';
 import 'firebase_options.dart';
 import 'localservice/local_service.dart';
 import 'localservice/messages_local.dart';
 import 'messaing_service/messaging_service.dart';
 
-// Locale locale = const Locale('swe', 'SE');
-// Locale locale = const Locale('en', 'US');
 
 Future<void> main() async {
-  print("object");
   WidgetsFlutterBinding.ensureInitialized();
+  Get.put(PrefUtils(),permanent: true);
   final localeService = LocaleService();
   final locale = await localeService.getLocale();
   // SystemChrome.setPreferredOrientations([
@@ -62,12 +59,8 @@ Future<void> main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   FlutterError.onError = (errorDetails) {FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);};
   PlatformDispatcher.instance.onError = (error, stack) {FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);return true;};
-  ///for crushAnalitics  end
-
-
+  ///for crush Analitics end
   runApp(MyApp(locale: locale));
-
-
 }
 
 class MyApp extends StatelessWidget {
@@ -76,23 +69,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      translations: Messages(),
-      locale: locale ??  Locale('swe', 'SE'), // Default locale if no saved locale
-      fallbackLocale:  Locale('swe', 'SE'),
-      title: 'Frenly',
-
-      home: SplashScreen(),
-      initialBinding: InitialBindings(),
-      theme: ThemeData(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          splashFactory: NoSplash.splashFactory
+    return LifeCycleManager(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        translations: Messages(),
+        locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
+        fallbackLocale:const  Locale('swe', 'SE'),
+        title: 'Frenly',
+        home: SplashScreen(),
+        initialBinding: InitialBindings(),
+        theme: ThemeData(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            splashFactory: NoSplash.splashFactory
+        ),
+        // home:Demooooo(),s
       ),
-      // home:Demooooo(),s
     );
   }
 }
+//updated
 

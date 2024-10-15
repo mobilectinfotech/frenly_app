@@ -113,12 +113,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if(value?.length == null||(value?.trim()??"").isEmpty){
-                                  return "username not be empty";
+                                  return "username_not_be_empty".tr;
                                 }else
                                 if (isAbalable) {
                                   return null;
                                 }else{
-                                  return 'username Already Registered';
+                                  return 'username_already_registered'.tr;
                                 }
 
                               },
@@ -158,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               height: 10.ah,
                             ),
                             Obx(() => CustomTextFormField(
-                              validator: Validator.validatePassword,
+                              validator: Validator.validateStrongPassword,
                               controller: controller.passwordController,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               textInputAction: TextInputAction.done,
@@ -186,10 +186,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               validator: (val ){
                                 print("dggsdggfs${val}");
                                 if(val ==null) {
-                                  return 'Please enter your confirm password';
+                                  return 'please_enter_your_confirm_password'.tr;
                                 }else
                                 if(val != controller.passwordController.text) {
-                                  return "Passwords do not match";
+                                  return "passwords_do_not_match".tr;
                                 }else{
                                   print("return${val}");
                                   return null;

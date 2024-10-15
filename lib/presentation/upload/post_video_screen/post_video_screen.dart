@@ -213,7 +213,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
                 children: <Widget>[
                   ListTile(
                       leading: const Icon(Icons.photo_library),
-                      title: const Text('Gallery'),
+                      title:  Text('gallery'.tr),
                       onTap: () async {
                         await imagePicker(
                           source: ImageSource.gallery,
@@ -222,7 +222,7 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
                       }),
                   ListTile(
                     leading: const Icon(Icons.video_camera_back_rounded),
-                    title: const Text('Camera'),
+                    title:  Text('camera'.tr),
                     onTap: () async {
                       await imagePicker(
                         source: ImageSource.camera,

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../Widgets/custom_image_view.dart';
 import '../../data/models/blog_model.dart';
-import '../../data/repositories/api_repository.dart';
+import 'package:frenly_app/data/repositories/api_repository.dart';
 
 class BlogLikeCommentsShareView extends StatefulWidget {
   final Blog blog;
