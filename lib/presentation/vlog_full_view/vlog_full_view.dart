@@ -6,6 +6,7 @@ import 'package:frenly_app/presentation/vlog_full_view/vlog_full_view_controller
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import '../../Widgets/custom_image_view.dart';
+import '../../Widgets/custom_textfield.dart';
 import '../../Widgets/custom_user_card.dart';
 import '../../Widgets/custom_vlog_card.dart';
 import '../../core/utils/calculateTimeDifference.dart';
@@ -46,6 +47,115 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
   Rxn<VideoPlayerController> _video_play_controller = Rxn(null);
   VlogFullViewController controller =
       Get.put(VlogFullViewController(), permanent: true);
+
+
+
+
+
+
+  TextEditingController reasonController = TextEditingController();
+
+  void reportFun(
+      BuildContext context
+      ) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              title: Text(
+                'Report reason'.tr,
+                style: TextStyle(
+                  color: const Color(0XFF111111),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.adaptSize,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              actions: <Widget>[
+                SizedBox(
+                  width: 300,
+                  child: CustomTextFormField(
+                    context: context,
+                    maxLines: 4,
+                    controller: reasonController,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: const Color(0xff001649), width: 1.aw)),
+                          child: Center(
+                            child: Text(
+                              'cancel'.tr,
+                              style: TextStyle(
+                                color: const Color(0XFF001649),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 30.aw),
+                      InkWell(
+                        onTap: () async {
+
+                          // Get.back();
+                          print("vlogid==>${widget.vlogId}");
+                          bool isreport =  await ApiRepository.reportPost(postId: widget.vlogId, reason: reasonController.text,postType: "vlog");
+                          if(isreport){
+                            reasonController.clear();
+                            Get.back();
+                          }
+                          // if(Get.isRegistered<MyProfileController>()) {
+                          //   Get.find<MyProfileController>().getProfile(); //asdfg
+                          // }
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xff001649),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Report'.tr,
+                              style: TextStyle(
+                                color: const Color(0XFFFFFFFF),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]);
+        });
+  }
 
   @override
   void initState() {
@@ -322,10 +432,8 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                                         width: 10.aw,
                                       ),
                                       Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             '${controller.vlogByIdModel.vlog?.title}'
@@ -335,6 +443,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                                                 fontSize: 16.adaptSize,
                                                 height: 1.5),
                                           ),
+
                                           Row(
                                             children: [
                                               Text(
@@ -379,27 +488,40 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                                         ],
                                       ),
                                       const Spacer(),
-                                      PrefUtils().getUserId() ==
-                                              "${controller.vlogByIdModel.vlog?.user?.id}"
-                                          ? InkWell(
-                                              onTap: () {
-                                                _showBottomSheetOwnVlog(context,
-                                                    "${controller.vlogByIdModel.vlog?.id}");
-                                              },
-                                              child: CustomImageView(
-                                                imagePath:
-                                                    "assets/image/ic_info_outline_24px.png",
-                                                height: 25,
-                                              ))
-                                          : InkWell(
-                                              onTap: () {
-                                                _showBottomSheet(context);
-                                              },
-                                              child: CustomImageView(
-                                                imagePath:
-                                                    "assets/image/ic_info_outline_24px.png",
-                                                height: 25,
-                                              )),
+
+                                      Column(
+                                        children: [
+                                          PrefUtils().getUserId() == "${controller.vlogByIdModel.vlog?.user?.id}" ?SizedBox() :  InkWell(
+                                            onTap: () {
+                                            reportFun(context);
+                                            },
+                                            child: const Padding(
+                                              padding: EdgeInsets.only(bottom: 4.0),
+                                              child: Icon(Icons.more_vert_outlined),
+                                            ),
+                                          ),
+                                          PrefUtils().getUserId() == "${controller.vlogByIdModel.vlog?.user?.id}"
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    _showBottomSheetOwnVlog(context,
+                                                        "${controller.vlogByIdModel.vlog?.id}");
+                                                  },
+                                                  child: CustomImageView(
+                                                    imagePath:
+                                                        "assets/image/ic_info_outline_24px.png",
+                                                    height: 25,
+                                                  ))
+                                              : InkWell(
+                                                  onTap: () {
+                                                    _showBottomSheet(context);
+                                                  },
+                                                  child: CustomImageView(
+                                                    imagePath:
+                                                        "assets/image/ic_info_outline_24px.png",
+                                                    height: 25,
+                                                  )),
+                                        ],
+                                      ),
                                       const SizedBox(
                                         width: 20,
                                       )

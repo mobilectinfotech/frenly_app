@@ -12,6 +12,7 @@ import 'package:frenly_app/presentation/search/search_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 
+import '../../../Widgets/custom_textfield.dart';
 import '../../../data/models/blog_model.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import '../../Vlog/blog_like_commnet_share_common_view.dart';
@@ -132,6 +133,109 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
         });
   }
 
+  TextEditingController reasonController = TextEditingController();
+
+  void reportFun(
+      BuildContext context,
+      ) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              title: Text(
+                'Report blog reason'.tr,
+                style: TextStyle(
+                  color: const Color(0XFF111111),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.adaptSize,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              actions: <Widget>[
+                SizedBox(
+                  width: 300,
+                  child: CustomTextFormField(
+                    context: context,
+                    maxLines: 4,
+                    controller: reasonController,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: Color(0xff001649), width: 1.aw)),
+                          child: Center(
+                            child: Text(
+                              'cancel'.tr,
+                              style: TextStyle(
+                                color: const Color(0XFF001649),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 30.aw),
+                      InkWell(
+                        onTap: () async {
+
+                          // Get.back();
+                          bool isreport =  await ApiRepository.reportPost(postId: widget.id, reason: reasonController.text, postType: "blog");
+                          if(isreport){
+                            reasonController.clear();
+                            Get.back();
+                          }
+                          // if(Get.isRegistered<MyProfileController>()) {
+                          //   Get.find<MyProfileController>().getProfile(); //asdfg
+                          // }
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xff001649),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Report'.tr,
+                              style: TextStyle(
+                                color: const Color(0XFFFFFFFF),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]);
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +309,15 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                             ),
                           ],
                         ),
-                      ) : SizedBox(),
+                      ) : InkWell(
+                        onTap: () {
+                          reportFun(context);
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.only(bottom: 4.0),
+                          child: Icon(Icons.report),
+                        ),
+                      ),
                       SizedBox(width: 10.aw),
                     ],
                   ),

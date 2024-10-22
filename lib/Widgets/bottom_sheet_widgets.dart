@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frenly_app/core/constants/app_dialogs.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/dashboard_screen/dashboardcontroller.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_model.dart';
@@ -26,7 +27,9 @@ enum PostType {
 class CustomBottomSheets {
   ///comments boottom sheet
   static Future<void> commentsBottomSheet(
-      {required BuildContext context, required String id, required PostType postType}) async {
+      {required BuildContext context,
+      required String id,
+      required PostType postType}) async {
     ComnetsController commentsController = Get.put(ComnetsController());
     commentsController.getComments(id: id, postType: postType);
 
@@ -37,190 +40,314 @@ class CustomBottomSheets {
               heightFactor: .55,
               child: GestureDetector(
                 onTap: () {
-                 // Get.back();
+                  // Get.back();
                 },
                 child: Padding(
                   padding: EdgeInsets.only(left: 20.0.aw, right: 20.aw),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    SizedBox(
-                      height: 20.ah,
-                    ),
-                     Center(
-                      child: Text('comments'.tr,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.98,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 20.ah,
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 20.ah),
-                    Obx(
-                      () => commentsController.isLoading.value
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 1,
-                              ),
-                            )
-                          : Expanded(
-                              child: commentsController.getCommentsModel.comments?.length == 0
-                                  ?  Center(
-                                      child: Text(
-                                        "no_comment".tr,
-                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                                      ),
-                                    )
-                                  : ListView.builder(
-                                      reverse: true,
-                                      itemCount: commentsController.getCommentsModel.comments?.length,
-                                      itemBuilder: (BuildContext context, int index) {
-                                        return Padding(
-                                          padding: EdgeInsets.only(bottom: 10.0.ah),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  CustomImageView(
-                                                    width: 40.adaptSize,
-                                                    height: 40.adaptSize,
-                                                    imagePath: commentsController.getCommentsModel.comments?[index].user?.avatarUrl,
-                                                    fit: BoxFit.cover,
-                                                    radius: BorderRadius.circular(45.adaptSize),
-                                                    onTap: () {
-                                                      Get.back();
-                                                      Get.to(() => UserProfileScreen(userId: "${commentsController.getCommentsModel.comments?[index].user?.id}"));
-                                                    },
-                                                  ),
-                                                  SizedBox(
-                                                    width: 18.aw,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
+                        Center(
+                          child: Text(
+                            'comments'.tr,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.98,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20.ah),
+                        Obx(
+                          () => commentsController.isLoading.value
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 1,
+                                  ),
+                                )
+                              : Expanded(
+                                  child:
+                                      commentsController.getCommentsModel
+                                                  .comments?.length ==
+                                              0
+                                          ? Center(
+                                              child: Text(
+                                                "no_comment".tr,
+                                                style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              reverse: true,
+                                              itemCount: commentsController
+                                                  .getCommentsModel
+                                                  .comments
+                                                  ?.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 10.0.ah),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
                                                       Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
                                                         children: [
-                                                          Text(
-                                                            "${commentsController.getCommentsModel.comments?[index].user?.fullName}  ",
-                                                            style: TextStyle(
-                                                              color: Colors.black,
-                                                              fontSize: 14.adaptSize,
-                                                              fontFamily: 'Roboto',
-                                                              fontWeight: FontWeight.w700,
-                                                            ),
+                                                          CustomImageView(
+                                                            width: 40.adaptSize,
+                                                            height:
+                                                                40.adaptSize,
+                                                            imagePath:
+                                                                commentsController
+                                                                    .getCommentsModel
+                                                                    .comments?[
+                                                                        index]
+                                                                    .user
+                                                                    ?.avatarUrl,
+                                                            fit: BoxFit.cover,
+                                                            radius: BorderRadius
+                                                                .circular(45
+                                                                    .adaptSize),
+                                                            onTap: () {
+                                                              Get.back();
+                                                              Get.to(() =>
+                                                                  UserProfileScreen(
+                                                                      userId:
+                                                                          "${commentsController.getCommentsModel.comments?[index].user?.id}"));
+                                                            },
                                                           ),
-                                                          Text(
-                                                            calculateTimeDifference(
-                                                                "${commentsController.getCommentsModel.comments?[index].createdAt}"),
-                                                            style: TextStyle(
-                                                              color: Colors.black.withOpacity(.50),
-                                                              fontSize: 14,
-                                                              fontFamily: 'Roboto',
-                                                              fontWeight: FontWeight.w500,
-                                                            ),
+                                                          SizedBox(
+                                                            width: 18.aw,
                                                           ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            width: 230.aw,
-                                                            child: Text(
-                                                              "${commentsController.getCommentsModel.comments?[index].content}",
-                                                              style: TextStyle(
-                                                                color: Colors.black.withOpacity(.50),
-                                                                fontSize: 14,
-                                                                fontFamily: 'Roboto',
-                                                                fontWeight: FontWeight.w500,
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    "${commentsController.getCommentsModel.comments?[index].user?.fullName}  ",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          14.adaptSize,
+                                                                      fontFamily:
+                                                                          'Roboto',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    calculateTimeDifference(
+                                                                        "${commentsController.getCommentsModel.comments?[index].createdAt}"),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              .50),
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontFamily:
+                                                                          'Roboto',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ),
-                                                          ),
-                                                          if ("${commentsController.getCommentsModel.comments?[index].user?.id}" ==
-                                                              PrefUtils().getUserId())
-                                                            InkWell(
-                                                              onTap: () async {
-                                                                commentsController.deleteComments(
-                                                                    id: id,
-                                                                    postType: postType,
-                                                                    commentId:
-                                                                        "${commentsController.getCommentsModel.comments?[index].id}");
-                                                              },
-                                                              child: Text(
-                                                                "Delete".tr,
-                                                                style: TextStyle(
-                                                                  color: Colors.black.withOpacity(.50),
-                                                                  fontSize: 14,
-                                                                  fontFamily: 'Roboto',
-                                                                  fontWeight: FontWeight.w500,
+                                                              Row(
+                                                                children: [
+                                                                  Container(
+                                                                    width:
+                                                                        230.aw,
+                                                                    child: Text(
+                                                                      "${commentsController.getCommentsModel.comments?[index].content}",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .black
+                                                                            .withOpacity(.50),
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            'Roboto',
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width:
+                                                                        20.aw,
+                                                                  ),
+                                                                  Column(
+                                                                    children: [
+                                                                      Obx(
+                                                                        () => InkWell(
+                                                                            onTap: () async {
+                                                                              Get.snackbar("title", "sd;lkj");
+                                                                              print("object_sdfdsfdfdsf");
+                                                                              commentsController.getCommentsModel.comments?[index].isLikedByMe.value = !commentsController.getCommentsModel.comments![index].isLikedByMe.value;
+                                                                              if (commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true) {
+                                                                                commentsController.getCommentsModel.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.comments?[index].numberOfLikes.value ?? 1) + 1;
+                                                                              } else {
+                                                                                commentsController.getCommentsModel.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.comments?[index].numberOfLikes.value ?? 1) - 1;
+                                                                              }
+
+                                                                              // setState(() {});
+                                                                              // widget.blog.alreadyLiked = false;
+                                                                              // widget.blog.numberOfLikes =
+                                                                              //     widget.blog.numberOfLikes! - 1;
+                                                                              // setState(() {});
+                                                                              bool isLiked = await ApiRepository.commnetLikeONvlog(volgId: "${commentsController.getCommentsModel.comments?[index].id}");
+                                                                            },
+                                                                            child: CustomImageView(
+                                                                              imagePath: commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true ? "assets/image/love_true_blue.svg" : 'assets/image/love_false_blue.svg',
+                                                                              width: 21.aw,
+                                                                              height: 21.aw,
+                                                                            )),
+                                                                      ),
+                                                                      Obx(() {
+                                                                        return Text(
+                                                                          "${commentsController.getCommentsModel.comments?[index].numberOfLikes.value == 0 ? "" : commentsController.getCommentsModel.comments?[index].numberOfLikes}",
+                                                                        );
+                                                                      }),
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              if ("${commentsController.getCommentsModel.comments?[index].user?.id}" == PrefUtils().getUserId())
+                                                                InkWell(
+                                                                  onTap: () async {
+                                                                    commentsController.deleteComments(id: id, postType: postType, commentId: "${commentsController.getCommentsModel.comments?[index].id}");
+                                                                  },
+                                                                  child: Text(
+                                                                    "Delete".tr,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          12.adaptSize,
+                                                                      fontFamily:
+                                                                          'Roboto',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ),
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
                                                     ],
                                                   ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                            ),
-                    ),
-                    SizedBox(
-                      height: 10.v,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 290.aw,
-                            child: TextFormField(
-                              decoration:  InputDecoration(
-                                  contentPadding: EdgeInsets.only(left: 15),
-                                  disabledBorder: InputBorder.none,
-                                  hintText: "add_comment".tr),
-                              onTap: () {},
-                              onEditingComplete: () {
-                                FocusScope.of(context).unfocus();
-                                commentsController.postComments(
-                                    id: id, postType: postType, comment: commentsController.commnetsTc.text);
-                              },
-                              controller: commentsController.commnetsTc,
-                              textInputAction: TextInputAction.send,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10.v,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-                              commentsController.postComments(
-                                  id: id, postType: postType, comment: commentsController.commnetsTc.text);
-                            },
-                            child:  Text(
-                              'Postt'.tr,
-                              style: TextStyle(
-                                color: Color(0xFF001649),
-                                fontSize: 14,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w700,
+                                                );
+                                              },
+                                            ),
+                                ),
+                        ),
+                        SizedBox(
+                          height: 10.v,
+                        ),
+                        // if ("${commentsController.getCommentsModel.comments?[index].user?.id}" ==
+                        //     PrefUtils().getUserId())
+                        //   InkWell(
+                        //     onTap: () async {
+                        //       commentsController.deleteComments(
+                        //           id: id,
+                        //           postType: postType,
+                        //           commentId:
+                        //               "${commentsController.getCommentsModel.comments?[index].id}");
+                        //     },
+                        //     child: Text(
+                        //       "Delete".tr,
+                        //       style: TextStyle(
+                        //         color: Colors.black.withOpacity(.50),
+                        //         fontSize: 14,
+                        //         fontFamily: 'Roboto',
+                        //         fontWeight: FontWeight.w500,
+                        //       ),
+                        //     ),
+                        //   ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 290.aw,
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(left: 15),
+                                      disabledBorder: InputBorder.none,
+                                      hintText: "add_comment".tr),
+                                  onTap: () {},
+                                  onEditingComplete: () {
+                                    FocusScope.of(context).unfocus();
+                                    commentsController.postComments(
+                                        id: id,
+                                        postType: postType,
+                                        comment:
+                                            commentsController.commnetsTc.text);
+                                  },
+                                  controller: commentsController.commnetsTc,
+                                  textInputAction: TextInputAction.send,
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ]),
+                              SizedBox(
+                                width: 10.v,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  FocusScope.of(context).unfocus();
+                                  commentsController.postComments(
+                                      id: id,
+                                      postType: postType,
+                                      comment:
+                                          commentsController.commnetsTc.text);
+                                },
+                                child: Text(
+                                  'Postt'.tr,
+                                  style: TextStyle(
+                                    color: Color(0xFF001649),
+                                    fontSize: 14,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ]),
                 ),
               ));
         });
@@ -243,35 +370,39 @@ class CustomBottomSheets {
               heightFactor: .55,
               child: GestureDetector(
                 onTap: () {
-
                   Get.back();
                 },
-                child: Column(
-                    children: [
-                      SizedBox(height: MediaQuery.of(context).size.height*.03,),
-                      // Container(
-                      //   height: 8,
-                      //   width: 100,
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.grey,
-                      //
-                      //   ),
-                      // ),
-                      SizedBox(height: MediaQuery.of(context).size.height*.03,),
+                child: Column(children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .03,
+                  ),
+                  // Container(
+                  //   height: 8,
+                  //   width: 100,
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.grey,
+                  //
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .03,
+                  ),
 
-                      SizedBox(height: MediaQuery.of(context).size.height*.03,
-                      child: Center(
-                        child: Text('share'.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.98,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w700,
-                          ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .03,
+                    child: Center(
+                      child: Text(
+                        'share'.tr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.98,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      ),
+                    ),
+                  ),
 
                   Obx(
                     () => controller.isLoading.value
@@ -281,79 +412,97 @@ class CustomBottomSheets {
                             ),
                           )
                         : SizedBox(
-                           height:MediaQuery.of(context).size.height*.40,
-                          child:controller.allFriendsModel.friends?.length== 0?Center(child:Text("no_friends_found".tr)): ListView.builder(
-                           //  shrinkWrap: true,
-                             // physics: const NeverScrollableScrollPhysics(),
-                           itemCount: controller.allFriendsModel.friends?.length ?? 0,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.all(10.0.adaptSize),
-                                child: InkWell(
-                                  onTap: () async{
-                                    Get.back();
+                            height: MediaQuery.of(context).size.height * .40,
+                            child: controller.allFriendsModel.friends?.length ==
+                                    0
+                                ? Center(child: Text("no_friends_found".tr))
+                                : ListView.builder(
+                                    //  shrinkWrap: true,
+                                    // physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: controller
+                                            .allFriendsModel.friends?.length ??
+                                        0,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.all(10.0.adaptSize),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            Get.back();
 
-                                    CreateChatModel  createChatModel = await ApiRepository.createChat(userId: "${controller.allFriendsModel.friends?[index].id}");
-                                    int indexxx =  "${createChatModel.payload?.participants?[0].id}" == PrefUtils().getUserId() ? 1 : 0 ;
-                                     print("chatId $indexxx");
-                                    // "send_a_vlog": "Send a Vlog of",
-                                    // "send_a_blog": "Send a blog of",
-                                    // "send_a_post": "Send a post of",
-                                    //
-                                        var msg = ".";
-                                       var post = "send_a_post".tr ;
-                                       var vlog = "send_a_vlog".tr ;
-                                       var blog = "send_a_blog".tr ;
-                                       if(postType.name == "post"){
-                                         msg = "${post} $userName";
-                                       }
-                                       if(postType.name == "vlog"){
-                                         msg = "${vlog} $userName";
-                                       }
-                                       if(postType.name == "blog"){
-                                         msg = "${blog} $userName";
-                                       }
+                                            CreateChatModel createChatModel =
+                                                await ApiRepository.createChat(
+                                                    userId:
+                                                        "${controller.allFriendsModel.friends?[index].id}");
+                                            int indexxx =
+                                                "${createChatModel.payload?.participants?[0].id}" ==
+                                                        PrefUtils().getUserId()
+                                                    ? 1
+                                                    : 0;
+                                            print("chatId $indexxx");
+                                            // "send_a_vlog": "Send a Vlog of",
+                                            // "send_a_blog": "Send a blog of",
+                                            // "send_a_post": "Send a post of",
+                                            //
+                                            var msg = ".";
+                                            var post = "send_a_post".tr;
+                                            var vlog = "send_a_vlog".tr;
+                                            var blog = "send_a_blog".tr;
+                                            if (postType.name == "post") {
+                                              msg = "${post} $userName";
+                                            }
+                                            if (postType.name == "vlog") {
+                                              msg = "${vlog} $userName";
+                                            }
+                                            if (postType.name == "blog") {
+                                              msg = "${blog} $userName";
+                                            }
 
-                                    final response = await ApiRepository.sendMessageWithShare(
-                                        message: msg,
-                                        chatId: createChatModel.payload!.id.toString(),
-                                        postType: postType,
-                                        isUrl: isUrl,
-                                        isLinkId: id);
-
-
-
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 60.adaptSize,
-                                        width: 60.adaptSize,
-                                        child: CustomImageView(
-                                          height: 60.adaptSize,
-                                          width: 60.adaptSize,
-                                          imagePath: controller.allFriendsModel.friends?[index].avatarUrl,
-                                          fit: BoxFit.cover,
-                                          radius: BorderRadius.circular(45.adaptSize),
+                                            final response = await ApiRepository
+                                                .sendMessageWithShare(
+                                                    message: msg,
+                                                    chatId: createChatModel
+                                                        .payload!.id
+                                                        .toString(),
+                                                    postType: postType,
+                                                    isUrl: isUrl,
+                                                    isLinkId: id);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                height: 60.adaptSize,
+                                                width: 60.adaptSize,
+                                                child: CustomImageView(
+                                                  height: 60.adaptSize,
+                                                  width: 60.adaptSize,
+                                                  imagePath: controller
+                                                      .allFriendsModel
+                                                      .friends?[index]
+                                                      .avatarUrl,
+                                                  fit: BoxFit.cover,
+                                                  radius: BorderRadius.circular(
+                                                      45.adaptSize),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                  "${controller.allFriendsModel.friends?[index].fullName}")
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Text("${controller.allFriendsModel.friends?[index].fullName}")
-                                    ],
+                                      );
+                                    },
                                   ),
-                                ),
-                              );
-                            },
                           ),
-                        ),
                   ),
                 ]),
               ));
         });
 
     Get.find<DashBoardController>().bottomBarShow.value = true;
-
   }
 
   static Future<bool> saveBottomSheet({
@@ -379,7 +528,7 @@ class CustomBottomSheets {
               heightFactor: .55,
               child: GestureDetector(
                 onTap: () {
-                 // Navigator.pop(context);
+                  // Navigator.pop(context);
                   // Get.back(t);
                 },
                 child: Container(
@@ -408,8 +557,10 @@ class CustomBottomSheets {
                           children: [
                             Text(
                               "save_post".tr,
-                              style: GoogleFonts.roboto()
-                                  .copyWith(fontSize: 22.fSize, fontWeight: FontWeight.w700, color: Colors.black),
+                              style: GoogleFonts.roboto().copyWith(
+                                  fontSize: 22.fSize,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black),
                             ),
                             const Spacer(),
                             InkWell(
@@ -422,7 +573,7 @@ class CustomBottomSheets {
                                   SizedBox(
                                     width: 5.aw,
                                   ),
-                                   Text("NewCategoryy".tr)
+                                  Text("NewCategoryy".tr)
                                 ],
                               ),
                             )
@@ -431,11 +582,16 @@ class CustomBottomSheets {
                         SizedBox(
                           height: 10.ah,
                         ),
-                        for (Category data in (controller.cateogoryModel.value?.categories ?? []))
+                        for (Category data
+                            in (controller.cateogoryModel.value?.categories ??
+                                []))
                           InkWell(
                             onTap: () async {
                               apiLoading.value = true;
-                              issave = await ApiRepository.saveAllById(postType: postType, id: id, categoryId: "${data.id}");
+                              issave = await ApiRepository.saveAllById(
+                                  postType: postType,
+                                  id: id,
+                                  categoryId: "${data.id}");
                               print("Line544==$issave");
                               Get.back();
                               apiLoading.value = false;
@@ -477,8 +633,9 @@ class ComnetsController extends GetxController {
 
   getComments({required String id, required PostType postType}) async {
     isLoading.value = true;
-    getCommentsModel = await ApiRepository.getCommentsAll(id: id, postType: postType);
-    numberOfCommnets.value = getCommentsModel.comments?.length ?? 2000 ;
+    getCommentsModel =
+        await ApiRepository.getCommentsAll(id: id, postType: postType);
+    numberOfCommnets.value = getCommentsModel.comments?.length ?? 2000;
     isLoading.value = false;
   }
 
@@ -490,12 +647,13 @@ class ComnetsController extends GetxController {
     required String comment,
   }) async {
     isLoadingPostCommnets.value = true;
-    await ApiRepository.postCommentAll(id: id, postType: postType, comment: comment);
+    await ApiRepository.postCommentAll(
+        id: id, postType: postType, comment: comment);
     commnetsTc.clear();
-    if(postType.name == "blog"){
+    if (postType.name == "blog") {
       Get.find<BlogFullViewController>().getBlogById(id: id);
     }
-    if(postType.name == "post"){
+    if (postType.name == "post") {
       Get.find<PostAllViewController>().getPostByid(id: id);
     }
     isLoadingPostCommnets.value = false;
@@ -510,7 +668,8 @@ class ComnetsController extends GetxController {
     required String commentId,
   }) async {
     isLoadingPostCommnets.value = true;
-    await ApiRepository.deleteCommentAll(id: id, postType: postType, commentId: commentId);
+    await ApiRepository.deleteCommentAll(
+        id: id, postType: postType, commentId: commentId);
     isLoadingPostCommnets.value = false;
     getComments(id: id, postType: postType);
   }
@@ -522,7 +681,6 @@ class ShareController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getFriends();
-
   }
 
   RxBool isLoading = false.obs;
@@ -534,7 +692,7 @@ class ShareController extends GetxController {
     isLoading.value = false;
   }
 
- //
+//
 }
 
 class SaveController extends GetxController {

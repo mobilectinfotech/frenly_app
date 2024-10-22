@@ -1,12 +1,6 @@
-// To parse this JSON data, do
-//
-//     final getCommentsModel = getCommentsModelFromJson(jsonString);
-
 import 'dart:convert';
 
-GetCommentsModel getCommentsModelFromJson(String str) => GetCommentsModel.fromJson(json.decode(str));
-
-String getCommentsModelToJson(GetCommentsModel data) => json.encode(data.toJson());
+import 'package:get/get.dart';
 
 class GetCommentsModel {
     int? status;
@@ -20,6 +14,10 @@ class GetCommentsModel {
         this.success,
         this.comments,
     });
+
+    factory GetCommentsModel.fromRawJson(String str) => GetCommentsModel.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
 
     factory GetCommentsModel.fromJson(Map<String, dynamic> json) => GetCommentsModel(
         status: json["status"],
@@ -44,6 +42,9 @@ class Comment {
     DateTime? createdAt;
     DateTime? updatedAt;
     User? user;
+    bool? isMyComment;
+    RxInt numberOfLikes=0.obs;
+    RxBool isLikedByMe =false.obs;
 
     Comment({
         this.id,
@@ -53,7 +54,15 @@ class Comment {
         this.createdAt,
         this.updatedAt,
         this.user,
+        this.isMyComment,
+       required this.isLikedByMe,
+        required this.numberOfLikes,
+
     });
+
+    factory Comment.fromRawJson(String str) => Comment.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
 
     factory Comment.fromJson(Map<String, dynamic> json) => Comment(
         id: json["id"],
@@ -63,6 +72,9 @@ class Comment {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         user: json["user"] == null ? null : User.fromJson(json["user"]),
+        isMyComment: json["isMyComment"],
+        numberOfLikes: RxInt(json["numberOfLikes"]??0),
+        isLikedByMe: RxBool(json["isLikedByMe"]??false),
     );
 
     Map<String, dynamic> toJson() => {
@@ -73,6 +85,9 @@ class Comment {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "user": user?.toJson(),
+        "isMyComment": isMyComment,
+        "numberOfLikes": numberOfLikes,
+        "isLikedByMe": isLikedByMe,
     };
 }
 
@@ -81,14 +96,17 @@ class User {
     String? email;
     String? password;
     String? fullName;
-    dynamic bio;
-    dynamic handle;
+    String? bio;
+    String? handle;
     String? fcmToken;
     String? avatarUrl;
+    String? fileKey;
     String? coverPhotoUrl;
-    dynamic token;
+    String? coverfileKey;
+    String? token;
     String? actToken;
     bool? isVerified;
+    int? status;
     int? numberOfFollower;
     int? numberOfFollowing;
     String? city;
@@ -96,6 +114,9 @@ class User {
     DateTime? createdAt;
     DateTime? updatedAt;
     int? numberOfSaves;
+    int? isOnline;
+    dynamic lastSeen;
+    bool? isPrivate;
 
     User({
         this.id,
@@ -106,10 +127,13 @@ class User {
         this.handle,
         this.fcmToken,
         this.avatarUrl,
+        this.fileKey,
         this.coverPhotoUrl,
+        this.coverfileKey,
         this.token,
         this.actToken,
         this.isVerified,
+        this.status,
         this.numberOfFollower,
         this.numberOfFollowing,
         this.city,
@@ -117,7 +141,14 @@ class User {
         this.createdAt,
         this.updatedAt,
         this.numberOfSaves,
+        this.isOnline,
+        this.lastSeen,
+        this.isPrivate,
     });
+
+    factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
 
     factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -128,10 +159,13 @@ class User {
         handle: json["handle"],
         fcmToken: json["fcm_token"],
         avatarUrl: json["avatar_url"],
+        fileKey: json["fileKey"],
         coverPhotoUrl: json["cover_photo_url"],
+        coverfileKey: json["coverfileKey"],
         token: json["token"],
         actToken: json["act_token"],
         isVerified: json["isVerified"],
+        status: json["status"],
         numberOfFollower: json["numberOfFollower"],
         numberOfFollowing: json["numberOfFollowing"],
         city: json["city"],
@@ -139,6 +173,9 @@ class User {
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         numberOfSaves: json["numberOfSaves"],
+        isOnline: json["isOnline"],
+        lastSeen: json["lastSeen"],
+        isPrivate: json["isPrivate"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -150,10 +187,13 @@ class User {
         "handle": handle,
         "fcm_token": fcmToken,
         "avatar_url": avatarUrl,
+        "fileKey": fileKey,
         "cover_photo_url": coverPhotoUrl,
+        "coverfileKey": coverfileKey,
         "token": token,
         "act_token": actToken,
         "isVerified": isVerified,
+        "status": status,
         "numberOfFollower": numberOfFollower,
         "numberOfFollowing": numberOfFollowing,
         "city": city,
@@ -161,5 +201,8 @@ class User {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "numberOfSaves": numberOfSaves,
+        "isOnline": isOnline,
+        "lastSeen": lastSeen,
+        "isPrivate": isPrivate,
     };
 }

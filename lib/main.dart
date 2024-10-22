@@ -13,6 +13,7 @@ import 'LifeCycleManager/life_cycle_manager.dart';
 import 'firebase_options.dart';
 import 'localservice/local_service.dart';
 import 'localservice/messages_local.dart';
+import 'main_test.dart';
 import 'messaing_service/messaging_service.dart';
 
 
@@ -69,21 +70,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LifeCycleManager(
-      child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        translations: Messages(),
-        locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
-        fallbackLocale:const  Locale('swe', 'SE'),
-        title: 'Frenly',
-        home: SplashScreen(),
-        initialBinding: InitialBindings(),
-        theme: ThemeData(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            splashFactory: NoSplash.splashFactory
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: LifeCycleManager(
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          translations: Messages(),
+          locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
+          fallbackLocale:const  Locale('swe', 'SE'),
+          title: 'Frenly',
+         home: SplashScreen(),
+         // home: Scaffold(body: VideoThumbnailPlayer(videoUrl: 'https://frenly.s3.amazonaws.com/1719924957051-3769033-sd_426_240_25fps.mp4',)),
+          initialBinding: InitialBindings(),
+          theme: ThemeData(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              splashFactory: NoSplash.splashFactory
+          ),
+          // home:Demooooo(),s
         ),
-        // home:Demooooo(),s
       ),
     );
   }

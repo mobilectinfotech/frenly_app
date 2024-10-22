@@ -441,6 +441,17 @@ class ApiRepository {
     return false;
   }
 
+  static Future<bool> commnetLikeONvlog({required String volgId}) async {
+    print("comment like $volgId");
+    Map<String, dynamic>? response = await ApiClient().postRequest(
+      endPoint: "/vlog/react/comment/$volgId",
+      body: {},
+    );
+    if (response != null) {
+      return true;
+    }
+    return false;
+  }
 
   static Future<bool> postLike({required String userId}) async {
     Map<String, dynamic>? response = await ApiClient().postRequest(
@@ -1108,6 +1119,36 @@ class ApiRepository {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(
       endPoint: "post/$postId",
       body: {},
+    );
+    if (response != null) {
+      AppDialog.taostMessage("${response["message"]}");
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> reportPost({
+    required String postId,
+    required String reason,
+     String ? postType,
+
+  }) async {
+    var data = {
+      postType =="vlog" ? "VlogId" :   postType =="blog" ? "blogId" : "PostId": postId,
+      'reason': reason,
+    };
+    var endPoint = "post/reportPost";
+    if(postType == "vlog"){
+      endPoint = "vlog/reportVlog";
+    }
+    if(postType == "blog"){
+      endPoint = "blog/reportBlog";
+    }
+    Map<String, dynamic>? response = await ApiClient().postRequest(
+      endPoint: endPoint,
+      body: data,
     );
     if (response != null) {
       AppDialog.taostMessage("${response["message"]}");

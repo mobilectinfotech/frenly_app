@@ -89,6 +89,7 @@ dependencies:
   firebase_core: any
   connectivity_plus: ^6.0.5
   win32: ^5.5.4
+  video_thumbnail: ^0.5.3
 
 dev_dependencies:
   flutter_test:

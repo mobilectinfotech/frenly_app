@@ -1,13 +1,13 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
-
 import 'package:frenly_app/presentation/discover_screen/discover_all_user.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
-import '../../Widgets/custom_appbar.dart';
 import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
 import '../Blog/popular_blogs_screen.dart';
 import '../Vlog/vlogs_list/all_vlogs_list_screen.dart';
@@ -36,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   Future<void> _refresh() async {
-
     final response =  await ApiRepository.homePage();
     controller.homeData(response);
     controller.refresh();
@@ -127,14 +126,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 10.ah),
                       liveUserByCountry(),
                       SizedBox(height: 20.ah),
-
                       titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
                       SizedBox(height: 20.ah),
                       posts(),
                       SizedBox(height: 25.ah),
-
-
-
                       titleViewAll(title: 'Trendingvlog'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
                       SizedBox(height: 16.ah,),
                       trending(),
@@ -148,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       discoverUsers(),
                       SizedBox(height: 25.ah),
 
-                      SizedBox(height: 100.ah),
+                    //  SizedBox(height: 100.ah),
 
                     ],
                   ),
@@ -226,13 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 180.adaptSize,
                 height: 90.adaptSize,
                 child: Stack(children: [
-                  CustomImageView(
-                    width: 180.adaptSize,
-                    height: 90.adaptSize,
-                    imagePath: controller.homeModel.vlogs?[index].thumbnailUrl,
-                    radius: BorderRadius.circular(10),
-                    fit: BoxFit.cover,
-                  ),
+                  ThumailGenrate(videoUrl: controller.homeModel.vlogs?[index].videoUrl),
                   CustomImageView(
                     width: 180.adaptSize,
                     height: 90.adaptSize,
@@ -572,3 +561,71 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 }
+
+class ThumailGenrate extends StatefulWidget {
+  String ? videoUrl ;
+   ThumailGenrate({super.key, required this.videoUrl});
+
+  @override
+  State<ThumailGenrate> createState() => _ThumailGenrateState();
+}
+
+class _ThumailGenrateState extends State<ThumailGenrate> {
+
+
+
+  Rxn<Uint8List> thumbnail = Rxn<Uint8List>();
+
+  // Function to generate thumbnail
+  Future<void> generateThumbnail(String videoUrl) async {
+    print("videoUrl ==> $videoUrl");
+    try {
+      // Generate the thumbnail asynchronously
+      Uint8List? data = await VideoThumbnail.thumbnailData(
+        video: videoUrl,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 1280, // Set the max width for the thumbnail
+        quality: 75,    // Set quality (0-100)
+      );
+
+      if (data != null) {
+        // Update the thumbnail Rx with the generated thumbnail data
+        thumbnail.value = data;
+        print("Thumbnail generated successfully!");
+      } else {
+        print("Thumbnail generation failed.");
+      }
+    } catch (e) {
+      print('Error generating thumbnail: $e');
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    // Make sure videoUrl is valid
+    if (widget.videoUrl != null) {
+      generateThumbnail(widget.videoUrl ?? "");
+    } else {
+      print("Invalid video URL");
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return   ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        width: 180.adaptSize,
+        height: 90.adaptSize,
+        child: Obx(() {
+          if(thumbnail.value==null){
+            return Center(child: CircularProgressIndicator());
+          }
+          return Image.memory(thumbnail.value!,width: MediaQuery.of(context).size.width,fit: BoxFit.cover,);
+        }),
+      ),
+    );
+  }
+}
+
