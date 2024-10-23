@@ -17,7 +17,7 @@ class ChatScreenController extends GetxController{
   Future<void> getchats() async {
     isLoading.value=true;
     final response =await ApiClient().getRequest(endPoint: "chat");
-    print("asdfghgfdsasdfgh${response}");
+
     chatsModel.value = ChatsModel.fromJson(response);
     isLoading.value=false;
   }

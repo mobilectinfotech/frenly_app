@@ -145,7 +145,7 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
-                'Report blog reason'.tr,
+                  'report_blog_reason'.tr,
                 style: TextStyle(
                   color: const Color(0XFF111111),
                   fontWeight: FontWeight.w600,
@@ -198,13 +198,19 @@ class _BlogsFullViewScreenState extends State<BlogsFullViewScreen> {
                       SizedBox(width: 30.aw),
                       InkWell(
                         onTap: () async {
+                          if(reasonController.text.trim().isEmpty || reasonController.text == "" ){
+                            Get.snackbar("", "please_enter_report_reason".tr, backgroundColor: Color(0xff001649),colorText: Colors.white);
+
+                          }else{
+                            bool isreport =  await ApiRepository.reportPost(postId: widget.id, reason: reasonController.text, postType: "blog");
+                            if(isreport){
+                              reasonController.clear();
+                              Get.back();
+                            }
+                          }
 
                           // Get.back();
-                          bool isreport =  await ApiRepository.reportPost(postId: widget.id, reason: reasonController.text, postType: "blog");
-                          if(isreport){
-                            reasonController.clear();
-                            Get.back();
-                          }
+
                           // if(Get.isRegistered<MyProfileController>()) {
                           //   Get.find<MyProfileController>().getProfile(); //asdfg
                           // }

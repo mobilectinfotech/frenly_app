@@ -65,7 +65,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
-                'Report reason'.tr,
+                'Vlog report reason'.tr,
                 style: TextStyle(
                   color: const Color(0XFF111111),
                   fontWeight: FontWeight.w600,
@@ -118,17 +118,17 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
                       SizedBox(width: 30.aw),
                       InkWell(
                         onTap: () async {
+                          if(reasonController.text.trim().isEmpty || reasonController.text == "" ){
+                            Get.snackbar("", "please_enter_report_reason".tr, backgroundColor: Color(0xff001649),colorText: Colors.white);
 
-                          // Get.back();
-                          print("vlogid==>${widget.vlogId}");
-                          bool isreport =  await ApiRepository.reportPost(postId: widget.vlogId, reason: reasonController.text,postType: "vlog");
-                          if(isreport){
-                            reasonController.clear();
-                            Get.back();
+                          }else{
+                            print("vlogid==>${widget.vlogId}");
+                            bool isreport =  await ApiRepository.reportPost(postId: widget.vlogId, reason: reasonController.text,postType: "vlog");
+                            if(isreport){
+                              reasonController.clear();
+                              Get.back();
+                            }
                           }
-                          // if(Get.isRegistered<MyProfileController>()) {
-                          //   Get.find<MyProfileController>().getProfile(); //asdfg
-                          // }
                         },
                         child: Container(
                           height: 44.adaptSize,

@@ -212,7 +212,7 @@ class CustomBottomSheets {
                                                                       Obx(
                                                                         () => InkWell(
                                                                             onTap: () async {
-                                                                              Get.snackbar("title", "sd;lkj");
+                                                                            //  Get.snackbar("title", "${commentsController.getCommentsModel.comments?[index].id}");
                                                                               print("object_sdfdsfdfdsf");
                                                                               commentsController.getCommentsModel.comments?[index].isLikedByMe.value = !commentsController.getCommentsModel.comments![index].isLikedByMe.value;
                                                                               if (commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true) {
@@ -226,7 +226,7 @@ class CustomBottomSheets {
                                                                               // widget.blog.numberOfLikes =
                                                                               //     widget.blog.numberOfLikes! - 1;
                                                                               // setState(() {});
-                                                                              bool isLiked = await ApiRepository.commnetLikeONvlog(volgId: "${commentsController.getCommentsModel.comments?[index].id}");
+                                                                              bool isLiked = await ApiRepository.commnetLikeONvlog(volgId: "${commentsController.getCommentsModel.comments?[index].id}",postType: postType);
                                                                             },
                                                                             child: CustomImageView(
                                                                               imagePath: commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true ? "assets/image/love_true_blue.svg" : 'assets/image/love_false_blue.svg',

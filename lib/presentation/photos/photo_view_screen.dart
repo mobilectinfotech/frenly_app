@@ -182,11 +182,17 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
                         onTap: () async {
 
                           // Get.back();
-                         bool isreport =  await ApiRepository.reportPost(postId: "${controller.postSingleViewModel?.post?.id}", reason: reasonController.text);
-                          if(isreport){
-                            reasonController.clear();
-                            Get.back();
+                          if(reasonController.text.trim().isEmpty || reasonController.text == "" ){
+                            Get.snackbar("", "please_enter_report_reason".tr, backgroundColor: Color(0xff001649),colorText: Colors.white);
+                          }else{
+                            bool isreport =  await ApiRepository.reportPost(postId: "${controller.postSingleViewModel?.post?.id}", reason: reasonController.text);
+                            if(isreport){
+                              reasonController.clear();
+                              Get.back();
+                            }
+
                           }
+
                           // if(Get.isRegistered<MyProfileController>()) {
                           //   Get.find<MyProfileController>().getProfile(); //asdfg
                           // }

@@ -11,6 +11,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../Widgets/custom_blog_card.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 
+import '../../Widgets/custom_textfield.dart';
 import '../photos/photo_view_screen.dart';
 import '../user_follwers/user_followers_screen.dart';
 import '../user_follwings_page/user_followings_screen.dart';
@@ -39,6 +40,137 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     getUserByIdModel =await ApiRepository.getUserById(userId: userId);
     isLoadingUserById.value =false;
   }
+
+
+
+
+
+  TextEditingController reasonController = TextEditingController();
+
+  void reportFun(
+      BuildContext context
+      ) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              title: Text(
+                'Report reason'.tr,
+                style: TextStyle(
+                  color: const Color(0XFF111111),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.adaptSize,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              actions: <Widget>[
+                SizedBox(
+                  width: 300,
+                  child: CustomTextFormField(
+                    context: context,
+                    maxLines: 4,
+                    controller: reasonController,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: const Color(0xff001649), width: 1.aw)),
+                          child: Center(
+                            child: Text(
+                              'cancel'.tr,
+                              style: TextStyle(
+                                color: const Color(0XFF001649),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 30.aw),
+                      InkWell(
+                        onTap: () async {
+
+                          if(reasonController.text.trim().isEmpty || reasonController.text == "" ){
+                            Get.snackbar("", "please_enter_report_reason".tr, backgroundColor: Color(0xff001649),colorText: Colors.white);
+
+                          }else{
+                            var isreport =  await ApiRepository.reportUser(userId: "${ getUserByIdModel.user?.id}", reason: reasonController.text);
+                            if(isreport){
+                              reasonController.clear();
+                              Get.back();
+                            }
+                          }
+
+
+
+                          // Get.back();
+                          // print("vlogid==>${widget.vlogId}");
+
+
+                        },
+                        child: Container(
+                          height: 44.adaptSize,
+                          width: 110.adaptSize,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color(0xff001649),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Report'.tr,
+                              style: TextStyle(
+                                color: const Color(0XFFFFFFFF),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.adaptSize,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]);
+        });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @override
   void initState() {
@@ -283,6 +415,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Get.back();
                       // Get.to(()=> BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
                     }
+                    if(result=="2"){
+
+                      reportFun(context);
+
+
+                      // Get.to(()=> BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
+                    }
 
                   },
                   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -290,6 +429,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       value: '1',
                       child: Text('block_this'.tr),
                     ),
+                    PopupMenuItem<String>(
+                      value: '2',
+                      child: Text('report_this'.tr),
+                    ),
+
 
                   ],
                 )

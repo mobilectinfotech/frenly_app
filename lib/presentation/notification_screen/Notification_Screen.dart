@@ -187,7 +187,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             height: 56.adaptSize,
                             onTap: () {
                               Get.to(() => UserProfileScreen(userId: '${notificationsModel.notifications?[index].byUser?.id}',));
-
                             },
                             imagePath: notificationsModel.notifications?[index].byUser?.avatarUrl,
                             radius : BorderRadius.circular(100),
@@ -200,7 +199,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '${notificationsModel.notifications?[index].byUser?.fullName}   ',
+                                    text: '${notificationsModel.notifications?[index].byUser?.fullName ?? "App Notification"}  ',
                                     style:const TextStyle(
                                       color: Colors.black,
                                       fontSize: 15,
@@ -210,7 +209,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: removeUserName(notificationsModel.notifications?[index].byUser?.fullName ?? "", notificationsModel.notifications?[index].content ?? "",),
+                                    text: removeUserName(notificationsModel.notifications?[index].byUser?.fullName ?? "App", notificationsModel.notifications?[index].content ?? "",),
                                     style:const TextStyle(
                                       color: Color(0xFF505050),
                                       fontSize: 15,

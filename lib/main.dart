@@ -13,9 +13,7 @@ import 'LifeCycleManager/life_cycle_manager.dart';
 import 'firebase_options.dart';
 import 'localservice/local_service.dart';
 import 'localservice/messages_local.dart';
-import 'main_test.dart';
 import 'messaing_service/messaging_service.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,13 +42,11 @@ Future<void> main() async {
     if (message.notification != null) {
       MessagingService.showSimpleNotification(
           title: message.notification?.title ?? "title",
-          body: message.notification?.body ?? "bodynot",
+          body: message.notification?.body ?? "body",
           payload: payloadData);
     }
     print("Got a message in foreground==lin52");
   }
-
-
   );
 
   ///for notification end
@@ -70,6 +66,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -89,7 +86,14 @@ class MyApp extends StatelessWidget {
               splashColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory
           ),
-          // home:Demooooo(),s
+          builder: (context, widget) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaler: const TextScaler.linear(1.0),
+              ),
+              child: widget!,
+            );
+          },
         ),
       ),
     );
