@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
@@ -7,8 +6,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import '../core/utils/calculateTimeDifference.dart';
 import '../data/models/vlog_model.dart';
+import '../presentation/Vlog/vlog_full_view/vlog_view_screen.dart';
 import '../presentation/Vlog/vlog_like_commnet_share_common_view.dart';
-import '../presentation/vlog_full_view/vlog_full_view.dart';
 import 'custom_image_view.dart';
 
 class CustomVlogCard extends StatefulWidget {
@@ -98,7 +97,7 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
             Get.back();
           }
           Get.to(() =>
-              VlogFullViewNewScreen(
+              VlogViewScreen(
                 videoUrl: '${widget.vlog.videoUrl}',
                 vlogId: widget.vlog.id.toString(),
               ));

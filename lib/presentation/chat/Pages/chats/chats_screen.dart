@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
+import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:intl/intl.dart';
 import '../../../../Widgets/custom_image_view.dart';
 import '../../../../core/utils/pref_utils.dart';
@@ -76,6 +77,9 @@ class ChatsScreen extends StatelessWidget {
                 width: 15.aw,
               ),
               CustomImageView(
+                onTap: () {
+                  Get.to(()=>UserProfileScreen(userId: "${controller.chatsModel.value?.chats![index].participants![indexxx].id}"));
+                },
                 radius: BorderRadius.circular(30),
                 height: 55,
                 width: 55,

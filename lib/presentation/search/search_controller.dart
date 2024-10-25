@@ -3,9 +3,9 @@ import 'package:frenly_app/data/repositories/api_repository.dart';
 
 import 'package:get/get.dart';
 import '../../data/models/SertchUserModel.dart';
-import '../Blog/PopularBlogModel.dart';
-import '../Vlog/TrendingVlogModel.dart';
-import '../photos/photo_list/PhotosListModel.dart';
+import '../Blog/blogListModel.dart';
+import '../Vlog/VlogsListModel.dart';
+import '../post/post_list_model.dart';
 
 class SearchVlogController extends GetxController{
 
@@ -21,8 +21,8 @@ class SearchVlogController extends GetxController{
   }
 
 
-  Rx<TrendingVlogModel> getData =TrendingVlogModel().obs;
-  TrendingVlogModel get searchModel => getData.value;
+  Rx<VlogsListModel> getData =VlogsListModel().obs;
+  VlogsListModel get searchModel => getData.value;
 
   RxBool isLoadingVlog = false.obs;
 
@@ -37,8 +37,8 @@ class SearchVlogController extends GetxController{
 
 
 
-  Rx<PopularBlogModel> getBlogData =PopularBlogModel().obs;
-  PopularBlogModel get searchBlogModel => getBlogData.value;
+  Rx<BlogListModel> getBlogData =BlogListModel().obs;
+  BlogListModel get searchBlogModel => getBlogData.value;
   RxBool isLoadingBlog =false.obs;
 
   Future<void> searchBlog(String text, bool ? load)async{
@@ -52,8 +52,8 @@ class SearchVlogController extends GetxController{
 
 
 
-  Rx<PhotosListsModel> getPostData =PhotosListsModel().obs;
-  PhotosListsModel get searchPhotosModel => getPostData.value;
+  Rx<PostListsModel> getPostData =PostListsModel().obs;
+  PostListsModel get searchPhotosModel => getPostData.value;
   RxBool isLoadingPosts =false.obs;
 
   searchPhotos(String text, bool ? load)async{

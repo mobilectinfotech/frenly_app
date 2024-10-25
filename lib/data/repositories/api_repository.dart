@@ -9,8 +9,9 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../core/constants/app_dialogs.dart';
 import '../../core/utils/pref_utils.dart';
-import '../../presentation/Blog/PopularBlogModel.dart';
-import '../../presentation/Vlog/TrendingVlogModel.dart';
+import '../../presentation/Blog/blogListModel.dart';
+import '../../presentation/Blog/blog_model.dart';
+import '../../presentation/Vlog/VlogsListModel.dart';
 import '../../presentation/all_saved/MySavedBlogs.dart';
 import '../../presentation/all_saved/MySavedPosts.dart';
 import '../../presentation/all_saved/MySavedVlogs.dart';
@@ -20,7 +21,7 @@ import '../../presentation/my_block_list/BlockedUserListModel.dart';
 import '../../presentation/my_following/FollowingsModel.dart';
 import '../../presentation/my_follwers/FollowersModel.dart';
 import '../../presentation/notification_screen/NotificationsModel.dart';
-import '../../presentation/photos/photo_list/PhotosListModel.dart';
+import '../../presentation/post/post_list_model.dart';
 import '../../presentation/request_users/ReqModel.dart';
 import '../../presentation/settings_screen/MySettingModel.dart';
 import '../../presentation/user_follwers/UserFollowersModel.dart';
@@ -28,7 +29,6 @@ import '../../presentation/user_follwings_page/UserFollowersModel.dart';
 import '../../presentation/user_profile_screen/user_profile_model.dart';
 import '../data_sources/remote/api_client.dart';
 import '../models/DiscoverUsersModel.dart';
-import '../models/GetBlogByIdModel.dart';
 import '../models/GetCommentsModel.dart';
 import '../models/HomePageModel.dart';
 import '../models/LastSeenModel.dart';
@@ -56,6 +56,7 @@ class ApiRepository {
       {required String email,
       required String password,
       String? fcmToken}) async {
+    print("line_no_59");
     List<String> location = await getLocation();
     String fcm = await getFCMToken();
     var data = json.encode({
@@ -134,6 +135,20 @@ class ApiRepository {
     }
   }
 
+  //
+  // static Future<void> checkIn() async {
+  //   final response = await ApiClient().getRequest(
+  //     endPoint: "checkIn",
+  //   );
+  //   try {
+  //     return HomeModel.fromJson(response);
+  //   } catch (e, log) {
+  //     print(e.toString());
+  //     return HomeModel();
+  //   }
+  // }
+
+
   static Future<DiscoverUsersModel> discoverUser({int ? limit}) async {
     final response = await ApiClient().getRequest(
       endPoint: "home/discover?page=1&limit=${limit ?? 1000000}",
@@ -151,6 +166,8 @@ class ApiRepository {
       endPoint: "user/myProfile",
     );
     if (response != null) {
+      PrefUtils().setUserCity("${GetUserByIdModel.fromJson(response).user!.city}");
+      PrefUtils().setUserCountry("${GetUserByIdModel.fromJson(response).user!.country}");
       return GetUserByIdModel.fromJson(response);
     }
     return GetUserByIdModel();
@@ -227,6 +244,31 @@ class ApiRepository {
     return false;
   }
 
+
+  static Future<bool> checkIn() async {
+    List<String> location = await getLocation();
+    String fcm = await getFCMToken();
+    var data = json.encode({
+      "lat": location[0],
+      "lng": location[1],
+
+    });
+
+    Map<String, dynamic>? response = await ApiClient().postRequest(
+      endPoint: "user/checkIn",
+      body: data,
+    );
+    if (response != null) {
+         myProfile();
+      return true;
+    }
+    return false;
+  }
+
+
+
+
+
   static Future<bool> unfollow({required String userId}) async {
     Map<String, dynamic>? response = await ApiClient().postRequest(
       endPoint: "user/unFollow/$userId",
@@ -260,24 +302,24 @@ class ApiRepository {
   }
 
   //vlog  comments
-  static Future<TrendingVlogModel> searchVlog({String? searchText}) async {
+  static Future<VlogsListModel> searchVlog({String? searchText}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "vlog?page=1&limit=10&search=$searchText",
     );
     if (response != null) {
-      return TrendingVlogModel.fromJson(response);
+      return VlogsListModel.fromJson(response);
     }
-    return TrendingVlogModel();
+    return VlogsListModel();
   }
 
-  static Future<TrendingVlogModel> getVlog({ int ?limit }) async {
+  static Future<VlogsListModel> getVlog({ int ?limit }) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "vlog?page=1&limit=${limit ?? 1000000}",
     );
     if (response != null) {
-      return TrendingVlogModel.fromJson(response);
+      return VlogsListModel.fromJson(response);
     }
-    return TrendingVlogModel();
+    return VlogsListModel();
   }
 
   static Future<VlogByIdModel> getVlogById({required String userId}) async {
@@ -353,25 +395,25 @@ class ApiRepository {
 
   //post
 
-  static Future<PhotosListsModel> searchPosts(
+  static Future<PostListsModel> searchPosts(
       {required String searchText}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "post?page=1&limit=10&search=$searchText",
+      endPoint: "post?page=1&limit=1000&search=$searchText",
     );
     if (response != null) {
-      return PhotosListsModel.fromJson(response);
+      return PostListsModel.fromJson(response);
     }
-    return PhotosListsModel();
+    return PostListsModel();
   }
 
-  static Future<PhotosListsModel> getPosts() async {
+  static Future<PostListsModel> getPosts() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "post?page=1&limit=10000",
     );
     if (response != null) {
-      return PhotosListsModel.fromJson(response);
+      return PostListsModel.fromJson(response);
     }
-    return PhotosListsModel();
+    return PostListsModel();
   }
 
   static Future<PostSingleViewModel> getPostsByID({required String id}) async {
@@ -510,7 +552,7 @@ class ApiRepository {
 
   static Future<MySavedBlogs> savedBlog() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "blog/saved?page=1&limit=10",
+      endPoint: "blog/saved?page=1&limit=10000",
     );
     if (response != null) {
       return MySavedBlogs.fromJson(response);
@@ -520,7 +562,7 @@ class ApiRepository {
 
   static Future<MySavedPosts> savePosts() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "post/saved?page=1&limit=10",
+      endPoint: "post/saved?page=1&limit=100000",
     );
     if (response != null) {
       return MySavedPosts.fromJson(response);
@@ -530,7 +572,7 @@ class ApiRepository {
 
   static Future<MySavedVlogs> saveVlogs() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "vlog/saved?page=1&limit=10",
+      endPoint: "vlog/saved?page=1&limit=100000",
     );
     if (response != null) {
       return MySavedVlogs.fromJson(response);
@@ -538,25 +580,25 @@ class ApiRepository {
     return MySavedVlogs();
   }
 
-  static Future<PopularBlogModel> searchBlog(
+  static Future<BlogListModel> searchBlog(
       {required String searchText}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "blog?page=1&limit=10&search=$searchText",
     );
     if (response != null) {
-      return PopularBlogModel.fromJson(response);
+      return BlogListModel.fromJson(response);
     }
-    return PopularBlogModel();
+    return BlogListModel();
   }
 
-  static Future<PopularBlogModel> blog() async {
+  static Future<BlogListModel> blog() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "blog",
     );
     if (response != null) {
-      return PopularBlogModel.fromJson(response);
+      return BlogListModel.fromJson(response);
     }
-    return PopularBlogModel();
+    return BlogListModel();
   }
 
   static Future<bool> postBlog({
@@ -656,48 +698,14 @@ class ApiRepository {
     return false;
   }
 
-  static Future<GetBlogByIdModel> getBlogBYId({required String blogId}) async {
+  static Future<BlogModel> getBlogBYId({required String blogId}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "/blog/$blogId",
     );
     if (response != null) {
-      return GetBlogByIdModel.fromJson(response);
+      return BlogModel.fromJson(response);
     }
-    return GetBlogByIdModel();
-  }
-
-  //comments
-
-  static Future<GetCommentsModel> getCommentsOnPosts(
-      {required String vlogId}) async {
-    Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "post/comment/$vlogId?page=1&limit=1000",
-    );
-    if (response != null) {
-      return GetCommentsModel.fromJson(response);
-    }
-    return GetCommentsModel();
-  }
-
-  static Future<GetCommentsModel> getCommentsOnVlog(
-      {required String vlogId}) async {
-    Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "vlog/comment/$vlogId?page=1&limit=1000",
-    );
-    if (response != null) {
-      return GetCommentsModel.fromJson(response);
-    }
-    return GetCommentsModel();
-  }
-
-  static Future<GetCommentsModel> getCommentsOnBlog({required String blogId}) async {
-    Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "blog/comment/$blogId?page=1&limit=1000",
-    );
-    if (response != null) {
-      return GetCommentsModel.fromJson(response);
-    }
-    return GetCommentsModel();
+    return BlogModel();
   }
 
 //////////////////////comments//////////////////////////////////////////////////////////////////////////
@@ -711,7 +719,6 @@ class ApiRepository {
     }
     return GetCommentsModel();
   }
-
 
   static Future<bool> postCommentAll({required String id,required PostType postType,required String comment,}) async {
     Map<String, dynamic>? response = await ApiClient().postRequest(
@@ -735,6 +742,24 @@ class ApiRepository {
       return false;
     }
   }
+
+
+  static Future<bool> likeVlogBlogPost({required String userId,required PostType postType}) async {
+    Map<String, dynamic>? response = await ApiClient().postRequest(
+      endPoint: "${postType.name}/react/$userId",
+      body: {},
+    );
+    if (response != null) {
+      return true;
+    }
+    return false;
+  }
+
+
+//////////////////////comments//////////////////////////////////////////////////////////////////////////
+
+
+
 
 
   static Future<bool> shareAllBlogPostVlog({required String shareId,required PostType postType}) async {
@@ -1113,11 +1138,11 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> deletePost({
-    required String postId,
-  }) async {
+  // delete post vlog blog
+
+  static Future<bool> deletePostBolgVlog({required String id,required PostType postType}) async {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(
-      endPoint: "post/$postId",
+      endPoint: "${postType.name}/$id",
       body: {},
     );
     if (response != null) {
@@ -1129,25 +1154,33 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> reportPost({
-    required String postId,
+
+  // report post vlog blog
+
+  static Future<bool> reportPostVlogBlog({
+    required String id,
     required String reason,
-     String ? postType,
+    required PostType  postType,
 
   }) async {
+      var endPointt = "notfound";
+      if(postType.name == "vlog"){
+        endPointt = "vlog/reportVlog";
+      }
+      if(postType.name == "blog"){
+        endPointt = "blog/reportBlog";
+      }
+      if(postType.name == "post"){
+        endPointt = "post/reportPost";
+      }
+
     var data = {
-      postType =="vlog" ? "VlogId" :   postType =="blog" ? "blogId" : "PostId": postId,
+      postType.name == "vlog" ? "VlogId" :   postType.name =="blog" ? "blogId" : "PostId": id,
       'reason': reason,
     };
-    var endPoint = "post/reportPost";
-    if(postType == "vlog"){
-      endPoint = "vlog/reportVlog";
-    }
-    if(postType == "blog"){
-      endPoint = "blog/reportBlog";
-    }
+
     Map<String, dynamic>? response = await ApiClient().postRequest(
-      endPoint: endPoint,
+      endPoint: endPointt,
       body: data,
     );
     if (response != null) {
@@ -1158,6 +1191,31 @@ class ApiRepository {
       return false;
     }
   }
+
+
+
+
+
+
+
+
+
+  // static Future<bool> deletePost({
+  //   required String postId,
+  // }) async {
+  //   Map<String, dynamic>? response = await ApiClient().deleteRequest(
+  //     endPoint: "post/$postId",
+  //     body: {},
+  //   );
+  //   if (response != null) {
+  //     AppDialog.taostMessage("${response["message"]}");
+  //
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
 
   static Future<bool> deleteNotificationAll({
     required String postId,

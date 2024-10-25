@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/initial_bindings.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
@@ -29,6 +27,7 @@ Future<void> main() async {
 
 
   ///for notification
+
   await Permission.notification.isDenied.then((value) {
     if (value) {
       Permission.notification.request();
@@ -53,9 +52,9 @@ Future<void> main() async {
 
 
   ///for crushAnalitics
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  FlutterError.onError = (errorDetails) {FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);};
-  PlatformDispatcher.instance.onError = (error, stack) {FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);return true;};
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  // FlutterError.onError = (errorDetails) {FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);};
+  // PlatformDispatcher.instance.onError = (error, stack) {FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);return true;};
   ///for crush Analitics end
   runApp(MyApp(locale: locale));
 }
@@ -78,7 +77,7 @@ class MyApp extends StatelessWidget {
           locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
           fallbackLocale:const  Locale('swe', 'SE'),
           title: 'Frenly',
-         home: SplashScreen(),
+          home: SplashScreen(),
          // home: Scaffold(body: VideoThumbnailPlayer(videoUrl: 'https://frenly.s3.amazonaws.com/1719924957051-3769033-sd_426_240_25fps.mp4',)),
           initialBinding: InitialBindings(),
           theme: ThemeData(

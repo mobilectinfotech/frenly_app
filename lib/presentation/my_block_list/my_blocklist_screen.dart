@@ -35,7 +35,7 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppbar(
+      appBar: savePageAppbar(
         context: context,
         title: "BList".tr,
       ),

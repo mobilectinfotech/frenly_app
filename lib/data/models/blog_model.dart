@@ -12,12 +12,12 @@ class Blog {
   int? userId;
   DateTime? createdAt;
   DateTime? updatedAt;
-  int? numberOfLikes;
+  int ? numberOfLikes;
   int? numberOfShares;
   int? numberOfComments;
   int? numberOfSaves;
   User? user;
-  bool? alreadyLiked;
+  bool  alreadyLiked;
   bool? alreadySaved;
   bool? commentAllowed;
 
@@ -37,7 +37,7 @@ class Blog {
     this.numberOfComments,
     this.numberOfSaves,
     this.user,
-    this.alreadyLiked,
+    required this.alreadyLiked,
     this.alreadySaved,
     this.commentAllowed,
   });
@@ -58,7 +58,7 @@ class Blog {
     numberOfComments: json["numberOfComments"],
     numberOfSaves: json["numberOfSaves"],
     user: json["user"] == null ? null : User.fromJson(json["user"]),
-    alreadyLiked: json["alreadyLiked"],
+    alreadyLiked: json["alreadyLiked"] ?? false,
     alreadySaved: json["alreadySaved"],
     commentAllowed: json["commentAllowed"],
   );

@@ -13,6 +13,7 @@ class HomeController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     get();
+    ApiRepository.checkIn();
     homepage();
   }
 
@@ -43,6 +44,10 @@ class HomeController extends GetxController {
     }
     isLoading.value =false;
   }
+
+
+
+
 
 
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
 import '../data/models/blog_model.dart';
-import '../presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
+import '../presentation/Blog/blog_view/blog_view_screen.dart';
 import '../presentation/search/search_page.dart';
 import 'bottom_sheet_widgets.dart';
 import 'custom_image_view.dart';
@@ -22,7 +22,7 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
   Widget build(BuildContext context) {
     return   InkWell(
       onTap: () {
-        Get.to(() => BlogsFullViewScreen(id: widget.blog.id.toString(),isOwn: widget.isown ?? false,
+        Get.to(() => BlogViewScreen(id: widget.blog.id.toString(),isOwn: widget.isown ?? false,
         ));
       },
       child: Padding(
@@ -36,7 +36,7 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                 width: 144.ah,
                 fit: BoxFit.cover,
                 radius: BorderRadius.circular(10),
-                imagePath:widget.blog.imageUrl,
+                imagePath:widget.blog.imageUrl ?? "assets/icons/imagenotfound.png",
               ),
 
             SizedBox(width: 10.aw),
@@ -109,7 +109,7 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                         height: 35.ah,
                         width: 35.ah,
                         fit: BoxFit.cover,
-                        imagePath: widget.blog.imageUrl,
+                        imagePath: widget.blog?.user?.avatarUrl,
                         radius: BorderRadius.circular(32),
                       ),
                       SizedBox(width: 10.aw),

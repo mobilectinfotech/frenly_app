@@ -60,7 +60,7 @@ class _AddNewCategoryBottomSheetState extends State<AddNewCategoryBottomSheet> {
           ),
           Row(
             children: [
-              Text("categories_name".tr,
+              Text("category_name".tr,
                 style:
                 GoogleFonts.roboto().copyWith(fontSize: 22.fSize, fontWeight: FontWeight.w700, color: Colors.black),
               ),

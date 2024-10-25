@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/constants/app_dialogs.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
+import 'package:frenly_app/presentation/Blog/blog_view/blog_view_screen.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import '../../photos/photo_view_screen.dart';
-import '../../vlog_full_view/vlog_full_view.dart';
+import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../../post/post_view/post_view_screen.dart';
 import '../Pages/chat_room/chat_room_model.dart';
 
 class OwnMessageCard extends StatelessWidget {
@@ -51,7 +48,7 @@ class OwnMessageCard extends StatelessWidget {
                   onTap: () async {
                     if(message.isLink==3){
                       if(message.isLinkId!=null){
-                        Get.to(()=>VlogFullViewNewScreen(videoUrl: "${message.isUrl}",
+                        Get.to(()=>VlogViewScreen(videoUrl: "${message.isUrl}",
                             vlogId: "${message.isLinkId}"));
                       }else{
                         AppDialog.taostMessage("Vlog not Found");
@@ -60,14 +57,14 @@ class OwnMessageCard extends StatelessWidget {
 
                     if(message.isLink==2){
                       if(message.isLinkId!=null){
-                        Get.to(()=>BlogsFullViewScreen( id: '${message.isLinkId}',));
+                        Get.to(()=>BlogViewScreen( id: '${message.isLinkId}',));
                       }else{
                         AppDialog.taostMessage("Blog not Found");
                       }
                     }
                     if(message.isLink==1){
                       if(message.isLinkId!=null){
-                        Get.to(()=> PostFullViewScreen(  loadPostByid:  "${message.isLinkId}",));
+                        Get.to(()=> PostViewScreen(  id:  "${message.isLinkId}",));
                       }else{
                         AppDialog.taostMessage("Photo not Found");
                       }

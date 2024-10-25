@@ -11,13 +11,13 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../Widgets/custom_textfield.dart';
-import '../../../data/models/GetBlogByIdModel.dart';
+import '../blog_model.dart';
 import 'blog_edit_controller.dart';
 
 
 
 class BlogsEditScreen extends StatefulWidget {
-  GetBlogByIdModel getBlogByIdModel;
+  BlogModel getBlogByIdModel;
    BlogsEditScreen({super.key,required this.getBlogByIdModel});
 
   @override
@@ -39,10 +39,12 @@ class _BlogsEditScreenState extends State<BlogsEditScreen> {
      controller.bodyController.text =widget.getBlogByIdModel.blog!.body!;
 
 
-     String jsonString = "${widget.getBlogByIdModel.blog?.tags}";
-
-      List<String> tagsList = json.decode(jsonString).cast<String>();
-        controller.tags = tagsList;
+     // String jsonString = "${widget.getBlogByIdModel.blog?.tags}";
+     //  List<String> tagsList = json.decode(jsonString).cast<String>();
+     //  controller.tags = tagsList;
+    String ? jsonString = widget.getBlogByIdModel.blog?.tags ;
+    List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
+    controller.tags = tagsList;
   
   }
 

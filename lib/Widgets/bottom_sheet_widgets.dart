@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frenly_app/core/constants/app_dialogs.dart';
+import 'package:frenly_app/core/constants/textfield_validation.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/dashboard_screen/dashboardcontroller.dart';
-import 'package:frenly_app/presentation/user_profile_screen/user_profile_model.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,11 +10,10 @@ import '../core/utils/pref_utils.dart';
 import '../data/models/GetCommentsModel.dart';
 import '../data/models/cateogry_model.dart';
 import '../data/repositories/api_repository.dart';
-import '../presentation/Blog/blog_full_view_screen/blog_full_view_controller.dart';
+import '../presentation/Blog/blog_view/blog_view_controller.dart';
 import '../presentation/Vlog/add_new_category/add_new_cateogry_bottom_sheet.dart';
 import '../presentation/chat/Pages/all_frined/AllFriendsModel.dart';
 import '../presentation/chat/Pages/all_frined/CreateChatModel.dart';
-import '../presentation/photos/photo_list/post_view_all_contorller.dart';
 import 'custom_image_view.dart';
 
 enum PostType {
@@ -213,7 +211,8 @@ class CustomBottomSheets {
                                                                         () => InkWell(
                                                                             onTap: () async {
                                                                             //  Get.snackbar("title", "${commentsController.getCommentsModel.comments?[index].id}");
-                                                                              print("object_sdfdsfdfdsf");
+                                                                            //  print("object_sdfdsfdfdsf");
+                                                                              Get.snackbar("", '',backgroundColor:  const Color(0xFF001649),colorText: Colors.white,titleText:const Text("Please write something",style: TextStyle(color: Colors.white),));
                                                                               commentsController.getCommentsModel.comments?[index].isLikedByMe.value = !commentsController.getCommentsModel.comments![index].isLikedByMe.value;
                                                                               if (commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true) {
                                                                                 commentsController.getCommentsModel.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.comments?[index].numberOfLikes.value ?? 1) + 1;
@@ -278,48 +277,33 @@ class CustomBottomSheets {
                         SizedBox(
                           height: 10.v,
                         ),
-                        // if ("${commentsController.getCommentsModel.comments?[index].user?.id}" ==
-                        //     PrefUtils().getUserId())
-                        //   InkWell(
-                        //     onTap: () async {
-                        //       commentsController.deleteComments(
-                        //           id: id,
-                        //           postType: postType,
-                        //           commentId:
-                        //               "${commentsController.getCommentsModel.comments?[index].id}");
-                        //     },
-                        //     child: Text(
-                        //       "Delete".tr,
-                        //       style: TextStyle(
-                        //         color: Colors.black.withOpacity(.50),
-                        //         fontSize: 14,
-                        //         fontFamily: 'Roboto',
-                        //         fontWeight: FontWeight.w500,
-                        //       ),
-                        //     ),
-                        //   ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
                           child: Row(
                             children: [
-                              SizedBox(
-                                width: 290.aw,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(left: 15),
-                                      disabledBorder: InputBorder.none,
-                                      hintText: "add_comment".tr),
-                                  onTap: () {},
-                                  onEditingComplete: () {
-                                    FocusScope.of(context).unfocus();
-                                    commentsController.postComments(
-                                        id: id,
-                                        postType: postType,
-                                        comment:
-                                            commentsController.commnetsTc.text);
-                                  },
-                                  controller: commentsController.commnetsTc,
-                                  textInputAction: TextInputAction.send,
+                              Form(
+                                key: commentsController.formKey,
+                                child: SizedBox(
+                                  width: 290.aw,
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(left: 15),
+                                        disabledBorder: InputBorder.none,
+                                        hintText: "add_comment".tr),
+                                    onTap: () {},
+                                    validator: Validator.pleaseWriteSomething,
+                                    onEditingComplete: () {
+                                      if(commentsController.formKey.currentState!.validate()){
+                                        FocusScope.of(context).unfocus();
+                                        commentsController.postComments(
+                                            id: id,
+                                            postType: postType,
+                                            comment: commentsController.commnetsTc.text.trim());
+                                      }
+                                    },
+                                    controller: commentsController.commnetsTc,
+                                    textInputAction: TextInputAction.send,
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -327,12 +311,13 @@ class CustomBottomSheets {
                               ),
                               InkWell(
                                 onTap: () {
-                                  FocusScope.of(context).unfocus();
-                                  commentsController.postComments(
-                                      id: id,
-                                      postType: postType,
-                                      comment:
-                                          commentsController.commnetsTc.text);
+                                  if(commentsController.formKey.currentState!.validate()){
+                                    FocusScope.of(context).unfocus();
+                                    commentsController.postComments(
+                                        id: id,
+                                        postType: postType,
+                                        comment: commentsController.commnetsTc.text.trim());
+                                  }
                                 },
                                 child: Text(
                                   'Postt'.tr,
@@ -629,6 +614,8 @@ class ComnetsController extends GetxController {
   RxBool isLoading = false.obs;
 
   TextEditingController commnetsTc = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
   RxInt numberOfCommnets = 0.obs;
 
   getComments({required String id, required PostType postType}) async {
@@ -647,14 +634,14 @@ class ComnetsController extends GetxController {
     required String comment,
   }) async {
     isLoadingPostCommnets.value = true;
-    await ApiRepository.postCommentAll(
-        id: id, postType: postType, comment: comment);
+    await ApiRepository.postCommentAll(id: id, postType: postType, comment: comment);
     commnetsTc.clear();
     if (postType.name == "blog") {
-      Get.find<BlogFullViewController>().getBlogById(id: id);
+      Get.find<BlogViewController>().getBlogById(id: id,isLoadingg: false);
     }
     if (postType.name == "post") {
-      Get.find<PostAllViewController>().getPostByid(id: id);
+      //Todo 001
+   //   Get.find<PostAllViewController>().getPostByid(id: id,isLoading: false);
     }
     isLoadingPostCommnets.value = false;
     getComments(id: id, postType: postType);

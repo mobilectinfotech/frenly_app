@@ -8,16 +8,16 @@ import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/discover_screen/discover_all_user.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
-import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
-import '../Blog/popular_blogs_screen.dart';
-import '../Vlog/vlogs_list/all_vlogs_list_screen.dart';
+import '../Blog/blog_view/blog_view_screen.dart';
+import '../Blog/blogs_list/blogs_list_screen.dart';
+import '../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../Vlog/vlogs_list/vlogs_list_screen.dart';
 import '../notification_screen/Notification_Screen.dart';
-import '../photos/photo_list/photo_list_screen.dart';
-import '../photos/photo_view_screen.dart';
 import '../popular_city/popular_city_screen.dart';
 import '../popular_city/user_by_city_screen.dart';
+import '../post/post_list/post_list_screen.dart';
+import '../post/post_view/post_view_screen.dart';
 import '../user_profile_screen/user_profile_screen.dart';
-import '../vlog_full_view/vlog_full_view.dart';
 import 'controller/home_controller.dart';
 import 'package:get/get.dart';
 
@@ -52,10 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(2000.ah), // preferred height for the app bar
           child: Container(
-            color: Color(0xFF001649),
+            color:const Color(0xFF001649),
             child: SafeArea(
               child: Container(
-                color: Color(0xFF001649),
+                color :const Color(0xFF001649),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
@@ -81,10 +81,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       CustomImageView(
                         onTap: () {
-                          Get.to(()=>NotificationScreen());
+                          Get.to(()=> const NotificationScreen());
                         },
                         width: 30.adaptSize,
                         height: 30.adaptSize,
@@ -126,15 +126,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 10.ah),
                       liveUserByCountry(),
                       SizedBox(height: 20.ah),
-                      titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PhotoViewAllNewScreen());}),
+                      titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PostListScreen());}),
                       SizedBox(height: 20.ah),
                       posts(),
                       SizedBox(height: 25.ah),
-                      titleViewAll(title: 'Trendingvlog'.tr, onTap: () {Get.to(()=>  AllVlogScreen());}),
+                      titleViewAll(title: 'Vlogs'.tr, onTap: () {Get.to(()=>  const VlogsListScreen());}),
                       SizedBox(height: 16.ah,),
                       trending(),
                       SizedBox(height: 20.ah),
-                      titleViewAll(title: 'Popublog'.tr, onTap: () {Get.to(()=> const PopularBlogScreen());}),
+                      titleViewAll(title: 'Blogs'.tr, onTap: () {Get.to(()=> const BlogsListScreen());}),
                       SizedBox(height: 16.ah,),
                       popularBlog(),
                       SizedBox(height: 16.ah,),
@@ -211,10 +211,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: controller.homeModel.vlogs?.length,
+        itemCount: controller.homeModel.vlogs?.length ?? 0,
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {Get.to(()=>VlogFullViewNewScreen(videoUrl: '${controller.homeModel.vlogs?[index].videoUrl}', vlogId:controller.homeModel.vlogs![index].id.toString(),));},
+            onTap: () {Get.to(()=>VlogViewScreen(videoUrl: '${controller.homeModel.vlogs?[index].videoUrl}', vlogId:controller.homeModel.vlogs![index].id.toString(),));},
             child: Padding(
               padding:  EdgeInsets.only(right: 10.0.aw),
               child: SizedBox(
@@ -233,12 +233,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           );
-          return CustomImageView(
-            width: 150.aw,
-            height: 100.ah,
-            imagePath: controller.homeModel.vlogs![index].thumbnailUrl,
-            radius: BorderRadius.circular(10),
-          );
         },
       ),
     );
@@ -247,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 176.ah,
-      child:   controller.homeModel.usersInCities?.length == 0 ?  Center(child:Text("no_active_user_found".tr),): ListView.builder(
+      child:   (controller.homeModel.usersInCities?.length == null || controller.homeModel.usersInCities!.isEmpty ) ?  Center(child:Text("no_active_user_found".tr),): ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: controller.homeModel.usersInCities?.length,
@@ -276,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             alignment: Alignment.bottomCenter,
                             child: Row(
                               children: [
-                                for (int i = 0; i < controller.homeModel.usersInCities![index].users!.length; i++)
+                                for (int i = 0; i < (controller.homeModel.usersInCities?[index].users?.length ?? 0); i++)
                                   Align(
                                     widthFactor: 0.7,
                                     child: CustomImageView(
@@ -322,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${controller.homeModel.usersInCities![index].city ?? ""}',
+                      controller.homeModel.usersInCities?[index].city ?? "",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w700,
@@ -330,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Text(
-                      '${controller.homeModel.usersInCities![index].country ?? ""}',
+                      controller.homeModel.usersInCities?[index].country ?? "",
                       style: TextStyle(
                         color: const Color(0xffAAAAAA),
                         fontWeight: FontWeight.w600,
@@ -354,13 +348,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: controller.homeModel.blogs?.length,
+        itemCount: controller.homeModel.blogs?.length ?? 0,
         itemBuilder: (context, index) {
-          String jsonString = "${controller.homeModel.blogs![index].tags}";
-          List<String> tagsList = json.decode(jsonString).cast<String>();
+          // String jsonString = "${controller.homeModel.blogs![index].tags}";
+          // List<String> tagsList = json.decode(jsonString).cast<String>();
+          String ? jsonString = controller.homeModel.blogs?[index].tags ;
+          List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
           return InkWell(
             onTap: () {
-              Get.to(()=>BlogsFullViewScreen(id: "${controller.homeModel.blogs![index].id}",));
+              Get.to(()=>BlogViewScreen(id: "${controller.homeModel.blogs![index].id}",));
             },
 
             child: Padding(
@@ -370,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 180.adaptSize,
                     height: 90.adaptSize,
                     child: Stack(
@@ -378,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         CustomImageView(
                           width: 180.adaptSize,
                           height: 90.adaptSize,
-                          imagePath: controller.homeModel.blogs![index].imageUrl,
+                          imagePath: controller.homeModel.blogs?[index].imageUrl ?? "assets/image/image_not_found.webp",
                           radius: BorderRadius.circular(10.adaptSize),
                           fit: BoxFit.cover,
                         ),
@@ -452,7 +448,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ()=> ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
-          itemCount: controller.homeModel.discoverUsers?.length,
+          itemCount: controller.homeModel.discoverUsers?.length ?? 0,
           itemBuilder: (context, index) {
             return Padding(
               padding:  const EdgeInsets.only(right: 8.0),
@@ -469,18 +465,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
   Widget posts() {
-    return Container(
-
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 135.ah,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: controller.homeModel.posts?.length,
+        itemCount: controller.homeModel.posts?.length ?? 0,
         itemBuilder: (context, index) {
           return InkWell(
               onTap: () {
-                Get.to(()=>PostFullViewScreen(loadPostByid: "${controller.homeModel.posts?[index].id}",));
+                Get.to(()=>PostViewScreen(id: "${controller.homeModel.posts?[index].id}",));
 
                 // Get.to(()=>UserProfileScreen(userId: "${controller.homeModel.posts?[index].user?.id}"));
               },
@@ -578,7 +573,6 @@ class _ThumailGenrateState extends State<ThumailGenrate> {
 
   // Function to generate thumbnail
   Future<void> generateThumbnail(String videoUrl) async {
-    print("videoUrl ==> $videoUrl");
     try {
       // Generate the thumbnail asynchronously
       Uint8List? data = await VideoThumbnail.thumbnailData(
@@ -591,12 +585,9 @@ class _ThumailGenrateState extends State<ThumailGenrate> {
       if (data != null) {
         // Update the thumbnail Rx with the generated thumbnail data
         thumbnail.value = data;
-        print("Thumbnail generated successfully!");
       } else {
-        print("Thumbnail generation failed.");
       }
     } catch (e) {
-      print('Error generating thumbnail: $e');
     }
   }
   @override
@@ -606,7 +597,6 @@ class _ThumailGenrateState extends State<ThumailGenrate> {
     if (widget.videoUrl != null) {
       generateThumbnail(widget.videoUrl ?? "");
     } else {
-      print("Invalid video URL");
     }
   }
 
@@ -615,12 +605,12 @@ class _ThumailGenrateState extends State<ThumailGenrate> {
   Widget build(BuildContext context) {
     return   ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Container(
+      child: SizedBox(
         width: 180.adaptSize,
         height: 90.adaptSize,
         child: Obx(() {
           if(thumbnail.value==null){
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           return Image.memory(thumbnail.value!,width: MediaQuery.of(context).size.width,fit: BoxFit.cover,);
         }),

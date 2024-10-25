@@ -15,7 +15,7 @@ class Post {
   User? user;
   bool? alreadySaved;
   bool? commentAllowed;
-  bool? alreadyLiked;
+  bool alreadyLiked;
 
   Post({
     this.id,
@@ -31,7 +31,7 @@ class Post {
     this.user,
     this.alreadySaved,
     this.commentAllowed,
-    this.alreadyLiked,
+    required this.alreadyLiked,
   });
 
   factory Post.fromRawJson(String str) => Post.fromJson(json.decode(str));
@@ -52,7 +52,7 @@ class Post {
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     alreadySaved: json["alreadySaved"],
     commentAllowed: json["commentAllowed"],
-    alreadyLiked: json["alreadyLiked"],
+    alreadyLiked: json["alreadyLiked"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {

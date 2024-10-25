@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/presentation/vlog_full_view/vlog_full_view.dart';
 import 'package:get/get.dart';
 import '../../../Widgets/custom_image_view.dart';
 import '../../../core/constants/app_dialogs.dart';
 import '../../../data/models/PostSingleViewModel.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 
-import '../../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
-import '../../photos/photo_view_screen.dart';
+import '../../Blog/blog_view/blog_view_screen.dart';
+import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../../post/post_view/post_view_screen.dart';
 import '../Pages/chat_room/chat_room_model.dart';
 import 'package:intl/intl.dart';
 
@@ -47,7 +47,7 @@ class ReplyCard extends StatelessWidget {
                   print("dsafgfdsgdgsfgdgdsgdsgdsfgdgdgfdgdfgd${message.isLinkId}");
                   if(message.isLink==3){
                     if(message.isLinkId!=null){
-                      Get.to(()=>VlogFullViewNewScreen(videoUrl: "${message.isUrl}", vlogId: "${message.isLinkId}"));
+                      Get.to(()=>VlogViewScreen(videoUrl: "${message.isUrl}", vlogId: "${message.isLinkId}"));
                     }else{
                       AppDialog.taostMessage("Vlog not Found");
                     }
@@ -55,7 +55,7 @@ class ReplyCard extends StatelessWidget {
 
                   if(message.isLink==2){
                     if(message.isLinkId!=null){
-                      Get.to(()=>BlogsFullViewScreen( id: '${message.isLinkId}',));
+                      Get.to(()=>BlogViewScreen( id: '${message.isLinkId}',));
                     }else{
                       AppDialog.taostMessage("Blog not Found");
                     }
@@ -63,7 +63,7 @@ class ReplyCard extends StatelessWidget {
                   if(message.isLink==1){
                     if(message.isLinkId!=null){
                       PostSingleViewModel post = await  ApiRepository.getPostsByID(id: "${message.isLinkId}");
-                      Get.to(()=>PostFullViewScreen(  loadPostByid: "${post.post?.id}",));
+                      Get.to(()=>PostViewScreen(  id: "${post.post?.id}",));
 
                     }else{
                       AppDialog.taostMessage("Photo not Found");

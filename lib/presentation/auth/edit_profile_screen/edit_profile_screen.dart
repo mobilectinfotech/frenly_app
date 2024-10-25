@@ -238,7 +238,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   bottomRight: Radius.circular(25.adaptSize),
                   bottomLeft: Radius.circular(25.adaptSize)),
               fit: BoxFit.cover,
-              imagePath: controller.coverPhoto==null ? widget.getUserByIdModel.user?.coverPhotoUrl : controller.coverPhoto!.path,
+              imagePath: controller.coverPhoto==null ? (widget.getUserByIdModel.user?.coverPhotoUrl ?? "assets/icons/hills_placeholder.png") : controller.coverPhoto!.path,
             ),
           ),
           Positioned(

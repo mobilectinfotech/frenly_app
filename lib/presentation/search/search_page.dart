@@ -9,11 +9,9 @@ import 'package:frenly_app/Widgets/custom_vlog_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/search/search_controller.dart';
 import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
-import '../../Widgets/custom_appbar.dart';
 import '../../Widgets/custom_image_view.dart';
-import '../photos/photo_view_screen.dart';
+import '../post/post_view/post_view_screen.dart';
 import '../user_profile_screen/user_profile_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -201,9 +199,8 @@ class _SearchScreenState extends State<SearchScreen>
                         child: Center(
                             child: InkWell(
                           onTap: () {
-                            Get.to(() => PostFullViewScreen(
-                                  loadPostByid:
-                                      "${searchController.searchPhotosModel.posts![index].id}",
+                            Get.to(() => PostViewScreen(
+                                  id: "${searchController.searchPhotosModel.posts![index].id}",
                                 ));
                           },
                           child: CustomImageView(
@@ -237,10 +234,10 @@ class _SearchScreenState extends State<SearchScreen>
                 itemCount: searchController.searchBlogModel.blogs!.length,
                 padding: const EdgeInsets.only(bottom: 10),
                 itemBuilder: (context, index) {
-                  String jsonString =
-                      "${searchController.searchBlogModel.blogs![index].tags}";
-                  List<String> tagsList =
-                      json.decode(jsonString).cast<String>();
+                  // String jsonString = "${searchController.searchBlogModel.blogs![index].tags}";
+                  // List<String> tagsList = json.decode(jsonString).cast<String>();
+                  String ? jsonString =searchController.searchBlogModel.blogs![index].tags ;
+                  List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
                   return CustomBlogCard(
                     tagsList: tagsList,
                     blog: searchController.searchBlogModel.blogs![index],

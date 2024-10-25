@@ -12,10 +12,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../../../Widgets/custom_blog_card.dart';
+import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
 import '../../Vlog/vlog_like_commnet_share_common_view.dart';
 import '../../my_following/my_followings.dart';
-import '../../photos/photo_view_screen.dart';
-import '../../vlog_full_view/vlog_full_view.dart';
+import '../../post/post_view/post_view_screen.dart';
 import '../edit_profile_screen/edit_profile_screen.dart';
 import 'my_profile_controller.dart';
 
@@ -205,7 +205,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   bottomRight: Radius.circular(25.adaptSize),
                   bottomLeft: Radius.circular(25.adaptSize)),
               fit: BoxFit.cover,
-              imagePath: controller.getUserByIdModel.user?.coverPhotoUrl,
+              imagePath: controller.getUserByIdModel.user?.coverPhotoUrl ??"assets/icons/hills_placeholder.png",
             ),
           ),
           Positioned(
@@ -405,7 +405,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             return InkWell(
                 onTap: () {
                   print("sdfghjgfdsfghj");
-                  Get.to(() => VlogFullViewNewScreen(
+                  Get.to(() => VlogViewScreen(
                         videoUrl:
                             '${controller.getUserByIdModel.user!.vlogs![index].videoUrl}',
                         vlogId: controller
@@ -561,8 +561,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         itemCount: controller.getUserByIdModel.user!.blogs!.length,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: (context, index) {
-          String jsonString = "${controller.getUserByIdModel.user!.blogs![index].tags}";
-          List<String> tagsList = json.decode(jsonString).cast<String>();
+          String ? jsonString = controller.getUserByIdModel.user!.blogs![index].tags ;
+          List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
+
           return CustomBlogCard(
             isown: true,
             blog: controller.getUserByIdModel.user!.blogs![index],
@@ -600,11 +601,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               child: Center(
                   child: InkWell(
                 onTap: () {
-                  Get.to(() => PostFullViewScreen(
-                        loadPostByid:
-                            "${controller.getUserByIdModel.user?.posts![index].id}",
-                        own: true,
-                      ));
+                  Get.to(() => PostViewScreen(id: "${controller.getUserByIdModel.user?.posts![index].id}", own: true,));
                 },
                 child: CustomImageView(
                   imagePath:

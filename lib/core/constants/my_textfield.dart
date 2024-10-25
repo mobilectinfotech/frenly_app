@@ -703,7 +703,6 @@ SizedBox primaryTextfield7({
           fit: BoxFit.fill,
         ),
 
-        //Image.asset('assets/image/smily.png',height:18.ah,width: 18.aw,fit: BoxFit.fill,),
 
         //Icon(Icons.emoji_emotions_outlined,size: 28,color: Colors.black.withOpacity(0.50),),
 

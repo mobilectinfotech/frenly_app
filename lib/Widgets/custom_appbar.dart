@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-// ignore: unused_import
-import 'package:frenly_app/presentation/Blog/blog_edit/blogs_edit_screen.dart';
 import 'package:get/get.dart';
-
 import '../presentation/chat/Pages/all_frined/all_friends_page.dart';
+import '../presentation/user_profile_screen/user_profile_screen.dart';
 
 
 
@@ -40,14 +38,8 @@ AppBar appBarPrimary({String ? title,Function()? onTapLeading}){
     ]
   );
 }
-
-
-
-
-
-
-
-PreferredSizeWidget customAppbar(
+//
+PreferredSizeWidget savePageAppbar(
     {required BuildContext context,
     String? title,
     String? imagepath,
@@ -56,7 +48,6 @@ PreferredSizeWidget customAppbar(
     Function()? onTap,
     bool? editBlogIcon,
     Widget? rightSideWidget}) {
-
   return PreferredSize(
       preferredSize: Size.fromHeight(200.ah), // preferred height for the app bar
       child: SafeArea(
@@ -183,6 +174,7 @@ PreferredSizeWidget messageAppbar(
 PreferredSizeWidget customAppbarForChat(
     {required BuildContext context,
     String? name,
+    required String userId,
     String? handle,
     String? imagepath,
     bool? showImage,
@@ -214,6 +206,9 @@ PreferredSizeWidget customAppbarForChat(
               width: 6.aw,
             ),
             CustomImageView(
+              onTap: () {
+                Get.to(()=>UserProfileScreen(userId: userId,));
+              },
               width: 42.adaptSize,
               height: 42.adaptSize,
               radius: BorderRadius.circular(36),

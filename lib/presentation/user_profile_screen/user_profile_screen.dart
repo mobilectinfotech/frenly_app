@@ -10,12 +10,11 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../Widgets/custom_blog_card.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
-
 import '../../Widgets/custom_textfield.dart';
-import '../photos/photo_view_screen.dart';
+import '../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../post/post_view/post_view_screen.dart';
 import '../user_follwers/user_followers_screen.dart';
 import '../user_follwings_page/user_followings_screen.dart';
-import '../vlog_full_view/vlog_full_view.dart';
 
 
 class UserProfileScreen extends StatefulWidget {
@@ -459,42 +458,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   bottomRight: Radius.circular(25.adaptSize),
                   bottomLeft: Radius.circular(25.adaptSize)),
               fit: BoxFit.cover,
-              imagePath: getUserByIdModel.user?.coverPhotoUrl,
+              imagePath: getUserByIdModel.user?.coverPhotoUrl ?? "assets/icons/hills_placeholder.png",
             ),
           ),
           Positioned(
             bottom: 0,
             left: 121.aw,
-            child:  ProfileZoom(imageUrl: getUserByIdModel.user?.avatarUrl,),
-            // child: InkWell(
-            //   onTap: () {
-            //     ProfileZoom(imageUrl: getUserByIdModel.user?.avatarUrl ??"",);
-            //     // showDialog(context: context, builder: (BuildContext context) {
-            //     //   return CustomImageView(
-            //     //     width: 140.ah,
-            //     //     height: 140.ah,
-            //     //     fit: BoxFit.cover,
-            //     //     imagePath: getUserByIdModel.user?.avatarUrl,
-            //     //     radius: BorderRadius.circular(100),
-            //     //   );
-            //     // });
-            //   },
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(500)),
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(4.0),
-            //       child: CustomImageView(
-            //         width: 140.ah,
-            //         height: 140.ah,
-            //         fit: BoxFit.cover,
-            //         imagePath: getUserByIdModel.user?.avatarUrl,
-            //         radius: BorderRadius.circular(100),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            child:  InkWell(
+              onTap: () {
+                _isZoomed.value = !_isZoomed.value;
+              },
+                child: ProfileZoom(imageUrl: getUserByIdModel.user?.avatarUrl,)),
           ),
           SafeArea(
             child: backAndSettingIconRow(),
@@ -718,9 +692,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
-                Get.to(() => VlogFullViewNewScreen(
+                Get.to(() => VlogViewScreen(
                       videoUrl:
-                          '${getUserByIdModel.user!.vlogs![index].videoUrl}',
+                      '${getUserByIdModel.user!.vlogs![index].videoUrl}',
                       vlogId: getUserByIdModel.user!.vlogs![index].id
                           .toString(),
                     ));
@@ -746,9 +720,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         itemCount: getUserByIdModel.user!.blogs!.length,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: (context, index) {
-          String jsonString =
-              "${getUserByIdModel.user!.blogs![index].tags}";
-          List<String> tagsList = json.decode(jsonString).cast<String>();
+          // String jsonString = "${getUserByIdModel.user!.blogs![index].tags}";
+          // List<String> tagsList = json.decode(jsonString).cast<String>();
+
+
+          String ? jsonString = getUserByIdModel.user!.blogs![index].tags ;
+          List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
           return CustomBlogCard(blog: getUserByIdModel.user!.blogs![index], tagsList: tagsList,);
 
         },
@@ -782,7 +759,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             child: Center(
                 child: InkWell(
                   onTap: () {
-                    Get.to(()=>PostFullViewScreen( loadPostByid: "${getUserByIdModel.user?.posts![index].id}", ));
+                    Get.to(()=>PostViewScreen( id: "${getUserByIdModel.user?.posts![index].id}", ));
                   },
                   child: CustomImageView(
                     imagePath:
@@ -840,8 +817,10 @@ class _ProfileZoomState extends State<ProfileZoom> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _zoomImage,
+    return InkWell(
+      onTap: () {
+        _zoomImage();
+      },
       child: Center(
         child: AnimatedBuilder(
           animation: _animation,
@@ -857,6 +836,8 @@ class _ProfileZoomState extends State<ProfileZoom> with SingleTickerProviderStat
                   child: CustomImageView(
                     width: 140.ah,
                     height: 140.ah,
+
+
                     fit: BoxFit.cover,
                     imagePath: widget.imageUrl,
                     radius: BorderRadius.circular(100),

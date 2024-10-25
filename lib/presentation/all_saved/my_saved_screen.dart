@@ -13,8 +13,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Widgets/custom_blog_card.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
-import '../Blog/blog_full_view_screen/blogs_full_view_screen.dart';
-import '../photos/photo_view_screen.dart';
+import '../Blog/blog_view/blog_view_screen.dart';
+import '../post/post_view/post_view_screen.dart';
 import 'my_saved_controller.dart';
 
 class AllSavedScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class _AllSavedScreenState extends State<AllSavedScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppbar(
+      appBar: savePageAppbar(
           context: context,
           title: "AllSaved".tr,
           rightSideWidget: InkWell(
@@ -382,17 +382,17 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                         itemCount: controller.filteredSaveBlogModel.length,
                         padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
-                          String jsonString =
-                              "${controller.filteredSaveBlogModel[index].blog?.tags}";
-                          List<String> tagsList =
-                              json.decode(jsonString).cast<String>();
+                          // String jsonString = "${controller.filteredSaveBlogModel[index].blog?.tags}";
+                          // List<String> tagsList = json.decode(jsonString).cast<String>();
+                          String ? jsonString = controller.filteredSaveBlogModel[index].blog?.tags ;
+                          List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
                           return Padding(
                             padding:
                                 const EdgeInsets.only(bottom: 10, right: 5),
                             child: InkWell(
                               onTap: () {
                                 print('blogsId==>${controller..filteredSaveBlogModel[index].blog?.id}');
-                                Get.to(() => BlogsFullViewScreen(
+                                Get.to(() => BlogViewScreen(
                                       id: controller
                                           .filteredSaveBlogModel[index].blog!.id
                                           .toString(),
@@ -462,9 +462,8 @@ class _AllSavedScreenState extends State<AllSavedScreen>
                                   mainAxisCellCount: cont[index % 9],
                                   child: InkWell(
                                     onTap: () {
-                                      Get.to(() => PostFullViewScreen(
-                                            loadPostByid:
-                                                "${controller.filteredMySavedPosts[index].post?.id}",
+                                      Get.to(() => PostViewScreen(
+                                            id: "${controller.filteredMySavedPosts[index].post?.id}",
                                           ));
                                     },
                                     child: Center(

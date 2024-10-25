@@ -3,12 +3,12 @@ import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 
-import 'package:frenly_app/presentation/Blog/blog_full_view_screen/blogs_full_view_screen.dart';
+import 'package:frenly_app/presentation/Blog/blog_view/blog_view_screen.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
-import 'package:frenly_app/presentation/vlog_full_view/vlog_full_view.dart';
 import 'package:get/get.dart';
 import '../../data/models/PostSingleViewModel.dart';
-import '../photos/photo_view_screen.dart';
+import '../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../post/post_view/post_view_screen.dart';
 import 'NotificationsModel.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -233,7 +233,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                    child: InkWell(
                                      onTap: () async {
                                        PostSingleViewModel postmodel = await   ApiRepository.getPostsByID(id: "${notificationsModel.notifications?[index].data?.id}");
-                                       Get.to(()=> PostFullViewScreen(loadPostByid: "${postmodel.post?.id}",));
+                                       Get.to(()=> PostViewScreen(id: "${postmodel.post?.id}",));
                                        },
                                      child: CustomImageView(
                                        width: 47.02,
@@ -254,7 +254,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                    padding: const EdgeInsets.only(right: 8.0),
                                    child: InkWell(
                                      onTap: () async {
-                                       Get.to(()=>VlogFullViewNewScreen( videoUrl: '${notificationsModel.notifications?[index].data?.videoUrl}', vlogId: '${notificationsModel.notifications?[index].data?.id}',));
+                                       Get.to(()=>VlogViewScreen( videoUrl: '${notificationsModel.notifications?[index].data?.videoUrl}', vlogId: '${notificationsModel.notifications?[index].data?.id}',));
                                      },
                                      child: CustomImageView(
                                        width: 47.02,
@@ -277,7 +277,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: InkWell(
                                     onTap: () async {
-                                      Get.to(()=>  BlogsFullViewScreen( id: '${notificationsModel.notifications?[index].data?.id}',));
+                                      Get.to(()=>  BlogViewScreen( id: '${notificationsModel.notifications?[index].data?.id}',));
                                     },
 
                                     child: CustomImageView(

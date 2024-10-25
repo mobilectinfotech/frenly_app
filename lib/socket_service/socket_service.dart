@@ -15,7 +15,7 @@ class SocketService {
   Future<void> socketConnect() async {
     try {
       final headers = {
-        'Authorization': 'Bearer ${await PrefUtils().getAuthToken()}',
+        'Authorization': 'Bearer ${PrefUtils().getAuthToken()}',
       };
 
       _socket = IO.io(

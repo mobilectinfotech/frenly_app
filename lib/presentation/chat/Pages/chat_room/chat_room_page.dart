@@ -129,7 +129,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
   PreferredSizeWidget _buildCustomAppBar(BuildContext context) {
+    print("widget.participant.coverPhotoUrl${widget.participant.coverPhotoUrl}");
     return customAppbarForChat(
+      userId:widget.participant.id.toString(),
       context: context,
       handle: lastSeenUser,
       name: widget.participant.fullName?.capitalizeFirst,
