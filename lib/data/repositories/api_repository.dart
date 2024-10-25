@@ -56,6 +56,7 @@ class ApiRepository {
       {required String email,
       required String password,
       String? fcmToken}) async {
+    print("line_no_59");
     List<String> location = await getLocation();
     String fcm = await getFCMToken();
     var data = json.encode({
@@ -666,40 +667,6 @@ class ApiRepository {
     return GetBlogByIdModel();
   }
 
-  //comments
-
-  static Future<GetCommentsModel> getCommentsOnPosts(
-      {required String vlogId}) async {
-    Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "post/comment/$vlogId?page=1&limit=1000",
-    );
-    if (response != null) {
-      return GetCommentsModel.fromJson(response);
-    }
-    return GetCommentsModel();
-  }
-
-  static Future<GetCommentsModel> getCommentsOnVlog(
-      {required String vlogId}) async {
-    Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "vlog/comment/$vlogId?page=1&limit=1000",
-    );
-    if (response != null) {
-      return GetCommentsModel.fromJson(response);
-    }
-    return GetCommentsModel();
-  }
-
-  static Future<GetCommentsModel> getCommentsOnBlog({required String blogId}) async {
-    Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "blog/comment/$blogId?page=1&limit=1000",
-    );
-    if (response != null) {
-      return GetCommentsModel.fromJson(response);
-    }
-    return GetCommentsModel();
-  }
-
 //////////////////////comments//////////////////////////////////////////////////////////////////////////
 
   static Future<GetCommentsModel> getCommentsAll({required String id,required PostType postType}) async {
@@ -711,7 +678,6 @@ class ApiRepository {
     }
     return GetCommentsModel();
   }
-
 
   static Future<bool> postCommentAll({required String id,required PostType postType,required String comment,}) async {
     Map<String, dynamic>? response = await ApiClient().postRequest(
@@ -735,6 +701,14 @@ class ApiRepository {
       return false;
     }
   }
+
+
+
+
+//////////////////////comments//////////////////////////////////////////////////////////////////////////
+
+
+
 
 
   static Future<bool> shareAllBlogPostVlog({required String shareId,required PostType postType}) async {

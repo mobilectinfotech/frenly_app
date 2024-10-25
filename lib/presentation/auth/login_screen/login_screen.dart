@@ -209,6 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   onTapLogin() {
     if (_formKeyLogin.currentState!.validate()) {
+      print("object");
       loginController.loginWithEmail();
     }
   }

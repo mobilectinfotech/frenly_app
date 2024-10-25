@@ -65,7 +65,7 @@ class _VlogFullViewNewScreenState extends State<VlogFullViewNewScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
-                'Vlog report reason'.tr,
+                'vlog_report_reason'.tr,
                 style: TextStyle(
                   color: const Color(0XFF111111),
                   fontWeight: FontWeight.w600,

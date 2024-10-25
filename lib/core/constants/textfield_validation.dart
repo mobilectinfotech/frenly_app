@@ -56,6 +56,14 @@ class Validator {
     return null;
   }
 
+  static String? pleaseWriteSomething(String? value) {
+    if (value == null || value.trim().isEmpty ) {
+      return 'please_write_something'.tr;
+    }
+    // You can add more specific validation rules for first name if needed
+    return null;
+  }
+
   static String? validateFullName(String? value) {
     bool _isAlpha(String str) {
       return RegExp(r'^[a-zA-Z]+$').hasMatch(str);

@@ -127,7 +127,7 @@ class _PostFullViewScreenState extends State<PostFullViewScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
-                'Report reason'.tr,
+                'post_report_reason'.tr,
                 style: TextStyle(
                   color: const Color(0XFF111111),
                   fontWeight: FontWeight.w600,

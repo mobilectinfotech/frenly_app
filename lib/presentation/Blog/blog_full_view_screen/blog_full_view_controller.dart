@@ -17,8 +17,10 @@ class BlogFullViewController extends GetxController{
 
   RxBool isLoading =false.obs;
 
-  getBlogById({required String id})async{
-    isLoading.value =true;
+  getBlogById({required String id,bool ? isLoadingg})async{
+    if(isLoadingg == null){
+      isLoading.value=true;
+    }
     blogByIdModel = await ApiRepository.getBlogBYId( blogId: id);
     isLoading.value =false;
   }

@@ -29,8 +29,10 @@ class PostAllViewController extends GetxController{
 
   PostSingleViewModel ? postSingleViewModel ;
 
-  getPostByid({required String id}) async {
-    isLoadingPostsingle.value=true;
+  getPostByid({required String id,bool ? isLoading}) async {
+    if(isLoading==null){
+      isLoadingPostsingle.value=true;
+    }
     postSingleViewModel = await   ApiRepository.getPostsByID(id: id);
     isLoadingPostsingle.value=false;
   }
