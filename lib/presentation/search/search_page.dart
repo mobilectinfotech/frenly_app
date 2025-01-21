@@ -219,6 +219,8 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
+  //Pramod Code
+  /*
   Widget _blogs() {
     return SizedBox(
       width: double.infinity,
@@ -247,13 +249,42 @@ class _SearchScreenState extends State<SearchScreen>
       ),
     );
   }
+  */
+
+  //ChatGpt
+  Widget _blogs() {
+    return SizedBox(
+      width: double.infinity,
+      child: Obx(
+            () => searchController.isLoadingBlog.value
+            ? const Center(child: CircularProgressIndicator(strokeWidth: 1,))
+            : (searchController.searchBlogModel.blogs?.isEmpty ?? true)
+            ? Center(child: Text("No results match your search criteria.".tr))
+            : ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: searchController.searchBlogModel.blogs?.length ?? 0,
+          padding:  EdgeInsets.only(bottom: 10.adaptSize),
+          itemBuilder: (context, index) {
+            String? jsonString = searchController.searchBlogModel.blogs?[index].tags;
+            List<String> tagsList = jsonString == null ? [] : json.decode(jsonString).cast<String>();
+            return CustomBlogCard(
+              tagsList: tagsList,
+              blog: searchController.searchBlogModel.blogs![index],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
 
   Widget vloglist() {
     return Obx(
       () =>  searchController.isLoadingVlog.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Padding(
-        padding: const EdgeInsets.only(
-          left: 15.0,
-          right: 15,
+        padding:  EdgeInsets.only(
+          left: 15.0.adaptSize,
+          right: 15.adaptSize,
         ),
         child: searchController.searchModel.vlogs!.isEmpty
             ? Center(
@@ -264,7 +295,7 @@ class _SearchScreenState extends State<SearchScreen>
                 physics: const AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemCount: searchController.searchModel.vlogs?.length,
-                padding: const EdgeInsets.only(bottom: 10),
+                padding:  EdgeInsets.only(bottom: 10.adaptSize),
                 itemBuilder: (context, index) {
                   return CustomVlogCard(
                     vlog: searchController.searchModel.vlogs![index],
