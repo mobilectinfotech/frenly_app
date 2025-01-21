@@ -43,10 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,24 +52,21 @@ class _HomeScreenState extends State<HomeScreen> {
             color:const Color(0xFF001649),
             child: SafeArea(
               child: Container(
-                color :const Color(0xFF001649),
+                color : Color(0xFF001649),
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding:  EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 10.aw,
-                      ),
+
+                      SizedBox(width: 10.aw),
                       CustomImageView(
-                         imagePath: "assets/icons/person_app_logo.svg",
-                      ),
-                      SizedBox(
-                        width: 16.aw,
-                      ),
-                      Text(
-                         "Fren".tr,
+                         imagePath: "assets/icons/transparent_bakgrund.svg",
+                        height: 45.aw,width: 35.aw,fit: BoxFit.cover),
+
+                      SizedBox(width: 10.aw),
+                      Text("Fren".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: const Color(0xFFFBFBD7),
@@ -82,20 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+
                       const Spacer(),
                       CustomImageView(
                         onTap: () {
                           Get.to(()=> const NotificationScreen());
                         },
-                        width: 30.adaptSize,
-                        height: 30.adaptSize,
-                        radius: BorderRadius.circular(36),
+                        width: 30.adaptSize, height: 30.adaptSize,
+                        radius: BorderRadius.circular(36.adaptSize),
                         fit: BoxFit.cover,
                         imagePath: "assets/icons/bell-ringing-04.svg",
                       ),
-                      SizedBox(
-                        width: 16.aw,
-                      ),
+                      SizedBox(width: 16.aw),
                     ],
                   ),
                 ),
@@ -184,22 +175,16 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '${controller.city}',
+            Text('${controller.city}',
               style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.fSize),
+                  fontFamily: 'Roboto', color: Colors.black,
+                  fontWeight: FontWeight.w600,fontSize: 16.fSize),
             ),
             SizedBox(width: 10.aw),
-            Text(
-              '${controller.county}',
+            Text('${controller.county}',
               style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16.fSize),
+                  fontFamily: 'Roboto', color: Colors.grey,
+                  fontWeight: FontWeight.w500,fontSize: 16.fSize),
             ),
           ],
         ),
@@ -215,19 +200,21 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: controller.homeModel.vlogs?.length ?? 0,
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {Get.to(()=>VlogViewScreen(videoUrl: '${controller.homeModel.vlogs?[index].videoUrl}', vlogId:controller.homeModel.vlogs![index].id.toString(),));},
+            onTap: () {Get.to(()=>VlogViewScreen(videoUrl: '${controller.homeModel.vlogs?[index].videoUrl}',
+              vlogId:controller.homeModel.vlogs![index].id.toString(),));},
             child: Padding(
               padding:  EdgeInsets.only(right: 10.0.aw),
               child: SizedBox(
                 width: 180.adaptSize,
                 height: 90.adaptSize,
-                child: Stack(children: [
+                child: Stack(
+                    children: [
                   ThumailGenrate(videoUrl: controller.homeModel.vlogs?[index].videoUrl),
                   CustomImageView(
                     width: 180.adaptSize,
                     height: 90.adaptSize,
                     imagePath: "assets/image/gradient.svg",
-                    radius: BorderRadius.circular(10),
+                    radius: BorderRadius.circular(10.adaptSize),
                     fit: BoxFit.cover,
                   )
                 ]),
@@ -262,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     shadowColor: Colors.black,
                     elevation: 8,
                     child: Padding(
-                      padding: const EdgeInsets.all(15.0),
+                      padding:  EdgeInsets.all(15.0.adaptSize),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,9 +262,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Align(
                                     widthFactor: 0.7,
                                     child: CustomImageView(
-                                       height: 36,
-                                       width: 36,
-                                       radius: BorderRadius.circular(70),
+                                       height: 36.adaptSize,
+                                       width: 36.adaptSize,
+                                       radius: BorderRadius.circular(70.adaptSize),
                                        fit: BoxFit.cover,
                                        imagePath: controller.homeModel.usersInCities![index].users![i].avatarUrl,
                                     ),
@@ -285,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 5),
+                           SizedBox(height: 5.adaptSize),
                           Text(
                             '${controller.homeModel.usersInCities?[index].userCount}'.tr,
                             style: TextStyle(
@@ -295,8 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 12.fSize,
                             ),
                           ),
-                          Text(
-                            'Activee'.tr,
+                          Text('Activee'.tr,
                             style: TextStyle(
                               color: const Color(0xff000000),
                               fontFamily: 'Roboto',
