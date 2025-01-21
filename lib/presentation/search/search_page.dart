@@ -256,24 +256,35 @@ class _SearchScreenState extends State<SearchScreen>
     return SizedBox(
       width: double.infinity,
       child: Obx(
-            () => searchController.isLoadingBlog.value
-            ?  Center(child: CircularProgressIndicator(strokeWidth: 1.aw))
-            : (searchController.searchBlogModel.blogs?.isEmpty ?? true)
-            ? Center(child: Text("No results match your search criteria.".tr))
-            : ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemCount: searchController.searchBlogModel.blogs?.length ?? 0,
-          padding:  EdgeInsets.only(bottom: 10.adaptSize),
-          itemBuilder: (context, index) {
-            String? jsonString = searchController.searchBlogModel.blogs?[index].tags;
-            List<String> tagsList = jsonString == null ? [] : json.decode(jsonString).cast<String>();
-            return CustomBlogCard(
-              tagsList: tagsList,
-              blog: searchController.searchBlogModel.blogs![index],
+            () {
+          if (searchController.isLoadingBlog.value) {
+            return Center(child: CircularProgressIndicator(strokeWidth: 1.0)); // Fixed typo
+          } else if (searchController.searchBlogModel.blogs?.isEmpty ?? true) {
+            return Center(child: Text("No results match your search criteria.".tr));
+          } else {
+            return ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: searchController.searchBlogModel.blogs?.length ?? 0,
+              padding: EdgeInsets.only(bottom: 10.adaptSize),
+              itemBuilder: (context, index) {
+                String? jsonString = searchController.searchBlogModel.blogs?[index].tags;
+                List<String> tagsList = [];
+                if (jsonString != null && jsonString.isNotEmpty) {
+                  try {
+                    tagsList = List<String>.from(json.decode(jsonString));
+                  } catch (e) {
+                    print('Error decoding tags: $e');
+                  }
+                }
+                return CustomBlogCard(
+                  tagsList: tagsList,
+                  blog: searchController.searchBlogModel.blogs![index],
+                );
+              },
             );
-          },
-        ),
+          }
+        },
       ),
     );
   }
