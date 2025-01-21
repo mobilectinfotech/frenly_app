@@ -2,7 +2,7 @@
 //
 // import 'dart:convert';
 // import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 // import 'package:frenly_app/Widgets/bottom_sheet_widgets.dart';
 // import 'package:frenly_app/Widgets/custom_appbar.dart';
 // import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -442,7 +442,7 @@
 
 // ignore_for_file: unused_import
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/auth/login_screen/login_screen.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';

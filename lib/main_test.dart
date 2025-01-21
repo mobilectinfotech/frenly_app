@@ -1,7 +1,7 @@
 // import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
 // import 'package:detectable_text_field/widgets/detectable_text_editing_controller.dart';
 // import 'package:detectable_text_field/widgets/detectable_text_field.dart';
-// import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 //
 // void main() {
 //   runApp(const MyApp());

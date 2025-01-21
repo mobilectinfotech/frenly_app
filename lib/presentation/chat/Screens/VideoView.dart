@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoViewPage extends StatefulWidget {

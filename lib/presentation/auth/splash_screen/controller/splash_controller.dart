@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:get/get.dart';
 import '../../../../messaing_service/messaging_service.dart';

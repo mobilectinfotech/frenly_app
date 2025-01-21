@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/constants/app_dialogs.dart';

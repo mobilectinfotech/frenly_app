@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -38,7 +38,7 @@ class _UserByCityScreenState extends State<UserByCityScreen> {
         padding: const EdgeInsets.only(left: 15,right: 15,top:10),
         child: ListView(
           children: [
-            SizedBox(height: 10.ah),
+           SizedBox(height: 10.ah),
             Text('Profile'.tr,
               style: const TextStyle(
                   color: Colors.black,fontWeight: FontWeight.w600,fontSize:24

@@ -1,4 +1,4 @@
-// import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 // import 'package:frenly_app/core/utils/size_utils.dart';
 // import 'package:frenly_app/presentation/Blog/upload_blog/upload_blog_screen.dart';
 // import '../../core/utils/pref_utils.dart';
@@ -259,7 +259,7 @@
 //   }
 // }
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Blog/upload_blog/upload_blog_screen.dart';
 import '../../core/utils/pref_utils.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_textfield.dart';
 import 'package:frenly_app/core/constants/my_textfield.dart';
 import 'package:frenly_app/core/constants/textfield_validation.dart';

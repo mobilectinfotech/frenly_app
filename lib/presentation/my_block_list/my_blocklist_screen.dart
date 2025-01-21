@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -131,7 +131,7 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12.fSize),
                             ),
-                            SizedBox(height: 10.ah),
+                           SizedBox(height: 10.ah),
                             InkWell(
                               onTap: () {
                                 setState(

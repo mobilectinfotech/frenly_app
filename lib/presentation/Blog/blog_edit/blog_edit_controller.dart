@@ -1,6 +1,6 @@
 
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';

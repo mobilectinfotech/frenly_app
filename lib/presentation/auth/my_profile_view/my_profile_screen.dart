@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -58,7 +58,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               padding: EdgeInsets.zero,
               children: [
                 imageView(),
-                SizedBox(height: 10.ah),
+               SizedBox(height: 10.ah),
                 bioTexts(),
                 SizedBox(height: 20.ah),
                 Padding(
@@ -249,12 +249,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${controller.getUserByIdModel.user?.fullName}'
-                        .capitalizeFirst!,
+                    '${controller.getUserByIdModel.user?.fullName?.split(' ').map((word) => word.capitalized).join(' ')}',
                     style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 25.fSize),
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 25.fSize,
+                    ),
                   ),
                   Text(
                     '${controller.getUserByIdModel.user?.handle ?? ""}',
@@ -616,4 +616,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       ),
     );
   }
+}
+extension StringExtensions on String {
+  String get capitalize =>
+      this.isNotEmpty ? '${this[0].toUpperCase()}${this.substring(1).toLowerCase()}' : '';
 }

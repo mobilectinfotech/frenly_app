@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 
 class ButtonCard extends StatelessWidget {
   const ButtonCard({Key ? key, required this.name, required this.icon}) : super(key: key);

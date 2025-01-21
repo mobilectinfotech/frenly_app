@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
@@ -39,7 +39,7 @@ class _DiscoverUsersScreenState extends State<DiscoverUsersScreen> {
         padding: const EdgeInsets.only(left: 15,right: 15),
         child: ListView(
           children: [
-            SizedBox(height: 10.ah),
+           SizedBox(height: 10.ah),
             Text('Profile'.tr,
               style: TextStyle(
                   color: Colors.black,fontWeight: FontWeight.w600,fontSize:24

@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 
@@ -62,15 +63,15 @@ class AppDialog {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              10.heightBox,
+             SizedBox(height: 10.ah),
               "Connection Timed Out".text.xl2.bold.make().centered(),
-              20.heightBox,
+              SizedBox(height: 20.ah),
               "   * .Checking the connection....".text.base.make(),
-              10.heightBox,
+             SizedBox(height: 10.ah),
               "   * .Checking the proxy and firewall....".text.base.make(),
-              30.heightBox,
+            SizedBox(height: 30.ah),
               "ERROR_CONNECTION_TIMED_OUT".text.make().centered(),
-              40.heightBox,
+              SizedBox(height: 40.ah),
               Align(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
@@ -96,23 +97,23 @@ class AppDialog {
       Dialog(
         backgroundColor: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              10.heightBox,
+              SizedBox(height: 10.h),
               title.text.xl2.bold.make().centered(),
-              20.heightBox,
+              SizedBox(height: 20.ah),
               description.text.base.make(),
-              10.heightBox,
+              SizedBox(height: 10.h),
               "Something went wrong, please try after sometime"
                   .text
                   .base
                   .make(),
-              30.heightBox,
+            SizedBox(height: 30.ah),
               "ERROR_CONNECTION_TIMED_OUT".text.make().centered(),
-              40.heightBox,
+              SizedBox(height: 40.ah),
               Align(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
@@ -143,18 +144,18 @@ class AppDialog {
   //           crossAxisAlignment: CrossAxisAlignment.start,
   //           mainAxisSize: MainAxisSize.min,
   //           children: [
-  //             10.heightBox,
+  //            SizedBox(height: 10.ah),
   //             title.text.xl2.bold.make().centered(),
-  //             20.heightBox,
+  //             SizedBox(height: 20.ah),
   //             description.text.base.make(),
-  //             10.heightBox,
+  //            SizedBox(height: 10.ah),
   //             "Something went wrong, please try after sometime"
   //                 .text
   //                 .base
   //                 .make(),
-  //             30.heightBox,
+  //           SizedBox(height: 30.ah),
   //             "ERROR_CONNECTION_TIMED_OUT".text.make().centered(),
-  //             40.heightBox,
+  //             SizedBox(height: 40.ah),
   //             Align(
   //               alignment: Alignment.bottomRight,
   //               child: ElevatedButton(

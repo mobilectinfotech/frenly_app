@@ -1,4 +1,4 @@
-// import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 // import 'package:get/get.dart';
 // import 'package:socket_io_client/socket_io_client.dart' as IO;
 // import '../core/utils/pref_utils.dart';
@@ -129,7 +129,7 @@
 // }
 
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import '../socket_service/socket_service.dart';
 
 class LifeCycleManager extends StatefulWidget {

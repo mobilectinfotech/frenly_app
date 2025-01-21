@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
@@ -147,7 +147,7 @@ class MessagingService {
     AndroidInitializationSettings('@mipmap/ic_launcher');
     final DarwinInitializationSettings initializationSettingsDarwin =
     DarwinInitializationSettings(
-      onDidReceiveLocalNotification: (id, title, body, payload) => null,
+      // onDidReceiveLocalNotification: (id, title, body, payload) => null,
     );
     const LinuxInitializationSettings initializationSettingsLinux =
     LinuxInitializationSettings(defaultActionName: 'Open notification');

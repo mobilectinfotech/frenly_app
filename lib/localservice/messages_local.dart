@@ -110,6 +110,7 @@ class Messages extends Translations {
           "Contin": "Continue",
           "reep": "Reset Password",
           "Foru": "For you",
+          "Fren": "Frenly",
           "Check": "Check-in",
           "Popular": "Popular",
           "Friends": "Friends",
@@ -376,6 +377,7 @@ class Messages extends Translations {
           "Let me show some white vibes of the london":
               "Låt mig visa några vita vibbar från london",
           "Foru": "För dig",
+          "Fren": "Frenly",
           "Check": "Checka in",
           "Popular": "Populär",
           "vew": "Visa ",

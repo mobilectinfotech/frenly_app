@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/auth/login_screen/login_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -85,7 +85,7 @@ final ForgetPasswordController forgetPasswordController = Get.put(ForgetPassword
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            SizedBox(height: 30.ah),
+                          SizedBox(height: 30.ah),
                             Padding(
                               padding:  EdgeInsets.only(left:10.h),
                               child: Text('emailn'.tr,
@@ -120,7 +120,7 @@ final ForgetPasswordController forgetPasswordController = Get.put(ForgetPassword
                               ),
                             ),
 
-                            SizedBox(height: 10.ah),
+                           SizedBox(height: 10.ah),
                             Center(
                               child: Text('alr'.tr,
                                 style: TextStyle(
@@ -129,7 +129,7 @@ final ForgetPasswordController forgetPasswordController = Get.put(ForgetPassword
                               ),
                             ),
 
-                            SizedBox(height: 10.ah),
+                           SizedBox(height: 10.ah),
                             InkWell(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));

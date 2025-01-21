@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 
 class CameraViewPage extends StatelessWidget {
   const CameraViewPage({Key ? key, required this.path}) : super(key: key);

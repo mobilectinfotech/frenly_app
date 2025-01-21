@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
 
 class OnBoardSecond extends StatelessWidget {
@@ -28,7 +27,7 @@ class OnBoardSecond extends StatelessWidget {
             .align(TextAlign.center)
             .fontWeight(FontWeight.w700)
             .make(),
-          SizedBox(height: 30.ah),
+        SizedBox(height: 30.ah),
         "Loream".tr
             .text
             .size(16.adaptSize)

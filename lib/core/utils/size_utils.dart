@@ -1,7 +1,7 @@
 
 
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 
 
 MediaQueryData mediaQueryData = MediaQueryData.fromWindow(ui.window);

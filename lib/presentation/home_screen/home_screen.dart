@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 16.aw,
                       ),
                       Text(
-                         "Foru".tr,
+                         "Fren".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: const Color(0xFFFBFBD7),
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       checkIn(),
                       SizedBox(height: 20.ah),
                       titleViewAll(title: 'Live'.tr, onTap: () {Get.to(()=> const PopularsCityScreen());}),
-                      SizedBox(height: 10.ah),
+                     SizedBox(height: 10.ah),
                       liveUserByCountry(),
                       SizedBox(height: 20.ah),
                       titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PostListScreen());}),

@@ -1,6 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -91,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 30.ah),
+                          SizedBox(height: 30.ah),
                             names("fullnm"),
                             SizedBox(
                               height: 10.ah,
@@ -224,7 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                             ),
 
-                            SizedBox(height: 10.ah),
+                           SizedBox(height: 10.ah),
                             Center(
                               child: Text(
                                 'Alredy'.tr,
@@ -235,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                             ),
 
-                            SizedBox(height: 10.ah),
+                           SizedBox(height: 10.ah),
                             Center(
                               child: InkWell(
                                 onTap: () {

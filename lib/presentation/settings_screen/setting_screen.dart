@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -122,7 +122,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              SizedBox(height: 10.ah),
+                             SizedBox(height: 10.ah),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,7 +153,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
                                 ],
                               ),
-                              SizedBox(height: 10.ah),
+                             SizedBox(height: 10.ah),
 
                               //profile private public
 
@@ -186,7 +186,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
                                 ],
                               ),
-                              SizedBox(height: 10.ah),
+                             SizedBox(height: 10.ah),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,7 +216,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10.ah),
+                             SizedBox(height: 10.ah),
                             ],
                           ),
                         ),

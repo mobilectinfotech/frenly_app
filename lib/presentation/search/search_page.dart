@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
@@ -87,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen>
         body: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 10.ah),
+             SizedBox(height: 10.ah),
               Padding(
                 padding:  EdgeInsets.only(left: 10.aw, right: 10.aw),
                 child: serchTextField(context: context,  controller: searchController.searchController,),
@@ -223,7 +223,7 @@ class _SearchScreenState extends State<SearchScreen>
     return SizedBox(
       width: double.infinity,
       child: Obx(
-        () => searchController.isLoadingBlog.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) :  searchController.searchBlogModel.blogs!.length == 0
+        () => searchController.isLoadingBlog.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) :  searchController.searchBlogModel.blogs?.length == 0
             ? Center(
                 child: Text("No results match your search criteria.".tr),
               )
@@ -231,12 +231,12 @@ class _SearchScreenState extends State<SearchScreen>
                 shrinkWrap: true,
                 // physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: searchController.searchBlogModel.blogs!.length,
+                itemCount: searchController.searchBlogModel.blogs?.length,
                 padding: const EdgeInsets.only(bottom: 10),
                 itemBuilder: (context, index) {
                   // String jsonString = "${searchController.searchBlogModel.blogs![index].tags}";
                   // List<String> tagsList = json.decode(jsonString).cast<String>();
-                  String ? jsonString =searchController.searchBlogModel.blogs![index].tags ;
+                  String ? jsonString =searchController.searchBlogModel.blogs?[index].tags ;
                   List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
                   return CustomBlogCard(
                     tagsList: tagsList,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -63,7 +63,7 @@ class _CustomUserCardState extends State<CustomUserCard> {
                 fontWeight: FontWeight.w500,
                 fontSize: 12.fSize),
           ),
-          SizedBox(height: 10.ah),
+         SizedBox(height: 10.ah),
 
           if(PrefUtils().getUserId() != "${widget.users.id}")
           InkWell(
