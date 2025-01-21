@@ -108,7 +108,6 @@ class CustomTextFormField extends StatelessWidget {
   Widget get textFormFieldWidget => SizedBox(
         width: width ?? double.maxFinite,
         child: TextFormField(
-
           onTap: onTap,
           onEditingComplete: onEditingComplete,
           autovalidateMode: autovalidateMode,
@@ -189,4 +188,8 @@ class CustomTextFormField extends StatelessWidget {
     )
   );
 }
+
+
+
+
 

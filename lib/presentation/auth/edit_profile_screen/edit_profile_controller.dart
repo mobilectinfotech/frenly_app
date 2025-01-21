@@ -35,7 +35,7 @@ class EditProfileController extends GetxController {
     bool isUpdate = await ApiRepository.editProfile(
         bio: bioController.text,
         coverPhotoPath: coverPhoto?.path,
-        fullName: fullController.text,
+        fullName: (fullController.text.split(" ").map((e) => e.capitalizeFirst,).toList().join(" ")).trim(),
         handle: handleController.text,
         profilePhotoPath: profilePhoto?.path
     );

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';

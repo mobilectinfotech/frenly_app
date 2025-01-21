@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/initial_bindings.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:frenly_app/presentation/auth/splash_screen/splash_screen.dart';

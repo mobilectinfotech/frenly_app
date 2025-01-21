@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_textfield.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
@@ -78,9 +79,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       }
                       return null;
                     },
-
                       fillColor: Colors.transparent,
-                      hintText: 'fullnm'.tr, controller: controller.fullController, context: context),
+                      hintText: 'fullnm'.tr,
+                      controller: controller.fullController,
+                      context: context),
+
                   SizedBox(
                     height: 10.ah,
                   ),
@@ -94,9 +97,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           fontSize: 15.fSize),
                     ),
                   ),
-                  SizedBox(
-                    height: 10.ah,
-                  ),
+
+                  SizedBox(height: 10.ah),
                   CustomTextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -106,9 +108,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       },
                     fillColor: Colors.transparent,
                     hintText: 'johnsmith@gmail.com', controller: controller.emailController, context: context),
-                  SizedBox(
-                    height: 15.ah,
-                  ),
+
+                  SizedBox(height: 15.ah),
                   Padding(
                     padding: EdgeInsets.only(left: 10.h),
                     child: Text('Bio'.tr,
@@ -392,6 +393,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         });
 
   }
+}
 
-
+String capitalizeFirstAndLast(String text) {
+  if (text.isEmpty) return text;
+  text = text.trim();
+  return text[0].toUpperCase() +
+      text.substring(1, text.length - 1) +
+      text[text.length - 1].toUpperCase();
 }
