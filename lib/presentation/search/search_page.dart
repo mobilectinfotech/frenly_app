@@ -178,14 +178,14 @@ class _SearchScreenState extends State<SearchScreen>
       1,
     ];
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding:  EdgeInsets.all(10.0.adaptSize),
       child:Obx(
-        ()=> searchController.isLoadingPosts.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : searchController.searchPhotosModel.posts!.length == 0
+        ()=> searchController.isLoadingPosts.value ?  Center(child: CircularProgressIndicator(strokeWidth: 1.adaptSize),) : searchController.searchPhotosModel.posts!.length == 0
             ? Center(
                 child: Text("No Matches found"),
               )
             : ListView(
-                padding: EdgeInsets.only(bottom: 100),
+                padding: EdgeInsets.only(bottom: 100.adaptSize),
                 children: [
                   StaggeredGrid.count(
                     crossAxisCount: 3,
@@ -207,7 +207,7 @@ class _SearchScreenState extends State<SearchScreen>
                             imagePath: searchController
                                 .searchPhotosModel.posts![index].imageUrl,
                             fit: BoxFit.cover,
-                            radius: BorderRadius.circular(10),
+                            radius: BorderRadius.circular(10.adaptSize),
                           ),
                         )),
                       ),
@@ -257,7 +257,7 @@ class _SearchScreenState extends State<SearchScreen>
       width: double.infinity,
       child: Obx(
             () => searchController.isLoadingBlog.value
-            ? const Center(child: CircularProgressIndicator(strokeWidth: 1,))
+            ?  Center(child: CircularProgressIndicator(strokeWidth: 1.aw))
             : (searchController.searchBlogModel.blogs?.isEmpty ?? true)
             ? Center(child: Text("No results match your search criteria.".tr))
             : ListView.builder(
@@ -308,9 +308,10 @@ class _SearchScreenState extends State<SearchScreen>
 
   Widget users() {
     return Obx(
-      () => searchController.isLoadingUsers.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : searchController.searchUserModel.users!.length == 0
-          ? Center(
-              child: Text(
+      () => searchController.isLoadingUsers.value ?
+      Center(child: CircularProgressIndicator(strokeWidth: 1.adaptSize),) :
+      searchController.searchUserModel.users!.length == 0
+          ? Center(child: Text(
                   textAlign: TextAlign.center,
                   "No users found for your search."),
             )
@@ -318,21 +319,16 @@ class _SearchScreenState extends State<SearchScreen>
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemCount: searchController.searchUserModel.users?.length ?? 0,
-              padding: const EdgeInsets.only(
-                bottom: 10,
-              ),
+              padding:  EdgeInsets.only(bottom: 10.adaptSize),
               itemBuilder: (context, index) {
                 return Container(
                   margin: EdgeInsets.only(
                       bottom: searchController.searchUserModel.users?.length ==
-                              (index + 1)
-                          ? 100
-                          : 0),
+                              (index + 1) ? 100 : 0),
                   child: InkWell(
                     onTap: () {
                       Get.to(() => UserProfileScreen(
-                            userId:
-                                '${searchController.searchUserModel.users?[index].id}',
+                            userId: '${searchController.searchUserModel.users?[index].id}',
                           ));
                     },
                     child: Padding(
@@ -377,9 +373,8 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                   ),
                 );
-              },
-            ),
-    );
+                },
+            ));
   }
   Widget serchTextField({required BuildContext  context, TextEditingController? controller,Function(String)? onChange,String ? hintText}){
     return  Padding(
@@ -390,7 +385,7 @@ class _SearchScreenState extends State<SearchScreen>
           height: 52.ah,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color:const Color(0xffFFFFFF),
+            color: Color(0xffFFFFFF),
             borderRadius: BorderRadius.circular(8.adaptSize),
             boxShadow: [
               BoxShadow(
@@ -402,7 +397,7 @@ class _SearchScreenState extends State<SearchScreen>
             ],
           ),
           child: TextField(
-            cursorColor: const Color(0xFF000000),
+            cursorColor:  Color(0xFF000000),
             style:  TextStyle(
                 color: Color(0xff000000),
                 fontSize: 20.fSize,
@@ -426,7 +421,7 @@ class _SearchScreenState extends State<SearchScreen>
             },
             decoration: InputDecoration(
               //contentPadding: EdgeInsets.all(0.adaptSize),
-                prefixIcon: Padding(padding: const EdgeInsets.all(13.0),
+                prefixIcon: Padding(padding: EdgeInsets.all(13.0.adaptSize),
                   child: SvgPicture.asset(
                     'assets/icons/serch_icon.svg',
                     height: 6.ah,

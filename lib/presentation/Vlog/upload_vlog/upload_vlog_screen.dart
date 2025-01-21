@@ -26,11 +26,11 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }
