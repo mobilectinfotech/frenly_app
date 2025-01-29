@@ -34,11 +34,14 @@ class _PopularsCityScreenState extends State<PopularsCityScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 10,),
-              Text('Allcit'.tr,
-                style:  TextStyle(
-                    color: Colors.black,fontWeight: FontWeight.w600,fontSize:24.fSize
-                ),
+
+              SizedBox(height: 10,),
+              Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Text('Allcit'.tr,
+                  style:  TextStyle(
+                      color: Colors.black,fontWeight: FontWeight.w600,fontSize:24.fSize
+                  )),
               ),
               allCity(),
             ],

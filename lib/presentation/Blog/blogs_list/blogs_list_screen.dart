@@ -24,7 +24,7 @@ class _BlogsListScreenState extends State<BlogsListScreen> {
     return Scaffold(
       appBar: appBarPrimary( title: 'Blogs'.tr),
       body: Padding(
-        padding:  EdgeInsets.only(top: 10.0.ah),
+        padding:  EdgeInsets.only(top: 15.0.ah),
         child: Obx(()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : _blogs()),
       ),
 

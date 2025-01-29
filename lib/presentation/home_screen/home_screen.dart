@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -93,10 +92,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           )),
+
       // appBar:customAppbarHomepage(context: context,title: "Foru".tr ,
       //   onTap: () {
       //   Get.to(()=>NotificationScreen());
       // },),
+
       body: Padding(
         padding: EdgeInsets.only(
           left: 10.h,
@@ -113,6 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       SizedBox(height: 20.ah),
                       checkIn(),
+
+
                       SizedBox(height: 20.ah),
                       titleViewAll(title: 'Live'.tr, onTap: () {Get.to(()=> const PopularsCityScreen());}),
                      SizedBox(height: 10.ah),
@@ -148,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget checkIn() {
     return  Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
   Widget trending() {
     return SizedBox(
       height: 100.ah,

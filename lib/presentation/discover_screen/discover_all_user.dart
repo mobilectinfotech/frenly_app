@@ -36,7 +36,7 @@ class _DiscoverUsersScreenState extends State<DiscoverUsersScreen> {
     return Scaffold(
       appBar: appBarPrimary(title: "Discover".tr ,),
       body: Padding(
-        padding: const EdgeInsets.only(left: 15,right: 15),
+        padding:  EdgeInsets.only(left: 15.aw,right: 15.aw),
         child: ListView(
           children: [
            SizedBox(height: 10.ah),

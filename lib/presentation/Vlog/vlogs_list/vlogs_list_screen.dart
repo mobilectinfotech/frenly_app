@@ -24,7 +24,7 @@ class _VlogsListScreenState extends State<VlogsListScreen> {
               child: CircularProgressIndicator(strokeWidth: 1,),
             )
           : Padding(
-            padding:  EdgeInsets.only(left: 14.0.aw,right: 14.aw),
+            padding:  EdgeInsets.only(left: 14.0.aw,right: 14.aw,top: 15.ah),
             child: ListView.builder(
               itemCount: controller.vlogListModel.vlogs?.length ?? 0,
               itemBuilder: (context, index) {

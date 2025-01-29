@@ -373,9 +373,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               Scaffold(
                 bottomNavigationBar: Container(
                     width: double.infinity,
-                    height: 75.0.adaptSize,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 0),
+                    height: 95.0.adaptSize,
+                    padding:  EdgeInsets.symmetric(horizontal: 16.aw, vertical: 0.ah),
                     decoration: BoxDecoration(
                       color: const Color(0xFF001649),
                       borderRadius: BorderRadius.only(
@@ -384,7 +383,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8),
+                      padding: EdgeInsets.only(left: 8.0.aw, right: 8.aw),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,

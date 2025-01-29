@@ -258,8 +258,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   ),
                   Text(
                     '${controller.getUserByIdModel.user?.handle ?? ""}',
-                    style: TextStyle(
-                        color: Colors.black54,
+                    style: TextStyle(color: Colors.black54,
                         fontWeight: FontWeight.w700,
                         fontSize: 15.fSize),
                   ),
@@ -275,8 +274,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               )));
                 },
                 child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.aw),
                   height: 34.ah,
-                  width: 98.aw,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       color: HexColor('#001649')),

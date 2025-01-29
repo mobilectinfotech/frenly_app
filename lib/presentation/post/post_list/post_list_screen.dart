@@ -38,7 +38,7 @@ class _PostListScreenState extends State<PostListScreen> {
       body: SafeArea(
         child: Obx(
               ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.aw),
+                padding: EdgeInsets.symmetric(horizontal: 20.aw,vertical: 15.ah),
                 child: ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.only(bottom:10.v),
