@@ -26,7 +26,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   ///for notification
 
   await Permission.notification.isDenied.then((value) {
