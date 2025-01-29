@@ -204,8 +204,7 @@ class _SearchScreenState extends State<SearchScreen>
                                 ));
                           },
                           child: CustomImageView(
-                            imagePath: searchController
-                                .searchPhotosModel.posts![index].imageUrl,
+                            imagePath: searchController.searchPhotosModel.posts![index].imageUrl,
                             fit: BoxFit.cover,
                             radius: BorderRadius.circular(10.adaptSize),
                           ),
@@ -289,7 +288,6 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-
   Widget vloglist() {
     return Obx(
       () =>  searchController.isLoadingVlog.value ? Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Padding(
@@ -343,7 +341,7 @@ class _SearchScreenState extends State<SearchScreen>
                           ));
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  EdgeInsets.all(8.0.adaptSize),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -351,8 +349,7 @@ class _SearchScreenState extends State<SearchScreen>
                           CustomImageView(
                             height: 62.adaptSize,
                             width: 62.adaptSize,
-                            imagePath: searchController
-                                .searchUserModel.users?[index].avatarUrl,
+                            imagePath: searchController.searchUserModel.users?[index].avatarUrl,
                             radius: BorderRadius.circular(62.adaptSize),
                             fit: BoxFit.cover,
                           ),
@@ -361,16 +358,14 @@ class _SearchScreenState extends State<SearchScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                '${searchController.searchUserModel.users?[index].fullName}',
+                              Text('${searchController.searchUserModel.users?[index].fullName}',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 17.fSize,
                                 ),
                               ),
-                              Text(
-                                '${searchController.searchUserModel.users?[index].handle}',
+                              Text('${searchController.searchUserModel.users?[index].handle}',
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.w500,
@@ -387,6 +382,7 @@ class _SearchScreenState extends State<SearchScreen>
                 },
             ));
   }
+
   Widget serchTextField({required BuildContext  context, TextEditingController? controller,Function(String)? onChange,String ? hintText}){
     return  Padding(
       padding: EdgeInsets.only(left: 4.aw, right: 4.aw),

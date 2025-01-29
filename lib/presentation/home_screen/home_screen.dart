@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_user_card.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -34,8 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ShareController notUse = Get.put(ShareController(),permanent: true);
   SaveController notuse1 = Get.put(SaveController(),permanent: true);
 
-
-
   Future<void> _refresh() async {
     final response =  await ApiRepository.homePage();
     controller.homeData(response);
@@ -61,22 +60,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
 
                       SizedBox(width: 10.aw),
-                      CustomImageView(
-                         imagePath: "assets/icons/transparent_bakgrund.svg",
+                      CustomImageView(imagePath: "assets/icons/transparent_bakgrund.svg",
                         height: 45.aw,width: 35.aw,fit: BoxFit.cover),
 
-                      SizedBox(width: 10.aw),
-                      Text("Fren".tr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: const Color(0xFFFBFBD7),
-                          fontSize: 28.adaptSize,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      SizedBox(width: 15.aw),
+                      SvgPicture.asset('assets/icons/fren.svg', height:25.aw,width: 30.aw,fit: BoxFit.cover),
 
-                      const Spacer(),
+                      // Text("Fren".tr,
+                      //   textAlign: TextAlign.center,
+                      //   style: TextStyle(
+                      //     color: const Color(0xFFFBFBD7),
+                      //     fontSize: 28.adaptSize,
+                      //     fontFamily: 'Roboto',
+                      //     fontWeight: FontWeight.w700,
+                      //   ),
+                      // ),
+
+                       Spacer(),
                       CustomImageView(
                         onTap: () {
                           Get.to(()=> const NotificationScreen());

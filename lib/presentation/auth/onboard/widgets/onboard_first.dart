@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 
@@ -28,16 +29,12 @@ class OnBoardFirst extends StatelessWidget {
           children: [
             CustomImageView(
               imagePath: "assets/icons/app_icon.png",
-              height: 45.ah,
-              width: 45.ah,
+              height: 45.ah, width: 45.ah,
             ),
 
             SizedBox(width: 10.aw),
-            Text('Frenly',
-              style: TextStyle(fontFamily: 'Roboto',
-                  color: Color(0xff001649),fontWeight: FontWeight.w700,fontSize:35.fSize
-              ),
-            ),
+            SvgPicture.asset('assets/icons/fren.svg', height:30.aw,width: 30.aw,fit: BoxFit.cover,color: Color(0xff001649),),
+
           ],
         ),
 
