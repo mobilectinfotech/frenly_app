@@ -157,12 +157,9 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/image/location.png',
-              height: 24.ah,
-              width: 24.aw,
-              fit: BoxFit.fill,
-            ),
+            Image.asset('assets/image/location.png',
+              height: 24.ah, width: 24.aw, fit: BoxFit.fill),
+
             SizedBox(width: 10.aw),
             Text(
               'Check'.tr,
@@ -177,17 +174,16 @@ class _HomeScreenState extends State<HomeScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('${controller.city}',
+          children: [Text('${controller.city}',
               style: TextStyle(
                   fontFamily: 'Roboto', color: Colors.black,
-                  fontWeight: FontWeight.w600,fontSize: 16.fSize),
+                  fontWeight: FontWeight.w600,fontSize: 15.fSize),
             ),
+
             SizedBox(width: 10.aw),
             Text('${controller.county}',
-              style: TextStyle(
-                  fontFamily: 'Roboto', color: Colors.grey,
-                  fontWeight: FontWeight.w500,fontSize: 16.fSize),
+              style: TextStyle(fontFamily: 'Roboto', color: Colors.grey,
+                  fontWeight: FontWeight.w500,fontSize: 15.fSize),
             ),
           ],
         ),
