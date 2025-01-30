@@ -1040,12 +1040,9 @@ class VlogBottomSheets {
           child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  height: 20.ah,
-                ),
+                SizedBox(height: 20.ah),
                 Center(
-                  child: Text(
-                    'comments'.tr,
+                  child: Text('comments'.tr,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.black,
@@ -1055,9 +1052,9 @@ class VlogBottomSheets {
                     ),
                   ),
                 ),
+
                 SizedBox(height: 20.ah),
-                Obx(
-                      () => commentsController.isLoading.value
+                Obx(() => commentsController.isLoading.value
                       ? const Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 1,
@@ -1267,11 +1264,9 @@ class VlogBottomSheets {
                         );
                       },
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.v,
-                ),
+                  )),
+
+                SizedBox(height: 10.v,),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Row(
@@ -1499,98 +1494,86 @@ class VlogBottomSheets {
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        child: SizedBox(
-          height: 400.ah,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 6.ah,
-              ),
-              SizedBox(
-                height: 24.ah,
-              ),
-              Row(
-                children: [
-                  Text(
-                    "save_post".tr,
-                    style: GoogleFonts.roboto().copyWith(
-                        fontSize: 22.fSize,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      Get.bottomSheet(
-                          Container(
-                            color: Colors.white,
-                            height: 400.ah,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                AddNewCategoryBottomSheet(),
-                              ],
-                            ),
-                          )
-                      );
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 24.ah),
+            Row(
+              children: [
+                Text(
+                  "save_post".tr,
+                  style: GoogleFonts.roboto().copyWith(
+                      fontSize: 22.fSize,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black),
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    Get.bottomSheet(
+                        Container(
+                          color: Colors.white,
+                          height: 400.ah,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AddNewCategoryBottomSheet(),
+                            ],
+                          ),
+                        )
+                    );
 
-                      // onTapAddNewCategory(context: context);
-                    },
+                    // onTapAddNewCategory(context: context);
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(Icons.add),
+                      SizedBox(
+                        width: 5.aw,
+                      ),
+                      Text("NewCategoryy".tr)
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 10.ah),
+            for (Category data
+            in (controller.cateogoryModel.value?.categories ??
+                []))
+              InkWell(
+                onTap: () async {
+                  apiLoading.value = true;
+                  issave = await ApiRepository.saveAllById(
+                      postType: postType,
+                      id: id,
+                      categoryId: "${data.id}");
+                  if(issave){
+                    if(postType.name == "vlog"){
+                      Get.find<VlogFullViewController>().getVlogById(vlogId: id);
+                    }
+                  }
+                  print("Line544==$issave");
+                  Get.back();
+                  apiLoading.value = false;
+                },
+                child: Container(
+                  child: Padding(
+                    padding:  EdgeInsets.all(12.0.adaptSize),
                     child: Row(
                       children: [
-                        const Icon(Icons.add),
-                        SizedBox(
-                          width: 5.aw,
-                        ),
-                        Text("NewCategoryy".tr)
+                        const Icon(Icons.check_box_outline_blank),
+                        SizedBox(width: 5.aw),
+                        Text(data.name ?? "")
                       ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10.ah,
-              ),
-              for (Category data
-              in (controller.cateogoryModel.value?.categories ??
-                  []))
-                InkWell(
-                  onTap: () async {
-                    apiLoading.value = true;
-                    issave = await ApiRepository.saveAllById(
-                        postType: postType,
-                        id: id,
-                        categoryId: "${data.id}");
-                    if(issave){
-                      if(postType.name == "vlog"){
-                        Get.find<VlogFullViewController>().getVlogById(vlogId: id);
-                      }
-                    }
-                    print("Line544==$issave");
-                    Get.back();
-                    apiLoading.value = false;
-                  },
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.check_box_outline_blank),
-                          SizedBox(
-                            width: 5.aw,
-                          ),
-                          Text(data.name ?? "")
-                        ],
-                      ),
                     ),
                   ),
                 ),
-              SizedBox(
-                height: 20.ah,
-              )
-            ],
-          ),
+              ),
+            SizedBox(
+              height: 20.ah,
+            )
+          ],
         ),
       ),
       isScrollControlled: true, // Optional: Adjust based on content size
@@ -1609,7 +1592,7 @@ class VlogBottomSheets {
   }) async {
     await Get.bottomSheet(
       Container(
-        padding: const EdgeInsets.all(20.0),
+        padding:  EdgeInsets.all(20.0.adaptSize),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -1630,6 +1613,7 @@ class VlogBottomSheets {
               },
               child: Row(
                 children: [
+                  SizedBox(height: 20.ah,),
                   Container(
                     width: 38,
                     height: 38,
@@ -1642,8 +1626,7 @@ class VlogBottomSheets {
                     child: Center(child: Icon(Icons.save,size: 18,),),
                   ),
                   SizedBox(width: 10.aw,),
-                  Text(
-                    '_delete'.tr,
+                  Text('_delete'.tr,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -1654,7 +1637,7 @@ class VlogBottomSheets {
                 ],
               ),
             ),
-            SizedBox(height: 15.ah,),
+            SizedBox(height: 20.ah,),
             InkWell(
               onTap: () {
                 Get.back();
@@ -1690,7 +1673,8 @@ class VlogBottomSheets {
                 ],
               ),
             ),
-            SizedBox(height: 15.ah,),
+
+            SizedBox(height: 20.ah,),
             InkWell(
               onTap: () {
                  Get.back();
@@ -1728,7 +1712,8 @@ class VlogBottomSheets {
                 ],
               ),
             ),
-            SizedBox(height: 15.ah,),
+
+            SizedBox(height: 20.ah,),
             InkWell(
               onTap: () {
                 Get.back();
@@ -1760,6 +1745,7 @@ class VlogBottomSheets {
                 ],
               ),
             ),
+            SizedBox(height: 20.ah,),
           ],
         ),
       ),

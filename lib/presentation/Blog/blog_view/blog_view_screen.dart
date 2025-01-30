@@ -506,6 +506,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
           ()=> controller.isLoadingBolg.value ? Center(child: CircularProgressIndicator(),) :  ListView(
             padding: EdgeInsets.zero,
           children: [
+             SizedBox(height: 15.ah),
             buildUserInfoRow(),
             Padding(
               padding:  EdgeInsets.all(20.0.aw),

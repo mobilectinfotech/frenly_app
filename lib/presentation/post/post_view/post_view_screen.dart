@@ -44,6 +44,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
             ()=> controller.isLoadingPostsingle.value ? Center(child: CircularProgressIndicator(),) :  ListView(
           padding: EdgeInsets.zero,
           children: [
+            SizedBox(height: 10.ah,),
             buildUserInfoRow(),
             Padding(
               padding:  EdgeInsets.all(20.0.aw),
