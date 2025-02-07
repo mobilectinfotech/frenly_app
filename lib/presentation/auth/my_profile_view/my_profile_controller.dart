@@ -33,7 +33,7 @@ class MyProfileController extends GetxController {
   }
 }
 
-Future<GetUserByIdModel> checkUserBlockMyAdminOrNot() async {
+void checkUserBlockMyAdminOrNot() async {
   try {
     final response = await ApiRepository.myProfile();
     if (response.user?.status == 0) {
@@ -90,7 +90,7 @@ Future<GetUserByIdModel> checkUserBlockMyAdminOrNot() async {
         barrierDismissible: false, // Prevent dismissing by tapping outside
       );
     }
-    return response;
+
   } catch (e, s) {
     print(e);
     print(s);

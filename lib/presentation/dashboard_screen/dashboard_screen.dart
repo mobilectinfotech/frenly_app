@@ -259,7 +259,8 @@
 //   }
 // }
 
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:frenly_app/presentation/auth/my_profile_view/my_profile_controller.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Blog/upload_blog/upload_blog_screen.dart';
 import '../../core/utils/pref_utils.dart';
@@ -295,6 +296,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   ];
 
   void _onItemTapped(int index) {
+    checkUserBlockMyAdminOrNot();
     setState(() {
       key.currentState?.reverseAnimation();
       _selectedIndex = index;
