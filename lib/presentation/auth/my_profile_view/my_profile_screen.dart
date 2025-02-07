@@ -277,7 +277,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 10.aw),
                   height: 34.ah,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4.adaptSize),
                       color: HexColor('#001649')),
                   child: Center(
                     child: Text(
