@@ -6,93 +6,93 @@ import 'package:get/get.dart';
 
 import '../../settings_screen/setting_screen.dart';
 
-class  MyProfileController extends GetxController{
-
-
+class MyProfileController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getProfile();
   }
+
   late BuildContext context;
 
+  var getUserByIdModelData = GetUserByIdModel().obs;
 
-  var getUserByIdModelData =GetUserByIdModel().obs;
+  GetUserByIdModel get getUserByIdModel => getUserByIdModelData.value;
 
-  GetUserByIdModel get  getUserByIdModel => getUserByIdModelData.value;
-
-  RxBool isLoading =false.obs;
-
+  RxBool isLoading = false.obs;
 
   getProfile() async {
     checkUserBlockMyAdminOrNot();
-    isLoading.value =true;
-    final response  =await ApiRepository.myProfile();
+    isLoading.value = true;
+    final response = await ApiRepository.myProfile();
     getUserByIdModelData(response);
     getUserByIdModelData.refresh();
 
-    isLoading.value =false;
-
+    isLoading.value = false;
   }
-
-
 }
+
 Future<GetUserByIdModel> checkUserBlockMyAdminOrNot() async {
-  final response = await ApiRepository.myProfile();
-  if (response.user?.status == 0) {
-    Get.dialog(
-      WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
-        child: AlertDialog(
-          backgroundColor: Color(0xff001649),
-          // Match primary color
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          title: Text(
-            "access_denied".tr,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+  try {
+    final response = await ApiRepository.myProfile();
+    if (response.user?.status == 0) {
+      Get.dialog(
+        WillPopScope(
+          onWillPop: () async {
+            return false;
+          },
+          child: AlertDialog(
+            backgroundColor: Color(0xff001649),
+            // Match primary color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-          ),
-          content: Text(
-            "you_have_been_blocked_by_the_admin".tr,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-                onTapLogOutBtn();
-                // logoutUser();
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                "ok".tr,
-                style: TextStyle(
-                  color: Color(0xff001649),
-                  fontWeight: FontWeight.bold,
-                ),
+            title: Text(
+              "access_denied".tr,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ],
+            content: Text(
+              "you_have_been_blocked_by_the_admin".tr,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                  onTapLogOutBtn();
+                  // logoutUser();
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  "ok".tr,
+                  style: TextStyle(
+                    color: Color(0xff001649),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      barrierDismissible: false, // Prevent dismissing by tapping outside
-    );
+        barrierDismissible: false, // Prevent dismissing by tapping outside
+      );
+    }
+    return response;
+  } catch (e, s) {
+    print(e);
+    print(s);
   }
-  return response;
 }
