@@ -68,7 +68,7 @@ void checkUserBlockMyAdminOrNot() async {
               TextButton(
                 onPressed: () {
                   Get.back();
-                  // onTapLogOutBtn();
+                  onTapLogOutBtn();
                   // logoutUser();
                 },
                 style: TextButton.styleFrom(
