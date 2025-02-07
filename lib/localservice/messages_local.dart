@@ -281,6 +281,9 @@ class Messages extends Translations {
           "no_blogs_found": "No blogs found",
           "no_vlogs_found": "No vlogs found",
           "no_photos_found": "No photos found",
+          "access_denied": "Access Denied",
+          "you_have_been_blocked_by_the_admin": "You have been blocked by the admin.",
+          "ok": "OK",
         },
 
         'swe_SE': {
@@ -570,6 +573,9 @@ class Messages extends Translations {
           "no_photos_found": "Inga foton hittades",
           "delete_this_blog": "Ta bort den här bloggen",
           "edit_this_blog": "Redigera denna blogg",
+          "access_denied": "Åtkomst nekad",
+          "you_have_been_blocked_by_the_admin": "Du har blivit blockerad av administratören.",
+          "ok": "OK",
 
 
 

@@ -44,6 +44,7 @@ class ProfileUser {
   String? token;
   String? actToken;
   bool? isVerified;
+  int? status;
   int? numberOfFollower;
   int? numberOfFollowing;
   String? city;
@@ -74,6 +75,7 @@ class ProfileUser {
     this.token,
     this.actToken,
     this.isVerified,
+    this.status,
     this.numberOfFollower,
     this.numberOfFollowing,
     this.city,
@@ -109,6 +111,7 @@ class ProfileUser {
     token: json["token"],
     actToken: json["act_token"],
     isVerified: json["isVerified"],
+    status: json["status"],
     numberOfFollower: json["numberOfFollower"],
     numberOfFollowing: json["numberOfFollowing"],
     city: json["city"],

@@ -429,10 +429,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           title: 'Logout'.tr,
                           isLoading: false,
                           onTap: () {
-                            PrefUtils().logout();
-                            Get.delete<ShareController>(force: true);
-                            Get.delete<SaveController>(force: true);
-                            Get.offAll(() => const LoginScreen());
+                            onTapLogOutBtn();
                             //   Navigator.push(context, MaterialPageRoute(builder: (context) => Video_Post_Screen()));
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
                           },
@@ -448,6 +445,7 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
     );
   }
+
 
   // Function to show delete confirmation dialog
   Future<void> _showDeleteConfirmationDialog(BuildContext context) async {
@@ -487,4 +485,11 @@ class _SettingScreenState extends State<SettingScreen> {
       },
     );
   }
+}
+
+void onTapLogOutBtn() {
+  PrefUtils().logout();
+  Get.delete<ShareController>(force: true);
+  Get.delete<SaveController>(force: true);
+  Get.offAll(() => const LoginScreen());
 }
