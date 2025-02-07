@@ -296,7 +296,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   ];
 
   void _onItemTapped(int index) {
-    checkUserBlockMyAdminOrNot();
+
     setState(() {
       key.currentState?.reverseAnimation();
       _selectedIndex = index;

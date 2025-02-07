@@ -11,7 +11,7 @@ class DashBoardController extends GetxController{
   void onClose() {
     // TODO: implement onClose
     super.onClose();
-    checkUserBlockMyAdminOrNot();
+
 
   }
 }

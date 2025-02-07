@@ -23,7 +23,7 @@ class MyProfileController extends GetxController {
   RxBool isLoading = false.obs;
 
   getProfile() async {
-    checkUserBlockMyAdminOrNot();
+
     isLoading.value = true;
     final response = await ApiRepository.myProfile();
     getUserByIdModelData(response);
@@ -68,7 +68,7 @@ void checkUserBlockMyAdminOrNot() async {
               TextButton(
                 onPressed: () {
                   Get.back();
-                  onTapLogOutBtn();
+                  // onTapLogOutBtn();//todo sameer
                   // logoutUser();
                 },
                 style: TextButton.styleFrom(

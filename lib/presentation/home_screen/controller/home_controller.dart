@@ -16,7 +16,7 @@ class HomeController extends GetxController {
     get();
     ApiRepository.checkIn();
     homepage();
-    checkUserBlockMyAdminOrNot();
+
   }
 
   RxString city = "Not Found".obs;
