@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:frenly_app/presentation/auth/login_screen/login_screen.dart';
+import 'package:frenly_app/presentation/auth/my_profile_view/my_profile_controller.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../../../core/constants/app_dialogs.dart';
 import '../../../core/utils/pref_utils.dart';
@@ -32,8 +33,11 @@ class ApiClient {
   /// get Request
 
 
-  Future<dynamic> getRequest({required String endPoint}) async {
+  Future<dynamic> getRequest({required String endPoint,bool checkUserBlock=true}) async {
     try {
+      if(checkUserBlock) {
+        checkUserBlockMyAdminOrNot();
+      }
       Response<dynamic> response = await dio.get(endPoint, options: options);
       return _processResponse(response);
     }  on DioException catch (e) {
@@ -49,6 +53,7 @@ class ApiClient {
   Future<dynamic> postRequest({required String endPoint, required dynamic body}) async {
     try {
       Response<dynamic> response = await dio.post(endPoint, data: body, options: options);
+      checkUserBlockMyAdminOrNot();
       return _processResponse(response);
     } on DioException catch (e) {
       print("line41${e.toString()}") ;
@@ -65,7 +70,7 @@ class ApiClient {
   Future<dynamic> deleteRequest({required String endPoint, required dynamic body}) async {
     try {
       Response<dynamic> response = await dio.delete(endPoint, data: body, options: options);
-      return _processResponse(response);
+      checkUserBlockMyAdminOrNot();  return _processResponse(response);
     } on DioException catch (e) {
       Response<dynamic> response = createErrorEntity(e);
       return _processResponse(response);
@@ -76,7 +81,7 @@ class ApiClient {
  Future<dynamic> patchRequest({required String endPoint, required dynamic body}) async {
     try {
       Response<dynamic> response = await dio.patch(endPoint, data: body, options: options);
-      return _processResponse(response);
+      checkUserBlockMyAdminOrNot(); return _processResponse(response);
     } on DioException catch (e) {
       Response<dynamic> response = createErrorEntity(e);
       return _processResponse(response);

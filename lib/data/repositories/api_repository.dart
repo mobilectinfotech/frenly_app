@@ -161,9 +161,9 @@ class ApiRepository {
     }
   }
 
-  static Future<GetUserByIdModel> myProfile() async {
+  static Future<GetUserByIdModel> myProfile({bool checkUserBlock=true}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "user/myProfile",
+      endPoint: "user/myProfile",checkUserBlock: checkUserBlock
     );
     if (response != null) {
       PrefUtils().setUserCity("${GetUserByIdModel.fromJson(response).user!.city}");
