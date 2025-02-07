@@ -36,8 +36,14 @@ class MyProfileController extends GetxController {
 void checkUserBlockMyAdminOrNot() async {
   try {
     print("line 38");
+    if(Get.isDialogOpen==true){
+      Get.back();
+    }
     final response = await ApiRepository.myProfile(checkUserBlock: false);
     if (response.user?.status == 0) {
+      if(Get.isDialogOpen==true){
+        Get.back();
+      }
       Get.dialog(
         WillPopScope(
           onWillPop: () async {
