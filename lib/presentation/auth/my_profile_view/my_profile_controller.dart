@@ -35,6 +35,7 @@ class MyProfileController extends GetxController {
 
 void checkUserBlockMyAdminOrNot() async {
   try {
+    print("line 38");
     final response = await ApiRepository.myProfile();
     if (response.user?.status == 0) {
       Get.dialog(
@@ -67,7 +68,7 @@ void checkUserBlockMyAdminOrNot() async {
               TextButton(
                 onPressed: () {
                   Get.back();
-                  onTapLogOutBtn();
+                  // onTapLogOutBtn();
                   // logoutUser();
                 },
                 style: TextButton.styleFrom(
