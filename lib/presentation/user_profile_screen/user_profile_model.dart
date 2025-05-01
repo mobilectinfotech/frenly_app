@@ -34,6 +34,7 @@ class GetUserByIdModel {
 class ProfileUser {
   int? id;
   String? email;
+  String? personalNumber;
   String? password;
   String? fullName;
   String? bio;
@@ -65,6 +66,7 @@ class ProfileUser {
   ProfileUser({
     this.id,
     this.email,
+    this.personalNumber,
     this.password,
     this.fullName,
     this.bio,
@@ -101,6 +103,7 @@ class ProfileUser {
   factory ProfileUser.fromJson(Map<String, dynamic> json) => ProfileUser(
     id: json["id"],
     email: json["email"],
+    personalNumber: json["personalNumber"],
     password: json["password"],
     fullName: json["full_name"],
     bio: json["bio"],

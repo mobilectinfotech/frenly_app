@@ -6,6 +6,8 @@ class Messages extends Translations {
         'en_US': {
           "_vlog": "Vlog",
           "_post": "Post",
+          "_signupwithbankid": "Sign Up with BankID",
+          "_personalNumber": "Personal Number",
           "_caption_can_not_be_empty" : "Caption can not be empty",
           "_photo_can_not_be_empty" : "Photo can not be empty",
           "_delete" : "Delete",
@@ -248,6 +250,7 @@ class Messages extends Translations {
           "enter_caption": "Enter Caption",
           "select_video": "Please Select Video",
           "title": "Title",
+          "user_name": "User Name",
           "enter_title": "Enter Title",
           "enter_body": "Enter Body",
           "tags": "Tags",
@@ -289,6 +292,8 @@ class Messages extends Translations {
         'swe_SE': {
           "_post": "Posta",
           "_vlog": "Vlogg",
+          "_signupwithbankid": "Registrera dig med BankID",
+          "_personalNumber": "Personnummer",
           "_caption_can_not_be_empty" : "Bildtext Inte vara tom",
           "_photo_can_not_be_empty" : "Bild Inte vara tom",
           "_delete" : "Radera",

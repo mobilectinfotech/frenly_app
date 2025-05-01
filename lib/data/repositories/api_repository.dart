@@ -1,8 +1,8 @@
-
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:frenly_app/data/models/loginWithBankIDCheckModel.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
@@ -52,22 +52,12 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> loginWithEmailPassword(
-      {required String email,
-      required String password,
-      String? fcmToken}) async {
+  static Future<bool> loginWithEmailPassword({required String email, required String password, String? fcmToken}) async {
     print("line_no_59");
     List<String> location = await getLocation();
     String fcm = await getFCMToken();
-    var data = json.encode({
-      "email": email,
-      "password": password,
-      "lat": location[0],
-      "lng": location[1],
-      "fcm_token": fcm
-    });
-    final response =
-        await ApiClient().postRequest(endPoint: "user/login", body: data);
+    var data = json.encode({"email": email, "password": password, "lat": location[0], "lng": location[1], "fcm_token": fcm});
+    final response = await ApiClient().postRequest(endPoint: "user/login", body: data);
     if (response != null) {
       PrefUtils().setAuthToken("${LoginWithEmailModel.fromJson(response).token}");
       PrefUtils().setUserFirstName("${LoginWithEmailModel.fromJson(response).user!.fullName}");
@@ -81,6 +71,46 @@ class ApiRepository {
     return false;
   }
 
+  static Future<bool> loginWithBankID({String? fcmToken, required namestr, required personalNumberstr}) async {
+    print("line_no_59");
+    List<String> location = await getLocation();
+    String fcm = await getFCMToken();
+    var data = json.encode({"personalNumber": personalNumberstr, "full_name": namestr, "lat": location[0], "lng": location[1], "fcm_token": fcm});
+    final response = await ApiClient().postRequest(endPoint: "user/bankIdLogin", body: data);
+    if (response != null) {
+      PrefUtils().setAuthToken("${LoginWithEmailModel.fromJson(response).token}");
+      PrefUtils().setUserFirstName("${LoginWithEmailModel.fromJson(response).user!.fullName}");
+      PrefUtils().setUserProfileUrl("${LoginWithEmailModel.fromJson(response).user!.avatarUrl}");
+      PrefUtils().setUserId("${LoginWithEmailModel.fromJson(response).user!.id}");
+      PrefUtils().setUserCoverUrl("${LoginWithEmailModel.fromJson(response).user!.coverPhotoUrl}");
+      PrefUtils().setUserCity("${LoginWithEmailModel.fromJson(response).user!.city}");
+      PrefUtils().setUserCountry("${LoginWithEmailModel.fromJson(response).user!.country}");
+      return true;
+    }
+    return false;
+  }
+
+  static Future<bool> loginWithBankIDCheck({required String personalNumberstr}) async {
+
+    var data = json.encode({"personalNumber": personalNumberstr});
+    final response = await ApiClient().postRequest(endPoint: "user/checkBankId", body: data);
+
+    if (response != null) {
+      final parsedResponse = LoginWithBankIdCheckModel.fromJson(response);
+
+     // return parsedResponse.success == true;
+      if (parsedResponse.success == true) {
+        return true;
+      } else {
+        AppDialog.taostMessage(parsedResponse.message ?? "Something went wrong");
+      }
+    }
+
+    return false;
+  }
+
+
+
   static Future<bool> signUpWithEmailPassword({
     required String email,
     required String password,
@@ -93,8 +123,7 @@ class ApiRepository {
       'full_name': "$fullname",
       'username': "$username",
     };
-    Map<String, dynamic>? response =
-        await ApiClient().postRequest(endPoint: "user/signup", body: data);
+    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "user/signup", body: data);
 
     if (response != null) {
       AppDialog.taostMessage(
@@ -105,14 +134,75 @@ class ApiRepository {
     return false;
   }
 
+
+  static Future<bool> signUpWithEmailBankid({
+    required String email,
+    required String password,
+    required String username,
+    required String fullname,
+    required String personalNumber,
+  }) async {
+    List<String> location = await getLocation();
+    String fcm = await getFCMToken();
+    var data = {
+      "personalNumber": personalNumber,
+      "lat": location[0],
+      "lng": location[1],
+      "fcm_token": fcm,
+      'email': email,
+      'password': password,
+      'full_name': "$fullname",
+      'username': "$username",
+    };
+    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "user/bankIdLogin", body: data);
+
+    if (response != null) {
+      PrefUtils().setAuthToken("${LoginWithEmailModel.fromJson(response).token}");
+      PrefUtils().setUserFirstName("${LoginWithEmailModel.fromJson(response).user!.fullName}");
+      PrefUtils().setUserProfileUrl("${LoginWithEmailModel.fromJson(response).user!.avatarUrl}");
+      PrefUtils().setUserId("${LoginWithEmailModel.fromJson(response).user!.id}");
+      PrefUtils().setUserCoverUrl("${LoginWithEmailModel.fromJson(response).user!.coverPhotoUrl}");
+      PrefUtils().setUserCity("${LoginWithEmailModel.fromJson(response).user!.city}");
+      PrefUtils().setUserCountry("${LoginWithEmailModel.fromJson(response).user!.country}");
+      return true;
+    }
+    return false;
+  }
+
   Future<void> forgetPassword() async {}
 
   static Future<List<String>> getLocation() async {
     try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        print('Location services are disabled.');
+        return ["37.785834", "-122.406417"];
+      }
+
+      // Check and request location permissions
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          print('Location permission denied.');
+          return ["37.785834", "-122.406417"];
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        print('Location permission permanently denied.');
+        return ["37.785834", "-122.406417"];
+      }
+
+      // Get current position
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      print("latitude==>${position.latitude}");
-      print("longitude==>${position.longitude}");
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      print("latitude ==> ${position.latitude}");
+      print("longitude ==> ${position.longitude}");
+
       return [
         position.latitude.toString(),
         position.longitude.toString(),
@@ -148,8 +238,7 @@ class ApiRepository {
   //   }
   // }
 
-
-  static Future<DiscoverUsersModel> discoverUser({int ? limit}) async {
+  static Future<DiscoverUsersModel> discoverUser({int? limit}) async {
     final response = await ApiClient().getRequest(
       endPoint: "home/discover?page=1&limit=${limit ?? 1000000}",
     );
@@ -161,10 +250,8 @@ class ApiRepository {
     }
   }
 
-  static Future<GetUserByIdModel> myProfile({bool checkUserBlock=true}) async {
-    Map<String, dynamic>? response = await ApiClient().getRequest(
-      endPoint: "user/myProfile",checkUserBlock: checkUserBlock
-    );
+  static Future<GetUserByIdModel> myProfile({bool checkUserBlock = true}) async {
+    Map<String, dynamic>? response = await ApiClient().getRequest(endPoint: "user/myProfile", checkUserBlock: checkUserBlock);
     if (response != null) {
       PrefUtils().setUserCity("${GetUserByIdModel.fromJson(response).user!.city}");
       PrefUtils().setUserCountry("${GetUserByIdModel.fromJson(response).user!.country}");
@@ -173,42 +260,28 @@ class ApiRepository {
     return GetUserByIdModel();
   }
 
-  static Future<bool> editProfile(
-      {String? fullName,
-      String? bio,
-      String? handle,
-      String? coverPhotoPath,
-      String? profilePhotoPath}) async {
+  static Future<bool> editProfile({String? fullName, String? bio, String? handle, String? coverPhotoPath, String? profilePhotoPath}) async {
     FormData data;
     if (profilePhotoPath != null && coverPhotoPath != null) {
       data = FormData.fromMap({
-        'avatar': await MultipartFile.fromFile(profilePhotoPath,
-            filename: 'avtar.svg'),
-        'cover':
-            await MultipartFile.fromFile(coverPhotoPath, filename: 'avtar.svg'),
+        'avatar': await MultipartFile.fromFile(profilePhotoPath, filename: 'avtar.svg'),
+        'cover': await MultipartFile.fromFile(coverPhotoPath, filename: 'avtar.svg'),
         'full_name': '$fullName',
         'bio': '${bio}',
         'handle': handle
       });
     } else if (profilePhotoPath != null) {
       data = FormData.fromMap({
-        'avatar': await MultipartFile.fromFile(profilePhotoPath,
-            filename: 'avtar.svg'),
+        'avatar': await MultipartFile.fromFile(profilePhotoPath, filename: 'avtar.svg'),
         'full_name': '$fullName',
         'bio': '$bio',
         'handle': handle
       });
     } else if (coverPhotoPath != null) {
-      data = FormData.fromMap({
-        'cover':
-            await MultipartFile.fromFile(coverPhotoPath, filename: 'avtar.svg'),
-        'full_name': '$fullName',
-        'bio': '$bio',
-        'handle': handle
-      });
-    } else {
       data = FormData.fromMap(
-          {'full_name': '$fullName', 'bio': '$bio', 'handle': handle});
+          {'cover': await MultipartFile.fromFile(coverPhotoPath, filename: 'avtar.svg'), 'full_name': '$fullName', 'bio': '$bio', 'handle': handle});
+    } else {
+      data = FormData.fromMap({'full_name': '$fullName', 'bio': '$bio', 'handle': handle});
     }
 
     //
@@ -244,14 +317,12 @@ class ApiRepository {
     return false;
   }
 
-
   static Future<bool> checkIn() async {
     List<String> location = await getLocation();
     String fcm = await getFCMToken();
     var data = json.encode({
       "lat": location[0],
       "lng": location[1],
-
     });
 
     Map<String, dynamic>? response = await ApiClient().postRequest(
@@ -259,15 +330,11 @@ class ApiRepository {
       body: data,
     );
     if (response != null) {
-         myProfile();
+      myProfile();
       return true;
     }
     return false;
   }
-
-
-
-
 
   static Future<bool> unfollow({required String userId}) async {
     Map<String, dynamic>? response = await ApiClient().postRequest(
@@ -290,8 +357,7 @@ class ApiRepository {
     return LiveUserModel();
   }
 
-  static Future<GetUserByCityModel> getUserByCity(
-      {required String city}) async {
+  static Future<GetUserByCityModel> getUserByCity({required String city}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "home/active/$city",
     );
@@ -312,7 +378,7 @@ class ApiRepository {
     return VlogsListModel();
   }
 
-  static Future<VlogsListModel> getVlog({ int ?limit }) async {
+  static Future<VlogsListModel> getVlog({int? limit}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "vlog?page=1&limit=${limit ?? 1000000}",
     );
@@ -364,16 +430,12 @@ class ApiRepository {
     );
     if (response != null) {
       return true;
-    }else{
+    } else {
       return false;
     }
-
   }
 
-  static Future<bool> postVlog(
-      {required String photoPath,
-      required String title,
-      required String des}) async {
+  static Future<bool> postVlog({required String photoPath, required String title, required String des}) async {
     var data;
     data = FormData.fromMap({
       'video': await MultipartFile.fromFile(
@@ -395,8 +457,7 @@ class ApiRepository {
 
   //post
 
-  static Future<PostListsModel> searchPosts(
-      {required String searchText}) async {
+  static Future<PostListsModel> searchPosts({required String searchText}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "post?page=1&limit=1000&search=$searchText",
     );
@@ -437,19 +498,15 @@ class ApiRepository {
     return AllFriendsModel();
   }
 
-
-
   static Future<CreateChatModel> createChat({required String userId}) async {
-    Map<String, dynamic>? response =
-        await ApiClient().postRequest(endPoint: "chat/$userId", body: {});
+    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "chat/$userId", body: {});
     if (response != null) {
       return CreateChatModel.fromJson(response);
     }
     return CreateChatModel();
   }
 
-  static Future<bool> postPost(
-      {required String photoPath, required String title}) async {
+  static Future<bool> postPost({required String photoPath, required String title}) async {
     print("sjdsfkjfdskjdfs${photoPath}");
     var data;
     data = FormData.fromMap({
@@ -483,7 +540,7 @@ class ApiRepository {
     return false;
   }
 
-  static Future<bool> commnetLikeONvlog({required String volgId,required PostType postType}) async {
+  static Future<bool> commnetLikeONvlog({required String volgId, required PostType postType}) async {
     print("comment like $volgId");
     Map<String, dynamic>? response = await ApiClient().postRequest(
       endPoint: "/${(postType.name)}/react/comment/$volgId",
@@ -580,8 +637,7 @@ class ApiRepository {
     return MySavedVlogs();
   }
 
-  static Future<BlogListModel> searchBlog(
-      {required String searchText}) async {
+  static Future<BlogListModel> searchBlog({required String searchText}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "blog?page=1&limit=10&search=$searchText",
     );
@@ -644,16 +700,10 @@ class ApiRepository {
     print("dsfdsf${blogPic}");
     var data;
     if (blogPic != null) {
-      data = FormData.fromMap({
-        'image': await MultipartFile.fromFile(blogPic, filename: 'avtar.svg'),
-        'title': title,
-        'body': body,
-        'tags[]': tag,
-        "id": id
-      });
-    } else {
       data = FormData.fromMap(
-          {'title': title, 'body': body, 'tags[]': tag, "id": id});
+          {'image': await MultipartFile.fromFile(blogPic, filename: 'avtar.svg'), 'title': title, 'body': body, 'tags[]': tag, "id": id});
+    } else {
+      data = FormData.fromMap({'title': title, 'body': body, 'tags[]': tag, "id": id});
     }
 
     Map<String, dynamic>? response = await ApiClient().patchRequest(
@@ -668,7 +718,7 @@ class ApiRepository {
   }
 
   static Future<bool> updateVlog({
-    String ? blogPic,
+    String? blogPic,
     required String title,
     required String body,
     required String id,
@@ -676,15 +726,9 @@ class ApiRepository {
     print("dsfdsf${blogPic}");
     var data;
     if (blogPic != null) {
-      data = FormData.fromMap({
-        'video': await MultipartFile.fromFile(blogPic, filename: 'avtar.svg'),
-        'title': title,
-        'description': body,
-        "id": id
-      });
+      data = FormData.fromMap({'video': await MultipartFile.fromFile(blogPic, filename: 'avtar.svg'), 'title': title, 'description': body, "id": id});
     } else {
-      data = FormData.fromMap(
-          {'title': title, 'description': body,"id": id});
+      data = FormData.fromMap({'title': title, 'description': body, "id": id});
     }
 
     Map<String, dynamic>? response = await ApiClient().patchRequest(
@@ -710,7 +754,7 @@ class ApiRepository {
 
 //////////////////////comments//////////////////////////////////////////////////////////////////////////
 
-  static Future<GetCommentsModel> getCommentsAll({required String id,required PostType postType}) async {
+  static Future<GetCommentsModel> getCommentsAll({required String id, required PostType postType}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "${(postType.name)}/comment/$id?page=1&limit=1000",
     );
@@ -720,17 +764,19 @@ class ApiRepository {
     return GetCommentsModel();
   }
 
-  static Future<bool> postCommentAll({required String id,required PostType postType,required String comment,}) async {
-    Map<String, dynamic>? response = await ApiClient().postRequest(
-        endPoint: "${postType.name}/comment/$id", body: {"content": comment});
+  static Future<bool> postCommentAll({
+    required String id,
+    required PostType postType,
+    required String comment,
+  }) async {
+    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "${postType.name}/comment/$id", body: {"content": comment});
     if (response != null) {
       return true;
     }
     return false;
   }
 
-
-  static Future<bool> deleteCommentAll({required String id,required PostType postType,required String commentId}) async {
+  static Future<bool> deleteCommentAll({required String id, required PostType postType, required String commentId}) async {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(
       endPoint: "${postType.name}/$id/comment/$commentId",
       body: {},
@@ -743,8 +789,7 @@ class ApiRepository {
     }
   }
 
-
-  static Future<bool> likeVlogBlogPost({required String userId,required PostType postType}) async {
+  static Future<bool> likeVlogBlogPost({required String userId, required PostType postType}) async {
     Map<String, dynamic>? response = await ApiClient().postRequest(
       endPoint: "${postType.name}/react/$userId",
       body: {},
@@ -755,14 +800,9 @@ class ApiRepository {
     return false;
   }
 
-
 //////////////////////comments//////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-  static Future<bool> shareAllBlogPostVlog({required String shareId,required PostType postType}) async {
+  static Future<bool> shareAllBlogPostVlog({required String shareId, required PostType postType}) async {
     final response = await ApiClient().postRequest(
       endPoint: "${postType.name}/share/${shareId}",
       body: {},
@@ -775,25 +815,25 @@ class ApiRepository {
     }
   }
 
-
   static Future<bool> sendMessageWithShare({
-        required String message,
-        required String chatId,
-        required String isLinkId,
-        required String isUrl,
-        required PostType postType ,}) async {
-    var isLinkIdd = 0 ;
-      if( postType.name == "post") {isLinkIdd = 1;}
-      if(postType.name ==  "vlog") {isLinkIdd = 3;}
-      if(postType.name ==  "blog") {isLinkIdd = 2;}
-    final response = await ApiClient().postRequest(
-        endPoint: "message/${chatId}",
-        body: {
-      "content": message,
-      "isLink": isLinkIdd,
-      "isLinkId": isLinkId,
-      "isUrl": isUrl
-    });
+    required String message,
+    required String chatId,
+    required String isLinkId,
+    required String isUrl,
+    required PostType postType,
+  }) async {
+    var isLinkIdd = 0;
+    if (postType.name == "post") {
+      isLinkIdd = 1;
+    }
+    if (postType.name == "vlog") {
+      isLinkIdd = 3;
+    }
+    if (postType.name == "blog") {
+      isLinkIdd = 2;
+    }
+    final response = await ApiClient()
+        .postRequest(endPoint: "message/${chatId}", body: {"content": message, "isLink": isLinkIdd, "isLinkId": isLinkId, "isUrl": isUrl});
     if (response != null) {
       shareAllBlogPostVlog(shareId: isLinkId, postType: postType);
       return true;
@@ -802,13 +842,11 @@ class ApiRepository {
     }
   }
 
-
-  static Future<bool> saveAllById(
-      {required String id, required String categoryId ,required PostType postType}) async {
+  static Future<bool> saveAllById({required String id, required String categoryId, required PostType postType}) async {
     print("postType ${postType}");
     final response = await ApiClient().postRequest(
       endPoint: "/${postType.name}/save/$id",
-      body: {"categoryId": int.parse(categoryId) },
+      body: {"categoryId": int.parse(categoryId)},
       // endPoint: "/vlog/save/$vlogId",
       // body: {"categoryId": categoryId},
     );
@@ -820,24 +858,13 @@ class ApiRepository {
     }
   }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
 
   static Future<bool> postCommentOnVlog({
     required String vlogId,
     required String comment,
   }) async {
-    Map<String, dynamic>? response = await ApiClient().postRequest(
-        endPoint: "vlog/comment/$vlogId", body: {"content": comment});
+    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "vlog/comment/$vlogId", body: {"content": comment});
     if (response != null) {
       return true;
     }
@@ -848,8 +875,7 @@ class ApiRepository {
     required String vlogId,
     required String comment,
   }) async {
-    Map<String, dynamic>? response = await ApiClient().postRequest(
-        endPoint: "blog/comment/$vlogId", body: {"content": comment});
+    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "blog/comment/$vlogId", body: {"content": comment});
     if (response != null) {
       return true;
     }
@@ -860,8 +886,7 @@ class ApiRepository {
     required String vlogId,
     required String comment,
   }) async {
-    Map<String, dynamic>? response = await ApiClient().postRequest(
-        endPoint: "post/comment/$vlogId", body: {"content": comment});
+    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "post/comment/$vlogId", body: {"content": comment});
     if (response != null) {
       return true;
     }
@@ -870,8 +895,7 @@ class ApiRepository {
 
   //getall user search
 
-  static Future<SertchUserModel> searchUser(
-      {required String searchText}) async {
+  static Future<SertchUserModel> searchUser({required String searchText}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "user?page=1&limit=10000&search=$searchText",
     );
@@ -907,7 +931,7 @@ class ApiRepository {
     }
   }
 
- static Future<UserFollowingModel> userFollwings({required String userId}) async {
+  static Future<UserFollowingModel> userFollwings({required String userId}) async {
     final response = await ApiClient().getRequest(
       endPoint: "user/getUserFollowings/$userId",
     );
@@ -973,8 +997,7 @@ class ApiRepository {
       required bool chatNotification,
       required bool feedNotification,
       required String language}) async {
-    final response =
-        await ApiClient().patchRequest(endPoint: "user/settings", body: {
+    final response = await ApiClient().patchRequest(endPoint: "user/settings", body: {
       "lastSeen": lastSeen,
       "commentsAllowed": commentsAllowed,
       "chatNotification": chatNotification,
@@ -988,7 +1011,7 @@ class ApiRepository {
     }
   }
 
-    static Future<ReqModel> getUserFollowingReqest() async {
+  static Future<ReqModel> getUserFollowingReqest() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "notification/followRequests",
     );
@@ -998,16 +1021,12 @@ class ApiRepository {
     return ReqModel();
   }
 
-
-
-
-
-
-  static Future<bool> updateAccountPrivate(
-      {required bool isPrivate,}) async {
-    final response =
-    await ApiClient().patchRequest(endPoint: "user/updateProfileVisibilty", body: {
-      "isPrivate": isPrivate,});
+  static Future<bool> updateAccountPrivate({
+    required bool isPrivate,
+  }) async {
+    final response = await ApiClient().patchRequest(endPoint: "user/updateProfileVisibilty", body: {
+      "isPrivate": isPrivate,
+    });
     if (response != null) {
       return true;
     } else {
@@ -1037,7 +1056,7 @@ class ApiRepository {
       },
     );
     if (response != null) {
-      var msg ="password_reset_link_sent_successfully_please_check_your_email".tr;
+      var msg = "password_reset_link_sent_successfully_please_check_your_email".tr;
       AppDialog.taostMessage(msg);
 
       return true;
@@ -1100,7 +1119,7 @@ class ApiRepository {
       body: {},
     );
     if (response != null) {
-    //  AppDialog.taostMessage("${response["message"]}");
+      //  AppDialog.taostMessage("${response["message"]}");
       return true;
     } else {
       return false;
@@ -1140,7 +1159,7 @@ class ApiRepository {
 
   // delete post vlog blog
 
-  static Future<bool> deletePostBolgVlog({required String id,required PostType postType}) async {
+  static Future<bool> deletePostBolgVlog({required String id, required PostType postType}) async {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(
       endPoint: "${postType.name}/$id",
       body: {},
@@ -1154,28 +1173,30 @@ class ApiRepository {
     }
   }
 
-
   // report post vlog blog
 
   static Future<bool> reportPostVlogBlog({
     required String id,
     required String reason,
-    required PostType  postType,
-
+    required PostType postType,
   }) async {
-      var endPointt = "notfound";
-      if(postType.name == "vlog"){
-        endPointt = "vlog/reportVlog";
-      }
-      if(postType.name == "blog"){
-        endPointt = "blog/reportBlog";
-      }
-      if(postType.name == "post"){
-        endPointt = "post/reportPost";
-      }
+    var endPointt = "notfound";
+    if (postType.name == "vlog") {
+      endPointt = "vlog/reportVlog";
+    }
+    if (postType.name == "blog") {
+      endPointt = "blog/reportBlog";
+    }
+    if (postType.name == "post") {
+      endPointt = "post/reportPost";
+    }
 
     var data = {
-      postType.name == "vlog" ? "VlogId" :   postType.name =="blog" ? "blogId" : "PostId": id,
+      postType.name == "vlog"
+          ? "VlogId"
+          : postType.name == "blog"
+              ? "blogId"
+              : "PostId": id,
       'reason': reason,
     };
 
@@ -1192,14 +1213,6 @@ class ApiRepository {
     }
   }
 
-
-
-
-
-
-
-
-
   // static Future<bool> deletePost({
   //   required String postId,
   // }) async {
@@ -1215,7 +1228,6 @@ class ApiRepository {
   //     return false;
   //   }
   // }
-
 
   static Future<bool> deleteNotificationAll({
     required String postId,
@@ -1265,9 +1277,6 @@ class ApiRepository {
     }
   }
 
-
-
-
   static Future<BlockedUserListModel> myBlockList() async {
     final response = await ApiClient().getRequest(
       endPoint: "user/blocked?page=1&limit=4000",
@@ -1293,11 +1302,8 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> reportUser({required String userId,required String reason}) async {
-    var data = {
-      'userId': userId,
-      'reason': reason
-    };
+  static Future<bool> reportUser({required String userId, required String reason}) async {
+    var data = {'userId': userId, 'reason': reason};
     final response = await ApiClient().postRequest(
       endPoint: "user/reportProfile",
       body: data,
@@ -1309,7 +1315,6 @@ class ApiRepository {
       return false;
     }
   }
-
 
   static Future<bool> unblockUser({required String userId}) async {
     final response = await ApiClient().deleteRequest(
@@ -1324,7 +1329,6 @@ class ApiRepository {
     }
   }
 
-
   static Future<CategoryModel> getCategories() async {
     final response = await ApiClient().getRequest(
       endPoint: "user/getCategories",
@@ -1337,8 +1341,7 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> saveVlogBYId(
-      {required String vlogId, required String categoryId}) async {
+  static Future<bool> saveVlogBYId({required String vlogId, required String categoryId}) async {
     final response = await ApiClient().postRequest(
       endPoint: "/vlog/save/$vlogId",
       body: {"categoryId": categoryId},
@@ -1351,8 +1354,7 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> saveBlogBYid(
-      {required String vlogId, required String categoryId}) async {
+  static Future<bool> saveBlogBYid({required String vlogId, required String categoryId}) async {
     final response = await ApiClient().postRequest(
       endPoint: "/blog/save/$vlogId",
       body: {"categoryId": categoryId},
@@ -1365,8 +1367,7 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> savePostBYid(
-      {required String vlogId, required String categoryId}) async {
+  static Future<bool> savePostBYid({required String vlogId, required String categoryId}) async {
     final response = await ApiClient().postRequest(
       endPoint: "/post/save/$vlogId",
       body: {"categoryId": categoryId},
@@ -1405,9 +1406,6 @@ class ApiRepository {
     }
   }
 
-
-
-
   static Future<NotificationsModel> notification() async {
     final response = await ApiClient().getRequest(
       endPoint: "notification",
@@ -1420,13 +1418,8 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> acepedReqest(
-      {required int byUserId, required int toUserId, required int notificationId }) async {
-     var data = {
-      'followerId': '${byUserId}',
-      'notificationId': '${notificationId}',
-      'userId': '${toUserId}'
-    };
+  static Future<bool> acepedReqest({required int byUserId, required int toUserId, required int notificationId}) async {
+    var data = {'followerId': '${byUserId}', 'notificationId': '${notificationId}', 'userId': '${toUserId}'};
     final response = await ApiClient().postRequest(
       endPoint: "user/acceptFollowRequest",
       body: data,
@@ -1438,6 +1431,4 @@ class ApiRepository {
       return false;
     }
   }
-
-
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/initial_bindings.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
@@ -19,9 +20,9 @@ Future<void> main() async {
   Get.put(PrefUtils(),permanent: true);
   final localeService = LocaleService();
   final locale = await localeService.getLocale();
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  // ]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -74,8 +75,10 @@ class MyApp extends StatelessWidget {
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           translations: Messages(),
-          locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
-          fallbackLocale:const  Locale('swe', 'SE'),
+         // locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
+         // fallbackLocale:const  Locale('swe', 'SE'),
+          locale: locale ?? const Locale('en', 'US'), // Default locale if no saved locale
+          fallbackLocale:const  Locale('en', 'US'),
           title: 'Frenly',
           home: SplashScreen(),
          // home: Scaffold(body: VideoThumbnailPlayer(videoUrl: 'https://frenly.s3.amazonaws.com/1719924957051-3769033-sd_426_240_25fps.mp4',)),

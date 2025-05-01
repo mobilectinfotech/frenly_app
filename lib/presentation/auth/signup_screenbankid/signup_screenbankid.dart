@@ -18,152 +18,34 @@ import '../../../core/constants/my_textfield.dart';
 import '../../../core/constants/textfield_validation.dart';
 import '../../../core/utils/text_field_input_formatters.dart';
 import '../login_screen/login_screen.dart';
-import 'controller/signup_controller.dart';
+import 'controller/signupbankid_controller.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignUpScreenBankid extends StatefulWidget {
+  final String personalNumber;
+  const SignUpScreenBankid({super.key, required this.personalNumber});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpScreenBankid> createState() => _SignUpScreenBankidState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  final SignUpController controller = Get.put(SignUpController());
+class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
+  final SignUpBankidController controller = Get.put(SignUpBankidController());
   final _formKeyLogin = GlobalKey<FormState>();
 
   bool isAbalable = false;
-  bool _isAuthenticating = false;
-  String? _authOrderRef;
-  StreamSubscription? _sub;
 
   @override
   void initState() {
     super.initState();
-    toggel();
-    _listenForDeepLinks();
   }
 
-  Future<void> toggel() async {
-    var dio = Dio();
-    var response = await dio.request(
-      'https://www.frenly.se:4000/user/getToggleStatus',
-      options: Options(method: 'GET'),
-    );
 
-    if (response.statusCode == 200) {
-      final data = response.data;
 
-      // Get the toggle value from admin
-      controller.bankIdToggle.value = data['admin']['bankIdToggle'];
-      print('Bank ID Toggle value: controller.bankIdToggle.value');
-      print(controller.bankIdToggle.value);
-
-      // You can now store it or use it elsewhere
-    } else {
-      print('Error: ${response.statusMessage}');
-    }
-  }
-
-  Future<http.Client> getHttpClient() async {
-    SecurityContext context = SecurityContext();
-
-    HttpClient httpClient = HttpClient(context: context);
-    httpClient.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-    return IOClient(httpClient);
-  }
-
-  String generateNonce() => Uuid().v4();
-
-  Future<void> startBankIDAuth() async {
-    controller.isLoading2(true);
-    setState(() => _isAuthenticating = true);
-    final client = await getHttpClient();
-    final iPAddress = await getPublicIPAddress();
-    //final iPAddress = await getIPAddress();
-    print("object");
-    print(iPAddress);
-    final Uri bankIDApiUrl = Uri.parse("https://www.frenly.se:4000/auth/start");
-
-    final requestBody = {
-      "endUserIp": iPAddress,
-    };
-
-    try {
-      final response = await client.post(
-        bankIDApiUrl,
-        //headers: {"Content-Type": "application/json"},
-        body: requestBody,
-      );
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        _authOrderRef = responseData["orderRef"];
-        print("object");
-        print(_authOrderRef);
-        print(iPAddress);
-        print(responseData["autoStartToken"]);
-        String autoLaunchUrl = "bankid:///?autostarttoken=${responseData["autoStartToken"]}&redirect=bankidapp://auth";
-        await launchUrl(Uri.parse(autoLaunchUrl), mode: LaunchMode.externalApplication);
-      } else {
-        print("BankID Authentication Error: ${response.body}");
-      }
-    } catch (e) {
-      print("Exception during BankID authentication: $e");
-    } finally {
-      setState(() => _isAuthenticating = false);
-    }
-  }
-
-  void _listenForDeepLinks() {
-    _sub = uriLinkStream.listen((Uri? uri) {
-      if (uri != null) handleDeepLink(uri);
-    });
-    getInitialUri().then((Uri? uri) {
-      if (uri != null) handleDeepLink(uri);
-    });
-  }
-
-  void handleDeepLink(Uri uri) {
-    if (uri.scheme == "bankidapp" && uri.host == "auth") {
-      verifyBankIDAuth();
-    }
-  }
-
-  Future<void> verifyBankIDAuth() async {
-    if (_authOrderRef == null) return;
-    final Uri verifyUrl = Uri.parse("https://www.frenly.se:4000/auth/collect");
-    try {
-      final response = await http.post(
-        verifyUrl,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"orderRef": _authOrderRef}),
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        print("Authentication Failed: ${responseData}");
-        if (responseData["success"] == true) {
-          var personalNumber = responseData['user']['personalNumber'];
-          var name = responseData['user']['name'];
-          print('Personal Number: $personalNumber');
-          print('Personal Number: $personalNumber');
-          controller.loginWithBankIDCheck(personalNumber);
-          print("Authentication Successful");
-        } else {
-          print("Authentication Failed: ${responseData["status"]}");
-        }
-      } else {
-        print("Verification Error: ${response.body}");
-      }
-    } catch (e) {
-      print("Error verifying authentication: $e");
-    }
-    setState(() => _isAuthenticating = false);
-  }
 
 
   @override
@@ -334,6 +216,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               obscureText: controller.isShowCPassword.value,
                               context: context,
                             )),
+                        SizedBox(height: 20.ah),
+                        Center(child: names("_personalNumber".tr + " : " + widget.personalNumber)),
                         SizedBox(
                           height: 30.ah,
                         ),
@@ -343,23 +227,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isLoading: controller.isLoading.value,
                             onTap: () {
                               if (_formKeyLogin.currentState!.validate()) {
-                                controller.signUp();
+                                controller.signUp(widget.personalNumber);
                               }
                             },
                           ),
                         ),
-                        SizedBox(height: 10.ah),
-                        Obx(() {
-                          if (controller.bankIdToggle.value == 1) {
-                            return CustomPrimaryBtn2(
-                              title: '_signupwithbankid'.tr,
-                              isLoading: controller.isLoading2.value,
-                              onTap: startBankIDAuth,
-                            );
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        }),
                         SizedBox(height: 10.ah),
                         Center(
                           child: Text(

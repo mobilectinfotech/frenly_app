@@ -12,6 +12,7 @@ class LoginController extends GetxController {
   TextEditingController passworddController = TextEditingController();
   Rx<bool> isShowPassword = true.obs;
   Rx<bool> isLoading = false.obs;
+  Rx<bool> isLoading2 = false.obs;
 
   @override
   void dispose() {
@@ -30,4 +31,5 @@ class LoginController extends GetxController {
         Get.offAll(() => const DashBoardScreen());
     }
   }
+
 }

@@ -12,6 +12,7 @@ class EditProfileController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   TextEditingController handleController = TextEditingController();
+  TextEditingController personalNumber = TextEditingController();
   XFile? coverPhoto;
   XFile? profilePhoto;
 

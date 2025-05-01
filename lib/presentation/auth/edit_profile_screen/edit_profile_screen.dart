@@ -29,6 +29,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     controller.emailController.text =widget.getUserByIdModel.user?.email ?? "";
     controller.bioController.text =widget.getUserByIdModel.user?.bio ?? "";
     controller.handleController.text =widget.getUserByIdModel.user?.handle ?? "";
+    controller.personalNumber.text =widget.getUserByIdModel.user?.personalNumber ?? "";
 
   }
 
@@ -87,27 +88,85 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   SizedBox(
                     height: 10.ah,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.h),
-                    child: Text(
-                      'emailn'.tr,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15.fSize),
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.h),
+                        child: Text(
+                          'emailn'.tr,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15.fSize,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.ah),
+                      CustomTextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'please_enter_a_valid_email'.tr;
+                          }
+                          return null;
+                        },
+                        fillColor: Colors.transparent,
+                        hintText: 'johnsmith@gmail.com',
+                        controller: controller.emailController,
+                        context: context,
+                      ),
+                    ],
                   ),
+                  SizedBox(
+                    height: 10.ah,
+                  ),
+                  widget.getUserByIdModel.user?.personalNumber != null
+                      ?  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.h),
+                        child: Text(
+                          '_personalNumber'.tr,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15.fSize,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.ah),
+                      CustomTextFormField(
+                        fillColor: Colors.transparent,
 
-                  SizedBox(height: 10.ah),
-                  CustomTextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'please_enter_a_valid_email'.tr;
-                        }
-                        return null;
-                      },
-                    fillColor: Colors.transparent,
-                    hintText: 'johnsmith@gmail.com', controller: controller.emailController, context: context),
+                        controller: controller.personalNumber,
+                        context: context,
+                      ),
+                    ],
+                  )
+                      : Container()
+                 ,
+
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 10.h),
+                  //   child: Text(
+                  //     'emailn'.tr,
+                  //     style: TextStyle(
+                  //         color: Colors.black,
+                  //         fontWeight: FontWeight.w700,
+                  //         fontSize: 15.fSize),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 10.ah),
+                  // CustomTextFormField(
+                  //     validator: (value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return 'please_enter_a_valid_email'.tr;
+                  //       }
+                  //       return null;
+                  //     },
+                  //   fillColor: Colors.transparent,
+                  //   hintText: 'johnsmith@gmail.com', controller: controller.emailController, context: context),
 
                   SizedBox(height: 15.ah),
                   Padding(

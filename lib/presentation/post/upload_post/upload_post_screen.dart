@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../Widgets/custom_appbar.dart';
-import '../../../main_test.dart';
 
 class PostPostScreen extends StatefulWidget {
   const PostPostScreen({super.key});

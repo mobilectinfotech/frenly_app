@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:frenly_app/core/constants/my_textfieldbutton.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/auth/forget_password/forget_password_screen.dart';
@@ -10,6 +11,17 @@ import '../../../core/constants/my_textfield.dart';
 import '../../../core/constants/textfield_validation.dart';
 import '../../../core/utils/text_field_input_formatters.dart';
 import 'controller/login_controller.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+
+import 'package:uni_links3/uni_links.dart';
+import 'package:uuid/uuid.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,11 +32,23 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool passwordVisible = false;
+  StreamSubscription? _sub;
+  String? _authOrderRef;
+  bool _isAuthenticating = false;
 
   @override
   void initState() {
     super.initState();
     passwordVisible = true;
+  }
+
+
+
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
   }
 
   final LoginController loginController = Get.put(LoginController());
@@ -63,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 60.ah),
                   Center(
                     child: SizedBox(
-                        height: 150,
+                        height: 100,
                         child: CustomImageView(imagePath:  "assets/icons/transparent bakgrund.svg")),
                     // Image.asset('assets/image/image 1.png',height: 151.ah,width: 148.aw,)
                   ),
@@ -213,6 +237,46 @@ class _LoginScreenState extends State<LoginScreen> {
       loginController.loginWithEmail();
     }
   }
+
+
 }
 
 
+Future<String?> getIPAddress() async {
+  try {
+    // Check if device has internet connectivity
+    var connectivityResult = await Connectivity().checkConnectivity();
+
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      // Try to find a valid IPv4 address from network interfaces
+      var interfaces = await NetworkInterface.list();
+      for (var interface in interfaces) {
+        for (var addr in interface.addresses) {
+          if (addr.type == InternetAddressType.IPv4) {
+            return addr.address; // Returns the first IPv4 address found
+          }
+        }
+      }
+    } else {
+      return "No internet connection"; // Handle no internet connection
+    }
+  } catch (e) {
+    print("Failed to get IP address: $e"); // Log the error
+    return "Error fetching IP address"; // Return error message
+  }
+  return "No IP address found"; // Return this if no IP address was found
+}
+
+Future<String?> getPublicIPAddress() async {
+  try {
+    final response = await http.get(Uri.parse('https://api.ipify.org'));
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return "Failed to get public IP";
+    }
+  } catch (e) {
+    return "Error: $e";
+  }
+}
