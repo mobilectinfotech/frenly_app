@@ -216,14 +216,14 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                               obscureText: controller.isShowCPassword.value,
                               context: context,
                             )),
-                        SizedBox(height: 20.ah),
-                        Center(child: names("_personalNumber".tr + " : " + widget.personalNumber)),
+                        // SizedBox(height: 20.ah),
+                        // Center(child: names("_personalNumber".tr + " : " + widget.personalNumber)),
                         SizedBox(
                           height: 30.ah,
                         ),
                         Obx(
                           () => CustomPrimaryBtn1(
-                            title: 'sg'.tr,
+                            title: '_signupwithbankid'.tr,
                             isLoading: controller.isLoading.value,
                             onTap: () {
                               if (_formKeyLogin.currentState!.validate()) {

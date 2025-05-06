@@ -40,6 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isAuthenticating = false;
   String? _authOrderRef;
   StreamSubscription? _sub;
+  final RxBool apiLoading=true.obs;
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> toggel() async {
+    apiLoading.value = true;
     var dio = Dio();
     var response = await dio.request(
       'https://www.frenly.se:4000/user/getToggleStatus',
@@ -66,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // You can now store it or use it elsewhere
     } else {
       print('Error: ${response.statusMessage}');
-    }
+    } apiLoading.value = false;
   }
 
   Future<http.Client> getHttpClient() async {
@@ -165,235 +167,239 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() => _isAuthenticating = false);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //key: scaffoldKey,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: HexColor('#001649'),
-          child: Form(
-            key: _formKeyLogin,
-            child: ListView(children: [
-              SizedBox(height: 80.ah),
-              Padding(
-                padding: EdgeInsets.only(left: 10.h, right: 10.h),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'createacc'.tr,
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 35.fSize, height: 1.2.ah),
-                    ),
-                    // Spacer(),
-                    Container(
-                      height: 100.ah,
-                      width: 100.aw,
-                      child: CustomImageView(imagePath: "assets/icons/transparent bakgrund.svg"),
-                    ),
-                    SizedBox(width: 20.aw),
-                    // Image.asset('assets/image/image 1.png',height: 74.ah,width:74.aw,)
-                  ],
-                ),
-              ),
-              //  const Spacer(),
-              SizedBox(height: 40.ah),
-              Padding(
-                padding: EdgeInsets.only(left: 10.h, right: 10.h),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(35),
-                    ),
+      body: Obx(() {if(apiLoading.value)return Center(child: CircularProgressIndicator(),);
+        return SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: HexColor('#001649'),
+            child: Form(
+              key: _formKeyLogin,
+              child: ListView(children: [
+                SizedBox(height: 80.ah),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.h, right: 10.h),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'createacc'.tr,
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 35.fSize, height: 1.2.ah),
+                      ),
+                      // Spacer(),
+                      Container(
+                        height: 100.ah,
+                        width: 100.aw,
+                        child: CustomImageView(imagePath: "assets/icons/transparent bakgrund.svg"),
+                      ),
+                      SizedBox(width: 20.aw),
+                      // Image.asset('assets/image/image 1.png',height: 74.ah,width:74.aw,)
+                    ],
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 15.h, right: 15.h),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 30.ah),
-                        names("fullnm"),
-                        SizedBox(
-                          height: 10.ah,
-                        ),
-                        CustomTextFormField(
-                          // inputFormatters: InputFormatters.(),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: Validator.validateFullName,
-                          controller: controller.fullNameController, context: context,
-                          hintText: "john smith",
-                        ),
-                        SizedBox(height: 20.ah),
-                        names("user_name".tr),
-                        SizedBox(
-                          height: 10.ah,
-                        ),
-                        CustomTextFormField(
-                          inputFormatters: InputFormatters.spaceRestricted(),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value?.length == null || (value?.trim() ?? "").isEmpty) {
-                              return "username_not_be_empty".tr;
-                            } else if (isAbalable) {
-                              return null;
+                ),
+                //  const Spacer(),
+                SizedBox(height: 40.ah),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.h, right: 10.h),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: Get.height,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(35),
+                        topRight: Radius.circular(35),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 15.h, right: 15.h),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Obx(() {
+                            if (controller.bankIdToggle.value == 1) {
+                              // BankID Button
+                              return SignUpWithBankIdBtn();
                             } else {
-                              return 'username_already_registered'.tr;
+                              // Regular form
+                              return Padding(
+                                padding: EdgeInsets.only(left: 15.h, right: 15.h),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 30.ah),
+                                    names("fullnm"),
+                                    SizedBox(height: 10.ah),
+                                    CustomTextFormField(
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      validator: Validator.validateFullName,
+                                      controller: controller.fullNameController,
+                                      context: context,
+                                      hintText: "john smith",
+                                    ),
+                                    SizedBox(height: 20.ah),
+                                    names("user_name".tr),
+                                    SizedBox(height: 10.ah),
+                                    CustomTextFormField(
+                                      inputFormatters: InputFormatters.spaceRestricted(),
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      validator: (value) {
+                                        if (value?.length == null || (value?.trim() ?? "").isEmpty) {
+                                          return "username_not_be_empty".tr;
+                                        } else if (isAbalable) {
+                                          return null;
+                                        } else {
+                                          return 'username_already_registered'.tr;
+                                        }
+                                      },
+                                      controller: controller.userNameController,
+                                      context: context,
+                                      hintText: "jonesmith004",
+                                      onChanged: (p0) async {
+                                        if (p0.length > 2) {
+                                          isAbalable = await ApiRepository.checkUsername(checkUsername: "${p0}");
+                                          setState(() {});
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(height: 10.ah),
+                                    names("emailn"),
+                                    SizedBox(height: 10.ah),
+                                    CustomTextFormField(
+                                      inputFormatters: InputFormatters.spaceRestricted(),
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      validator: Validator.validateEmail,
+                                      controller: controller.emailController,
+                                      context: context,
+                                      hintText: "johnsmith@gmail.com",
+                                    ),
+                                    SizedBox(height: 15.ah),
+                                    names("Passw"),
+                                    SizedBox(height: 10.ah),
+                                    Obx(() => CustomTextFormField(
+                                      validator: Validator.validateStrongPassword,
+                                      controller: controller.passwordController,
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      textInputAction: TextInputAction.done,
+                                      suffix: InkWell(
+                                        onTap: () {
+                                          controller.isShowPassword.value = !controller.isShowPassword.value;
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
+                                          child: controller.isShowPassword.value ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+                                        ),
+                                      ),
+                                      hintText: "Passw".tr,
+                                      suffixConstraints: BoxConstraints(maxHeight: 44.v),
+                                      obscureText: controller.isShowPassword.value,
+                                      context: context,
+                                    )),
+                                    SizedBox(height: 15.ah),
+                                    names("REPassw"),
+                                    SizedBox(height: 10.ah),
+                                    Obx(() => CustomTextFormField(
+                                      validator: (val) {
+                                        if (val == null) {
+                                          return 'please_enter_your_confirm_password'.tr;
+                                        } else if (val != controller.passwordController.text) {
+                                          return "passwords_do_not_match".tr;
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      controller: controller.confirmpasswordController,
+                                      textInputAction: TextInputAction.done,
+                                      suffix: InkWell(
+                                        onTap: () {
+                                          controller.isShowCPassword.value = !controller.isShowCPassword.value;
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
+                                          child: controller.isShowCPassword.value ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+                                        ),
+                                      ),
+                                      hintText: "Passw".tr,
+                                      suffixConstraints: BoxConstraints(maxHeight: 44.v),
+                                      obscureText: controller.isShowCPassword.value,
+                                      context: context,
+                                    )),
+                                    SizedBox(height: 30.ah),
+                                    Obx(
+                                          () => CustomPrimaryBtn1(
+                                        title: 'sg'.tr,
+                                        isLoading: controller.isLoading.value,
+                                        onTap: () {
+                                          if (_formKeyLogin.currentState!.validate()) {
+                                            controller.signUp();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(height: 10.ah),
+                                    SizedBox(height: 10.ah),
+                                    Center(
+                                      child: Text(
+                                        'Alredy'.tr,
+                                        style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10.ah),
+                                    Center(
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                                        },
+                                        child: Text(
+                                          'Log'.tr,
+                                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 20.fSize),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 30.ah),
+                                  ],
+                                ),
+                              );
                             }
-                          },
-                          controller: controller.userNameController,
-                          context: context,
-                          hintText: "jonesmith004",
-                          onChanged: (p0) async {
-                            if (p0.length > 2) {
-                              isAbalable = await ApiRepository.checkUsername(checkUsername: "${p0}");
-                              setState(() {});
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: 10.ah,
-                        ),
-                        names("emailn"),
-                        SizedBox(
-                          height: 10.ah,
-                        ),
-                        CustomTextFormField(
-                          inputFormatters: InputFormatters.spaceRestricted(),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: Validator.validateEmail,
-                          controller: controller.emailController,
-                          context: context,
-                          hintText: "johnsmith@gmail.com",
-                        ),
-                        SizedBox(
-                          height: 15.ah,
-                        ),
-                        names("Passw"),
-                        SizedBox(
-                          height: 10.ah,
-                        ),
-                        Obx(() => CustomTextFormField(
-                              validator: Validator.validateStrongPassword,
-                              controller: controller.passwordController,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.done,
-                              suffix: InkWell(
-                                  onTap: () {
-                                    controller.isShowPassword.value = !controller.isShowPassword.value;
-                                  },
-                                  child: Container(
-                                      margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
-                                      child: controller.isShowPassword.value ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility))),
-                              hintText: "Passw".tr,
-                              suffixConstraints: BoxConstraints(maxHeight: 44.v),
-                              obscureText: controller.isShowPassword.value,
-                              context: context,
-                            )),
-                        SizedBox(
-                          height: 15.ah,
-                        ),
-                        names("REPassw"),
-                        SizedBox(
-                          height: 10.ah,
-                        ),
-                        Obx(() => CustomTextFormField(
-                              validator: (val) {
-                                print("dggsdggfs${val}");
-                                if (val == null) {
-                                  return 'please_enter_your_confirm_password'.tr;
-                                } else if (val != controller.passwordController.text) {
-                                  return "passwords_do_not_match".tr;
-                                } else {
-                                  print("return${val}");
-                                  return null;
-                                }
-                              },
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              controller: controller.confirmpasswordController,
-                              textInputAction: TextInputAction.done,
-                              suffix: InkWell(
-                                  onTap: () {
-                                    controller.isShowCPassword.value = !controller.isShowCPassword.value;
-                                  },
-                                  child: Container(
-                                      margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
-                                      child: controller.isShowCPassword.value ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility))),
-                              hintText: "Passw".tr,
-                              suffixConstraints: BoxConstraints(maxHeight: 44.v),
-                              obscureText: controller.isShowCPassword.value,
-                              context: context,
-                            )),
-                        SizedBox(
-                          height: 30.ah,
-                        ),
-                        Obx(
-                          () => CustomPrimaryBtn1(
-                            title: 'sg'.tr,
-                            isLoading: controller.isLoading.value,
-                            onTap: () {
-                              if (_formKeyLogin.currentState!.validate()) {
-                                controller.signUp();
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 10.ah),
-                        Obx(() {
-                          if (controller.bankIdToggle.value == 1) {
-                            return CustomPrimaryBtn2(
-                              title: '_signupwithbankid'.tr,
-                              isLoading: controller.isLoading2.value,
-                              onTap: startBankIDAuth,
-                            );
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        }),
-                        SizedBox(height: 10.ah),
-                        Center(
-                          child: Text(
-                            'Alredy'.tr,
-                            style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                          ),
-                        ),
-                        SizedBox(height: 10.ah),
-                        Center(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-                            },
-                            child: Text(
-                              'Log'.tr,
-                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 20.fSize),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.ah,
-                        )
-                      ],
+                          }),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              //Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).viewInsets.bottom),)
-            ]),
+                //Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).viewInsets.bottom),)
+              ]),
+            ),
           ),
-        ),
-      ),
+        );
+      },),
     );
+  }
+
+  Center SignUpWithBankIdBtn() {
+    return Center(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 200),
+                                child: CustomPrimaryBtn2(
+                                  title: '_signupwithbankid'.tr,
+                                  isLoading: controller.isLoading2.value,
+                                  onTap: startBankIDAuth,
+                                ),
+                              ),
+                            );
   }
 
   Widget names(String name) {
