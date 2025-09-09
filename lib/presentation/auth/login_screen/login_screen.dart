@@ -19,7 +19,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
-import 'package:uni_links3/uni_links.dart';
+// import 'package:uni_links3/uni_links.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
 

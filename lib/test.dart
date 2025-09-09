@@ -9,7 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:uni_links3/uni_links.dart';
+// import 'package:uni_links/uni_links.dart';
+// import 'package:uni_links3/uni_links.dart';
+import 'package:app_links/app_links.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +28,7 @@ class BankIDAuthScreenState extends State<BankIDAuthScreen> {
   @override
   void initState() {
     super.initState();
-    _listenForDeepLinks();
+  //  _listenForDeepLinks();
   }
 
 
@@ -84,14 +86,14 @@ class BankIDAuthScreenState extends State<BankIDAuthScreen> {
     }
   }
 
-  void _listenForDeepLinks() {
-    _sub = uriLinkStream.listen((Uri? uri) {
-      if (uri != null) handleDeepLink(uri);
-    });
-    getInitialUri().then((Uri? uri) {
-      if (uri != null) handleDeepLink(uri);
-    });
-  }
+  // void _listenForDeepLinks() {
+  //   _sub = uriLinkStream.listen((Uri? uri) {
+  //     if (uri != null) handleDeepLink(uri);
+  //   });
+  //   getInitialUri().then((Uri? uri) {
+  //     if (uri != null) handleDeepLink(uri);
+  //   });
+  // }
 
   void handleDeepLink(Uri uri) {
     if (uri.scheme == "bankidapp" && uri.host == "auth") {

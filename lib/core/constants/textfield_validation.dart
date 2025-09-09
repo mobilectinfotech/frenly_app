@@ -66,15 +66,15 @@ class Validator {
 
   static String? validateFullName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'please_enter_your_full_name'.tr;
+      return 'please_enter_your_name'.tr;
     }
 
     // Split by space and remove empty parts
-    List<String> parts = value.trim().split(' ').where((e) => e.isNotEmpty).toList();
+  //  List<String> parts = value.trim().split(' ').where((e) => e.isNotEmpty).toList();
 
-    if (parts.length < 2) {
-      return 'please_enter_a_valid_full_name'.tr;
-    }
+    // if (parts.length < 2) {
+    //   return 'please_enter_your_name'.tr;
+    // }
 
     // No character restrictions — allow special characters
     return null;

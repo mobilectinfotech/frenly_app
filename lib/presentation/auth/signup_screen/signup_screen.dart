@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/constants/my_textfieldbutton.dart';
-import 'package:uni_links3/uni_links.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+// import 'package:uni_links3/uni_links.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -48,6 +49,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.initState();
     toggel();
     //_listenForDeepLinks();
+  }
+  late final isAccepted = false.obs;
+
+  void toggle(bool? value) => isAccepted.value = value ?? false;
+
+  bool validateBeforeContinue() {
+    if (!isAccepted.value) {
+      Get.snackbar('Hold up', 'Please accept the Terms & Conditions to continue');
+      return false;
+    }
+    return true;
   }
 
   Future<void> toggel() async {
@@ -425,9 +437,84 @@ class _SignUpScreenState extends State<SignUpScreen> {
           obscureText: controller.isShowCPassword.value,
           context: context,
         )),
+        SizedBox(height: 20.ah),
+        Obx(() {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // CupertinoCheckbox(
+              //   value: isAccepted.value,
+              //   onChanged:toggle,
+              // ),
+              Checkbox(
+                visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                activeColor: Color(0xFF001649),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                //checkColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3.5),
+                  side: BorderSide(color: Color(0xFF001649), width: 1.aw),
+                ),
+                value: isAccepted.value,
+                onChanged: (value) {
+                  setState(() {
+                    this.isAccepted.value = value!;
+                  });
+                },
+              ),
+              const SizedBox(width: 8),
+              // Tappable Terms / Privacy
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: Color(0xff001649),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.fSize),
+                    children: [
+                       TextSpan(text: 'I agree to the ',
+                        style:TextStyle(color: Color(0xff001649),
+                          fontWeight: FontWeight.w500, fontSize: 12.fSize) ),
+                      TextSpan(
+                        text: 'Terms & Conditions',
+                        style: TextStyle(color: Color(0xff001649),decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.w500, fontSize: 13.fSize),
+                        recognizer: (TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrlString(
+                              'https://example.com/terms',
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }),
+                      ),
+                       TextSpan(text: ' and the ',
+                           style:TextStyle(color:Color(0xff001649), fontWeight: FontWeight.w500,
+                               fontSize: 12.fSize)),
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: TextStyle(color:Color(0xff001649),decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.w500, fontSize: 13.fSize),
+
+                        recognizer: (TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrlString(
+                              'https://example.com/privacy',
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }),
+                      ),
+                      const TextSpan(text: '.'),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        }),
+
         SizedBox(height: 30.ah),
-        Obx(
-              () => CustomPrimaryBtn1(
+        Obx(() => CustomPrimaryBtn1(
             title: 'sg'.tr,
             isLoading: controller.isLoading.value,
             onTap: () {
@@ -452,7 +539,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
             child: Text(
               'Log'.tr,
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 20.fSize),
+              style: TextStyle(color: Color(0xff001649), fontWeight: FontWeight.w700, fontSize: 20.fSize),
             ),
           ),
         ),

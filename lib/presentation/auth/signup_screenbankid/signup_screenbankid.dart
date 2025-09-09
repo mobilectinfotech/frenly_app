@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/constants/my_textfieldbutton.dart';
-import 'package:uni_links3/uni_links.dart';
+// import 'package:uni_links/uni_links.dart';
+// import 'package:uni_links3/uni_links.dart';
+import 'package:app_links/app_links.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -48,7 +49,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
   @override
   void initState() {
     super.initState();
-    _listenForDeepLinks();
+ //   _listenForDeepLinks();
   }
 
   Future<http.Client> getHttpClient() async {
@@ -100,14 +101,14 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
     }
   }
 
-  void _listenForDeepLinks() {
-    _sub = uriLinkStream.listen((Uri? uri) {
-      if (uri != null) handleDeepLink(uri);
-    });
-    getInitialUri().then((Uri? uri) {
-      if (uri != null) handleDeepLink(uri);
-    });
-  }
+  // void _listenForDeepLinks() {
+  //   _sub = uriLinkStream.listen((Uri? uri) {
+  //     if (uri != null) handleDeepLink(uri);
+  //   });
+  //   getInitialUri().then((Uri? uri) {
+  //     if (uri != null) handleDeepLink(uri);
+  //   });
+  // }
 
   void handleDeepLink(Uri uri) {
     if (uri.scheme == "bankidapp" && uri.host == "auth") {

@@ -20,7 +20,7 @@ class OnBoardFirst extends StatelessWidget {
           width: 285.ah,
         ),
 
-        SizedBox(height: 100.ah,),
+        SizedBox(height: 60.ah,),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -29,11 +29,12 @@ class OnBoardFirst extends StatelessWidget {
           children: [
             CustomImageView(
               imagePath: "assets/icons/app_icon.png",
-              height: 45.ah, width: 45.ah,
+              height: 80.ah, width:80.ah,
+              fit: BoxFit.fill,
             ),
 
-            SizedBox(width: 10.aw),
-            SvgPicture.asset('assets/icons/fren.svg', height:30.aw,width: 30.aw,fit: BoxFit.cover,color: Color(0xff001649),),
+          //  SizedBox(width: 10.aw),
+           //SvgPicture.asset('assets/icons/fren.svg', height:30.aw,width: 30.aw,fit: BoxFit.cover,color: Color(0xff001649),),
 
           ],
         ),
