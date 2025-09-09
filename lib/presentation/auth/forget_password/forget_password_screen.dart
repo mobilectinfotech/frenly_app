@@ -59,7 +59,7 @@ final ForgetPasswordController forgetPasswordController = Get.put(ForgetPassword
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.contain,
-                          image: AssetImage('assets/image/frenly_logo.png'),
+                          image: AssetImage('assets/logo/Blå_bakgrund.png'),
                         )),
                     // child: Center(child: Text(firestore.currentUser!.displayName!.toUpperCase().characters.first.toString(), style: TextStyle(fontSize: 20.fSize,fontWeight: FontWeight.w400),)),
                   ),

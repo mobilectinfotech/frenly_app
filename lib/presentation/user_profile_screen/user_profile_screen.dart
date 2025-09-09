@@ -40,12 +40,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     isLoadingUserById.value =false;
   }
 
-
-
-
-
   TextEditingController reasonController = TextEditingController();
-
   void reportFun(
       BuildContext context
       ) async {
@@ -120,13 +115,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               Get.back();
                             }
                           }
-
-
-
                           // Get.back();
                           // print("vlogid==>${widget.vlogId}");
-
-
                         },
                         child: Container(
                           height: 44.adaptSize,

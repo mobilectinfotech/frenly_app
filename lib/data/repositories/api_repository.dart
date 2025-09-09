@@ -142,13 +142,8 @@ class ApiRepository {
     required String fullname,
     required String personalNumber,
   }) async {
-    List<String> location = await getLocation();
-    String fcm = await getFCMToken();
     var data = {
       "personalNumber": personalNumber,
-      "lat": location[0],
-      "lng": location[1],
-      "fcm_token": fcm,
       'email': email,
       'password': password,
       'full_name': "$fullname",
@@ -157,13 +152,9 @@ class ApiRepository {
     Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "user/bankIdLogin", body: data);
 
     if (response != null) {
-      PrefUtils().setAuthToken("${LoginWithEmailModel.fromJson(response).token}");
-      PrefUtils().setUserFirstName("${LoginWithEmailModel.fromJson(response).user!.fullName}");
-      PrefUtils().setUserProfileUrl("${LoginWithEmailModel.fromJson(response).user!.avatarUrl}");
-      PrefUtils().setUserId("${LoginWithEmailModel.fromJson(response).user!.id}");
-      PrefUtils().setUserCoverUrl("${LoginWithEmailModel.fromJson(response).user!.coverPhotoUrl}");
-      PrefUtils().setUserCity("${LoginWithEmailModel.fromJson(response).user!.city}");
-      PrefUtils().setUserCountry("${LoginWithEmailModel.fromJson(response).user!.country}");
+      AppDialog.taostMessage(
+        "${response["message"]}",
+      );
       return true;
     }
     return false;

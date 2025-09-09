@@ -54,9 +54,6 @@ dependencies:
   flutter_masonry_view: ^0.0.2
   floating_frosted_bottom_bar:
   spincircle_bottom_bar:
-  flutter_locales: ^3.0.4
-  flutter_translate: ^4.1.0
-  flutter_localization: ^0.3.1
   curved_navigation_bar: ^1.0.6
   modal_progress_hud_nsn: ^0.5.1
   get: ^4.6.6
@@ -72,19 +69,22 @@ dependencies:
   path_provider:
   path:
   socket_io_client: ^3.0.2
-  flutter_local_notifications: ^18.0.1
+  flutter_local_notifications:
   timeago: ^3.7.0
   flick_video_player: ^0.9.0
+  flutter_translate: ^4.0.0
 
 
-#  firebase
+
+
+  #  firebase
   firebase_messaging: ^15.2.0
   firebase_analytics: ^11.4.0
   firebase_core: ^3.10.0
 
   flutter_riverpod: ^2.4.0
 
-  intl: any
+  intl:
   connectivity_plus:
   win32: ^5.10.0
   uni_links3: ^0.5.3
@@ -95,15 +95,25 @@ dependencies:
   url_launcher: ^6.1.14
   device_info_plus:
 
-
   velocity_x:
     git:
-      url: https://github.com/chihuy105/VelocityX.git
+      url: https://github.com/iampawan/VelocityX.git
       ref: stable
 
 dependency_overrides:
   video_thumbnail:
     git: https://github.com/Shahidbangash/video_thumbnail.git
+
+  intl: ^0.20.2
+
+  flutter_localizations:
+    sdk: flutter
+
+#  flutter_translate:
+#    git:
+#      url: git@github.com:tonkasl/flutter_translate.git
+
+
 
 dev_dependencies:
   flutter_test:
@@ -111,6 +121,12 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.3
+  intl: ^0.20.2
+
+flutter_locales:
+  git:
+    url: https://github.com/tonkasl/flutter_locales.git
+    ref: master
 
 
 flutter:

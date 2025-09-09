@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../../../../socket_service/socket_service.dart';
 import '../../../dashboard_screen/dashboard_screen.dart';
+import '../signup_screenbankid.dart';
 
 class SignUpBankidController extends GetxController {
   TextEditingController fullNameController = TextEditingController();
@@ -44,17 +45,27 @@ class SignUpBankidController extends GetxController {
     );
     isLoading(false);
     if (issingUp) {
-      SocketService().socketDisconnect();
-      SocketService().socketConnect();
-      Get.offAll(() => const DashBoardScreen());
+      Get.offAll(()=> const LoginScreen());
 
     }
-    else{
-      Get.offAll(() => const LoginScreen());
-    }
+    // else{
+    //   Get.offAll(() => const LoginScreen());
+    // }
   }
 
+  Future<void> loginWithBankIDCheck(personalNumber) async {
+    isLoading2(true);
+    bool success = await ApiRepository.loginWithBankIDCheck(personalNumberstr: personalNumber);
+    isLoading2(false);
+    if (success) {
+      signUp(personalNumber);
+      //Get.offAll(() => SignUpScreenBankid(personalNumber: personalNumber));
+    }
+    else{
 
+      Get.offAll(() => LoginScreen());
+    }
+  }
 
 
 }

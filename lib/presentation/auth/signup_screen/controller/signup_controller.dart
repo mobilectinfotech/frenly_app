@@ -68,18 +68,7 @@ class  SignUpController extends GetxController {
   //   }
   // }
 
-  Future<void> loginWithBankIDCheck(personalNumber) async {
-    isLoading2(true);
-    bool success = await ApiRepository.loginWithBankIDCheck(personalNumberstr: personalNumber);
-    isLoading2(false);
-    if (success) {
-      Get.offAll(() => SignUpScreenBankid(personalNumber: personalNumber));
-    }
-    else{
 
-      Get.offAll(() => LoginScreen());
-    }
-  }
 
 
 

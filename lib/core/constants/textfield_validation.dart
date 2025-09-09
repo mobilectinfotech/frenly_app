@@ -65,25 +65,19 @@ class Validator {
   }
 
   static String? validateFullName(String? value) {
-    bool _isAlpha(String str) {
-      return RegExp(r'^[a-zA-Z]+$').hasMatch(str);
-    }
-    if (value==null||value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return 'please_enter_your_full_name'.tr;
     }
-    // Split the full name into parts
-    List<String> parts = value.split(' ');
+
+    // Split by space and remove empty parts
+    List<String> parts = value.trim().split(' ').where((e) => e.isNotEmpty).toList();
+
     if (parts.length < 2) {
       return 'please_enter_a_valid_full_name'.tr;
     }
-    // Check if each part is valid (contains only alphabetical characters)
-    for (String part in parts) {
-      if (!_isAlpha(part)) {
-        return 'please_enter_a_valid_full_name'.tr;
-      }
-    }
-    return null;
 
+    // No character restrictions — allow special characters
+    return null;
   }
 
 }
