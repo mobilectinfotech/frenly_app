@@ -62,7 +62,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 bioTexts(),
                 SizedBox(height: 20.ah),
                 Padding(
-                  padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
+                  padding: EdgeInsets.only(left: 10.0.aw, right: 10.aw),
                   child: Container(
                     height: 52.ah,
                     decoration: BoxDecoration(
@@ -80,7 +80,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             },
                             child: Container(
                               height: 40,
-                              width: 112,
+                              width: 95,
                               decoration: BoxDecoration(
                                   color: activeIndex == 0
                                       ? Color(0xff001649)
@@ -104,7 +104,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             },
                             child: Container(
                               height: 40,
-                              width: 112,
+                              width: 95,
                               decoration: BoxDecoration(
                                   color: activeIndex == 1
                                       ? Color(0xff001649)
@@ -128,7 +128,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             },
                             child: Container(
                               height: 40,
-                              width: 112,
+                              width: 95,
                               decoration: BoxDecoration(
                                   color: activeIndex == 2
                                       ? Color(0xff001649)

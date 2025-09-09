@@ -3,6 +3,8 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
 
+import '../../../../Widgets/custom_image_view.dart';
+
 class OnBoardSecond extends StatelessWidget {
   const OnBoardSecond({
     super.key,
@@ -34,6 +36,14 @@ class OnBoardSecond extends StatelessWidget {
             .align(TextAlign.center)
             .fontWeight(FontWeight.w400)
             .make(),
+
+        SizedBox(height: 20.ah),
+        // CustomImageView(
+        //   imagePath: "assets/icons/Banklogo.svg",
+        //   height: 80.ah, width:80.ah,
+        //   fit: BoxFit.fill,
+        // ),
+        Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain,)
 
 
       ],

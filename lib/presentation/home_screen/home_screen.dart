@@ -59,11 +59,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
 
                       SizedBox(width: 10.aw),
-                      CustomImageView(imagePath: "assets/icons/transparent_bakgrund.svg",
-                        height: 45.aw,width: 35.aw,fit: BoxFit.cover),
-
-                      SizedBox(width: 15.aw),
-                      SvgPicture.asset('assets/icons/fren.svg', height:25.aw,width: 30.aw,fit: BoxFit.cover),
+                      // CustomImageView(imagePath: "assets/icons/transparent_bakgrund.svg",
+                      //   height: 45.aw,width: 35.aw,fit: BoxFit.cover),
+                      //
+                      // SizedBox(width: 15.aw),
+                      CustomImageView(
+                        imagePath: "assets/icons/app_icon.png",
+                        height: 90.ah, width:90.ah,
+                        fit: BoxFit.fill,
+                      ),
+                      //SvgPicture.asset('assets/icons/fren.svg', height:25.aw,width: 30.aw,fit: BoxFit.cover),
 
                       // Text("Fren".tr,
                       //   textAlign: TextAlign.center,
@@ -112,8 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
                  onRefresh: _refresh,
                 child: ListView(
                     children: [
-                      SizedBox(height: 20.ah),
-                      checkIn(),
+                    //  SizedBox(height: 20.ah),
+                   //   checkIn(),
 
 
                       SizedBox(height: 20.ah),
@@ -157,12 +162,10 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/image/location.png',
-              height: 24.ah, width: 24.aw, fit: BoxFit.fill),
+            Image.asset('assets/image/location.png', height: 24.ah, width: 24.aw, fit: BoxFit.fill),
 
             SizedBox(width: 10.aw),
-            Text(
-              'Check'.tr,
+            Text('Check'.tr,
               style: TextStyle(
                   fontFamily: 'Roboto',
                   color: Colors.black,
