@@ -104,6 +104,11 @@ class Messages extends Translations {
           "Donthave": "Don't have an account?",
           "alr": "Already know password ?",
           "sg": "Sign Up",
+          "i_agree_to": "I agree to ",
+          "terms_conditions": "Terms and Conditions",
+          "and_the": " and the ",
+          "privacy_policy": "Privacy Policy",
+
           "Log": "Login",
           "Logg": "LOGIN",
           "Forg": "Forgot Password ?",
@@ -583,7 +588,10 @@ class Messages extends Translations {
           "access_denied": "Åtkomst nekad",
           "you_have_been_blocked_by_the_admin": "Du har blivit blockerad av administratören.",
           "ok": "OK",
-
+          "i_agree_to": "Jag godkänner ",
+          "terms_conditions": "Villkor & Bestämmelser",
+          "and_the": " och ",
+          "privacy_policy": " Integritetspolicyn",
 
 
         }

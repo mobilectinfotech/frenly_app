@@ -354,9 +354,10 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 30.ah,
-                        )
+                        SizedBox(height: 30.ah,),
+                        Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain,),
+
+                        SizedBox(height: 30.ah,)
                       ],
                     ),
                   ),

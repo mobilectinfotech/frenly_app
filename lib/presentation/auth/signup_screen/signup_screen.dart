@@ -281,8 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                 height: 150.ah, // Adjust the height of the logo container
                 width: 150.aw,  // Adjust the width of the logo container
-                child: Image.asset(
-                  'assets/logo/Blå_bakgrund.png', // Replace with your logo path
+                child: Image.asset('assets/icons/app_icon.png', // Replace with your logo path
                   fit: BoxFit.contain, // Adjust fit as needed
                 ),
               ),
@@ -322,7 +321,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 30.ah),
+
+              SizedBox(height: 20.ah),
+              Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain,),
+              SizedBox(height: 20.ah,)
             ],
           ),
         ),
@@ -473,11 +475,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         fontWeight: FontWeight.bold,
                         fontSize: 12.fSize),
                     children: [
-                       TextSpan(text: 'I agree to the ',
+                       TextSpan(text: 'i_agree_to'.tr,
                         style:TextStyle(color: Color(0xff001649),
                           fontWeight: FontWeight.w500, fontSize: 12.fSize) ),
                       TextSpan(
-                        text: 'Terms & Conditions',
+                        text: 'terms_conditions'.tr,
                         style: TextStyle(color: Color(0xff001649),decoration: TextDecoration.underline,
                             fontWeight: FontWeight.w500, fontSize: 13.fSize),
                         recognizer: (TapGestureRecognizer()
@@ -488,11 +490,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           }),
                       ),
-                       TextSpan(text: ' and the ',
+                       TextSpan(text: 'and_the'.tr,
                            style:TextStyle(color:Color(0xff001649), fontWeight: FontWeight.w500,
                                fontSize: 12.fSize)),
                       TextSpan(
-                        text: 'Privacy Policy',
+                        text: 'privacy_policy'.tr,
                         style: TextStyle(color:Color(0xff001649),decoration: TextDecoration.underline,
                             fontWeight: FontWeight.w500, fontSize: 13.fSize),
 
