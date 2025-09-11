@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/constants/my_textfieldbutton.dart';
@@ -43,6 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _authOrderRef;
   StreamSubscription? _sub;
   final RxBool apiLoading = true.obs;
+
 
   @override
   void initState() {
@@ -439,81 +441,100 @@ class _SignUpScreenState extends State<SignUpScreen> {
           obscureText: controller.isShowCPassword.value,
           context: context,
         )),
-        SizedBox(height: 20.ah),
-        Obx(() {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // CupertinoCheckbox(
-              //   value: isAccepted.value,
-              //   onChanged:toggle,
-              // ),
-              Checkbox(
-                visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                activeColor: Color(0xFF001649),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                //checkColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3.5),
-                  side: BorderSide(color: Color(0xFF001649), width: 1.aw),
-                ),
-                value: isAccepted.value,
-                onChanged: (value) {
-                  setState(() {
-                    this.isAccepted.value = value!;
-                  });
-                },
-              ),
-              const SizedBox(width: 8),
-              // Tappable Terms / Privacy
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: Color(0xff001649),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.fSize),
-                    children: [
-                       TextSpan(text: 'i_agree_to'.tr,
-                        style:TextStyle(color: Color(0xff001649),
-                          fontWeight: FontWeight.w500, fontSize: 12.fSize) ),
-                      TextSpan(
-                        text: 'terms_conditions'.tr,
-                        style: TextStyle(color: Color(0xff001649),decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w500, fontSize: 13.fSize),
-                        recognizer: (TapGestureRecognizer()
-                          ..onTap = () {
-                            launchUrlString(
-                              'https://example.com/terms',
-                              mode: LaunchMode.externalApplication,
-                            );
-                          }),
-                      ),
-                       TextSpan(text: 'and_the'.tr,
-                           style:TextStyle(color:Color(0xff001649), fontWeight: FontWeight.w500,
-                               fontSize: 12.fSize)),
-                      TextSpan(
-                        text: 'privacy_policy'.tr,
-                        style: TextStyle(color:Color(0xff001649),decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w500, fontSize: 13.fSize),
 
-                        recognizer: (TapGestureRecognizer()
-                          ..onTap = () {
-                            launchUrlString(
-                              'https://example.com/privacy',
-                              mode: LaunchMode.externalApplication,
-                            );
-                          }),
+        SizedBox(height: 20.ah),
+        FormField<bool>(
+          validator: (value) => Validator.validateTerms(isAccepted.value),
+          builder: (formFieldState) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // CupertinoCheckbox(
+                    //   value: isAccepted.value,
+                    //   onChanged:toggle,
+                    // ),
+                    Checkbox(
+                      visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                      activeColor: Color(0xFF001649),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      //checkColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3.5),
+                        side: BorderSide(color: Color(0xFF001649), width: 1.aw),
                       ),
-                      const TextSpan(text: '.'),
-                    ],
-                  ),
+                      value: isAccepted.value,
+                      onChanged: (value) {
+                        setState(() {
+                          this.isAccepted.value = value ?? false;
+                        });
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    // Tappable Terms / Privacy
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                              color: Color(0xff001649),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.fSize),
+                          children: [
+                            TextSpan(text: 'i_agree_to'.tr,
+                                style:TextStyle(color: Color(0xff001649),
+                                    fontWeight: FontWeight.w500, fontSize: 12.fSize) ),
+                            TextSpan(
+                              text: 'terms_conditions'.tr,
+                              style: TextStyle(color: Color(0xff001649),decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w500, fontSize: 13.fSize),
+                              recognizer: (TapGestureRecognizer()
+                                ..onTap = () {
+                                  launchUrlString(
+                                    'https://www.frenly.se/terms',
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                }),
+                            ),
+                            TextSpan(text: 'and_the'.tr,
+                                style:TextStyle(color:Color(0xff001649), fontWeight: FontWeight.w500,
+                                    fontSize: 12.fSize)),
+                            TextSpan(
+                              text: 'privacy_policy'.tr,
+                              style: TextStyle(color:Color(0xff001649),decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w500, fontSize: 13.fSize),
+
+                              recognizer: (TapGestureRecognizer()
+                                ..onTap = () {
+                                  launchUrlString(
+                                    'https://www.frenly.se/privacy',
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                }),
+                            ),
+                            const TextSpan(text: '.'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          );
-        }),
+
+                if (formFieldState.hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12, top: 4),
+                    child: Text(
+                      formFieldState.errorText ?? "",
+                      style: TextStyle(color: Colors.red, fontSize: 12.fSize),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
 
         SizedBox(height: 30.ah),
         Obx(() => CustomPrimaryBtn1(

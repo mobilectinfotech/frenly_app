@@ -295,6 +295,8 @@ class Messages extends Translations {
           "ok": "OK",
           "confirm_logout": "Confirm Logout",
           "Are_you_sure_logout": "Are you sure you want to logout?",
+          "please_accept_terms": "Please accept terms condition and privacy policy",
+
         },
 
         'swe_SE': {
@@ -595,7 +597,8 @@ class Messages extends Translations {
           "and_the": " och ",
           "privacy_policy": " Integritetspolicyn",
           "confirm_logout": "Bekräfta utloggning",
-          "Are_you_sure_logout": "Är du säker på att du vill logga ut?"
+          "Are_you_sure_logout": "Är du säker på att du vill logga ut?",
+          "please_accept_terms": "Vänligen acceptera villkoren och sekretesspolicyn"
 
         }
       };

@@ -12,6 +12,13 @@ class Validator {
   }
 
 
+  static String? validateTerms(bool? value) {
+    if (value == null || !value) {
+      return 'please_accept_terms'.tr;
+    }
+    return null;
+  }
+
 
   static String? validateStrongPassword(String? value) {
     if (value == null || value.isEmpty) {
