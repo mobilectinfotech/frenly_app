@@ -96,9 +96,7 @@ void checkUserBlockMyAdminOrNot() async {
           barrierDismissible: false, // Prevent dismissing by tapping outside
         );
       }
-
     }
-
 
   } catch (e, s) {
     print(e);

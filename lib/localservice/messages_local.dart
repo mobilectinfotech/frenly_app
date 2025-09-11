@@ -293,6 +293,8 @@ class Messages extends Translations {
           "access_denied": "Access Denied",
           "you_have_been_blocked_by_the_admin": "You have been blocked by the admin.",
           "ok": "OK",
+          "confirm_logout": "Confirm Logout",
+          "Are_you_sure_logout": "Are you sure you want to logout?",
         },
 
         'swe_SE': {
@@ -592,7 +594,8 @@ class Messages extends Translations {
           "terms_conditions": "Villkor & Bestämmelser",
           "and_the": " och ",
           "privacy_policy": " Integritetspolicyn",
-
+          "confirm_logout": "Bekräfta utloggning",
+          "Are_you_sure_logout": "Är du säker på att du vill logga ut?"
 
         }
       };

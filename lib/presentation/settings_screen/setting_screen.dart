@@ -429,7 +429,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           title: 'Logout'.tr,
                           isLoading: false,
                           onTap: () {
-                            onTapLogOutBtn();
+                            _showLogoutConfirmationDialog(context);
                             //   Navigator.push(context, MaterialPageRoute(builder: (context) => Video_Post_Screen()));
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
                           },
@@ -445,7 +445,6 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
     );
   }
-
 
   // Function to show delete confirmation dialog
   Future<void> _showDeleteConfirmationDialog(BuildContext context) async {
@@ -485,6 +484,42 @@ class _SettingScreenState extends State<SettingScreen> {
       },
     );
   }
+
+  Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Prevent dismiss by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('confirm_logout'.tr),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are_you_sure_logout'.tr),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('cancel'.tr),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Logout'.tr),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                // 🔹 Call your existing logout logic
+                onTapLogOutBtn();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
 
 void onTapLogOutBtn() {
