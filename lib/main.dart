@@ -76,10 +76,10 @@ class MyApp extends StatelessWidget {
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           translations: Messages(),
-          locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
-          fallbackLocale:const  Locale('swe', 'SE'),
-          // locale: locale ?? const Locale('en', 'US'), // Default locale if no saved locale
-          // fallbackLocale:const  Locale('en', 'US'),
+          // locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
+          // fallbackLocale:const  Locale('swe', 'SE'),
+          locale: locale ?? const Locale('en', 'US'), // Default locale if no saved locale
+          fallbackLocale:const  Locale('en', 'US'),
           title: 'Frenly',
           home: SplashScreen(),
          // home: Scaffold(body: VideoThumbnailPlayer(videoUrl: 'https://frenly.s3.amazonaws.com/1719924957051-3769033-sd_426_240_25fps.mp4',)),

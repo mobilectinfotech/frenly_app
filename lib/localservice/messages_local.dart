@@ -299,7 +299,7 @@ class Messages extends Translations {
 
         },
 
-        'swe_SE': {
+        'sv_SE': {
           "_post": "Posta",
           "_vlog": "Vlogg",
           "_signupwithbankid": "Registrera dig med BankID",

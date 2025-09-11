@@ -71,14 +71,14 @@ class _SettingScreenState extends State<SettingScreen> {
                   Get.updateLocale(newLocale);
                   locale =newLocale;
                   setState(() {});
-
                   Get.back();
                 },
               ),
               ListTile(
                 title: Text('swedish'.tr),
                 onTap: () async{
-                  final newLocale = Locale('swe', 'SE');
+                //  final newLocale = Locale('swe', 'SE');
+                  final newLocale = Locale('sv', 'SE');
                   await localeService.saveLocale(newLocale);
                   Get.updateLocale(newLocale);
                   locale =newLocale;
@@ -299,11 +299,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                   InkWell(
                                     onTap: () async {
                                       _showLanguageDialog(context);
-
                                       // isenglish =await   PrefUtils().getUserLanguage();
                                     },
                                     child: Text(
-                                       "${locale?.languageCode}" == "en" ? 'Eng'.tr :  "swedish".tr,
+                                     //  "${locale?.languageCode}" == "en" ? 'Eng'.tr :  "swedish".tr,
+                                      "${locale?.languageCode}" == "en" ? 'Eng'.tr : "swedish".tr,
                                       style: TextStyle(
                                           color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                     ),
@@ -524,7 +524,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
 void onTapLogOutBtn() {
   PrefUtils().logout();
-  Get.delete<ShareController>(force: true);
-  Get.delete<SaveController>(force: true);
+  // Get.delete<ShareController>(force: true);
+   Get.delete<SaveController>(force: true);
   Get.offAll(() => const LoginScreen());
 }

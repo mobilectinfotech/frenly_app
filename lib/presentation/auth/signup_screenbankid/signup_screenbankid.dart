@@ -288,9 +288,8 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                           height: 15.ah,
                         ),
                         names("REPassw"),
-                        SizedBox(
-                          height: 10.ah,
-                        ),
+                        SizedBox(height: 10.ah),
+
                         Obx(() => CustomTextFormField(
                               validator: (val) {
                                 print("dggsdggfs${val}");
@@ -325,7 +324,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                         ),
                         Obx(
                           () => CustomPrimaryBtn1(
-                            title: 'sg'.tr,
+                            title:'sg'.tr,
                             isLoading: controller.isLoading.value,
                             onTap: () {
                               if (_formKeyLogin.currentState!.validate()) {
@@ -337,8 +336,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                         ),
                         SizedBox(height: 10.ah),
                         Center(
-                          child: Text(
-                            'Alredy'.tr,
+                          child: Text('Alredy'.tr,
                             style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                           ),
                         ),
@@ -348,14 +346,13 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                             },
-                            child: Text(
-                              'Log'.tr,
+                            child: Text('Log'.tr,
                               style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 20.fSize),
                             ),
                           ),
                         ),
                         SizedBox(height: 30.ah,),
-                        Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain,),
+                      //  Center(child: Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain)),
 
                         SizedBox(height: 30.ah,)
                       ],
@@ -363,7 +360,6 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                   ),
                 ),
               ),
-
               //Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).viewInsets.bottom),)
             ]),
           ),

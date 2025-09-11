@@ -28,11 +28,13 @@ class Assets {
   static const String iconsPlus = 'assets/icons/plus.svg';
   static const String iconsProfileImage = 'assets/icons/profile_image.jpg';
   static const String iconsSerchIcon = 'assets/icons/serch_icon.svg';
-  static const String iconsVector = 'assets/icons/Vector (6).svg';
+  static const String iconsVector6 = 'assets/icons/Vector (6).svg';
   static const String imageAccept = 'assets/image/Accept.svg';
   static const String imageAmico = 'assets/image/amico.png';
   static const String imageArrow = 'assets/image/arrow.png';
+  static const String imageBankIDlogowhite = 'assets/image/BankIDlogowhite.png';
   static const String imageBankId = 'assets/image/BankId.png';
+  static const String imageBankkname = 'assets/image/bankkname.png';
   static const String imageBg = 'assets/image/bg.png';
   static const String imageBlueUnliked = 'assets/image/blue_unliked.svg';
   static const String imageCommentsBlue = 'assets/image/comments_blue.png';
@@ -72,7 +74,7 @@ class Assets {
   static const String imageSplash = 'assets/image/splash.png';
   static const String imageUnion = 'assets/image/Union (2).png';
   static const String imageVector = 'assets/image/Vector.png';
-  static const String imageVectors = 'assets/image/Vector (1).png';
+  static const String imageVectorr = 'assets/image/Vector (1).png';
   static const String logoAppLogo = 'assets/logo/app_logo.png';
 
 }

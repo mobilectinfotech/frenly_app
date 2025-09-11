@@ -44,8 +44,8 @@ class _OnBoardState extends State<OnBoard> {
                     children: const [
                       OnBoardFirst(),
                       OnBoardSecond(),
-                      OnBoardThird(),
-                      OnBoardThirdd(),
+                    //  OnBoardThird(),
+                    //  OnBoardThirdd(),
                     ],
                   ),
                 ),
@@ -53,7 +53,7 @@ class _OnBoardState extends State<OnBoard> {
                 SmoothPageIndicator(
                   controller:
                   onBoardViewModel.pageController, // PageController
-                  count: 4,
+                  count: 2,
                   effect: const WormEffect(
                     activeDotColor: Colors.black,
                     dotHeight: 12.0,

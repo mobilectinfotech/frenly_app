@@ -291,6 +291,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 100.ah), // Space between logo and button
               CustomPrimaryBtn2(
                 title: '_signupwithbankid'.tr,
+                imagePath: "assets/image/BankIDlogowhite.png",
                 isLoading: controller.isLoading2.value,
                 //onTap: startBankIDAuth,
                 onTap: () {
@@ -324,7 +325,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-
               SizedBox(height: 20.ah),
               Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain,),
               SizedBox(height: 20.ah,)
@@ -550,8 +550,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         SizedBox(height: 10.ah),
         Center(
-          child: Text(
-            'Alredy'.tr,
+          child: Text('Alredy'.tr,
             style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w500, fontSize: 16.fSize),
           ),
         ),
@@ -561,8 +560,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
             },
-            child: Text(
-              'Log'.tr,
+            child: Text('Log'.tr,
               style: TextStyle(color: Color(0xff001649), fontWeight: FontWeight.w700, fontSize: 20.fSize),
             ),
           ),
@@ -575,8 +573,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget names(String name) {
     return Padding(
       padding: EdgeInsets.only(left: 10.h),
-      child: Text(
-        name.tr,
+      child: Text(name.tr,
         style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 15.fSize),
       ),
     );

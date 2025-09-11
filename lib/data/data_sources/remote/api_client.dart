@@ -115,7 +115,7 @@ Response createErrorEntity(DioException error) {
       Get.offAll(()=>NoInternetScreen());
       return Response(data: {
         'message':
-            'Network connection error. Please check your internet connection.',
+        'Network connection error. Please check your internet connection.',
         "statusCode": -6,
       }, statusCode: -6, requestOptions: RequestOptions());
 
