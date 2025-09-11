@@ -531,31 +531,42 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
     return Row(
       children: [
         const SizedBox(width: 20),
-        Obx(() {
-          final user = controller.blogByIdModel.value?.blog?.user;
-          return CustomImageView(
-            height: 30.adaptSize,
-            width: 30.adaptSize,
-            fit: BoxFit.cover,
-            onTap: () {
-              Get.to(() => UserProfileScreen(userId: "${user?.id}"));
-            },
-            radius: BorderRadius.circular(50),
-            imagePath: user?.avatarUrl,
-          );
-        }),
-        const SizedBox(width: 10),
-        Obx(() {
-          final handle = controller.blogByIdModel.value?.blog?.user?.handle ?? "";
-          return Text(
-            handle,
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.90),
-              fontWeight: FontWeight.w600,
-              fontSize: 12.fSize,
-            ),
-          );
-        }),
+        InkWell(
+          onTap: () {
+            final user = controller.blogByIdModel.value?.blog?.user;
+            Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+          },
+          child: Row(
+            children: [
+              Obx(() {
+                final user = controller.blogByIdModel.value?.blog?.user;
+                return CustomImageView(
+                  height: 30.adaptSize,
+                  width: 30.adaptSize,
+                  fit: BoxFit.cover,
+                  onTap: () {
+                    Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                  },
+                  radius: BorderRadius.circular(50),
+                  imagePath: user?.avatarUrl,
+                );
+              }),
+              const SizedBox(width: 10),
+              Obx(() {
+                final handle = controller.blogByIdModel.value?.blog?.user?.handle ?? "";
+                return Text(
+                  handle,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.90),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.fSize,
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+
         const Spacer(),
         InkWell(
           onTap: () {

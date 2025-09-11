@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
@@ -823,31 +824,42 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
     return Row(
       children: [
         const SizedBox(width: 10),
-        Obx(() {
-          final user = controller.vlogByIdModel.value?.vlog?.user;
-          return CustomImageView(
-            height: 30.adaptSize,
-            width: 30.adaptSize,
-            fit: BoxFit.cover,
-            onTap: () {
-              Get.to(() => UserProfileScreen(userId: "${user?.id}"));
-            },
-            radius: BorderRadius.circular(50),
-            imagePath: user?.avatarUrl,
-          );
-        }),
-        const SizedBox(width: 10),
-        Obx(() {
-          final handle = controller.vlogByIdModel.value?.vlog?.user?.handle ?? "";
-          return Text(
-            handle,
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.90),
-              fontWeight: FontWeight.w600,
-              fontSize: 12.fSize,
-            ),
-          );
-        }),
+        InkWell(
+          onTap: () {
+            final user = controller.vlogByIdModel.value?.vlog?.user;
+            Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+          },
+          child: Row(
+            children: [
+              Obx(() {
+                final user = controller.vlogByIdModel.value?.vlog?.user;
+                return CustomImageView(
+                  height: 30.adaptSize,
+                  width: 30.adaptSize,
+                  fit: BoxFit.cover,
+                  onTap: () {
+                    Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                  },
+                  radius: BorderRadius.circular(50),
+                  imagePath: user?.avatarUrl,
+                );
+              }),
+              const SizedBox(width: 10),
+              Obx(() {
+                final handle = controller.vlogByIdModel.value?.vlog?.user?.handle ?? "";
+                return Text(
+                  handle,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.90),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.fSize,
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+
         const Spacer(),
         InkWell(
           onTap: () {
@@ -985,6 +997,11 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
                         fontWeight: FontWeight.w500,
                         fontSize: 15,
                       ),
+                      recognizer: (TapGestureRecognizer()
+                        ..onTap = () {
+                          final user = controller.vlogByIdModel.value?.vlog?.user;
+                          Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                        }),
                       children: [
                         TextSpan(
                           text: " $title",

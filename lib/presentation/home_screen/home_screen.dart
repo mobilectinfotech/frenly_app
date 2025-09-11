@@ -119,11 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                     //  SizedBox(height: 20.ah),
                    //   checkIn(),
-
-
                       SizedBox(height: 20.ah),
                       titleViewAll(title: 'Live'.tr, onTap: () {Get.to(()=> const PopularsCityScreen());}),
-                     SizedBox(height: 10.ah),
+                      SizedBox(height: 10.ah),
                       liveUserByCountry(),
                       SizedBox(height: 20.ah),
                       titleViewAll(title: 'Posts'.tr, onTap: () {Get.to(()=>const PostListScreen());}),

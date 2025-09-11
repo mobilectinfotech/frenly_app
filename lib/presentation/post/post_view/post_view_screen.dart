@@ -70,31 +70,45 @@ class _PostViewScreenState extends State<PostViewScreen> {
     return Row(
       children: [
         const SizedBox(width: 20),
-        Obx(() {
+        InkWell(
+          onTap: () {
           final user = controller.postSingleViewModel.value?.post?.user;
-          return CustomImageView(
-            height: 30.adaptSize,
-            width: 30.adaptSize,
-            fit: BoxFit.cover,
-            onTap: () {
-              Get.to(() => UserProfileScreen(userId: "${user?.id}"));
-            },
-            radius: BorderRadius.circular(50),
-            imagePath: user?.avatarUrl,
-          );
-        }),
-        const SizedBox(width: 10),
-        Obx(() {
-          final handle = controller.postSingleViewModel.value?.post?.user?.handle ?? "";
-          return Text(
-            handle,
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.90),
-              fontWeight: FontWeight.w600,
-              fontSize: 12.fSize,
-            ),
-          );
-        }),
+          Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Obx(() {
+                final user = controller.postSingleViewModel.value?.post?.user;
+                return CustomImageView(
+                  height: 30.adaptSize,
+                  width: 30.adaptSize,
+                  fit: BoxFit.cover,
+                  onTap: () {
+                    Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                  },
+                  radius: BorderRadius.circular(50),
+                  imagePath: user?.avatarUrl,
+                );
+              }),
+
+              const SizedBox(width: 10),
+              Obx(() {
+                final handle = controller.postSingleViewModel.value?.post?.user?.handle ?? "";
+                return Text(
+                  handle,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.90),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.fSize,
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+
         const Spacer(),
         InkWell(
           onTap: () {
