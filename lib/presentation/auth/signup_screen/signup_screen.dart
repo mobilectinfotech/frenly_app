@@ -50,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void initState() {
     super.initState();
     toggel();
-    //_listenForDeepLinks();
+    _listenForDeepLinks();
   }
   late final isAccepted = false.obs;
 
@@ -135,53 +135,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
   //     setState(() => _isAuthenticating = false);
   //   }
   // }
-  //
-  // void _listenForDeepLinks() {
-  //   _sub = uriLinkStream.listen((Uri? uri) {
-  //     if (uri != null) handleDeepLink(uri);
-  //   });
-  //   getInitialUri().then((Uri? uri) {
-  //     if (uri != null) handleDeepLink(uri);
-  //   });
-  // }
-  //
-  // void handleDeepLink(Uri uri) {
-  //   if (uri.scheme == "bankidapp" && uri.host == "auth") {
-  //     verifyBankIDAuth();
-  //   }
-  // }
-  //
-  // Future<void> verifyBankIDAuth() async {
-  //   if (_authOrderRef == null) return;
-  //   final Uri verifyUrl = Uri.parse("https://www.frenly.se:4000/auth/collect");
-  //   try {
-  //     final response = await http.post(
-  //       verifyUrl,
-  //       headers: {"Content-Type": "application/json"},
-  //       body: jsonEncode({"orderRef": _authOrderRef}),
-  //     );
-  //
-  //     if (response.statusCode == 200) {
-  //       final responseData = jsonDecode(response.body);
-  //       print("Authentication Failed: ${responseData}");
-  //       if (responseData["success"] == true) {
-  //         var personalNumber = responseData['user']['personalNumber'];
-  //         var name = responseData['user']['name'];
-  //         print('Personal Number: $personalNumber');
-  //         print('Personal Number: $personalNumber');
-  //         controller.loginWithBankIDCheck(personalNumber);
-  //         print("Authentication Successful");
-  //       } else {
-  //         print("Authentication Failed: ${responseData["status"]}");
-  //       }
-  //     } else {
-  //       print("Verification Error: ${response.body}");
-  //     }
-  //   } catch (e) {
-  //     print("Error verifying authentication: $e");
-  //   }
-  //   setState(() => _isAuthenticating = false);
-  // }
+
+  void _listenForDeepLinks() {
+    _sub = uriLinkStream.listen((Uri? uri) {
+      if (uri != null) handleDeepLink(uri);
+    });
+    getInitialUri().then((Uri? uri) {
+      if (uri != null) handleDeepLink(uri);
+    });
+  }
+
+  void handleDeepLink(Uri uri) {
+    if (uri.scheme == "bankidapp" && uri.host == "auth") {
+      verifyBankIDAuth();
+    }
+  }
+
+  Future<void> verifyBankIDAuth() async {
+    if (_authOrderRef == null) return;
+    final Uri verifyUrl = Uri.parse("https://www.frenly.se:4000/auth/collect");
+    try {
+      final response = await http.post(
+        verifyUrl,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"orderRef": _authOrderRef}),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print("Authentication Failed: ${responseData}");
+        if (responseData["success"] == true) {
+          var personalNumber = responseData['user']['personalNumber'];
+          var name = responseData['user']['name'];
+          print('Personal Number: $personalNumber');
+          print('Personal Number: $personalNumber');
+         // controller.loginWithBankIDCheck(personalNumber);
+          print("Authentication Successful");
+        } else {
+          print("Authentication Failed: ${responseData["status"]}");
+        }
+      } else {
+        print("Verification Error: ${response.body}");
+      }
+    } catch (e) {
+      print("Error verifying authentication: $e");
+    }
+    setState(() => _isAuthenticating = false);
+  }
 
   @override
   Widget build(BuildContext context) {
