@@ -46,7 +46,6 @@ class SignUpBankidController extends GetxController {
     isLoading(false);
     if (issingUp) {
       Get.offAll(()=> const LoginScreen());
-
     }
     // else{
     //   Get.offAll(() => const LoginScreen());

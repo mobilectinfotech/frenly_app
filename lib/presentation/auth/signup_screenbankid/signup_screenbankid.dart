@@ -45,11 +45,13 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
   StreamSubscription? _sub;
   final RxBool apiLoading = true.obs;
   var personalNumber;
+  final AppLinks _appLinks = AppLinks(); // ✅ declare instance
+
 
   @override
   void initState() {
     super.initState();
- //   _listenForDeepLinks();
+   _listenForDeepLinks();
   }
 
   Future<http.Client> getHttpClient() async {
@@ -63,7 +65,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
   String generateNonce() => Uuid().v4();
 
   Future<void> startBankIDAuth() async {
-    controller.isLoading2(true);
+    controller.isLoading(true);
     setState(() => _isAuthenticating = true);
     final client = await getHttpClient();
     final iPAddress = await getPublicIPAddress();
@@ -79,8 +81,9 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
     try {
       final response = await client.post(
         bankIDApiUrl,
-        //headers: {"Content-Type": "application/json"},
-        body: requestBody,
+        headers: {"Content-Type": "application/json"},
+      //  body: requestBody,
+        body: jsonEncode(requestBody),
       );
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
@@ -97,6 +100,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
     } catch (e) {
       print("Exception during BankID authentication: $e");
     } finally {
+      controller.isLoading(false);
       setState(() => _isAuthenticating = false);
     }
   }
@@ -110,6 +114,15 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
   //   });
   // }
 
+  void _listenForDeepLinks() {
+    _sub = AppLinks().uriLinkStream.listen((Uri? uri) {
+      if (uri != null) handleDeepLink(uri);
+    });
+    _appLinks.getInitialLink().then((Uri? uri) {
+      if (uri != null) handleDeepLink(uri);
+    });
+  }
+
   void handleDeepLink(Uri uri) {
     if (uri.scheme == "bankidapp" && uri.host == "auth") {
       verifyBankIDAuth();
@@ -120,8 +133,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
     if (_authOrderRef == null) return;
     final Uri verifyUrl = Uri.parse("https://www.frenly.se:4000/auth/collect");
     try {
-      final response = await http.post(
-        verifyUrl,
+      final response = await http.post(verifyUrl,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"orderRef": _authOrderRef}),
       );
@@ -133,8 +145,11 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
            personalNumber = responseData['user']['personalNumber'];
           var name = responseData['user']['name'];
           print('Personal Number: $personalNumber');
-          print('Personal Number: $personalNumber');
-          controller.loginWithBankIDCheck(personalNumber);
+           print('Name: $name');
+           ///
+           //await controller.signUp(personalNumber);
+           ///
+           controller.loginWithBankIDCheck(personalNumber);
           print("Authentication Successful");
         } else {
           print("Authentication Failed: ${responseData["status"]}");
@@ -147,7 +162,6 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
     }
     setState(() => _isAuthenticating = false);
   }
-
 
 
   @override
@@ -329,7 +343,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                             onTap: () {
                               if (_formKeyLogin.currentState!.validate()) {
                                 startBankIDAuth();
-                                //controller.signUp(personalNumber);
+                                controller.signUp(personalNumber);
                               }
                             },
                           ),
@@ -352,7 +366,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                           ),
                         ),
                         SizedBox(height: 30.ah,),
-                      //  Center(child: Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain)),
+                        Center(child: Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain)),
 
                         SizedBox(height: 30.ah,)
                       ],

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:app_links/app_links.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +16,7 @@ import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:win32/winsock2.dart' as appLinksuriLinkStream;
 import '../../../Widgets/custom_textfield.dart';
 import '../../../core/constants/my_textfield.dart';
 import '../../../core/constants/textfield_validation.dart';
@@ -44,6 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _authOrderRef;
   StreamSubscription? _sub;
   final RxBool apiLoading = true.obs;
+  final AppLinks _appLinks = AppLinks(); // ✅ declare instance
 
 
   @override
@@ -137,11 +140,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // }
 
   void _listenForDeepLinks() {
-    _sub = uriLinkStream.listen((Uri? uri) {
+    _sub = AppLinks().uriLinkStream.listen((Uri? uri) {
       if (uri != null) handleDeepLink(uri);
     });
-    getInitialUri().then((Uri? uri) {
-      if (uri != null) handleDeepLink(uri);
+      _appLinks.getInitialLink().then((Uri? uri) {
+        if (uri != null) handleDeepLink(uri);
     });
   }
 
