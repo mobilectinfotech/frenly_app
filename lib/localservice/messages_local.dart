@@ -91,8 +91,7 @@ class Messages extends Translations {
           "letmeee": "Let me show some \nwhite vibes of the",
           "lect": "Let me show some \nwhite vibes of the...",
           "Find": "Find Friends & Get Inspiration",
-          "Loream":
-              "Lorem ipsum dolor sitamet, consectetur adipiscing elit. Erat vitae quis quam augue quam.",
+          "Loream": "Lorem ipsum dolor sitamet, consectetur adipiscing elit. Erat vitae quis quam augue quam.",
           "Meet": "Meet Awesome People & Enjoy yourself",
           "Hangout": "Hangout with with Friends",
           "createacc": "Create Your \nAccount",
@@ -298,7 +297,7 @@ class Messages extends Translations {
 
         },
 
-        'sv_SE': {
+        'swe_SE': {
           "_post": "Posta",
           "_vlog": "Vlogg",
           "_signupwithbankid": "Registrera dig med BankID",
@@ -369,8 +368,8 @@ class Messages extends Translations {
           "letme": "Låt mig visa några",
           "letmeee": "Låt mig visa några \nvita vibbar av",
           "lect": "Låt mig visa några \nvita vibbar av...",
-          "Find": "Hitta vänner",
-          "Loream": "Lorem ipsum dolor sitamet, consectetur adipiscing elit. ",
+          "Find": "Hitta nya vänner på ett säkert sätt",
+          "Loream": "På Frenly måste alla registrera sig med BankID, på så sätt minimerar vi troll och grooming.",
           "Meet": "Träffa fantastiska människor",
           "Hangout": "Hangout med med vänner",
           "Activee": "Aktiv vän",
@@ -602,7 +601,6 @@ class Messages extends Translations {
         }
       };
 }
-
 //   result = '${minutesDifference}${"months_ago".tr}';
 // } else if (hoursDifference < 24) {
 //   result = '${hoursDifference}${"hours_ago".tr}';

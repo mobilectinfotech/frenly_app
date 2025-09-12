@@ -76,11 +76,9 @@ class MyApp extends StatelessWidget {
       child: LifeCycleManager(
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          // locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
-          // fallbackLocale:const  Locale('swe', 'SE'),
-          locale: locale ?? const Locale('sv', 'SE'), // Default locale is Swedish
-          fallbackLocale: const Locale('en', 'US'), // Fallback should be English
-
+          translations: Messages(),
+          locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
+          fallbackLocale:const  Locale('swe', 'SE'),
           // locale: locale ?? const Locale('en', 'US'), // Default locale if no saved locale
           // fallbackLocale:const  Locale('en', 'US'),
           title: 'Frenly',

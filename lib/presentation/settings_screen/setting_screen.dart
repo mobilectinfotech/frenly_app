@@ -77,7 +77,7 @@ class _SettingScreenState extends State<SettingScreen> {
               ListTile(
                 title: Text('swedish'.tr),
                 onTap: () async{
-                  final newLocale = Locale('sv', 'SE');
+                  final newLocale = Locale('swe', 'SE');
                  // final newLocale = Locale('sv', 'SE');
                   await localeService.saveLocale(newLocale);
                   Get.updateLocale(newLocale);
