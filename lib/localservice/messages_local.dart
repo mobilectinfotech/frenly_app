@@ -174,8 +174,7 @@ class Messages extends Translations {
           "Handlle": "Username is unique",
           "Hand": "Handle",
           "Location": "Location",
-          "This is Description":
-              "This is the description of new video. My name is Jessica Parker and I enjoy meeting new people",
+          "This is Description": "This is the description of new video. My name is Jessica Parker and I enjoy meeting new people",
           "How to drink milkshake": "How to drink milkshake",
           "Title": "Title",
           "Chooseyo": "Choose Your Language",
@@ -603,6 +602,7 @@ class Messages extends Translations {
         }
       };
 }
+
 //   result = '${minutesDifference}${"months_ago".tr}';
 // } else if (hoursDifference < 24) {
 //   result = '${hoursDifference}${"hours_ago".tr}';
