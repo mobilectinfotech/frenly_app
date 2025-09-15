@@ -1,5 +1,9 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:frenly_app/data/models/blog_model.dart';
+import 'package:frenly_app/data/models/post_model.dart';
+import 'package:frenly_app/data/models/vlog_model.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -16,10 +20,9 @@ import '../post/post_view/post_view_screen.dart';
 import '../user_follwers/user_followers_screen.dart';
 import '../user_follwings_page/user_followings_screen.dart';
 
-
 class UserProfileScreen extends StatefulWidget {
   final String userId;
-  final bool ? isOwnn;
+  final bool? isOwnn;
 
   const UserProfileScreen({super.key, required this.userId, this.isOwnn});
 
@@ -28,28 +31,25 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-
   GetUserByIdModel getUserByIdModel = GetUserByIdModel();
 
-  RxBool isLoadingUserById =true.obs;
-  RxBool isLoadingGetProfile =true.obs;
+  RxBool isLoadingUserById = true.obs;
+  RxBool isLoadingGetProfile = true.obs;
 
   getUserById({required String userId}) async {
-    isLoadingUserById.value =true;
-    getUserByIdModel =await ApiRepository.getUserById(userId: userId);
-    isLoadingUserById.value =false;
+    isLoadingUserById.value = true;
+    getUserByIdModel = await ApiRepository.getUserById(userId: userId);
+    isLoadingUserById.value = false;
   }
 
   TextEditingController reasonController = TextEditingController();
-  void reportFun(
-      BuildContext context
-      ) async {
+
+  void reportFun(BuildContext context) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               title: Text(
                 'Report reason'.tr,
                 style: TextStyle(
@@ -84,10 +84,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         child: Container(
                           height: 44.adaptSize,
                           width: 110.adaptSize,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                  color: const Color(0xff001649), width: 1.aw)),
+                          decoration:
+                              BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xff001649), width: 1.aw)),
                           child: Center(
                             child: Text(
                               'cancel'.tr,
@@ -104,13 +102,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       SizedBox(width: 30.aw),
                       InkWell(
                         onTap: () async {
-
-                          if(reasonController.text.trim().isEmpty || reasonController.text == "" ){
-                            Get.snackbar("", "please_enter_report_reason".tr, backgroundColor: Color(0xff001649),colorText: Colors.white);
-
-                          }else{
-                            var isreport =  await ApiRepository.reportUser(userId: "${ getUserByIdModel.user?.id}", reason: reasonController.text);
-                            if(isreport){
+                          if (reasonController.text.trim().isEmpty || reasonController.text == "") {
+                            Get.snackbar("", "please_enter_report_reason".tr, backgroundColor: Color(0xff001649), colorText: Colors.white);
+                          } else {
+                            var isreport = await ApiRepository.reportUser(userId: "${getUserByIdModel.user?.id}", reason: reasonController.text);
+                            if (isreport) {
                               reasonController.clear();
                               Get.back();
                             }
@@ -145,22 +141,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         });
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -176,198 +156,168 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: Obx(
         () => isLoadingUserById.value
             ? const Center(
-                child: CircularProgressIndicator(strokeWidth: 1,),
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                ),
               )
             : ListView(
-             padding: EdgeInsets.zero,
-              children: [
-                imageView(),
-                Obx(
-                    ()=> AnimatedContainer(
-                    duration:const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    height:  _isZoomed.value? 130.h : 10.ah,
+                padding: EdgeInsets.zero,
+                children: [
+                  imageView(),
+                  Obx(
+                    () => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      height: _isZoomed.value ? 130.h : 10.ah,
+                    ),
                   ),
-                ),
-               // Obx(() => SizedBox(height: _isZoomed.value? 125.h : 10.ah)),
-                 bioTexts(),
-                SizedBox(height: 20.ah),
-                ((getUserByIdModel.user?.isPrivate == true &&
-                            getUserByIdModel.user!.followState ==
-                                0) ||
-                        (getUserByIdModel.user?.isPrivate ==
-                                true &&
-                            getUserByIdModel.user!.followState ==
-                                1))
-                    ? Container(
-                        child: Column(
-                          children: [
-                            Divider(),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20.0.aw, right: 16.aw, top: 40.ah),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: 45.adaptSize,
-                                      height: 45.adaptSize,
-                                      child:
-                                          Icon(Icons.lock_outline_rounded),
-                                      decoration: ShapeDecoration(
-                                        color: Colors.white,
-                                        shape: OvalBorder(
-                                            side: BorderSide(width: 2)),
+                  // Obx(() => SizedBox(height: _isZoomed.value? 125.h : 10.ah)),
+                  bioTexts(),
+                  SizedBox(height: 20.ah),
+                  ((getUserByIdModel.user?.isPrivate == true && getUserByIdModel.user!.followState == 0) ||
+                          (getUserByIdModel.user?.isPrivate == true && getUserByIdModel.user!.followState == 1))
+                      ? Container(
+                          child: Column(
+                            children: [
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20.0.aw, right: 16.aw, top: 40.ah),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        width: 45.adaptSize,
+                                        height: 45.adaptSize,
+                                        child: Icon(Icons.lock_outline_rounded),
+                                        decoration: ShapeDecoration(
+                                          color: Colors.white,
+                                          shape: OvalBorder(side: BorderSide(width: 2)),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: 5.0.aw),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: 6.ah,
-                                        ),
-                                        Text('this_account'.tr,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14.09,
-                                            fontFamily: 'Roboto',
-                                            fontWeight: FontWeight.w600,
+                                    SizedBox(width: 5.0.aw),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 6.ah,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.ah,
-                                        ),
-                                        Opacity(
-                                          opacity: 0.50,
-                                          child: Text(
-                                            'follow this account'.tr,
+                                          Text(
+                                            'this_account'.tr,
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 14.09,
                                               fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            height: 5.ah,
+                                          ),
+                                          Opacity(
+                                            opacity: 0.50,
+                                            child: Text(
+                                              'follow this account'.tr,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.09,
+                                                fontFamily: 'Roboto',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(left: 16.0.aw, right: 16.aw),
+                          child: Container(
+                            height: 52.ah,
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.adaptSize)),
+                            child: Padding(
+                              padding: EdgeInsets.all(6.0.adaptSize),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      activeIndex = 0;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      width: 112,
+                                      decoration: BoxDecoration(
+                                          color: activeIndex == 0 ? const Color(0xff001649) : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(9.adaptSize)),
+                                      child: Center(
+                                          child: Text(
+                                        'Vlogs'.tr,
+                                        style: TextStyle(color: activeIndex == 0 ? Colors.white : Colors.black54),
+                                      )),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      activeIndex = 1;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      width: 112,
+                                      decoration: BoxDecoration(
+                                          color: activeIndex == 1 ? const Color(0xff001649) : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(9.adaptSize)),
+                                      child: Center(
+                                          child: Text(
+                                        'Blogs'.tr,
+                                        style: TextStyle(color: activeIndex == 1 ? Colors.white : Colors.black54),
+                                      )),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      activeIndex = 2;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      width: 112,
+                                      decoration: BoxDecoration(
+                                          color: activeIndex == 2 ? const Color(0xff001649) : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(9.adaptSize)),
+                                      child: Center(
+                                          child: Text(
+                                        'Photos'.tr,
+                                        style: TextStyle(color: activeIndex == 2 ? Colors.white : Colors.black54),
+                                      )),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                    : Padding(
-                        padding:
-                            EdgeInsets.only(left: 16.0.aw, right: 16.aw),
-                        child: Container(
-                          height: 52.ah,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.circular(10.adaptSize)),
-                          child: Padding(
-                            padding: EdgeInsets.all(6.0.adaptSize),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    activeIndex = 0;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                        color: activeIndex == 0
-                                            ? const Color(0xff001649)
-                                            : Colors.transparent,
-                                        borderRadius: BorderRadius.circular(
-                                            9.adaptSize)),
-                                    child: Center(
-                                        child: Text(
-                                      'Vlogs'.tr,
-                                      style: TextStyle(
-                                          color: activeIndex == 0
-                                              ? Colors.white
-                                              : Colors.black54),
-                                    )),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    activeIndex = 1;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                        color: activeIndex == 1
-                                            ? const Color(0xff001649)
-                                            : Colors.transparent,
-                                        borderRadius: BorderRadius.circular(
-                                            9.adaptSize)),
-                                    child: Center(
-                                        child: Text(
-                                      'Blogs'.tr,
-                                      style: TextStyle(
-                                          color: activeIndex == 1
-                                              ? Colors.white
-                                              : Colors.black54),
-                                    )),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    activeIndex = 2;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                        color: activeIndex == 2
-                                            ? const Color(0xff001649)
-                                            : Colors.transparent,
-                                        borderRadius: BorderRadius.circular(
-                                            9.adaptSize)),
-                                    child: Center(
-                                        child: Text(
-                                      'Photos'.tr,
-                                      style: TextStyle(
-                                          color: activeIndex == 2
-                                              ? Colors.white
-                                              : Colors.black54),
-                                    )),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
-                      ),
-                SizedBox(height: 20.ah),
-                Column(
-                  children: [
-                    activeIndex == 0 ? _vlogs() : const SizedBox(),
-                    activeIndex == 1 ? _blogs() : const SizedBox(),
-                    activeIndex == 2 ? _photos() : const SizedBox(),
-                  ],
-                )
-              ],
-            ),
+                  SizedBox(height: 20.ah),
+                  Column(
+                    children: [
+                      activeIndex == 0 ? _vlogs() : const SizedBox(),
+                      activeIndex == 1 ? _blogs() : const SizedBox(),
+                      activeIndex == 2 ? _photos() : const SizedBox(),
+                    ],
+                  )
+                ],
+              ),
       ),
     );
   }
@@ -383,38 +333,38 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               onTap: () {
                 Get.back();
               },
-              child: Image.asset('assets/image/arrow.png',
-                  height: 20.aw, width: 20.aw)),
+              child: Image.asset('assets/image/arrow.png', height: 20.aw, width: 20.aw)),
           Container(
             child: InkWell(
                 onTap: () {
                   //_bottomSheetWidget2(context001: context, vlogId: '2');
-                   ApiRepository.blockUser(userId: "${ getUserByIdModel.user?.id}");
+                  ApiRepository.blockUser(userId: "${getUserByIdModel.user?.id}");
                 },
                 child: PopupMenuButton<String>(
                   surfaceTintColor: Colors.white,
                   color: Colors.white,
-                  icon: SvgPicture.asset('assets/icons/more option.svg',height: 23,fit: BoxFit.cover,),
-                  onSelected: (String result) async{
+                  icon: SvgPicture.asset(
+                    'assets/icons/more option.svg',
+                    height: 23,
+                    fit: BoxFit.cover,
+                  ),
+                  onSelected: (String result) async {
                     // Handle the selection from the menu
                     print(result);
-                    if(result=="1"){
-                      ApiRepository.blockUser(userId: "${ getUserByIdModel.user?.id}");
+                    if (result == "1") {
+                      ApiRepository.blockUser(userId: "${getUserByIdModel.user?.id}");
                       Get.back();
                       Get.back();
                       // Get.to(()=> BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
                     }
-                    if(result=="2"){
-
+                    if (result == "2") {
                       reportFun(context);
 
-
                       // Get.to(()=> BlogsEditScreen(getBlogByIdModel: controller.blogByIdModel,));
                     }
-
                   },
                   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                     PopupMenuItem<String>(
+                    PopupMenuItem<String>(
                       value: '1',
                       child: Text('block_this'.tr),
                     ),
@@ -422,12 +372,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       value: '2',
                       child: Text('report_this'.tr),
                     ),
-
-
                   ],
                 )
                 //const Icon(Icons.more_vert_outlined)
-            ),
+                ),
           ),
         ],
       ),
@@ -444,9 +392,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             height: 217 + 100.ah,
             width: double.infinity,
             child: CustomImageView(
-              radius: BorderRadius.only(
-                  bottomRight: Radius.circular(25.adaptSize),
-                  bottomLeft: Radius.circular(25.adaptSize)),
+              radius: BorderRadius.only(bottomRight: Radius.circular(25.adaptSize), bottomLeft: Radius.circular(25.adaptSize)),
               fit: BoxFit.cover,
               imagePath: getUserByIdModel.user?.coverPhotoUrl ?? "assets/icons/hills_placeholder.png",
             ),
@@ -454,11 +400,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           Positioned(
             bottom: 0,
             left: 121.aw,
-            child:  InkWell(
-              onTap: () {
-                _isZoomed.value = !_isZoomed.value;
-              },
-                child: ProfileZoom(imageUrl: getUserByIdModel.user?.avatarUrl,)),
+            child: InkWell(
+                onTap: () {
+                  _isZoomed.value = !_isZoomed.value;
+                },
+                child: ProfileZoom(
+                  imageUrl: getUserByIdModel.user?.avatarUrl,
+                )),
           ),
           SafeArea(
             child: backAndSettingIconRow(),
@@ -484,19 +432,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${getUserByIdModel.user?.fullName?.trim()}'
-                        .capitalizeFirst!,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 25.fSize),
+                    '${getUserByIdModel.user?.fullName?.trim()}'.capitalizeFirst!,
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 25.fSize),
                   ),
                   Text(
                     getUserByIdModel.user?.handle?.trim() ?? "",
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.fSize),
+                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700, fontSize: 15.fSize),
                   ),
                 ],
               ),
@@ -507,13 +448,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       if (getUserByIdModel.user?.followState == 0) {
                         getUserByIdModel.user?.followState = 1;
                         setState(() {});
-                        ApiRepository.follow(
-                            userId: "${getUserByIdModel.user!.id!}");
+                        ApiRepository.follow(userId: "${getUserByIdModel.user!.id!}");
                       } else {
                         getUserByIdModel.user?.followState = 0;
                         setState(() {});
-                        ApiRepository.unfollow(
-                            userId: "${getUserByIdModel.user!.id!}");
+                        ApiRepository.unfollow(userId: "${getUserByIdModel.user!.id!}");
                       }
                     },
                   );
@@ -534,10 +473,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           : getUserByIdModel.user?.followState == 0
                               ? "Follow".tr
                               : "Following".tr,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.fSize),
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.fSize),
                     ),
                   ),
                 ),
@@ -545,11 +481,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ],
           ),
           Text(
-            (getUserByIdModel.user?.bio??'').capitalizeFirst ?? "",
-            style: TextStyle(
-                color: Colors.black54,
-                fontWeight: FontWeight.w400,
-                fontSize: 16.fSize),
+            (getUserByIdModel.user?.bio ?? '').capitalizeFirst ?? "",
+            style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400, fontSize: 16.fSize),
           ),
           SizedBox(height: 15.ah),
           Row(
@@ -677,16 +610,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
-          itemCount: getUserByIdModel.user!.vlogs!.length,
+          itemCount: vlogList().length,
           padding: const EdgeInsets.only(bottom: 10),
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
                 Get.to(() => VlogViewScreen(
-                      videoUrl:
-                      '${getUserByIdModel.user!.vlogs![index].videoUrl}',
-                      vlogId: getUserByIdModel.user!.vlogs![index].id
-                          .toString(),
+                      videoUrl: '${getUserByIdModel.user!.vlogs![index].videoUrl}',
+                      vlogId: getUserByIdModel.user!.vlogs![index].id.toString(),
                     ));
               },
               child: CustomVlogCard(
@@ -699,6 +630,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
+  List<Vlog> vlogList() => (getUserByIdModel.user?.vlogs ?? []);
+
   //Blogs
   Widget _blogs() {
     return SizedBox(
@@ -707,20 +640,24 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        itemCount: getUserByIdModel.user!.blogs!.length,
+        itemCount: blogList().length,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: (context, index) {
           // String jsonString = "${getUserByIdModel.user!.blogs![index].tags}";
           // List<String> tagsList = json.decode(jsonString).cast<String>();
 
-          String ? jsonString = getUserByIdModel.user!.blogs![index].tags ;
-          List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
-          return CustomBlogCard(blog: getUserByIdModel.user!.blogs![index], tagsList: tagsList,);
-
+          String? jsonString = getUserByIdModel.user!.blogs![index].tags;
+          List<String> tagsList = jsonString == null ? [] : json.decode(jsonString).cast<String>();
+          return CustomBlogCard(
+            blog: getUserByIdModel.user!.blogs![index],
+            tagsList: tagsList,
+          );
         },
       ),
     );
   }
+
+  List<Blog> blogList() => (getUserByIdModel.user?.blogs ?? []);
 
   Widget _photos() {
     List<int> cont = [
@@ -741,36 +678,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
         children: List.generate(
-          getUserByIdModel.user!.posts!.length,
-              (index) => StaggeredGridTile.count(
+          postsList().length,
+          (index) => StaggeredGridTile.count(
             crossAxisCellCount: cont[index % 9],
             mainAxisCellCount: cont[index % 9],
             child: Center(
                 child: InkWell(
-                  onTap: () {
-                    Get.to(()=>PostViewScreen( id: "${getUserByIdModel.user?.posts![index].id}", ));
-                  },
-                  child: CustomImageView(
-                    imagePath:
-                    getUserByIdModel.user?.posts![index].imageUrl,
-                    fit: BoxFit.cover,
-                    radius: BorderRadius.circular(10),
-                  ),
-                )),
+              onTap: () {
+                Get.to(() => PostViewScreen(
+                      id: "${getUserByIdModel.user?.posts![index].id}",
+                    ));
+              },
+              child: CustomImageView(
+                imagePath: getUserByIdModel.user?.posts![index].imageUrl,
+                fit: BoxFit.cover,
+                radius: BorderRadius.circular(10),
+              ),
+            )),
           ),
         ),
       ),
     );
   }
 
-
-
+  List<Post> postsList() => (getUserByIdModel.user?.posts ?? []);
 }
 
-
 RxBool _isZoomed = false.obs;
+
 class ProfileZoom extends StatefulWidget {
-   String ? imageUrl;
+  String? imageUrl;
 
   ProfileZoom({required this.imageUrl});
 
@@ -817,16 +754,12 @@ class _ProfileZoomState extends State<ProfileZoom> with SingleTickerProviderStat
             return Transform.scale(
               scale: _animation.value,
               child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(500)),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(500)),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: CustomImageView(
                     width: 140.ah,
                     height: 140.ah,
-
-
                     fit: BoxFit.cover,
                     imagePath: widget.imageUrl,
                     radius: BorderRadius.circular(100),
