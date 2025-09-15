@@ -252,7 +252,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${((controller.getUserByIdModel.user?.fullName?.trim()??"").split(' ').map((word) => word.capitalized).join(' '))}',
+                    ((controller.getUserByIdModel.user?.fullName?.trim()??"").split(' ').map((word) => word.capitalized).join(' ')),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
