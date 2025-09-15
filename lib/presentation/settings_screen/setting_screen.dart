@@ -303,9 +303,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                     },
                                     child: Text(
                                      //  "${locale?.languageCode}" == "en" ? 'Eng'.tr :  "swedish".tr,
-                                      "${locale?.languageCode}" == "en" ? 'Eng'.tr : "swedish".tr,
-                                      style: TextStyle(
-                                          color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                      Get.locale?.languageCode == "en"
+                                          ? 'english'.tr
+                                          : "swedish".tr,
+                                 //     "${locale?.languageCode}" == "en" ? 'english'.tr : "swedish".tr,
+                                      style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                     ),
                                   ),
                                 ],
@@ -315,10 +317,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   _showDeleteConfirmationDialog(context);
                                 },
-                                child: Text(
-                                  'Delete Account'.tr,
-                                  style:
-                                      TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                child: Text('Delete Account'.tr,
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
                               ),
                               SizedBox(height: 20.ah),

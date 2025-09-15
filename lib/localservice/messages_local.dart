@@ -590,10 +590,10 @@ class Messages extends Translations {
           "access_denied": "Åtkomst nekad",
           "you_have_been_blocked_by_the_admin": "Du har blivit blockerad av administratören.",
           "ok": "OK",
-          "i_agree_to": "Jag godkänner ",
-          "terms_conditions": "Villkor & Bestämmelser",
+          "i_agree_to": "Jag accepterar ",
+          "terms_conditions": "allmänna villkor",
           "and_the": " och ",
-          "privacy_policy": " Integritetspolicyn",
+          "privacy_policy": "sekretesspolicy",
           "confirm_logout": "Bekräfta utloggning",
           "Are_you_sure_logout": "Är du säker på att du vill logga ut?",
           "please_accept_terms": "Vänligen acceptera villkoren och sekretesspolicyn"
