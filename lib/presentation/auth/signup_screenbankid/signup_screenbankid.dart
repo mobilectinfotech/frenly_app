@@ -354,6 +354,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                             style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                           ),
                         ),
+
                         SizedBox(height: 10.ah),
                         Center(
                           child: InkWell(
@@ -365,8 +366,9 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                             ),
                           ),
                         ),
+
                         SizedBox(height: 30.ah,),
-                        Center(child: Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain)),
+                       Center(child: Image.asset('assets/image/BankId.png',height: 130.ah, width:130.ah, fit: BoxFit.contain)),
 
                         SizedBox(height: 30.ah,)
                       ],
@@ -374,6 +376,7 @@ class _SignUpScreenBankidState extends State<SignUpScreenBankid> {
                   ),
                 ),
               ),
+
               //Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).viewInsets.bottom),)
             ]),
           ),

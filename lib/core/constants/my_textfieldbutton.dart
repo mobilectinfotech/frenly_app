@@ -92,7 +92,7 @@ class CustomPrimaryBtn2 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width:55),
+              SizedBox(width:10),
               Text(title,
                 style: TextStyle(
                   color: Colors.white,
@@ -111,7 +111,7 @@ class CustomPrimaryBtn2 extends StatelessWidget {
                   width: imageSize,
                   fit: BoxFit.contain,
                 ),
-                SizedBox(width: 8.aw),
+               // SizedBox(width: 8.aw),
               ],
             ],
           ),

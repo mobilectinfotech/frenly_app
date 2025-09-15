@@ -713,7 +713,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           // String jsonString = "${getUserByIdModel.user!.blogs![index].tags}";
           // List<String> tagsList = json.decode(jsonString).cast<String>();
 
-
           String ? jsonString = getUserByIdModel.user!.blogs![index].tags ;
           List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
           return CustomBlogCard(blog: getUserByIdModel.user!.blogs![index], tagsList: tagsList,);

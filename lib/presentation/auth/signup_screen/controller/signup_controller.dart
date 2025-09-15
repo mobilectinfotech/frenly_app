@@ -41,11 +41,14 @@ class  SignUpController extends GetxController {
 
     signUp()async{
       isLoading(true);
-     bool issingUp = await ApiRepository.signUpWithEmailPassword(email: emailController.text, password: passwordController.text, fullname: fullNameController.text, username: userNameController.text, );
+     bool issingUp = await ApiRepository.signUpWithEmailPassword(
+       email: emailController.text,
+       password: passwordController.text,
+       fullname: fullNameController.text,
+       username: userNameController.text, );
       isLoading(false);
       if(issingUp){
        Get.offAll(()=> const LoginScreen());
-
      }
 
 

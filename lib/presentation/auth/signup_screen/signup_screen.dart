@@ -59,13 +59,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void toggle(bool? value) => isAccepted.value = value ?? false;
 
-  bool validateBeforeContinue() {
-    if (!isAccepted.value) {
-      Get.snackbar('Hold up', 'Please accept the Terms & Conditions to continue');
-      return false;
-    }
-    return true;
-  }
+  // bool validateBeforeContinue() {
+  //   if (!isAccepted.value) {
+  //     Get.snackbar('Hold up', 'Please accept the Terms & Conditions to continue');
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   Future<void> toggel() async {
     apiLoading.value = true;

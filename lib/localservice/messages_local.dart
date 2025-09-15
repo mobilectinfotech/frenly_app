@@ -80,7 +80,7 @@ class Messages extends Translations {
               "Are you sure you want to delete your account?",
           "choose_language": "Choose Language",
           "english": "English",
-          "swedish ": "Swedish",
+          "swedish": "Swedish",
           "activesss": "Active",
           "send_a_vlog": "Send a Vlog of",
           "send_a_blog": "Send a blog of",
@@ -293,7 +293,7 @@ class Messages extends Translations {
           "ok": "OK",
           "confirm_logout": "Confirm Logout",
           "Are_you_sure_logout": "Are you sure you want to logout?",
-          "please_accept_terms": "Please accept terms & condition and privacy policy",
+          "please_accept_terms": "Please accept terms & conditions and privacy policy",
 
         },
 
@@ -318,7 +318,7 @@ class Messages extends Translations {
           "send_a_blog": "Skicka en blogg av",
           "send_a_vlog": "Skicka en vlogg av",
           "activesss": "Aktiva",
-          "swedish ": "svenska",
+          "swedish": "svenska",
           "english": "engelsk",
           "choose_language": "Välj språk",
           "Are_you_delete_account": "Är du säker på att du vill ta bort ditt konto?",
@@ -596,11 +596,12 @@ class Messages extends Translations {
           "privacy_policy": "sekretesspolicy",
           "confirm_logout": "Bekräfta utloggning",
           "Are_you_sure_logout": "Är du säker på att du vill logga ut?",
-          "please_accept_terms": "Vänligen acceptera villkoren och sekretesspolicyn"
+          "please_accept_terms": "Vänligen acceptera allmänna villkor och sekretesspolicyn"
 
         }
       };
 }
+
 //   result = '${minutesDifference}${"months_ago".tr}';
 // } else if (hoursDifference < 24) {
 //   result = '${hoursDifference}${"hours_ago".tr}';
