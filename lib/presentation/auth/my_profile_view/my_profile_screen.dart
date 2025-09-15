@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';import 'package:frenly_app/data/models/vlog_model.dart';
+import 'package:flutter/material.dart';import 'package:frenly_app/data/models/blog_model.dart';
+import 'package:frenly_app/data/models/post_model.dart';
+import 'package:frenly_app/data/models/vlog_model.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -559,21 +561,23 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        itemCount: controller.getUserByIdModel.user!.blogs!.length,
+        itemCount: blogsList().length,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: (context, index) {
-          String ? jsonString = controller.getUserByIdModel.user!.blogs![index].tags ;
+          String ? jsonString = blogsList()[index].tags ;
           List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
 
           return CustomBlogCard(
             isown: true,
-            blog: controller.getUserByIdModel.user!.blogs![index],
+            blog: blogsList()[index],
             tagsList: tagsList,
           );
         },
       ),
     );
   }
+
+  List<Blog> blogsList() => (controller.getUserByIdModel.user?.blogs??[]);
 
   Widget _photos() {
     List<int> cont = [
@@ -595,7 +599,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           mainAxisSpacing: 4,
           crossAxisSpacing: 4,
           children: List.generate(
-            controller.getUserByIdModel.user!.posts!.length,
+            postsList().length,
             (index) => StaggeredGridTile.count(
               crossAxisCellCount: cont[index % 9],
               mainAxisCellCount: cont[index % 9],
@@ -617,6 +621,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       ),
     );
   }
+
+  List<Post> postsList() => (controller.getUserByIdModel.user?.posts??[]);
 }
 extension StringExtensions on String {
   String get capitalize =>
