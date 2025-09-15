@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';import 'package:frenly_app/data/models/vlog_model.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -398,7 +399,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
-          itemCount: controller.getUserByIdModel.user!.vlogs!.length,
+          itemCount: vlogList().length,
           padding: const EdgeInsets.only(bottom: 10),
           itemBuilder: (context, index) {
             return InkWell(
@@ -406,19 +407,20 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   print("sdfghjgfdsfghj");
                   Get.to(() => VlogViewScreen(
                         videoUrl:
-                            '${controller.getUserByIdModel.user!.vlogs![index].videoUrl}',
-                        vlogId: controller
-                            .getUserByIdModel.user!.vlogs![index].id
+                            '${vlogList()[index].videoUrl}',
+                        vlogId: vlogList()[index].id
                             .toString(),
                       ));
                 },
                 child: CustomVlogCard(
-                    vlog: controller.getUserByIdModel.user!.vlogs![index]));
+                    vlog: vlogList()[index]));
           },
         ),
       ),
     );
   }
+
+  List<Vlog> vlogList() => (controller.getUserByIdModel.user?.vlogs??[]);
 
   Widget vlogInLocationRow(int index) {
     return Padding(
@@ -539,7 +541,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 ),
                 Spacer(),
                 VlogLikeCommentsShareView(
-                  vlog: controller.getUserByIdModel.user!.vlogs![index],
+                  vlog: vlogList()[index],
                 ),
                 SizedBox(width: 15.0.aw)
               ],

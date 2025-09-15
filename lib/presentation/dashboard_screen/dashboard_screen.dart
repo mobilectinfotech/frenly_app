@@ -324,6 +324,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Material(
