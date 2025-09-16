@@ -1,4 +1,4 @@
-package com.example.frenly_app
+package com.cti.frenly
 
 import io.flutter.embedding.android.FlutterActivity
 

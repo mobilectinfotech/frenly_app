@@ -498,7 +498,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               recognizer: (TapGestureRecognizer()
                                 ..onTap = () {
                                   launchUrlString(
-                                    'https://www.frenly.se/terms',
+                                    'https://www.frenly.se/terms_condition.html',
                                     mode: LaunchMode.externalApplication,
                                   );
                                 }),
@@ -513,8 +513,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                               recognizer: (TapGestureRecognizer()
                                 ..onTap = () {
-                                  launchUrlString(
-                                    'https://www.frenly.se/privacy',
+                                  launchUrlString('https://www.frenly.se/Privacy_policy.html',
                                     mode: LaunchMode.externalApplication,
                                   );
                                 }),

@@ -23,19 +23,39 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
-  ///for notification
-
-  await Permission.notification.isDenied.then((value) {
-    if (value) {
-      Permission.notification.request();
+  // Initialize Firebase only once
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    if (!e.toString().contains("duplicate-app")) {
+      rethrow; // only ignore duplicate-app error
     }
-  });
+  }
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+
+  /// Request notification permission (Android 13+ and iOS)
+  final isDenied = await Permission.notification.isDenied;
+  if (isDenied) {
+    await Permission.notification.request();
+  }
+
+
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  //
+  // ///for notification
+  //
+  // await Permission.notification.isDenied.then((value) {
+  //   if (value) {
+  //     Permission.notification.request();
+  //   }
+  // });
+
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     String payloadData = jsonEncode(message.data);
     print("Got a message in foreground");

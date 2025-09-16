@@ -374,7 +374,7 @@ class Messages extends Translations {
           "Hangout": "Hangout med med vänner",
           "Activee": "Aktiv vän",
           "createacc": "Skapa ditt \nkonto",
-          "fullnm": "namn",
+          "fullnm": "Namn",
           "emailn": "E-post",
           "Passw": "Lösenord",
           "REPassw": "Skriv lösenordet igen",

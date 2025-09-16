@@ -2,9 +2,28 @@
   "project_info": {
     "project_number": "492642189680",
     "project_id": "frendly-app-fe1cc",
-    "storage_bucket": "frendly-app-fe1cc.appspot.com"
+    "storage_bucket": "frendly-app-fe1cc.firebasestorage.app"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492642189680:android:8fefe32dd9ceb7c5ab4fb5",
+        "android_client_info": {
+          "package_name": "com.cti.frenly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcnuLbVUYlZV4E1hipXK3c3qYfDGfVF_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:492642189680:android:da4808c09e9780b1ab4fb5",
