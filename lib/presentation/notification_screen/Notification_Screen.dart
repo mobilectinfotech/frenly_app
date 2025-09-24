@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:frenly_app/presentation/chat/Pages/chat_room/chat_room_page.dart';
+import 'package:frenly_app/presentation/chat/Pages/chats/chats_screen.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
@@ -6,8 +9,11 @@ import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/Blog/blog_view/blog_view_screen.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_screen.dart';
 import 'package:get/get.dart';
+import '../../core/utils/pref_utils.dart';
 import '../../data/models/PostSingleViewModel.dart';
 import '../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../chat/Pages/all_frined/CreateChatModel.dart';
+import '../chat/Pages/all_frined/all_friend_controller.dart';
 import '../post/post_view/post_view_screen.dart';
 import 'NotificationsModel.dart';
 
@@ -124,6 +130,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AllFriendController controller= Get.put(AllFriendController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -196,18 +204,58 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           SizedBox(
                             width: 180.aw,
                             child: Text.rich(
+
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '${notificationsModel.notifications?[index].byUser?.fullName ?? "App Notification"}  ',
-                                    style:const TextStyle(
+                                    text: '${notificationsModel.notifications?[index].byUser?.fullName ?? "App Notification"} ',
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 15,
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w500,
                                       height: 0,
                                     ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        try {
+                                          // Pass the correct friend/notification userId
+                                          final friendId = notificationsModel.notifications?[index].byUser?.id;
+
+                                          if (friendId == null) {
+                                            print("Error: friendId is null");
+                                            return;
+                                          }
+
+                                          // Create chat with backend
+                                          final createChatModel = await ApiRepository.createChat(userId: friendId.toString());
+
+                                          if (createChatModel.payload == null) {
+                                            print("Create chat failed: payload is null");
+                                            return;
+                                          }
+
+                                          // Choose correct participant
+                                          final int indexxx =
+                                          createChatModel.payload!.participants![0].id.toString() == PrefUtils().getUserId()
+                                              ? 1
+                                              : 0;
+
+                                          // ✅ Use chatId from backend payload, not from notification
+                                          final chatId = createChatModel.payload!.id.toString();
+
+                                          // Navigate to ChatRoomPage
+                                          Get.off(() => ChatRoomPage(
+                                            participant: createChatModel.payload!.participants![indexxx],
+                                            chatId: chatId,
+                                          ));
+                                        } catch (e) {
+                                          print("Navigation to ChatRoomPage failed: $e");
+                                        }
+                                      },
+
                                   ),
+
                                   TextSpan(
                                     text: removeUserName(notificationsModel.notifications?[index].byUser?.fullName ?? "App", notificationsModel.notifications?[index].content ?? "",),
                                     style:const TextStyle(

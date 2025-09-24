@@ -17,10 +17,13 @@ import '../../CustomUI/OwnMessgaeCrad.dart';
 import '../../CustomUI/ReplyCard.dart';
 
 class ChatRoomPage extends StatefulWidget {
+//  final String userId;
+
   const ChatRoomPage({
     Key? key,
     required this.participant,
     required this.chatId,
+    //required this.userId,
   }) : super(key: key);
 
   final Participant participant;

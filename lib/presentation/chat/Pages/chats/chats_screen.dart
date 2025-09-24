@@ -11,6 +11,7 @@ import 'chats_controller.dart';
 import 'package:get/get.dart';
 
 class ChatsScreen extends StatelessWidget {
+
   ChatsScreen({super.key});
 
   ChatScreenController controller = Get.put(ChatScreenController());
