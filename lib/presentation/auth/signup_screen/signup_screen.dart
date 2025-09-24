@@ -353,7 +353,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           context: context,
           hintText: "john smith",
         ),
-        SizedBox(height: 20.ah),
+
+        SizedBox(height: 15.ah),
         names("user_name".tr),
         SizedBox(height: 10.ah),
         CustomTextFormField(
@@ -378,7 +379,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             }
           },
         ),
-        SizedBox(height: 10.ah),
+
+        SizedBox(height: 15.ah),
         names("emailn"),
         SizedBox(height: 10.ah),
         CustomTextFormField(
@@ -389,6 +391,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           context: context,
           hintText: "johnsmith@gmail.com",
         ),
+
         SizedBox(height: 15.ah),
         names("Passw"),
         SizedBox(height: 10.ah),
@@ -413,6 +416,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           obscureText: controller.isShowPassword.value,
           context: context,
         )),
+
         SizedBox(height: 15.ah),
         names("REPassw"),
         SizedBox(height: 10.ah),

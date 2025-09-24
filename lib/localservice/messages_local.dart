@@ -386,7 +386,7 @@ class Messages extends Translations {
           "Logg": "LOGGA IN",
           "Forg": "Glömt ditt lösenord ?",
           "Forgg": "Glömt ditt\nlösenord ?",
-          "hello": "Hallå \nMelden Sie sich an, um fortzufahren",
+          "hello": "Hej! \nVälkommen till Frenly. Logga in eller registrera dig för att fortsätta",
           "creatnpass": "Skapa ny\n",
           "Contin": "Fortsätta",
           "reep": "Återställ lösenord",

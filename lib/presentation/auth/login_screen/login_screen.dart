@@ -77,11 +77,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding:  EdgeInsets.only(left: 15.h),
                     child: Text(
                       'hello'.tr,
-                      style: const TextStyle(
+                      style:  TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 35,
-                          height: 1),
+                          height: 1.2.ah
+                      ),
                     ),
                   ),
                   SizedBox(height: 60.ah),

@@ -35,7 +35,6 @@ Future<void> main() async {
     }
   }
 
-
   /// Request notification permission (Android 13+ and iOS)
   final isDenied = await Permission.notification.isDenied;
   if (isDenied) {
@@ -45,6 +44,7 @@ Future<void> main() async {
 
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
+
   // );
   //
   // ///for notification
