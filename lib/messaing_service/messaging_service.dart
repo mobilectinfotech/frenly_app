@@ -14,8 +14,6 @@ class MessagingService {
 
   MessagingService._internal();
 
-
-
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
 
@@ -171,6 +169,7 @@ class MessagingService {
       print("1234${data}");
       print("qwertyio${data["screen"]}");
       print("1234${data}");
+
       //
       // if("${data["screen"]}" =="matches"){
       //   print("pramodqwertyuytrewerty${data["sender_id"]}");
@@ -207,20 +206,10 @@ class MessagingService {
       //   Get.to(()=>MyAllDatesPage());
       // }
 
-
     }catch(e){
       print("qwertyio${e}");
     }
   }
-
-
-
-
-
-
-
-
-
 }
 
 // Handler for background messages
