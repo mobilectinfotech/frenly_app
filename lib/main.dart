@@ -43,11 +43,8 @@ Future<void> main() async {
 
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
-
   // );
-  //
   // ///for notification
-  //
   // await Permission.notification.isDenied.then((value) {
   //   if (value) {
   //     Permission.notification.request();
@@ -69,14 +66,12 @@ Future<void> main() async {
   );
 
   ///for notification end
-
-
   ///for crushAnalitics
   // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   // FlutterError.onError = (errorDetails) {FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);};
   // PlatformDispatcher.instance.onError = (error, stack) {FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);return true;};
   ///for crush Analitics end
-
+  ///
   ///
   runApp(MyApp(locale: locale));
 }
