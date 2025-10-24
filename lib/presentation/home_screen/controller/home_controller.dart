@@ -3,8 +3,6 @@
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:frenly_app/data/models/HomePageModel.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
-import 'package:frenly_app/presentation/auth/my_profile_view/my_profile_controller.dart';
-
 import 'package:get/get.dart';
 
 

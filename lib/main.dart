@@ -55,7 +55,6 @@ Future<void> main() async {
   // });
 
   //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
-
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     String payloadData = jsonEncode(message.data);
     print("Got a message in foreground");

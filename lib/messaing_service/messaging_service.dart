@@ -16,7 +16,6 @@ class MessagingService {
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
-
   static FirebaseMessaging fMessaging = FirebaseMessaging.instance;
 
   // for getting firebase messaging token

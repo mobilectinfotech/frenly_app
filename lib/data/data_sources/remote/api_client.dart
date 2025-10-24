@@ -24,7 +24,7 @@ class ApiClient {
     baseOptions = BaseOptions(
         receiveTimeout: const Duration(seconds: 30),
         connectTimeout: const Duration(seconds: 30),
-        baseUrl: mainUrl);
+        baseUrl: mainUrl,);
     dio = Dio(baseOptions);
     options = Options(headers: {"Authorization": "Bearer ${PrefUtils().getAuthToken()}"});
      dio.interceptors.add(PrettyDioLogger(requestBody: true, requestHeader: true));
