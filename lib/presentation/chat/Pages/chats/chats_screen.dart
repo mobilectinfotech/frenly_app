@@ -96,14 +96,23 @@ class ChatsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  // Text(
+                  //   "${controller.chatsModel.value?.chats![index].participants![indexxx].fullName}".capitalizeFirst!,
+                  //   style: const TextStyle(
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
                   Text(
-                    "${controller.chatsModel.value?.chats![index].participants![indexxx].fullName}"
-                        .capitalizeFirst!,
+                    capitalizeEachWord(
+                        "${controller.chatsModel.value?.chats![index].participants![indexxx].fullName ?? ''}"
+                    ),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   SizedBox(
                     width: 210.aw,
                     child: Text(
@@ -171,4 +180,14 @@ class ChatsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+String capitalizeEachWord(String text) {
+  if (text.isEmpty) return text;
+  return text
+      .split(' ')
+      .map((word) => word.isNotEmpty
+      ? word[0].toUpperCase() + word.substring(1).toLowerCase()
+      : '')
+      .join(' ');
 }

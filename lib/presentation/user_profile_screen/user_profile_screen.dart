@@ -441,43 +441,117 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ],
               ),
-              InkWell(
-                onTap: () {
-                  setState(
-                    () {
-                      if (getUserByIdModel.user?.followState == 0) {
-                        getUserByIdModel.user?.followState = 1;
-                        setState(() {});
-                        ApiRepository.follow(userId: "${getUserByIdModel.user!.id!}");
-                      } else {
-                        getUserByIdModel.user?.followState = 0;
-                        setState(() {});
-                        ApiRepository.unfollow(userId: "${getUserByIdModel.user!.id!}");
-                      }
-                    },
-                  );
-                },
-                child: Container(
-                  height: 40.ah,
-                  width: 98.aw,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: HexColor('#001649'),
-                  ),
-                  child: Center(
-                    child: Text(
-                      getUserByIdModel.user?.followState == 1
-                          ? getUserByIdModel.user?.isPrivate == false
-                              ? "Following".tr
-                              : "Requested".tr
-                          : getUserByIdModel.user?.followState == 0
-                              ? "Follow".tr
-                              : "Following".tr,
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.fSize),
-                    ),
-                  ),
-                ),
+              // InkWell(
+              //   onTap: () {
+              //     setState(
+              //       () {
+              //         if (getUserByIdModel.user?.followState == 0) {
+              //           getUserByIdModel.user?.followState = 1;
+              //           setState(() {});
+              //           ApiRepository.follow(userId: "${getUserByIdModel.user!.id!}");
+              //         } else {
+              //           getUserByIdModel.user?.followState = 0;
+              //           setState(() {});
+              //           ApiRepository.unfollow(userId: "${getUserByIdModel.user!.id!}");
+              //         }
+              //       },
+              //     );
+              //   },
+              //   child: Container(
+              //     height: 40.ah,
+              //     width: 98.aw,
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(4),
+              //     //  color: HexColor('#001649'),
+              //       color: getUserByIdModel.user?.followState == 1
+              //           ? Colors.pinkAccent
+              //       : HexColor('#001649'),
+              //     ),
+              //     child: Center(
+              //       child: Text(
+              //         getUserByIdModel.user?.followState == 1
+              //             ? getUserByIdModel.user?.isPrivate == false
+              //                 ? "Following".tr
+              //                 : "Requested".tr
+              //             : getUserByIdModel.user?.followState == 0
+              //                 ? "Follow".tr
+              //                 : "Following".tr,
+              //         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14.fSize),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+
+      InkWell(
+        onTap: () async {
+          if (getUserByIdModel.user == null) return;
+
+          final currentState = getUserByIdModel.user!.followState ?? 0;
+
+          // Temporary update UI
+          setState(() {
+            if (currentState == 0) {
+              getUserByIdModel.user!.followState = 1; // assume following/requested
+            } else {
+              getUserByIdModel.user!.followState = 0; // unfollow
+            }
+          });
+
+          try {
+            if (currentState == 0) {
+              // Follow user
+              await ApiRepository.follow(
+                userId: getUserByIdModel.user!.id!.toString(),
+              );
+            } else {
+              // Unfollow user
+              await ApiRepository.unfollow(
+                userId: getUserByIdModel.user!.id!.toString(),
+              );
+            }
+
+            // ✅ Refresh from API
+            final updatedUser = await ApiRepository.getUserById(
+              userId: getUserByIdModel.user!.id!.toString(),
+            );
+
+            setState(() {
+              getUserByIdModel.user = updatedUser.user;
+            });
+          } catch (e) {
+            debugPrint("Follow/unfollow error: $e");
+          }
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: 40.ah,
+          width: 98.aw,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: (
+                getUserByIdModel.user?.followState == 1 ||
+                getUserByIdModel.user?.followState == 2)
+                ? Colors.pinkAccent
+                : HexColor('#001649'),
+          ),
+          child: Center(
+            child: Text(
+              getUserByIdModel.user?.followState == 0
+                  ? "Follow".tr
+                  : getUserByIdModel.user?.isPrivate == true &&
+                  getUserByIdModel.user?.followState == 1
+                  ? "Requested".tr
+                  : "Following".tr,
+
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 14.fSize,
               ),
+            ),
+          ),
+        ),
+      ),
             ],
           ),
           Text(

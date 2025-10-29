@@ -14,14 +14,12 @@ class OwnMessageCard extends StatelessWidget {
   final SingleMessage message;
   final DateTime createdAt;
 
-
   @override
   Widget build(BuildContext context) {
     DateTime time = DateTime.now().toUtc();
     print("$time");
 
     // convert local date time to string format local date time
-
     return Align(
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
@@ -64,7 +62,7 @@ class OwnMessageCard extends StatelessWidget {
                     }
                     if(message.isLink==1){
                       if(message.isLinkId!=null){
-                        Get.to(()=> PostViewScreen(  id:  "${message.isLinkId}",));
+                        Get.to(()=> PostViewScreen(id:"${message.isLinkId}",));
                       }else{
                         AppDialog.taostMessage("Photo not Found");
                       }
@@ -93,10 +91,7 @@ class OwnMessageCard extends StatelessWidget {
                 child: Padding(
                     padding: EdgeInsets.only(left: 10.h),
                     child: Text("${createdAt.hour}:${createdAt.minute < 10 ? "0${createdAt.minute}" : createdAt.minute}    ",
-                      style: TextStyle(fontSize: 12.adaptSize),
-
-                      )
-
+                      style: TextStyle(fontSize: 12.adaptSize))
                 )),
             SizedBox(height: 10.v),
           ],

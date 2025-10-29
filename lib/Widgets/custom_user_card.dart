@@ -40,20 +40,38 @@ class _CustomUserCardState extends State<CustomUserCard> {
             fit: BoxFit.cover,
           ),
           SizedBox(height: 4.ah),
-          Text(
-            widget.users.fullName!.capitalizeFirst!,
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 13.fSize),
+          Padding(
+            padding: EdgeInsets.only(left:10.aw,right:10.aw),
+            child: Center(
+              child: Text(
+                widget.users.fullName!.capitalizeFirst!,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13.fSize,
+                ),
+              ),
+            ),
           ),
+
           SizedBox(height: 2.ah),
-          Text(
-            widget.users.handle ?? "",
-            style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w600,
-                fontSize: 12.fSize),
+          Padding(
+            padding: EdgeInsets.only(left:10.aw,right:10.aw),
+            child: Center(
+              child: Text(
+                widget.users.handle ?? "",
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.fSize),
+              ),
+            ),
           ),
           SizedBox(height: 2.ah),
           Text(
@@ -68,8 +86,7 @@ class _CustomUserCardState extends State<CustomUserCard> {
           if(PrefUtils().getUserId() != "${widget.users.id}")
           InkWell(
             onTap: () {
-              setState(
-                    () {
+              setState(() {
                   if (widget.users.followState == 0) {
                     widget.users.followState = 1;
                     setState(() {});
@@ -89,15 +106,29 @@ class _CustomUserCardState extends State<CustomUserCard> {
               width: 98.aw,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
-                color: HexColor('#001649'),
+                // color: HexColor('#001649'),
+                color: (
+                    widget.users.followState == 1 ||
+                        widget.users.followState == 2)
+                    ? Colors.pinkAccent
+                    : HexColor('#001649'),
+                // color: widget.users.followState == 1
+                //     ? Colors.pinkAccent
+                //     : HexColor('#001649'),
               ),
               child: Center(
                 child: Text(
-                  widget.users.followState == 1  ? widget.users.isPrivate == false ? "Following".tr  : "Requested".tr : widget.users.followState == 0  ? "Follow".tr  : "Following".tr,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14.fSize),
+                  // widget.users.followState == 1 ? widget.users.isPrivate == false ?
+                  // "Following".tr : "Requested".tr : widget.users.followState == 0
+                  //     ? "Follow".tr  : "Following".tr,
+                  widget.users.followState == 0
+                      ? "Follow".tr
+                      : widget.users.isPrivate == true &&
+                      widget.users.followState == 1
+                      ? "Requested".tr
+                      : "Following".tr,
+                  style: TextStyle(color: Colors.white,
+                      fontWeight: FontWeight.w500, fontSize: 14.fSize),
                 ),
               ),
             ),
@@ -107,3 +138,5 @@ class _CustomUserCardState extends State<CustomUserCard> {
     );
   }
 }
+
+

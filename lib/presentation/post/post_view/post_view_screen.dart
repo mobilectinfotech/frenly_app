@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/post/post_view/post_view_controller.dart';
@@ -35,8 +36,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "_post".tr,
+        title: Text("_post".tr,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -46,16 +46,42 @@ class _PostViewScreenState extends State<PostViewScreen> {
           children: [
             SizedBox(height: 10.ah,),
             buildUserInfoRow(),
+            // Padding(
+            //   padding:  EdgeInsets.all(20.0.aw),
+            //   child: Obx(
+            //         ()=> CustomImageView(
+            //       radius: BorderRadius.circular(20),
+            //       fit: BoxFit.cover,
+            //       imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
+            //     ),
+            //   ),
+            // ),
+
             Padding(
-              padding:  EdgeInsets.all(20.0.aw),
+              padding: EdgeInsets.all(20.0.aw),
               child: Obx(
-                    ()=> CustomImageView(
-                  radius: BorderRadius.circular(20),
-                  fit: BoxFit.cover,
-                  imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
-                ),
+                    () {
+                  final imageUrl = controller.postSingleViewModel.value?.post?.imageUrl ?? '';
+
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      height: 200.ah,
+                      width: Get.width,
+                      child: PhotoView(
+                        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+                        imageProvider: NetworkImage(imageUrl),
+                        minScale: PhotoViewComputedScale.contained,
+                        maxScale: PhotoViewComputedScale.covered * 3.0,
+                        initialScale: PhotoViewComputedScale.contained,
+                        heroAttributes: PhotoViewHeroAttributes(tag: imageUrl),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
+
             buildVlogDetails(),
             const SizedBox(height: 15),
             buildLikeShareSaveRow(),

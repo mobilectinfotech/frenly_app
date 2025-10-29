@@ -160,7 +160,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 message: message,
                 createdAt: message.createdAt!.toLocal(),
               )
-                  : ReplyCard(
+                  : 
+              ReplyCard(
                 message: message,
                 createdAt: message.createdAt!.toLocal(),
               ),

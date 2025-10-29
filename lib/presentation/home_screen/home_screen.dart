@@ -430,6 +430,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   Widget discoverUsers() {
     return SizedBox(
       height: 223.ah,
@@ -442,8 +443,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return Padding(
               padding:  const EdgeInsets.only(right: 8.0),
               child: InkWell(
-                onTap: (){
-                  Get.to(()=>UserProfileScreen(userId: '${controller.homeModel.discoverUsers?[index].id}',));
+                onTap:(){
+                  Get.to(()=>UserProfileScreen(userId: '${controller.homeModel.discoverUsers?[index].id}'));
                 },
                 child: CustomUserCard(users: controller.homeModel.discoverUsers![index]),
               ),
@@ -535,9 +536,10 @@ class _HomeScreenState extends State<HomeScreen> {
             'veiww'.tr,
             style: TextStyle(
                 fontFamily: 'Roboto',
-                color: const Color(0xffAAAAAA),
+               // color: const Color(0xffAAAAAA),
+                color: Colors.pinkAccent,
                 fontWeight: FontWeight.w600,
-                fontSize: 16.fSize),
+                fontSize: 17.fSize),
           ),
         ),
       ],

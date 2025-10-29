@@ -136,16 +136,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   color: activeIndex == 2
                                       ? Color(0xff001649)
                                       : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(9.adaptSize)),
+                                  borderRadius: BorderRadius.circular(9.adaptSize)),
                               child: Center(
-                                  child: Text(
-                                'Photos'.tr,
+                                  child: Text('Photos'.tr,
                                 style: TextStyle(
                                     color: activeIndex == 2
                                         ? Colors.white
-                                        : Colors.black54),
-                              )),
+                                        : Colors.black54)
+                                  )),
                             ),
                           ),
                         ],
@@ -251,8 +249,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    ((controller.getUserByIdModel.user?.fullName?.trim()??"").split(' ').map((word) => word.capitalized).join(' ')),
+                  Text(((controller.getUserByIdModel.user?.fullName?.trim()??"").split(' ').map((word) => word.capitalized).join(' ')),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -295,6 +292,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               )
             ],
           ),
+
           Text(
             '${controller.getUserByIdModel.user?.bio ?? ""}'.tr,
             style: TextStyle(
