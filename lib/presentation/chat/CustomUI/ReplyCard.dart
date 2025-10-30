@@ -92,26 +92,26 @@ class ReplyCard extends StatelessWidget {
 
             ),
             SizedBox(height: 3.v),
-            // Opacity(
-            //     opacity: 0.5,
-            //     child: Padding(
-            //         padding: EdgeInsets.only(left: 10.h),
-            //         child: Text("  ${DateFormat('hh:mm a').format(createdAt ?? DateTime.now())}",
-            //           style: TextStyle(fontSize: 12.adaptSize),
-            //         )
-            //     )),
-
             Opacity(
-              opacity: 0.5,
-              child: Padding(
-                padding: EdgeInsets.only(left: 10.h),
-                child: Text(
-                  formatSeenTime(createdAt),
-                 // formatMessageTime(createdAt),
-                  style: TextStyle(fontSize: 12.adaptSize),
-                ),
-              ),
-            ),
+                opacity: 0.5,
+                child: Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Text("  ${DateFormat('hh:mm a').format(createdAt ?? DateTime.now())}",
+                      style: TextStyle(fontSize: 12.adaptSize),
+                    )
+                )),
+
+            // Opacity(
+            //   opacity: 0.5,
+            //   child: Padding(
+            //     padding: EdgeInsets.only(left: 10.h),
+            //     child: Text(
+            //       formatSeenTime(createdAt),
+            //      // formatMessageTime(createdAt),
+            //       style: TextStyle(fontSize: 12.adaptSize),
+            //     ),
+            //   ),
+            // ),
 
 
             SizedBox(height: 10.v),

@@ -56,47 +56,47 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     _getLastSeen();
   }
 
-  // Future<void> _getLastSeen() async {
-  //   try {
-  //     lastSeenModel = await ApiRepository.lastSeen(id: widget.participant.id.toString());
-  //
-  //     if (lastSeenModel?.data?.isLastSeenAllowed == false) {
-  //     //  lastSeenUser = "lastSeenHide";
-  //       lastSeenUser = "lastSeenHide".tr;
-  //     } else if (lastSeenModel?.data?.lastSeen == null) {
-  //     //  lastSeenUser = "online";
-  //       lastSeenUser = "online".tr;
-  //     } else {
-  //       lastSeenUser = timeago.format(lastSeenModel!.data!.lastSeen!.toLocal());
-  //     }
-  //     setState(() {});
-  //   } catch (e) {
-  //     print("Error fetching last seen: $e");
-  //   }
-  // }
-
   Future<void> _getLastSeen() async {
     try {
-      lastSeenModel = await ApiRepository.lastSeen(
-        id: widget.participant.id.toString(),
-      );
+      lastSeenModel = await ApiRepository.lastSeen(id: widget.participant.id.toString());
+
       if (lastSeenModel?.data?.isLastSeenAllowed == false) {
-        // User has hidden last seen
+      //  lastSeenUser = "lastSeenHide";
         lastSeenUser = "lastSeenHide".tr;
       } else if (lastSeenModel?.data?.lastSeen == null) {
-        // User is currently online
+      //  lastSeenUser = "online";
         lastSeenUser = "online".tr;
       } else {
-        // User has a last seen timestamp
-        final seenTime = lastSeenModel!.data!.lastSeen!.toLocal();
-        lastSeenUser = formatLastSeenn(seenTime);
+        lastSeenUser = timeago.format(lastSeenModel!.data!.lastSeen!.toLocal());
       }
       setState(() {});
-    }
-    catch (e) {
+    } catch (e) {
       print("Error fetching last seen: $e");
     }
   }
+
+  // Future<void> _getLastSeen() async {
+  //   try {
+  //     lastSeenModel = await ApiRepository.lastSeen(
+  //       id: widget.participant.id.toString(),
+  //     );
+  //     if (lastSeenModel?.data?.isLastSeenAllowed == false) {
+  //       // User has hidden last seen
+  //       lastSeenUser = "lastSeenHide".tr;
+  //     } else if (lastSeenModel?.data?.lastSeen == null) {
+  //       // User is currently online
+  //       lastSeenUser = "online".tr;
+  //     } else {
+  //       // User has a last seen timestamp
+  //       final seenTime = lastSeenModel!.data!.lastSeen!.toLocal();
+  //       lastSeenUser = formatLastSeenn(seenTime);
+  //     }
+  //     setState(() {});
+  //   }
+  //   catch (e) {
+  //     print("Error fetching last seen: $e");
+  //   }
+  // }
 
 
   void _handleFocusChange() {
@@ -194,6 +194,87 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
+
+
+  // Widget _buildMessageList() {
+  //   return Obx(() => ListView.builder(
+  //     reverse: true,
+  //     itemCount: controller.allMessages.length,
+  //     itemBuilder: (context, index) {
+  //       final message = controller.allMessages[index];
+  //       final isOwnMessage = message.senderId != widget.participant.id;
+  //
+  //       return Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           _buildTimestamp(index),
+  //           SizedBox(height: 10.ah),
+  //           isOwnMessage
+  //               ? OwnMessageCard(
+  //             message: message,
+  //             createdAt: message.createdAt!.toLocal(),
+  //           )
+  //               : ReplyCard(
+  //             message: message,
+  //             createdAt: message.createdAt!.toLocal(),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   ));
+  // }
+
+
+  // Widget _buildMessageList() {
+  //   return Obx(() {
+  //     if (controller.isLoading.value) {
+  //       return const Center(child: CircularProgressIndicator(strokeWidth: 1));
+  //     }
+  //     return ListView.builder(
+  //       reverse: true,
+  //       itemCount: controller.allMsg.messages?.length,
+  //       itemBuilder: (context, index) {
+  //         final message = controller.allMsg[index];
+  //         final isOwnMessage = message.senderId != widget.participant.id;
+  //
+  //         return Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             _buildTimestamp(index),
+  //             SizedBox(height: 10.ah),
+  //             isOwnMessage
+  //                 ? OwnMessageCard(message: message, createdAt: message.createdAt!.toLocal())
+  //                 : ReplyCard(message: message, createdAt: message.createdAt!.toLocal()),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   });
+  // }
+
+/*
+  Widget _buildTimestamp(int index) {
+    try {
+      final currentMessage = controller.allMessages[index];
+      final previousMessage = controller.allMessages[index + 1];
+
+      if (formatTimestamp(currentMessage.createdAt!) !=
+          formatTimestamp(previousMessage.createdAt!)) {
+        return Text(
+          formatTimestamp(currentMessage.createdAt!).capitalizeFirst!,
+          style: TextStyle(
+            fontSize: 15.adaptSize,
+            fontWeight: FontWeight.w600,
+            fontFamily: "Roboto",
+          ),
+        );
+      }
+    } catch (e) {
+      return const SizedBox.shrink();
+    }
+    return const SizedBox.shrink();
+  }
+*/
 
   Widget _buildTimestamp(int index) {
     try {
@@ -318,23 +399,29 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
+
+
 }
 
-String formatLastSeenn(DateTime seenTime) {
-  final now = DateTime.now();
-  final difference = now.difference(seenTime);
-
-  if (difference.inMinutes < 1) {
-    return 'seen_just'.tr;
-  } else if (difference.inMinutes < 60) {
-    return '${"Last_seen".tr} ${difference.inMinutes} ${"minute_ago".tr}'; // visades 5 min sedan
-  } else if (difference.inHours < 24) {
-    return '${"Last_seen".tr} ${difference.inHours} ${"hours_ago".tr}'; // visades 2 tim sedan
-  } else if (difference.inDays < 30) {
-    return '${"Last_seen".tr} ${difference.inDays} ${"days_ago".tr}'; // visades 3 dagar sedan
-  } else {
-    final monthsAgo = (difference.inDays / 30).floor();
-    return '${"Last_seen".tr} $monthsAgo ${"month_ago".tr}'; // visades 2 mån sedan
-  }
+extension on MessageModel1 {
+  operator [](int other) {}
 }
+
+// String formatLastSeenn(DateTime seenTime) {
+//   final now = DateTime.now();
+//   final difference = now.difference(seenTime);
+//
+//   if (difference.inMinutes < 1) {
+//     return 'online'.tr;
+//   } else if (difference.inMinutes < 60) {
+//     return '${"Last_seen".tr} ${difference.inMinutes} ${"minute_ago".tr}'; // visades 5 min sedan
+//   } else if (difference.inHours < 24) {
+//     return '${"Last_seen".tr} ${difference.inHours} ${"hours_ago".tr}'; // visades 2 tim sedan
+//   } else if (difference.inDays < 30) {
+//     return '${"Last_seen".tr} ${difference.inDays} ${"days_ago".tr}'; // visades 3 dagar sedan
+//   } else {
+//     final monthsAgo = (difference.inDays / 30).floor();
+//     return '${"Last_seen".tr} $monthsAgo ${"month_ago".tr}'; // visades 2 mån sedan
+//   }
+// }
 

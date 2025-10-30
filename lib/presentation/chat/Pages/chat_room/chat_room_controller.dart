@@ -48,7 +48,6 @@ class ChatRoomController extends GetxController {
     return true;
   }
 
-
 @override
   void dispose() {
   print("line 60");
@@ -67,3 +66,145 @@ class ChatRoomController extends GetxController {
     print("line 62");
   }
 }
+
+
+
+// class ChatRoomController extends GetxController {
+//   /// Reactive list of all messages in the chat
+//   RxList<SingleMessage> allMessages = <SingleMessage>[].obs;
+//
+//   RxBool isLoading = false.obs;
+//
+//   /// Fetch messages for this chat
+//   Future<void> getAllMsg({required String chatId}) async {
+//     try {
+//       isLoading.value = true;
+//       final response = await ApiClient().getRequest(endPoint: "message/$chatId");
+//       final model = MessageModel1.fromJson(response);
+//
+//       allMessages.assignAll(model.messages ?? []);
+//     } catch (e) {
+//       print("Error fetching messages: $e");
+//     } finally {
+//       isLoading.value = false;
+//     }
+//   }
+//
+//   /// Send a message and immediately add it to the UI
+//   Future<bool> sendMessage({
+//     required String message,
+//     required String chatId,
+//   }) async {
+//     try {
+//       final response = await ApiClient().postRequest(
+//         endPoint: "message/$chatId",
+//         body: {"content": message},
+//       );
+//
+//       final msg = SingleMessage.fromJson(response["message"]);
+//       allMessages.insert(0, msg); // Instant UI update
+//       return true;
+//     } catch (e) {
+//       print("Send message failed: $e");
+//       return false;
+//     }
+//   }
+//
+//   /// Called by socket when a message is received
+//   void addIncomingMessage(SingleMessage message) {
+//     // Prevent duplicate inserts
+//     final exists = allMessages.any((m) => m.id == message.id);
+//     if (!exists) {
+//       allMessages.insert(0, message);
+//     }
+//   }
+//
+//   /// Refresh chat list when closing chat
+//   final ChatScreenController chatScreenController = Get.find();
+//
+//   @override
+//   void onClose() {
+//     super.onClose();
+//     print("ChatRoomController closed");
+//     chatScreenController.getchats();
+//   }
+// }
+
+/*
+import 'package:get/get.dart';
+import '../../../../data/data_sources/remote/api_client.dart';
+import '../chats/chats_controller.dart';
+import 'chat_room_model.dart';
+
+class ChatRoomController extends GetxController {
+  // Make messages directly observable
+  var allMsg = <SingleMessage>[].obs;
+
+  RxBool isLoading = false.obs;
+
+  ChatScreenController chatScreenController = Get.find<ChatScreenController>();
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  /// Fetch all messages for a chat
+  Future<void> getAllMsg({required String chatId}) async {
+    try {
+      isLoading.value = true;
+
+      final response = await ApiClient().getRequest(endPoint: "message/$chatId");
+      print(response);
+
+      final fetchedMessages = MessageModel1.fromJson(response).messages ?? [];
+
+      // Assign messages to the observable list
+      allMsg.assignAll(fetchedMessages.reversed.toList()); // reverse if needed
+
+    } catch (e) {
+      print("Error fetching messages: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Send a new message
+  Future<bool> sendMessage({required String message, required String chatId}) async {
+    try {
+      final response = await ApiClient().postRequest(
+        endPoint: "message/$chatId",
+        body: {"content": message},
+      );
+
+      var msgJson = response["message"];
+      final newMessage = SingleMessage.fromJson(msgJson);
+
+      // Insert message at top of the list
+      allMsg.insert(0, newMessage);
+
+      return true;
+    } catch (e) {
+      print("Error sending message: $e");
+      return false;
+    }
+  }
+
+  /// Optional: Add incoming messages (e.g., from sockets)
+  void addMessage(SingleMessage message) {
+    allMsg.insert(0, message);
+  }
+
+  @override
+  void onClose() {
+    print("ChatRoomController closed");
+    super.onClose();
+  }
+
+  @override
+  void dispose() {
+    print("ChatRoomController disposed");
+    super.dispose();
+  }
+}
+*/

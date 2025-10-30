@@ -59,6 +59,7 @@ class SocketService {
       if (message.chatId == activeChatId.value) {
         chatRoomController.allMsg.messages!.insert(0, message);
         chatRoomController.allMsgNOTUSE.refresh();
+        //chatRoomController.addIncomingMessage(message);
       }
 
       final ChatScreenController chatScreenController = Get.find<ChatScreenController>();

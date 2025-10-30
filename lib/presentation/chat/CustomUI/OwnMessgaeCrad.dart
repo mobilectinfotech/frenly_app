@@ -86,25 +86,25 @@ class OwnMessageCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 3.v),
-            // Opacity(
-            //     opacity: 0.5,
-            //     child: Padding(
-            //         padding: EdgeInsets.only(left: 10.h),
-            //         child: Text("${createdAt.hour}:${createdAt.minute < 10 ? "0${createdAt.minute}" : createdAt.minute}    ",
-            //           style: TextStyle(fontSize: 12.adaptSize))
-            //     )),
-
             Opacity(
-              opacity: 0.5,
-              child: Padding(
-                padding: EdgeInsets.only(right: 10.h),
-                child: Text(
-                  formatSeenTime(createdAt),
-                 // formatSeenTime(controller.messageSeenTime.value),
-                  style: TextStyle(fontSize: 12.adaptSize),
-                ),
-              ),
-            ),
+                opacity: 0.5,
+                child: Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Text("${createdAt.hour}:${createdAt.minute < 10 ? "0${createdAt.minute}" : createdAt.minute}    ",
+                      style: TextStyle(fontSize: 12.adaptSize))
+                )),
+
+            // Opacity(
+            //   opacity: 0.5,
+            //   child: Padding(
+            //     padding: EdgeInsets.only(right: 10.h),
+            //     child: Text(
+            //       formatSeenTime(createdAt),
+            //      //formatSeenTime(controller.messageSeenTime.value),
+            //       style: TextStyle(fontSize: 12.adaptSize),
+            //     ),
+            //   ),
+            // ),
 
             SizedBox(height: 10.v),
           ],
