@@ -49,7 +49,7 @@ class Messages extends Translations {
           "Username": "Username",
           "You don't have any blocked users" : "You don't have any blocked users",
           "today": "Today",
-          "yesterday": "yesterday",
+          "yesterday": "Yesterday",
           "days_ago": "days ago",
           "online": "Online",
           "cancel": "Cancel",
@@ -126,7 +126,6 @@ class Messages extends Translations {
           "Blog": "Blog",
           "Places": "Places",
           "Photo": "Photo",
-
           "Vlogs": "Vlogs",
           "Blogs": "Blogs",
           "Photos": "Photos",
@@ -159,7 +158,7 @@ class Messages extends Translations {
           "Blocked List": "Blocked List",
           "SavedItems": "Saved Items",
           "CommentsonPost": "Comments on Post",
-          "Lastseen": "Last Seen",
+          "Last_seen": "Last Seen",
           "Settings": "Settings",
           "Thisis": "This is the caption of new post My name is jessic",
           "Comments on Post": "Comments on Post",
@@ -294,7 +293,24 @@ class Messages extends Translations {
           "confirm_logout": "Confirm Logout",
           "Are_you_sure_logout": "Are you sure you want to logout?",
           "please_accept_terms": "Please accept terms & conditions and privacy policy",
-
+          "last_seen": "Last seen",
+          "seen_just": "seen now",
+          "seen": "seen",
+          "minute_ago": "minute ago",
+          "ago": "ago",
+          "hide_Like": "Hide like count",
+          "jan": "jan",
+          "feb": "feb",
+          "mar": "mar",
+          "apr": "apr",
+          "may": "may",
+          "jun": "jun",
+          "jul": "jul",
+          "aug": "aug",
+          "sep": "sep",
+          "oct": "oct",
+          "nov": "nov",
+          "dec": "dec"
         },
 
         'swe_SE': {
@@ -435,7 +451,7 @@ class Messages extends Translations {
           "SavedItems": "Sparade objekt",
           "ACCOUNT": "KONTO",
           "CommentsonPost": "Kommentarer på inlägg",
-          "Lastseen": "Senast sedd",
+          "Last_seen": "Senast sedd",
           "Settings": "inställningar",
           "Comments on Post": "Kommentarer på inlägg",
           "Saved Items": "Sparade objekt",
@@ -597,8 +613,25 @@ class Messages extends Translations {
           "privacy_policy": "sekretesspolicy",
           "confirm_logout": "Bekräfta utloggning",
           "Are_you_sure_logout": "Är du säker på att du vill logga ut?",
-          "please_accept_terms": "Vänligen acceptera allmänna villkor och sekretesspolicyn"
-
+          "please_accept_terms": "Vänligen acceptera allmänna villkor och sekretesspolicyn",
+          "last_seen": "visades för",
+          "seen_just": "visades nyss",
+          "minute_ago": "min sedan",
+          "seen": "visades",
+          "ago": "sedan",
+          "hide_Like": "Visa inte antal likes",
+          "jan": "jan",
+          "feb": "feb",
+          "mar": "mar",
+          "apr": "apr",
+          "may": "maj",
+          "jun": "jun",
+          "jul": "jul",
+          "aug": "aug",
+          "sep": "sep",
+          "oct": "okt",
+          "nov": "nov",
+          "dec": "dec"
         }
       };
 }

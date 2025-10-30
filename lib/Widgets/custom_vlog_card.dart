@@ -135,10 +135,7 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
 
                   Container(
                     height: 196.ah,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     decoration: ShapeDecoration(
                       gradient: LinearGradient(
                         end: const Alignment(-0.45, 0.87),
@@ -156,18 +153,14 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                   vlogInLocationRow(widget.vlog, context),
                   SizedBox(
                     height: 196.ah,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding: EdgeInsets.all(10.0.adaptSize),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '${widget.vlog.title}'.capitalizeFirst!,
+                          Text('${widget.vlog.title}'.capitalizeFirst!,
                             style: TextStyle(
                                 color: const Color(0xffFFFFFF),
                                 fontWeight: FontWeight.w700,
@@ -280,10 +273,7 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
               ),
               Container(
                 // color: Colors.red,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 2.5,
+                width: MediaQuery.of(context).size.width / 2.5,
                 child: RichText(
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(children: [

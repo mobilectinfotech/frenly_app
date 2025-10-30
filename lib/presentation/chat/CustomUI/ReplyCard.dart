@@ -13,6 +13,8 @@ import '../../post/post_view/post_view_screen.dart';
 import '../Pages/chat_room/chat_room_model.dart';
 import 'package:intl/intl.dart';
 
+import 'OwnMessgaeCrad.dart';
+
 class ReplyCard extends StatelessWidget {
   const ReplyCard({Key ? key, required this.message, required this.createdAt}) : super(key: key);
   final SingleMessage message;
@@ -81,7 +83,7 @@ class ReplyCard extends StatelessWidget {
                         constraints: BoxConstraints(
                           maxWidth: MediaQuery.of(context).size.width*.70, // Set the maximum width here
                         ),
-                      child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ?   Colors.white :  Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
+                      child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ? Colors.white: Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
                       )
                     ),
                   ],
@@ -90,15 +92,28 @@ class ReplyCard extends StatelessWidget {
 
             ),
             SizedBox(height: 3.v),
-            Opacity(
-                opacity: 0.5,
-                child: Padding(
-                    padding: EdgeInsets.only(left: 10.h),
-                    child: Text("  ${DateFormat('hh:mm a').format(createdAt ?? DateTime.now())}",
-                      style: TextStyle(fontSize: 12.adaptSize),
-                    )
+            // Opacity(
+            //     opacity: 0.5,
+            //     child: Padding(
+            //         padding: EdgeInsets.only(left: 10.h),
+            //         child: Text("  ${DateFormat('hh:mm a').format(createdAt ?? DateTime.now())}",
+            //           style: TextStyle(fontSize: 12.adaptSize),
+            //         )
+            //     )),
 
-                )),
+            Opacity(
+              opacity: 0.5,
+              child: Padding(
+                padding: EdgeInsets.only(left: 10.h),
+                child: Text(
+                  formatSeenTime(createdAt),
+                 // formatMessageTime(createdAt),
+                  style: TextStyle(fontSize: 12.adaptSize),
+                ),
+              ),
+            ),
+
+
             SizedBox(height: 10.v),
 
           ],

@@ -130,8 +130,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('Last'.tr,
-                                    style:
-                                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
                                   Transform.scale(
                                     scale: 0.4,
@@ -158,8 +157,39 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                              SizedBox(height: 10.ah),
 
-                              //profile private public
+                              /*Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('hide_Like'.tr,
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  ),
+                                  Transform.scale(
+                                    scale: 0.4,
+                                    child: CupertinoSwitch(
+                                      //activeColor: Colors.blueGrey,
+                                      activeColor: Colors.pinkAccent.withOpacity(0.40),
+                                      trackColor: Colors.grey,
+                                      onLabelColor: Colors.brown,
+                                      offLabelColor: Colors.red,
+                                      //   thumbColor: const Color(0xff001649),
+                                      thumbColor: Colors.pinkAccent,
+                                      value: controller.mySettingModel!.userSetting.lastSeen,
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          controller.mySettingModel!.userSetting.lastSeen =
+                                          !controller.mySettingModel!.userSetting.lastSeen;
+                                          controller.mySettingsUpdate();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                                ],
+                              ),
+                              SizedBox(height: 10.ah),*/
 
+                              //profile private public
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,8 +225,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'CommentsonP'.tr,
+                                  Text('CommentsonP'.tr,
                                     style:
                                         TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
@@ -399,10 +428,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Feedd'.tr,
-                                    style:
-                                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  Text('Feedd'.tr,
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
                                   //Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
                                   // SizedBox(width: 50.aw),

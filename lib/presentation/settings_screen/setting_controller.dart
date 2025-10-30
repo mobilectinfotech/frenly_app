@@ -28,7 +28,8 @@ class SettingsController extends GetxController {
         commentsAllowed: mySettingModel!.userSetting.commentsAllowed,
         chatNotification: mySettingModel!.userSetting.chatNotification,
         feedNotification: mySettingModel!.userSetting.feedNotification,
-        language: mySettingModel!.userSetting.language);
+        language: mySettingModel!.userSetting.language
+    );
   }
 
 

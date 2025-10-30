@@ -504,10 +504,10 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
         ),
       ),
       body: Obx(
-          ()=> controller.isLoadingBolg.value ? Center(child: CircularProgressIndicator(),) :  ListView(
+          ()=> controller.isLoadingBolg.value ? Center(child: CircularProgressIndicator()) : ListView(
             padding: EdgeInsets.zero,
-          children: [
-             SizedBox(height: 15.ah),
+            children: [
+              SizedBox(height: 15.ah),
             buildUserInfoRow(),
             Padding(
               padding:  EdgeInsets.all(20.0.aw),
@@ -556,8 +556,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
               const SizedBox(width: 10),
               Obx(() {
                 final handle = controller.blogByIdModel.value?.blog?.user?.handle ?? "";
-                return Text(
-                  handle,
+                return Text( handle,
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.90),
                     fontWeight: FontWeight.w600,
@@ -630,8 +629,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                   },
                   child: CustomImageView(
                     imagePath: 'assets/image/comments_blue.png',
-                    width: 21.aw,
-                    height: 21.aw,
+                    width: 21.aw, height: 21.aw,
                   ),
                 ),
               const SizedBox(width: 20),
@@ -648,7 +646,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                 child: CustomImageView(
                   imagePath: 'assets/image/Vector (1).png',
                   color: MyColor.primaryColor,
-                  height: 21.aw,
+                  height: 21.aw
                 ),
               ),
               const Spacer(),
@@ -675,8 +673,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                     imagePath: alreadySaved
                         ? 'assets/image/save_true_blue.svg'
                         : 'assets/image/save_false_blue.svg',
-                    width: 21.aw,
-                    height: 21.aw,
+                    width: 21.aw, height: 21.aw,
                   ),
                 );
               }),
@@ -685,10 +682,8 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
           SizedBox(height: 5.ah,),
           if(controller.blogByIdModel.value?.blog?.numberOfLikes != 0)
           Obx(
-          ()=> Text(
-               '${controller.blogByIdModel.value?.blog?.numberOfLikes} likes',
-              style: TextStyle(
-                color: Colors.black,
+          ()=> Text('${controller.blogByIdModel.value?.blog?.numberOfLikes} likes',
+              style: TextStyle( color: Colors.black,
                 fontWeight: FontWeight.w600,
                 fontSize: 11.fSize,
               ),
@@ -707,19 +702,17 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(
-                  ()=> controller.blogByIdModel.value?.blog?.tags != null ?
+                Obx( ()=> controller.blogByIdModel.value?.blog?.tags != null ?
                   tags() : SizedBox(),
                 ),
                 Obx(() {
                   final views = controller.blogByIdModel.value?.blog?.title ?? "0";
-                  return Text(
-                    "$views".capitalizeFirst!,
+                  return Text("$views".capitalizeFirst!,
                     style: TextStyle(
                       color: MyColor.primaryColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 20.fSize,
-                      letterSpacing: 0.0,
+                        letterSpacing: 0.0
                     ),
                   );
                 }),
@@ -727,12 +720,11 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                 Obx(() {
                   final handle = controller.blogByIdModel.value?.blog?.user?.handle ?? "";
                   final body = controller.blogByIdModel.value?.blog?.body ?? "";
-                  return Text(
-                    "$body",
+                  return Text("$body",
                     style: TextStyle(
                       color: Colors.black.withOpacity(0.60),
                       fontWeight: FontWeight.w500,
-                      fontSize: 14.fSize,
+                      fontSize: 14.fSize
                     ),
                   );
                 }),
@@ -755,10 +747,11 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
       ),
     );
   }
+
   Widget tags(){
     String jsonString = "${controller.blogByIdModel.value?.blog?.tags}";
     List<String> tagsList =controller.blogByIdModel.value?.blog?.tags  == null ? [] : json.decode(jsonString).cast<String>();
-    return    Row(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -773,12 +766,10 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
             child: Padding(
               padding: EdgeInsets.only(right: 8.0.aw),
               child: Center(
-                child: Text(
-                  "#${tagsList[i]}",
-                  style: const TextStyle(
+                child: Text( "#${tagsList[i]}",
+                  style: TextStyle(
                     color: MyColor.primaryColor,
-                    fontSize: 16,
-                    fontFamily: 'Roboto',
+                    fontSize: 16, fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
                   ),
                 ),
