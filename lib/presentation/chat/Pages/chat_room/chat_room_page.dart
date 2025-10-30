@@ -167,14 +167,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
   Widget _buildMessageList() {
-    return Obx(
-          () => ListView.builder(
+    return Obx(() => ListView.builder(
         reverse: true,
         itemCount: controller.allMsg.messages?.length ?? 0,
         itemBuilder: (context, index) {
           final message = controller.allMsg.messages![index];
           final isOwnMessage = message.senderId != widget.participant.id;
-
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
