@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:photo_view/photo_view.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -40,47 +41,56 @@ class _PostViewScreenState extends State<PostViewScreen> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: Obx(
-            ()=> controller.isLoadingPostsingle.value ? Center(child: CircularProgressIndicator(),) :  ListView(
+      body: Obx(()=> controller.isLoadingPostsingle.value ? Center(child: CircularProgressIndicator()) :
+        ListView(
           padding: EdgeInsets.zero,
           children: [
             SizedBox(height: 10.ah,),
             buildUserInfoRow(),
             // Padding(
             //   padding:  EdgeInsets.all(20.0.aw),
-            //   child: Obx(
-            //         ()=> CustomImageView(
+            //   child: Obx(()=> CustomImageView(
             //       radius: BorderRadius.circular(20),
             //       fit: BoxFit.cover,
-            //       imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
+            //     imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
             //     ),
             //   ),
             // ),
 
             Padding(
-              padding: EdgeInsets.all(20.0.aw),
-              child: Obx(
-                    () {
-                  final imageUrl = controller.postSingleViewModel.value?.post?.imageUrl ?? '';
-
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      height: 200.ah,
-                      width: Get.width,
-                      child: PhotoView(
-                        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
-                        imageProvider: NetworkImage(imageUrl),
-                        minScale: PhotoViewComputedScale.contained,
-                        maxScale: PhotoViewComputedScale.covered * 3.0,
-                        initialScale: PhotoViewComputedScale.contained,
-                        heroAttributes: PhotoViewHeroAttributes(tag: imageUrl),
+              padding:  EdgeInsets.all(20.0.aw),
+              child: Obx(()=> InstaImageViewer(
+                      child: CustomImageView(
+                        radius: BorderRadius.circular(20),
+                        fit: BoxFit.cover,
+                        imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
                       ),
                     ),
-                  );
-                },
               ),
             ),
+
+            // Padding(
+            //   padding: EdgeInsets.all(20.0.aw),
+            //   child: Obx(() {
+            //       final imageUrl = controller.postSingleViewModel.value?.post?.imageUrl ?? '';
+            //       return ClipRRect(
+            //         borderRadius: BorderRadius.circular(20),
+            //         child: Container(
+            //           height: 200.ah,
+            //           width: Get.width,
+            //           child: PhotoView(
+            //             backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+            //             imageProvider: NetworkImage(imageUrl),
+            //             minScale: PhotoViewComputedScale.contained,
+            //             maxScale: PhotoViewComputedScale.covered * 3.0,
+            //             initialScale: PhotoViewComputedScale.contained,
+            //             heroAttributes: PhotoViewHeroAttributes(tag: imageUrl),
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
 
             buildVlogDetails(),
             const SizedBox(height: 15),
@@ -153,6 +163,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
       ],
     );
   }
+
   Widget buildLikeShareSaveRow() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.aw),
@@ -279,6 +290,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
       ),
     );
   }
+
   Widget buildVlogDetails() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.aw),
@@ -366,8 +378,6 @@ class _PostViewScreenState extends State<PostViewScreen> {
 //   }
 // }
 
-
-
 class HighlightHashtags extends StatelessWidget {
   final String text;
 
@@ -425,5 +435,6 @@ class HighlightHashtags extends StatelessWidget {
 
     return TextSpan(children: spans);
   }
+
 }
 
