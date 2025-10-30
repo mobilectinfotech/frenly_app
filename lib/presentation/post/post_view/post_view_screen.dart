@@ -47,6 +47,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
           children: [
             SizedBox(height: 10.ah,),
             buildUserInfoRow(),
+
             // Padding(
             //   padding:  EdgeInsets.all(20.0.aw),
             //   child: Obx(()=> CustomImageView(
@@ -58,14 +59,14 @@ class _PostViewScreenState extends State<PostViewScreen> {
             // ),
 
             Padding(
-              padding:  EdgeInsets.all(20.0.aw),
+              padding: EdgeInsets.all(20.0.aw),
               child: Obx(()=> InstaImageViewer(
                       child: CustomImageView(
                         radius: BorderRadius.circular(20),
                         fit: BoxFit.cover,
                         imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
-                      ),
-                    ),
+                 ),
+               ),
               ),
             ),
 

@@ -442,7 +442,8 @@
 
 // ignore_for_file: unused_import
 import 'dart:convert';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -510,10 +511,11 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
             buildUserInfoRow(),
             Padding(
               padding:  EdgeInsets.all(20.0.aw),
-              child: Obx(
-                ()=> CustomImageView(
-                  radius: BorderRadius.circular(20),
-                  imagePath: controller.blogByIdModel.value?.blog?.imageUrl,
+              child: Obx(()=> InstaImageViewer(
+                  child: CustomImageView(
+                    radius: BorderRadius.circular(20),
+                    imagePath: controller.blogByIdModel.value?.blog?.imageUrl,
+                  ),
                 ),
               ),
             ),

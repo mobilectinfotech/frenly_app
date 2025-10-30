@@ -114,7 +114,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
+                        decoration: BoxDecoration(
+                            color: HexColor('#E8E8E8'),
+                            borderRadius: BorderRadius.circular(6)),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Column(
@@ -127,19 +129,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Last'.tr,
+                                  Text('Last'.tr,
                                     style:
                                         TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
                                   Transform.scale(
                                     scale: 0.4,
                                     child: CupertinoSwitch(
-                                      activeColor: Colors.blueGrey,
+                                   //   activeColor: Colors.blueGrey,
+                                      activeColor: Colors.pinkAccent.withOpacity(0.40),
                                       trackColor: Colors.grey,
                                       onLabelColor: Colors.brown,
                                       offLabelColor: Colors.red,
-                                      thumbColor: const Color(0xff001649),
+                                   //   thumbColor: const Color(0xff001649),
+                                      thumbColor: Colors.pinkAccent,
                                       value: controller.mySettingModel!.userSetting.lastSeen,
                                       onChanged: (bool value) {
                                         setState(() {
@@ -169,11 +172,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Transform.scale(
                                     scale: 0.4,
                                     child: CupertinoSwitch(
-                                      activeColor: Colors.blueGrey,
+                                     // activeColor: Colors.blueGrey,
+                                      activeColor:  Colors.pinkAccent.withOpacity(0.40),
                                       trackColor: Colors.grey,
                                       onLabelColor: Colors.brown,
                                       offLabelColor: Colors.red,
-                                      thumbColor: const Color(0xff001649),
+                                      thumbColor:  Colors.pinkAccent,
                                       value: widget.isAccountPrivate,
                                       onChanged: (bool value) {
                                         setState(() {
@@ -200,11 +204,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Transform.scale(
                                     scale: 0.4,
                                     child: CupertinoSwitch(
-                                      activeColor: Colors.blueGrey,
+                                   //   activeColor: Colors.blueGrey,
+                                      activeColor: Colors.pinkAccent.withOpacity(0.40),
                                       trackColor: Colors.grey,
                                       onLabelColor: Colors.brown,
                                       offLabelColor: Colors.red,
-                                      thumbColor: const Color(0xff001649),
+                                      thumbColor:  Colors.pinkAccent,
+                                     // thumbColor: const Color(0xff001649),
                                       value: controller.mySettingModel!.userSetting.commentsAllowed,
                                       onChanged: (bool value) {
                                         setState(() {
@@ -371,11 +377,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Transform.scale(
                                     scale: 0.4,
                                     child: CupertinoSwitch(
-                                      activeColor: Colors.blueGrey,
+                                    //  activeColor: Colors.blueGrey,
+                                      activeColor:  Colors.pinkAccent.withOpacity(0.40),
                                       trackColor: Colors.grey,
                                       onLabelColor: Colors.brown,
                                       offLabelColor: Colors.red,
-                                      thumbColor: const Color(0xff001649),
+                                     // thumbColor: const Color(0xff001649),
+                                      thumbColor: Colors.pinkAccent,
                                       value: controller.mySettingModel!.userSetting.chatNotification,
                                       onChanged: (bool value) {
                                         setState(() {
@@ -401,11 +409,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Transform.scale(
                                     scale: 0.4,
                                     child: CupertinoSwitch(
-                                      activeColor: Colors.blueGrey,
+                                      activeColor:Colors.pinkAccent.withOpacity(0.40),
                                       trackColor: Colors.grey,
                                       onLabelColor: Colors.brown,
                                       offLabelColor: Colors.red,
-                                      thumbColor: const Color(0xff001649),
+                                      thumbColor: Colors.pinkAccent,
                                       value: controller.mySettingModel!.userSetting.feedNotification,
                                       onChanged: (bool value) {
                                         setState(() {
