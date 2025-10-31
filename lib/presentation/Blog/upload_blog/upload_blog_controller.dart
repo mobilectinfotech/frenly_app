@@ -38,7 +38,11 @@ class UploadBolgController extends GetxController{
    Future<void> postBlog() async {
 
       isLoading.value =true;
-      bool isPosted = await ApiRepository.postBlog(title: titleController.text, body:bodyController.text, tag:  extractHashtags(detectableCaptionTextEditingController.text),blogPic:coverPhoto?.path );
+      bool isPosted = await ApiRepository.postBlog(
+          title: titleController.text,
+          body:bodyController.text,
+          tag:  extractHashtags(detectableCaptionTextEditingController.text),
+          blogPic:coverPhoto?.path );
       isLoading.value =false;
       if(isPosted){
         if(Get.isRegistered<MyProfileController>()) {

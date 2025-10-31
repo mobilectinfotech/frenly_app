@@ -43,7 +43,6 @@ class Messages extends Translations {
            "please_enter_both_first_name_and_last_name" : "Please enter both first name and last name",
            "please_enter_a_valid_full_name" : "Please enter a valid full name",
            "please_write_something" : "Please write something",
-
           "Chat notification": "Chat Notification",
           "Clearall": "Clear All",
           "Username": "Username",
@@ -77,7 +76,7 @@ class Messages extends Translations {
           "all": "All",
           "confirm_deletion": "Confirm Deletion",
           "Are_you_delete_account":
-              "Are you sure you want to delete your account?",
+           "Are you sure you want to delete your account?",
           "choose_language": "Choose Language",
           "english": "English",
           "swedish": "Swedish",
@@ -107,7 +106,6 @@ class Messages extends Translations {
           "terms_conditions": "Terms and Conditions",
           "and_the": " and the ",
           "privacy_policy": "Privacy Policy",
-
           "Log": "Login",
           "Logg": "LOGIN",
           "Forg": "Forgot Password ?",
@@ -633,7 +631,8 @@ class Messages extends Translations {
           "oct": "okt",
           "nov": "nov",
           "dec": "dec",
-          "change_password": "Byt lösenord"
+          "change_password": "Byt senores"
+
         }
       };
 }

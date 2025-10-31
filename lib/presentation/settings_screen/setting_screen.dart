@@ -38,14 +38,14 @@ class _SettingScreenState extends State<SettingScreen> {
      locale = await localeService.getLocale();
   }
 
-  // Future<Locale?> getLocale() async {
+  //Future<Locale?> getLocale() async {
   //   final prefs = await SharedPreferences.getInstance();
   //   final languageCode = prefs.getString("locale");
   //   if (languageCode != null) {
   //     return Locale(languageCode);
   //   }
   //   return null;
-  // }
+  //}
 
   @override
   void initState() {
@@ -300,8 +300,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        ''.tr,
+                                      Text(''.tr,
                                         style: TextStyle(
                                             color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                       ),

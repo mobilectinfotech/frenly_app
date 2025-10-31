@@ -86,9 +86,6 @@ class ApiClient {
       return _processResponse(response);
     }
   }
-
-
-
 }
 
 Response createErrorEntity(DioException error) {
