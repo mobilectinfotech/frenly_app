@@ -299,6 +299,7 @@ class Messages extends Translations {
           "minute_ago": "minute ago",
           "ago": "ago",
           "hide_Like": "Hide like count",
+          "change_password": "Change Password",
           "jan": "jan",
           "feb": "feb",
           "mar": "mar",
@@ -631,7 +632,8 @@ class Messages extends Translations {
           "sep": "sep",
           "oct": "okt",
           "nov": "nov",
-          "dec": "dec"
+          "dec": "dec",
+          "change_password": "Byt lösenord"
         }
       };
 }

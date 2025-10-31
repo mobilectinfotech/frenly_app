@@ -12,6 +12,7 @@ import '../../../../core/constants/my_colour.dart';
 import '../../../../core/utils/calculateTimeDifference.dart';
 import '../../../../data/repositories/api_repository.dart';
 import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../../auth/my_profile_view/my_profile_screen.dart';
 import '../../search/search_page.dart';
 import '../../user_profile_screen/user_profile_screen.dart';
 
@@ -122,8 +123,9 @@ class _PostViewScreenState extends State<PostViewScreen> {
                   height: 30.adaptSize,
                   width: 30.adaptSize,
                   fit: BoxFit.cover,
-                  onTap: () {
-                    Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                  onTap:(){
+                  // Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                   Get.to(() => MyProfileScreen(userId: "${user?.id}"));
                   },
                   radius: BorderRadius.circular(50),
                   imagePath: user?.avatarUrl,
@@ -133,14 +135,11 @@ class _PostViewScreenState extends State<PostViewScreen> {
               const SizedBox(width: 10),
               Obx(() {
                 final handle = controller.postSingleViewModel.value?.post?.user?.handle ?? "";
-                return Text(
-                  handle,
+                return Text(handle,
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.90),
                     fontWeight: FontWeight.w600,
-                    fontSize: 12.fSize,
-                  ),
-                );
+                    fontSize: 12.fSize));
               }),
             ],
           ),

@@ -52,8 +52,7 @@ class ChatsScreen extends StatelessWidget {
     int indexxx =
         "${controller.chatsModel.value?.chats![index].participants![0].id}" ==
                 PrefUtils().getUserId()
-            ? 1
-            : 0;
+            ? 1 : 0;
 
     return InkWell(
       onTap: () {
@@ -88,9 +87,8 @@ class ChatsScreen extends StatelessWidget {
                     .participants?[indexxx].avatarUrl,
                 fit: BoxFit.cover,
               ),
-              SizedBox(
-                width: 10.aw,
-              ),
+
+              SizedBox(width: 10.aw),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,

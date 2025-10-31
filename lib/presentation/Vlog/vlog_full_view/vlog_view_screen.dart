@@ -25,6 +25,7 @@ import '../../Vlog/add_new_category/add_new_cateogry_bottom_sheet.dart';
 import '../../Vlog/edit_vlog/edit_vlog.dart';
 import '../../Vlog/vlog_like_commnet_share_common_view.dart';
 import '../../auth/my_profile_view/my_profile_controller.dart';
+import '../../auth/my_profile_view/my_profile_screen.dart';
 import '../../chat/Pages/all_frined/CreateChatModel.dart';
 import '../../dashboard_screen/dashboardcontroller.dart';
 import '../../user_profile_screen/user_profile_screen.dart';
@@ -801,8 +802,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "_vlog".tr,
+        title: Text("_vlog".tr,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -839,6 +839,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
                   fit: BoxFit.cover,
                   onTap: () {
                     Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                   // Get.to(() => MyProfileScreen());
                   },
                   radius: BorderRadius.circular(50),
                   imagePath: user?.avatarUrl,

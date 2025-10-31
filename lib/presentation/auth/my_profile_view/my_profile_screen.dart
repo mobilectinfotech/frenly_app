@@ -23,7 +23,7 @@ import '../edit_profile_screen/edit_profile_screen.dart';
 import 'my_profile_controller.dart';
 
 class MyProfileScreen extends StatefulWidget {
-  const MyProfileScreen({super.key});
+  const MyProfileScreen({super.key, required String userId,});
 
   @override
   State<MyProfileScreen> createState() => _MyProfileScreenState();

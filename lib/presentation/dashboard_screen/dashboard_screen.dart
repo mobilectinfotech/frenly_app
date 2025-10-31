@@ -292,7 +292,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     SearchScreen(),
     const SizedBox(),
     ChatsScreen(),
-    const MyProfileScreen(),
+    const MyProfileScreen(userId: '',),
   ];
 
   void _onItemTapped(int index) {

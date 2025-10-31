@@ -24,7 +24,7 @@ class ApiClient {
     baseOptions = BaseOptions(
         receiveTimeout: const Duration(seconds: 30),
         connectTimeout: const Duration(seconds: 30),
-        baseUrl: mainUrl,);
+      baseUrl: mainUrl);
     dio = Dio(baseOptions);
     options = Options(headers: {"Authorization": "Bearer ${PrefUtils().getAuthToken()}"});
      dio.interceptors.add(PrettyDioLogger(requestBody: true, requestHeader: true));
@@ -49,7 +49,6 @@ class ApiClient {
   }
 
   /// postRequest
-
   Future<dynamic> postRequest({required String endPoint, required dynamic body}) async {
     try {
       Response<dynamic> response = await dio.post(endPoint, data: body, options: options);
@@ -65,8 +64,9 @@ class ApiClient {
 
 
 
-  /// delete Request
 
+
+  /// delete Request
   Future<dynamic> deleteRequest({required String endPoint, required dynamic body}) async {
     try {
       Response<dynamic> response = await dio.delete(endPoint, data: body, options: options);
@@ -76,7 +76,6 @@ class ApiClient {
       return _processResponse(response);
     }
   }
-
 
  Future<dynamic> patchRequest({required String endPoint, required dynamic body}) async {
     try {

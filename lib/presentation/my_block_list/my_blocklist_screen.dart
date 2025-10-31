@@ -114,18 +114,14 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                                     fontSize: 13.fSize),
                               ),
                             ),
-                            Text(
-                              controller.blockUserList.myBlockedUserList?[index]
-                                      .handle ??
-                                  '',
+                            Text(controller.blockUserList.myBlockedUserList?[index].handle ?? '',
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12.fSize),
                             ),
                             SizedBox(height: 4.ah),
-                            Text(
-                              '${controller.blockUserList.myBlockedUserList?[index].numberOfFollower ?? ''}',
+                            Text('${controller.blockUserList.myBlockedUserList?[index].numberOfFollower ?? ''}',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
@@ -139,23 +135,17 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                                     controller
                                             .blockUserList
                                             .myBlockedUserList?[index]
-                                            .isFollowed =
-                                        !controller
-                                            .blockUserList
-                                            .myBlockedUserList![index]
-                                            .isFollowed!;
+                                        .isFollowed = !controller.blockUserList.myBlockedUserList![index].isFollowed!;
                                     if (controller
                                         .blockUserList
                                         .myBlockedUserList![index]
                                         .isFollowed!) {
                                       print("is_pr_user_block_hoga");
                                       ApiRepository.blockUser(
-                                          userId:
-                                              "${controller.blockUserList.myBlockedUserList?[index].id!}");
+                                          userId: "${controller.blockUserList.myBlockedUserList?[index].id!}");
                                     } else {
                                       ApiRepository.unblockUser(
-                                          userId:
-                                              "${controller.blockUserList.myBlockedUserList?[index].id!}");
+                                          userId: "${controller.blockUserList.myBlockedUserList?[index].id!}");
                                     }
                                   },
                                 );
@@ -166,9 +156,8 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
                                   color: controller.blockUserList
-                                          .myBlockedUserList![index].isFollowed!
-                                      ? Colors.red
-                                      : HexColor('#001649'),
+                                      .myBlockedUserList![index].isFollowed!
+                                      ? Colors.red : HexColor('#001649'),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -180,9 +169,8 @@ class _MyBlockedUserListScreenState extends State<MyBlockedUserListScreen> {
                                         : "block".tr,
                                     style: TextStyle(
                                         color: controller
-                                                .blockUserList
-                                                .myBlockedUserList![index]
-                                                .isFollowed!
+                                            .blockUserList
+                                            .myBlockedUserList![index].isFollowed!
                                             ? Colors.white
                                             : Colors.white,
                                         fontWeight: FontWeight.w500,

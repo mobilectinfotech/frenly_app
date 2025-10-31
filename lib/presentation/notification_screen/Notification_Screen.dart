@@ -151,10 +151,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             child: Padding(
               padding: EdgeInsets.only(right: 15.h),
               child: Text('Clearall'.tr,
-                style: TextStyle(
-                    color: Color(0xFF001649),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 17.fSize),
+                style: TextStyle(color: Color(0xFF001649),
+                    fontWeight: FontWeight.w700, fontSize: 17.fSize),
               ),
             ),
           ),
@@ -181,211 +179,210 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   scrollDirection: Axis.vertical,
                   itemCount: notificationsModel.notifications?.length ?? 0,
                   itemBuilder: (context, index) {
-                    return Container(
-                      width: double.infinity,
-                      height: 78.ah,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CustomImageView(
-                            width: 56.adaptSize,
-                            height: 56.adaptSize,
-                            onTap: () {
-                              Get.to(() => UserProfileScreen(userId: '${notificationsModel.notifications?[index].byUser?.id}',));
-                            },
-                            imagePath: notificationsModel.notifications?[index].byUser?.avatarUrl,
-                            radius : BorderRadius.circular(100),
+                    return SingleChildScrollView(
+                      child: Container(
+                        width: double.infinity,
+                        height: 78.ah,
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: SingleChildScrollView(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CustomImageView(
+                                width: 56.adaptSize,
+                                height: 56.adaptSize,
+                                onTap: () {
+                                  Get.to(() => UserProfileScreen(userId: '${notificationsModel.notifications?[index].byUser?.id}',));
+                                },
+                                imagePath: notificationsModel.notifications?[index].byUser?.avatarUrl,
+                                radius : BorderRadius.circular(100),
 
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 180.aw,
-                            child: Text.rich(
-
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '${notificationsModel.notifications?[index].byUser?.fullName ?? "App Notification"} ',
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w500,
-                                      height: 0,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        try {
-                                          // Pass the correct friend/notification userId
-                                          final friendId = notificationsModel.notifications?[index].byUser?.id;
-
-                                          if (friendId == null) {
-                                            print("Error: friendId is null");
-                                            return;
-                                          }
-
-                                          // Create chat with backend
-                                          final createChatModel = await ApiRepository.createChat(userId: friendId.toString());
-
-                                          if (createChatModel.payload == null) {
-                                            print("Create chat failed: payload is null");
-                                            return;
-                                          }
-
-                                          // Choose correct participant
-                                          final int indexxx =
-                                          createChatModel.payload!.participants![0].id.toString() == PrefUtils().getUserId()
-                                              ? 1
-                                              : 0;
-
-                                          // ✅ Use chatId from backend payload, not from notification
-                                          final chatId = createChatModel.payload!.id.toString();
-
-                                          // Navigate to ChatRoomPage
-                                          Get.off(() => ChatRoomPage(
-                                            participant: createChatModel.payload!.participants![indexxx],
-                                            chatId: chatId,
-                                          ));
-                                        } catch (e) {
-                                          print("Navigation to ChatRoomPage failed: $e");
-                                        }
-                                      },
-
-                                  ),
-
-                                  TextSpan(
-                                    text: removeUserName(notificationsModel.notifications?[index].byUser?.fullName ?? "App", notificationsModel.notifications?[index].content ?? "",),
-                                    style:const TextStyle(
-                                      color: Color(0xFF505050),
-                                      fontSize: 15,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ],
                               ),
-                            ),
-                          ),
+                              SizedBox(width: 10),
+                              SizedBox(
+                                width: 180.aw,
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: '${notificationsModel.notifications?[index].byUser?.fullName ?? "App Notification"} ',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15, fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.w500, height: 0),
 
-                           // post
-                           if("${notificationsModel.notifications?[index].type}" == "post")
-                             Row(
-                               children: [
-                                 SizedBox(width : 50.aw),
-                                 Padding(
-                                   padding: const EdgeInsets.only(right: 8.0),
-                                   child: InkWell(
-                                     onTap: () async {
-                                       PostSingleViewModel postmodel = await   ApiRepository.getPostsByID(id: "${notificationsModel.notifications?[index].data?.id}");
-                                       Get.to(()=> PostViewScreen(id: "${postmodel.post?.id}",));
-                                       },
-                                     child: CustomImageView(
-                                       width: 47.02,
-                                       height: 48,
-                                      radius: BorderRadius.circular(8),
-                                       imagePath:notificationsModel.notifications?[index].data?.imageUrl,
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () async {
+                                            try {
+                                              // Pass the correct friend/notification userId
+                                              final friendId = notificationsModel.notifications?[index].byUser?.id;
+
+                                              if (friendId == null) {
+                                                print("Error: friendId is null");
+                                                return;
+                                              }
+
+                                              // Create chat with backend
+                                              final createChatModel = await ApiRepository.createChat(userId: friendId.toString());
+
+                                              if (createChatModel.payload == null) {
+                                                print("Create chat failed: payload is null");
+                                                return;
+                                              }
+
+                                              // Choose correct participant
+                                              final int indexxx =
+                                              createChatModel.payload!.participants![0].id.toString() == PrefUtils().getUserId()
+                                                  ? 1
+                                                  : 0;
+
+                                              // ✅ Use chatId from backend payload, not from notification
+                                              final chatId = createChatModel.payload!.id.toString();
+
+                                              // Navigate to ChatRoomPage
+                                              Get.off(() => ChatRoomPage(
+                                                participant: createChatModel.payload!.participants![indexxx],
+                                                chatId: chatId,
+                                              ));
+                                            } catch (e) {
+                                              print("Navigation to ChatRoomPage failed: $e");
+                                            }
+                                          },
+                                      ),
+
+                                      TextSpan(
+                                        text: removeUserName(notificationsModel.notifications?[index].byUser?.fullName ?? "App", notificationsModel.notifications?[index].content ?? "",),
+                                        style:const TextStyle(
+                                          color: Color(0xFF505050),
+                                          fontSize: 15,
+                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+
+                               // post
+                               if("${notificationsModel.notifications?[index].type}" == "post")
+                                 Row(
+                                   children: [
+                                     SizedBox(width : 50.aw),
+                                     Padding(
+                                       padding: const EdgeInsets.only(right: 8.0),
+                                       child: InkWell(
+                                         onTap: () async {
+                                           PostSingleViewModel postmodel = await   ApiRepository.getPostsByID(id: "${notificationsModel.notifications?[index].data?.id}");
+                                           Get.to(()=> PostViewScreen(id: "${postmodel.post?.id}",));
+                                           },
+                                         child: CustomImageView(
+                                           width: 47.02,
+                                           height: 48,
+                                          radius: BorderRadius.circular(8),
+                                           imagePath:notificationsModel.notifications?[index].data?.imageUrl,
+                                         ),
+                                       ),
                                      ),
-                                   ),
+                                   ],
                                  ),
-                               ],
-                             ),
 
-                          if("${notificationsModel.notifications?[index].type}" == "vlog")
-                             Row(
-                               children: [
-                                 SizedBox(width : 50.aw),
-                                 Padding(
-                                   padding: const EdgeInsets.only(right: 8.0),
-                                   child: InkWell(
-                                     onTap: () async {
-                                       Get.to(()=>VlogViewScreen( videoUrl: '${notificationsModel.notifications?[index].data?.videoUrl}', vlogId: '${notificationsModel.notifications?[index].data?.id}',));
-                                     },
-                                     child: CustomImageView(
-                                       width: 47.02,
-                                       height: 48,
-                                       radius: BorderRadius.circular(8),
-                                       imagePath:notificationsModel.notifications?[index].data?.thumbnailUrl ,
-                                       fit: BoxFit.cover,
+                              if("${notificationsModel.notifications?[index].type}" == "vlog")
+                                 Row(
+                                   children: [
+                                     SizedBox(width : 50.aw),
+                                     Padding(
+                                       padding: const EdgeInsets.only(right: 8.0),
+                                       child: InkWell(
+                                         onTap: () async {
+                                           Get.to(()=>VlogViewScreen( videoUrl: '${notificationsModel.notifications?[index].data?.videoUrl}', vlogId: '${notificationsModel.notifications?[index].data?.id}',));
+                                         },
+                                         child: CustomImageView(
+                                           width: 47.02,
+                                           height: 48,
+                                           radius: BorderRadius.circular(8),
+                                           imagePath:notificationsModel.notifications?[index].data?.thumbnailUrl ,
+                                           fit: BoxFit.cover,
 
+                                         ),
+                                       ),
                                      ),
-                                   ),
+                                   ],
                                  ),
-                               ],
-                             ),
 
-                          if("${notificationsModel.notifications?[index].type}" == "blog")
-                            Row(
-                              children: [
-                                SizedBox(width : 50.aw),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      Get.to(()=>  BlogViewScreen( id: '${notificationsModel.notifications?[index].data?.id}',));
+                              if("${notificationsModel.notifications?[index].type}" == "blog")
+                                Row(
+                                  children: [
+                                    SizedBox(width : 50.aw),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          Get.to(()=>  BlogViewScreen( id: '${notificationsModel.notifications?[index].data?.id}',));
+                                        },
+
+                                        child: CustomImageView(
+                                          width: 47.02,
+                                          height: 48,
+                                          radius: BorderRadius.circular(8),
+                                          imagePath:notificationsModel.notifications?[index].data?.imageUrl ,
+                                          fit: BoxFit.cover,
+
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                              if("${notificationsModel.notifications?[index].type}" == "followRequest")
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                        ApiRepository.acepedReqest(byUserId: notificationsModel.notifications![index].byUserId!, toUserId: notificationsModel.notifications![index].toUserId!, notificationId: notificationsModel.notifications![index].id!);
+                                        notificationsModel.notifications?.removeAt(index);
+                                        setState(() {});
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                      decoration: ShapeDecoration(
+                                        color: Color(0xFF001649),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                      ),
+                                      child: const Text('Accept',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500,
+                                          height: 0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 16.aw),
+                                  InkWell(
+                                    onTap : ()async {
+                                      await ApiRepository.deleteNotification(notificationID:"${notificationsModel.notifications?[index].id}");
+                                      notificationsModel.notifications?.removeAt(index);
+                                      setState(() {});
                                     },
 
-                                    child: CustomImageView(
-                                      width: 47.02,
-                                      height: 48,
-                                      radius: BorderRadius.circular(8),
-                                      imagePath:notificationsModel.notifications?[index].data?.imageUrl ,
-                                      fit: BoxFit.cover,
-
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                          if("${notificationsModel.notifications?[index].type}" == "followRequest")
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                    ApiRepository.acepedReqest(byUserId: notificationsModel.notifications![index].byUserId!, toUserId: notificationsModel.notifications![index].toUserId!, notificationId: notificationsModel.notifications![index].id!);
-                                    notificationsModel.notifications?.removeAt(index);
-                                    setState(() {});
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFF001649),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                                  ),
-                                  child: const Text(
-                                    'Accept',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w500,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
+                                      child: Icon(Icons.close,color: Color(0xFF001649),))
+                                ],
                               ),
-                              SizedBox(width: 16.aw),
-                              InkWell(
-                                onTap : ()async {
-                                  await ApiRepository.deleteNotification(notificationID:"${notificationsModel.notifications?[index].id}");
-                                  notificationsModel.notifications?.removeAt(index);
-                                  setState(() {});
-                                },
 
-                                  child: Icon(Icons.close,color: Color(0xFF001649),))
                             ],
                           ),
-
-                        ],
+                        ),
                       ),
                     );
-
                   },
                 ),
           SizedBox(height: 20.ah),

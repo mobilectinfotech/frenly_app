@@ -194,10 +194,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'private_account'.tr,
-                                    style:
-                                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  Text('private_account'.tr,
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
                                   Transform.scale(
                                     scale: 0.4,
@@ -226,8 +224,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('CommentsonP'.tr,
-                                    style:
-                                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
                                   // Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
                                   Transform.scale(
@@ -281,10 +278,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Navigator.push(
                                       context, MaterialPageRoute(builder: (context) => const AllSavedScreen()));
                                 },
-                                child: Text(
-                                  'Saved Items'.tr,
-                                  style:
-                                      TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                child: Text('Saved Items'.tr,
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
                               ),
                               SizedBox(height: 20.ah),
@@ -296,8 +291,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     onTap: () {
                                       Get.to(() => const MyBlockedUserListScreen());
                                     },
-                                    child: Text(
-                                      'Blocked List'.tr,
+                                    child: Text('Blocked List'.tr,
                                       style: TextStyle(
                                           color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                     ),
@@ -312,8 +306,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                       ),
                                       SizedBox(width: 10.aw),
-                                      Text(
-                                        'Contacts'.tr,
+                                      Text('Contacts'.tr,
                                         style: TextStyle(
                                             color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                       ),
@@ -326,10 +319,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Languagegg'.tr,
-                                    style:
-                                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  Text('Languagegg'.tr,
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
                                   InkWell(
                                     onTap: () async {
@@ -347,6 +338,17 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ),
                                 ],
                               ),
+
+                              //SizedBox(height: 20.ah),
+                              // InkWell(
+                              //   onTap: () {
+                              //  // _showDeleteConfirmationDialog(context);
+                              //   },
+                              //   child: Text('change_password'.tr,
+                              //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                              //   ),
+                              // ),
+
                               SizedBox(height: 20.ah),
                               InkWell(
                                 onTap: () {
@@ -356,13 +358,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                   style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
                               ),
+
                               SizedBox(height: 20.ah),
                               InkWell(
                                 onTap: () {
                                   Get.to(All_Categories());
                                 },
-                                child: Text(
-                                  'AllCategory'.tr,
+                                child: Text('AllCategory'.tr,
                                   style:
                                       TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
@@ -385,8 +387,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                'NOTIFICATIONS'.tr,
+                              Text('NOTIFICATIONS'.tr,
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontFamily: 'inter',
@@ -397,10 +398,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Chat notification'.tr,
-                                    style:
-                                        TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  Text('Chat notification'.tr,
+                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                   ),
                                   //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
                                   Transform.scale(
@@ -424,6 +423,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ),
                                 ],
                               ),
+
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -433,6 +433,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ),
                                   //Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
                                   // SizedBox(width: 50.aw),
+
                                   Transform.scale(
                                     scale: 0.4,
                                     child: CupertinoSwitch(
