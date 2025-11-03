@@ -339,6 +339,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           radius: 120,
           items: [
             CircularMenuItem(color: Colors.transparent, onTap: () {}),
+
             CircularMenuItem(
                 boxShadow: [],
                 iconSize: 20,
@@ -347,8 +348,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 onTap: () {
                   print("Circular menu item");
                   key.currentState?.reverseAnimation();
-                  Get.to(() => const PostPostScreen());
-                }),
+                  Get.to(() => PostPostScreen());
+                }
+                ),
+
             CircularMenuItem(
                 boxShadow: [],
                 iconSize: 20,
@@ -357,8 +360,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 onTap: () {
                   key.currentState?.reverseAnimation();
                   print("Circular menu item");
-                  Get.to(() => const UploadVlogScreen());
+                  Get.to(() => UploadVlogScreen());
                 }),
+
             CircularMenuItem(
                 boxShadow: [],
                 iconSize: 18,
@@ -369,7 +373,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   key.currentState?.reverseAnimation();
                   Get.to(() => const UploadBlogScreen());
                 }),
-            CircularMenuItem(color: Colors.transparent, onTap: () {})
+
+            CircularMenuItem(
+                color: Colors.transparent,
+                onTap: () {
+
+            }),
           ],
           backgroundWidget: Stack(
             children: [
@@ -434,8 +443,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               ),
                               onPressed: () => _onItemTapped(1),
                             ),
-                          )
-                              : Container(
+                          ) : Container(
                             height: 38.adaptSize,
                             width: 38.adaptSize,
                             child: IconButton(
@@ -445,6 +453,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               onPressed: () => _onItemTapped(1),
                             ),
                           ),
+
                           SizedBox(
                             height: 70.adaptSize,
                             width: 70.adaptSize,
@@ -466,7 +475,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                           ),
                                         ),
                                       ),
-                                    )),
+                                    )
+                                ),
                               ],
                             ),
                           ),

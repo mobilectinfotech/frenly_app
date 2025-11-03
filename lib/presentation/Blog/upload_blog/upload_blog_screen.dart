@@ -154,6 +154,7 @@ class _UploadBlogScreenState extends State<UploadBlogScreen> {
                     //     );
                     //   }).toList(),
                     // ),
+
                     const SizedBox(height: 10),
                     // Padding(
                     //   padding: const EdgeInsets.only(left: 10),
@@ -164,8 +165,9 @@ class _UploadBlogScreenState extends State<UploadBlogScreen> {
                     // ),
                     // const SizedBox(height: 10),
                     // CustomTextFormField(buildContext: context,hintText: "Enter location",controller: controller.locationController,maxLines: 1,),
+
                      const SizedBox(height: 30),
-                    Center(
+                     Center(
                       child: Obx(
                         ()=> CustomPrimaryBtn1(
                           title:'Postt'.tr,
@@ -180,7 +182,7 @@ class _UploadBlogScreenState extends State<UploadBlogScreen> {
                             }
 
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Demo_deshboardPage()));
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => EditBlog_Screen()));
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => EditBlog_Screen()));
                           },
                         ),
                       ),

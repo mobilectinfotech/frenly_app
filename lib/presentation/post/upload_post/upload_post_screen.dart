@@ -22,8 +22,6 @@ class _PostPostScreenState extends State<PostPostScreen> {
   UploadPostController controller = Get.put(UploadPostController());
   final _formKeyLogin = GlobalKey<FormState>();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +57,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
                             fit: BoxFit.cover,
                           ),
                         ),
+
                         Positioned(
                             right: 15.aw,
                             bottom: 15.ah,

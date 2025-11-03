@@ -9,10 +9,8 @@ import '../../auth/my_profile_view/my_profile_controller.dart';
 
 class UploadBolgController extends GetxController{
 
-
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     tagcontroller.dispose();
     titleController.dispose();
@@ -25,25 +23,23 @@ class UploadBolgController extends GetxController{
   TextEditingController bodyController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   List<String> tags = [];
-
   CroppedFile? coverPhoto;
-
   final detectableCaptionTextEditingController = DetectableTextEditingController(
     regExp: detectionRegExp(),
   );
 
-
   RxBool isLoading =false.obs;
 
    Future<void> postBlog() async {
-
       isLoading.value =true;
       bool isPosted = await ApiRepository.postBlog(
           title: titleController.text,
           body:bodyController.text,
-          tag:  extractHashtags(detectableCaptionTextEditingController.text),
-          blogPic:coverPhoto?.path );
+          tag:extractHashtags(detectableCaptionTextEditingController.text),
+          blogPic:coverPhoto?.path
+      );
       isLoading.value =false;
+
       if(isPosted){
         if(Get.isRegistered<MyProfileController>()) {
           Get.find<MyProfileController>().getProfile(); //done
@@ -52,8 +48,7 @@ class UploadBolgController extends GetxController{
       }
    }
 
-
-  List<String> extractHashtags(String inputString) {
+   List<String> extractHashtags(String inputString) {
     // Split the input string into words
     List<String> words = inputString.split(" ");
 
@@ -65,8 +60,4 @@ class UploadBolgController extends GetxController{
 
     return hashtags;
   }
-
-
-
-
 }

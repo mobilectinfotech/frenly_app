@@ -672,7 +672,6 @@ class ApiRepository {
         'tags[]': tag,
       });
     }
-
     Map<String, dynamic>? response = await ApiClient().postRequest(
       endPoint: "blog",
       body: data,
