@@ -82,20 +82,12 @@ class _PostPostScreenState extends State<PostPostScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text('Caption'.tr,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15.fSize),
-                ),
-              ),
-              SizedBox(
-                height: 20.ah,
-              ),
-              DetectableTextFieldWidget(detectableTextEditingController:controller.detectableCaptionTextEditingController,),
+                  style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
 
-              SizedBox(
-                height: 60.ah,
-              ),
+              SizedBox(height:20.ah),
+              DetectableTextFieldWidget(detectableTextEditingController:controller.detectableCaptionTextEditingController),
+
+              SizedBox(height: 60.ah),
               Center(
                 child: Obx(
                   () => CustomPrimaryBtn1(
@@ -279,3 +271,5 @@ class _DetectableTextFieldWidgetState extends State<DetectableTextFieldWidget> {
         ),
       ));
 }
+
+

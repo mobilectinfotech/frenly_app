@@ -34,6 +34,7 @@ Future<void> main() async {
       rethrow; // only ignore duplicate-app error
     }
   }
+
   /// Request notification permission (Android 13+ and iOS)
   final isDenied = await Permission.notification.isDenied;
   if (isDenied) {

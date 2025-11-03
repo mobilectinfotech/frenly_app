@@ -29,7 +29,11 @@ class UploadPostController extends GetxController{
   RxBool isLoading =false.obs;
    Future<void> postPost() async {
       isLoading.value =true;
-      bool isPosted = await ApiRepository.postPost(title: detectableCaptionTextEditingController.text, photoPath: '${coverPhoto!.path}' );
+      bool isPosted = await ApiRepository.postPost(
+          title: detectableCaptionTextEditingController.text,
+          photoPath: '${coverPhoto!.path}',
+         // location: ''
+      );
       isLoading.value =false;
       if(isPosted){
      //   Get.lazyPut(()=>MyProfileController());

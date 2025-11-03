@@ -60,7 +60,6 @@ class UploadVlogController extends GetxController{
 
     // Reset the loading state
     isLoading.value = false;
-
     if (isPost) {
       if (Get.isRegistered<MyProfileController>()) {
         Get.find<MyProfileController>().getProfile(); // Update profile

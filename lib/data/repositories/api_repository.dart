@@ -498,13 +498,15 @@ class ApiRepository {
   }
 
   static Future<bool> postPost({required String photoPath, required String title}) async {
+  //static Future<bool> postPost({required String photoPath, required String title,required String location}) async {
     print("sjdsfkjfdskjdfs${photoPath}");
     var data;
     data = FormData.fromMap({
       'image': await MultipartFile.fromFile(
-        photoPath,
+        photoPath
       ),
       'caption': title,
+      //'caption': location,
     });
 
     Map<String, dynamic>? response = await ApiClient().postRequest(

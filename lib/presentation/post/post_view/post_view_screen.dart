@@ -19,7 +19,7 @@ import '../../user_profile_screen/user_profile_screen.dart';
 class PostViewScreen extends StatefulWidget {
   final bool? own;
   final String? id;
-  PostViewScreen({Key? key, required this.id,  this.own}) : super(key: key);
+  PostViewScreen({Key? key, required this.id, this.own}) : super(key: key);
 
   @override
   State<PostViewScreen> createState() => _PostViewScreenState();
@@ -31,7 +31,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
   @override
   void initState() {
     super.initState();
-    controller.getPostByid(id: "${widget.id}");
+    controller.getPostByid(id:"${widget.id}");
   }
 
   @override
@@ -48,6 +48,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
           children: [
             SizedBox(height: 10.ah,),
             buildUserInfoRow(),
+           // buildUserInfoRow(),
 
             ///PramodCode...
             // Padding(
@@ -65,8 +66,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
               child: Obx(()=> InstaImageViewer(
                       child: CustomImageView(
                         radius: BorderRadius.circular(20),
-                        fit: BoxFit.cover,
-                        imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
+                        fit: BoxFit.cover, imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
                  ),
                ),
               ),
@@ -105,6 +105,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
     );
   }
 
+
   Widget buildUserInfoRow() {
     return Row(
       children: [
@@ -125,8 +126,8 @@ class _PostViewScreenState extends State<PostViewScreen> {
                   width: 30.adaptSize,
                   fit: BoxFit.cover,
                   onTap:(){
-                  // Get.to(() => UserProfileScreen(userId: "${user?.id}"));
-                   Get.to(() => MyProfileScreen(userId: "${user?.id}"));
+                   Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+                  // Get.to(() => MyProfileScreen(userId: "${user?.id}"));
                   },
                   radius: BorderRadius.circular(50),
                   imagePath: user?.avatarUrl,
@@ -139,8 +140,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                 return Text(handle,
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.90),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12.fSize));
+                    fontWeight: FontWeight.w600, fontSize: 12.fSize));
               }),
             ],
           ),
@@ -191,8 +191,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                     imagePath: controller.postSingleViewModel.value?.post?.alreadyLiked?? false
                         ? 'assets/image/love_true_blue.svg'
                         : 'assets/image/love_false_blue.svg',
-                    width: 21.aw,
-                    height: 21.aw,
+                    width: 21.aw, height: 21.aw,
                   ),
                 ),
               ),
@@ -261,14 +260,14 @@ class _PostViewScreenState extends State<PostViewScreen> {
               }),
             ],
           ),
+
           SizedBox(height: 5.ah,),
           if(controller.postSingleViewModel.value?.post?.numberOfLikes != 0)
             Obx(
                   ()=> Row(
                     mainAxisSize: MainAxisSize.min,  // To prevent the Row from taking up more space than necessary
                     children: [
-                      Text(
-                        '${controller.postSingleViewModel.value?.post?.numberOfLikes}',  // Likes count
+                      Text('${controller.postSingleViewModel.value?.post?.numberOfLikes}',  // Likes count
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
@@ -276,8 +275,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                         ),
                       ),
                       SizedBox(width: 4),  // Adds space between the number of likes and the word "likes"
-                      Text(
-                        controller.postSingleViewModel.value?.post?.numberOfLikes == 1 ? '_like'.tr : '_likes'.tr,  // The text "likes"
+                      Text(controller.postSingleViewModel.value?.post?.numberOfLikes == 1 ? '_like'.tr : '_likes'.tr,  // The text "likes"
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
@@ -314,6 +312,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                   // );
                   return HighlightHashtags(text: views,);
                 }),
+
                 SizedBox(height: 5,),
                 Obx(() {
                   final createdAt = controller.postSingleViewModel.value?.post?.createdAt?.toString() ?? "";
@@ -434,9 +433,7 @@ class HighlightHashtags extends StatelessWidget {
         );
       }
     }).toList();
-
     return TextSpan(children: spans);
   }
-
 }
 
