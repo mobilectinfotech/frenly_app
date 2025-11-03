@@ -1680,8 +1680,7 @@ class VlogBottomSheets {
                     child: Center(child: Icon(Icons.save,size: 18,),),
                   ),
                   SizedBox(width: 10.aw,),
-                  Text(
-                    '_save'.tr,
+                  Text('_save'.tr,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -1744,12 +1743,13 @@ class VlogBottomSheets {
                     width: 38,
                     height: 38,
                     decoration: ShapeDecoration(
-                      color: Color(0xFFDEDEDE),
+                     // color: Color(0xFFDEDEDE),
+                      color: Colors.red.withOpacity(0.30),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(26),
                       ),
                     ),
-                    child: Center(child: Icon(Icons.report),),
+                    child: Center(child: Icon(Icons.report,color: Colors.red)),
                   ),
                   SizedBox(width: 10.aw,),
                   Text(
