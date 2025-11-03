@@ -114,8 +114,7 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  'title'.tr,
+                child: Text('title'.tr,
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -131,13 +130,11 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                 controller: controller.titleController,
                 validator: Validator.notEmpty,
               ),
-              SizedBox(
-                height: 10.ah,
-              ),
+
+              SizedBox(height: 10.ah),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  'Description'.tr,
+                child: Text('Description'.tr,
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,

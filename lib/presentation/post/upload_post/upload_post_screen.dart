@@ -55,8 +55,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
                             radius: BorderRadius.circular(20.adaptSize),
                             height: 330.aw,
                             width: 330.aw,
-                            imagePath: controller.coverPhoto?.path ??
-                                "assets/icons/Frame 1171278712.png",
+                            imagePath: controller.coverPhoto?.path ?? "assets/icons/Frame 1171278712.png",
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -78,13 +77,11 @@ class _PostPostScreenState extends State<PostPostScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 30.ah,
-              ),
+
+              SizedBox(height: 30.ah),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  'Caption'.tr,
+                child: Text('Caption'.tr,
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
@@ -145,7 +142,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
       compressQuality: 50,
       sourcePath: pickedFile!.path,
       aspectRatio:
-          cropAspectRatio ?? const CropAspectRatio(ratioX: 200, ratioY: 200),
+      cropAspectRatio ?? const CropAspectRatio(ratioX: 200, ratioY: 200),
       maxWidth: 600,
       maxHeight: 600,
     );

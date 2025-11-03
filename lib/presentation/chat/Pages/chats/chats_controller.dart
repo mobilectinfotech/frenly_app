@@ -7,7 +7,7 @@ class ChatScreenController extends GetxController{
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-     getchats();
+    getchats();
   }
 
   Rxn<ChatsModel> chatsModel =Rxn(null);

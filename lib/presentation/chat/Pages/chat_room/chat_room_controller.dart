@@ -1,11 +1,14 @@
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile;
+import 'package:image_cropper/image_cropper.dart';
 import '../../../../data/data_sources/remote/api_client.dart';
 import '../../Model/msg_model.dart';
 import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
+// import 'package:dio/dio.dart';   // for FormData
 
+
+// enum MessageType { text, image, video, audio, gif }
 class ChatRoomController extends GetxController {
-
   MessageModel1 messageModel1 = MessageModel1(messages: []);
   GetSingleMsgModel? getSingleMsgModel = GetSingleMsgModel();
   List<SingleMessage> messages = [];
@@ -13,6 +16,9 @@ class ChatRoomController extends GetxController {
   var allMsgNOTUSE = MessageModel1(messages: []).obs;
 
   MessageModel1 get allMsg => allMsgNOTUSE.value;
+
+  CroppedFile? coverPhoto;
+
 
   @override
   void onInit() {
@@ -35,10 +41,10 @@ class ChatRoomController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<bool> sendMessage(
-      {required String message, required String chatId}) async {
+  Future<bool> sendMessage({required String message, required String chatId}) async {
     final response = await ApiClient().postRequest(
-        endPoint: "message/${chatId}", body: {"content": "${message}"});
+        endPoint: "message/${chatId}",
+        body: {"content": "${message}"});
 
     var msggg = response["message"];
     SingleMessage getSingleMsgModel = SingleMessage.fromJson(msggg);
@@ -65,9 +71,56 @@ class ChatRoomController extends GetxController {
     super.onClose();
     print("line 62");
   }
+
+/*
+  Future<bool> sendMedia({
+    required String chatId,
+    required String filePath,
+    required MessageType type,
+  }) async {
+    try {
+      // 1. Upload file
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(filePath),
+      });
+
+      final uploadResponse = await ApiClient().postRequest(
+        endPoint: "upload/chat-media",   // <-- YOUR BACKEND ENDPOINT
+        body: formData,
+      );
+
+      final String? fileUrl = uploadResponse['url'] as String?;
+      if (fileUrl == null) {
+        Get.snackbar('Error', 'Upload failed');
+        return false;
+      }
+
+      // 2. Send message with URL + type
+      final messageResponse = await ApiClient().postRequest(
+        endPoint: "message/$chatId",
+        body: {
+          "content": fileUrl,
+          "type": type.toString().split('.').last, // "image", "audio", etc.
+        },
+      );
+
+      final msgJson = messageResponse["message"];
+      final newMsg = SingleMessage.fromJson(msgJson);
+
+      allMsg.messages!.insert(0, newMsg);
+      allMsgNOTUSE.refresh();
+
+      return true;
+    } catch (e) {
+      Get.snackbar('Error', 'Send failed: $e');
+      return false;
+    }
+  }
+*/
+
+
+
 }
-
-
 
 // class ChatRoomController extends GetxController {
 //   /// Reactive list of all messages in the chat

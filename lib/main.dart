@@ -34,7 +34,6 @@ Future<void> main() async {
       rethrow; // only ignore duplicate-app error
     }
   }
-
   /// Request notification permission (Android 13+ and iOS)
   final isDenied = await Permission.notification.isDenied;
   if (isDenied) {
@@ -50,8 +49,8 @@ Future<void> main() async {
   //     Permission.notification.request();
   //   }
   // });
-
   //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     String payloadData = jsonEncode(message.data);
     print("Got a message in foreground");
@@ -97,7 +96,7 @@ class MyApp extends StatelessWidget {
           // fallbackLocale:const  Locale('en', 'US'),
           title: 'Frenly',
           home: SplashScreen(),
-         // home: Scaffold(body: VideoThumbnailPlayer(videoUrl: 'https://frenly.s3.amazonaws.com/1719924957051-3769033-sd_426_240_25fps.mp4',)),
+         // home: Scaffold(body: VideoThumbnailPlayer(videoUrl: 'https://frenly.s3.amazonaws.com/1719924957051-3769033-sd_426_240_25fps.mp4')),
           initialBinding: InitialBindings(),
           theme: ThemeData(
               highlightColor: Colors.transparent,

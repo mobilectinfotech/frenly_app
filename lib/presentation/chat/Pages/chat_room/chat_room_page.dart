@@ -1,4 +1,11 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:giphy_picker/giphy_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:path_provider/path_provider.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
@@ -15,6 +22,19 @@ import 'package:frenly_app/presentation/chat/Pages/chat_room/chat_room_model.dar
 import 'package:frenly_app/presentation/chat/Pages/chats/chats_model.dart';
 import '../../CustomUI/OwnMessgaeCrad.dart';
 import '../../CustomUI/ReplyCard.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:video_compress/video_compress.dart';
+import 'dart:io';
+import 'package:flutter_sound/flutter_sound.dart';   // <-- ADD THIS IMPORT
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:async';
+import 'dart:io';
+
+/*
+enum MessageType { text, image, video, audio, gif }
+*/
 
 class ChatRoomPage extends StatefulWidget {
 //  final String userId;
@@ -33,6 +53,7 @@ class ChatRoomPage extends StatefulWidget {
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
+
 class _ChatRoomPageState extends State<ChatRoomPage> {
   final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
 
@@ -42,6 +63,16 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   bool show = false;
   bool sendButton = false;
   LastSeenModel? lastSeenModel;
+
+// 1. Audio recorder (created once)
+/*
+  late final FlutterSoundRecorder _audioRecorder;
+*/
+
+// 2. Recording flag
+/*
+  bool _isRecording = false;
+*/
 
   @override
   void initState() {
@@ -147,6 +178,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                   child: _buildMessageList(),
                 ),
                 _buildMessageInput(),
+
+               //  SizedBox(height: 30.ah),
+               // _buildMessageInputt(),
+               //  SizedBox(height: 10.ah),
+
               ],
             ),
           ),
@@ -399,8 +435,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
-
-
 }
 
 extension on MessageModel1 {
@@ -425,3 +459,253 @@ extension on MessageModel1 {
 //   }
 // }
 
+
+
+
+/*
+Widget _buildMessageInputt() {
+
+  final ImagePicker _picker = ImagePicker();
+  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+
+  // -----------------------------------------------------------------
+  // 1. The whole pill (Container) – this is the Instagram “bubble”
+  // -----------------------------------------------------------------
+  return Align(
+    alignment: Alignment.bottomCenter,
+    child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.ah, horizontal: 12.aw),
+      child: Container(
+        // Instagram-like pill shape
+        decoration: BoxDecoration(
+          //  color: const Color(0xFFF5F5F5),               // light-grey background
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(30.adaptSize),
+
+          border: Border.all(color: Colors.grey.shade400, width: 0.8),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 8.aw, vertical: 6.ah),
+
+        // -----------------------------------------------------------------
+        // 2. Row that holds: Camera | TextField | Mic | Gallery | GIF
+        // -----------------------------------------------------------------
+
+        child: Row(
+          children: [
+            // ------------------- CAMERA (purple button) -------------------
+            GestureDetector(
+              // onTap: _captureMedia,
+              onTap: _showImagePiker,
+              child: Container(
+                width: 36.adaptSize,
+                height: 36.adaptSize,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF9B59B6),
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                  size: 20.adaptSize,
+                ),
+              ),
+            ),
+
+            SizedBox(width: 8.aw),
+            // ------------------- TEXT FIELD (expanded) -------------------
+
+            Expanded(
+              child: TextFormField(
+                controller: _messageController,
+                focusNode: focusNode,
+                textAlignVertical: TextAlignVertical.center,
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                minLines: 1,
+                onChanged: (value) {
+                  setState(() => sendButton = value.isNotEmpty);
+                },
+                style: TextStyle(
+                  fontSize: 16.adaptSize,
+                  color: Colors.black87,
+                ),
+                decoration: InputDecoration(
+                  // hintText: "Tillfälligt meddelande...".tr,
+                  hintText: "Messages".tr,
+                  hintStyle: TextStyle(
+                    color: const Color(0xFFA8A8A8),
+                    //fontSize: 16.adaptSize,
+                    fontSize: 20.adaptSize,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                  ),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.zero,
+                  fillColor: Colors.transparent,
+                ),
+              ),
+            ),
+
+            SizedBox(width: 8.aw),
+
+            // ------------------- RIGHT ICONS (mic, gallery, GIF) -------------------
+            //  _iconButton(Icons.mic_none_outlined, _recordAudio),
+            _iconButton(Icons.mic_none_outlined, _startVoiceRecording),
+
+            SizedBox(width: 4.aw),
+            _iconButton(Icons.photo_library_outlined, _pickFromGallery),
+
+            SizedBox(width: 4.aw),
+            _iconButton(Icons.gif_box_outlined, _pickGif),
+
+            SizedBox(width: 8.aw),
+            // ------------------- SEND BUTTON (outside the pill) -------------------
+            _buildSendButton(),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Future<CroppedFile?> imagePicker(
+    {required ImageSource source, CropAspectRatio? cropAspectRatio}) async {
+  final ImagePicker _picker = ImagePicker();
+  CroppedFile? _croppedFile;
+  final XFile? pickedFile = await _picker.pickImage(source: source);
+  _croppedFile = await ImageCropper().cropImage(
+    compressQuality: 50,
+    sourcePath: pickedFile!.path,
+    aspectRatio:
+    cropAspectRatio ?? const CropAspectRatio(ratioX: 200, ratioY: 200),
+    maxWidth: 600,
+    maxHeight: 600,
+  );
+  if (_croppedFile != null) {
+    setState(() {});
+  }
+  return _croppedFile;
+}
+
+void _showImagePiker() {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            color: Colors.white,
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: Text('gallery'.tr),
+                    onTap: () async {
+                      controller.coverPhoto = await imagePicker(
+                        source: ImageSource.gallery,
+                      );
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.video_camera_back_rounded),
+                  title: Text('camera'.tr),
+                  onTap: () async {
+                    controller.coverPhoto = await imagePicker(
+                      source: ImageSource.camera,
+                    );
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+}
+
+// Helper for the three right-side icons (keeps code DRY)
+Widget _iconButton(IconData icon, VoidCallback onTap) {
+  return InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(20.adaptSize),
+    child: Container(
+      padding: EdgeInsets.all(6.adaptSize),
+      child: Icon(icon, size: 24.adaptSize, color: Colors.black54),
+    ),
+  );
+}
+
+Future<void> _captureMedia() async {
+  // final XFile? file = await _picker.pickImage(source: ImageSource.camera);  // Or pickVideo for video
+  // if (file != null) {
+  //   controller.sendMedia(chatId: widget.chatId, filePath: file.path, type: MessageType.image);  // Or video
+  // }
+}
+
+Future<void> _pickFromGallery() async {
+  // final XFile? file = await _picker.pickImage(source: ImageSource.gallery);  // Handle video similarly
+  // if (file != null) {
+  //   controller.sendMedia(chatId: widget.chatId, filePath: file.path, type: MessageType.image);
+  // }
+}
+
+Future<void> _pickGif() async {
+  // final gif = await GiphyPicker.pickGif(context: context, apiKey: 'YOUR_GIPHY_API_KEY');
+  // if (gif?.url != null) {
+  //   // Upload or directly send URL if backend allows
+  //   controller.sendMessage(message: gif!.url, chatId: widget.chatId);  // Treat as text URL, or upload
+  //   // Update to sendMedia if uploading
+  // }
+}
+
+Future<void> _recordAudio() async {
+  // await _recorder.startRecorder(toFile: 'audio.aac');
+  // // Show recording UI, stop after user input
+  // await Future.delayed(Duration(seconds: 10));  // Example; use a button to stop
+  // String? path = await _recorder.stopRecorder();
+  // if (path != null) {
+  //   controller.sendMedia(chatId: widget.chatId, filePath: path, type: MessageType.audio);
+  // }
+}
+
+Future<void> _sendPickedImage(String filePath) async {
+  final controller = Get.find<ChatRoomController>();
+  final success = await controller.sendMedia(
+    chatId: widget.chatId,
+    filePath: filePath,
+    type: MessageType.audio,   // <-- audio, not image
+  );
+
+  if (success) {
+    _messageController.clear();
+  }
+}
+
+Future<void> _startVoiceRecording() async {
+  if (_isRecording) {
+    // STOP
+    final path = await _audioRecorder.stopRecorder();
+    _isRecording = false;
+    if (path != null) {
+      await _sendPickedImage(path);
+    }
+    setState(() {});
+    return;
+  }
+
+  // START
+  final dir = await getTemporaryDirectory();
+  final filePath = '${dir.path}/voice_${DateTime.now().millisecondsSinceEpoch}.aac';
+
+  await _audioRecorder.startRecorder(
+    toFile: filePath,
+    codec: Codec.aacADTS,
+  );
+  _isRecording = true;
+  setState(() {});
+  // Optional: auto-stop after 30 seconds
+  Timer(const Duration(seconds: 30), () {
+    if (_isRecording) _startVoiceRecording();
+  });
+}*/

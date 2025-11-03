@@ -32,7 +32,6 @@ class ApiClient {
 
   /// get Request
 
-
   Future<dynamic> getRequest({required String endPoint,bool checkUserBlock=true}) async {
     try {
       if(checkUserBlock) {

@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
-
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_compress/video_compress.dart';
 import 'dart:io';
-
 import '../../auth/my_profile_view/my_profile_controller.dart';
+
 class UploadVlogController extends GetxController{
 
 

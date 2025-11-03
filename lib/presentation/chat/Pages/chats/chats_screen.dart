@@ -41,8 +41,8 @@ class ChatsScreen extends StatelessWidget {
                       () => ListView.builder(
                         itemCount: controller.chatsModel.value?.chats!.length,
                         itemBuilder: (context, index) => chatsCard(index),
-                      ),
-                    ),
+              ),
+          ),
         ),
       ),
     );
@@ -51,14 +51,13 @@ class ChatsScreen extends StatelessWidget {
   Widget chatsCard(int index) {
     int indexxx =
         "${controller.chatsModel.value?.chats![index].participants![0].id}" ==
-                PrefUtils().getUserId()
+            PrefUtils().getUserId()
             ? 1 : 0;
 
     return InkWell(
       onTap: () {
         Get.to(() => ChatRoomPage(
-              participant: controller
-                  .chatsModel.value!.chats![index].participants![indexxx],
+              participant: controller.chatsModel.value!.chats![index].participants![indexxx],
               chatId: controller.chatsModel.value!.chats![index].id.toString(),
             ))?.then(
           (value) {
@@ -83,8 +82,7 @@ class ChatsScreen extends StatelessWidget {
                 radius: BorderRadius.circular(30),
                 height: 55,
                 width: 55,
-                imagePath: controller.chatsModel.value?.chats![index]
-                    .participants?[indexxx].avatarUrl,
+                imagePath: controller.chatsModel.value?.chats![index].participants?[indexxx].avatarUrl,
                 fit: BoxFit.cover,
               ),
 
@@ -101,15 +99,10 @@ class ChatsScreen extends StatelessWidget {
                   //     fontWeight: FontWeight.bold,
                   //   ),
                   // ),
-                  Text(
-                    capitalizeEachWord(
-                        "${controller.chatsModel.value?.chats![index].participants![indexxx].fullName ?? ''}"
-                    ),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text(capitalizeEachWord("${controller.chatsModel.value?.chats![index].participants![indexxx].fullName ?? ''}"),
+                    style:TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold,
+                    )),
 
                   SizedBox(
                     width: 210.aw,
@@ -117,11 +110,8 @@ class ChatsScreen extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       controller.chatsModel.value?.chats![index].lastMessage
-                              ?.content ??
-                          "",
-                      style: const TextStyle(
-                        fontSize: 13,
-                      ),
+                              ?.content ?? "",
+                      style: const TextStyle(fontSize: 13),
                     ),
                   ),
                 ],

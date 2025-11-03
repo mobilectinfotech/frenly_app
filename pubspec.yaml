@@ -97,6 +97,9 @@ dependencies:
   pinch_zoom: ^2.0.1
   insta_image_viewer: ^1.0.4
   photo_view: ^0.15.0
+  giphy_picker: ^3.0.2
+  flutter_sound: ^9.28.0
+#  giphy_get: ^3.6.1+1
 
 
   velocity_x:

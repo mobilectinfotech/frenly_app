@@ -13,6 +13,7 @@ import '../Blog/blog_view/blog_view_screen.dart';
 import '../Blog/blogs_list/blogs_list_screen.dart';
 import '../Vlog/vlog_full_view/vlog_view_screen.dart';
 import '../Vlog/vlogs_list/vlogs_list_screen.dart';
+import '../chat/Screens/CameraView.dart';
 import '../notification_screen/Notification_Screen.dart';
 import '../popular_city/popular_city_screen.dart';
 import '../popular_city/user_by_city_screen.dart';
@@ -63,13 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       //   height: 45.aw,width: 35.aw,fit: BoxFit.cover),
                       //
                       // SizedBox(width: 15.aw),
+
                       CustomImageView(
                         imagePath: "assets/icons/app_icon.png",
-                        height: 90.ah, width:90.ah,
-                        fit: BoxFit.fill,
-                      ),
-                      //SvgPicture.asset('assets/icons/fren.svg', height:25.aw,width: 30.aw,fit: BoxFit.cover),
+                        height: 90.ah, width:90.ah,fit: BoxFit.fill),
 
+
+                      //SvgPicture.asset('assets/icons/fren.svg', height:25.aw,width: 30.aw,fit: BoxFit.cover),
                       // Text("Fren".tr,
                       //   textAlign: TextAlign.center,
                       //   style: TextStyle(
@@ -84,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       CustomImageView(
                         onTap: () {
                           Get.to(()=> const NotificationScreen());
+                          //Get.to(()=> CameraViewPage(path: '',));
                         },
                         width: 30.adaptSize, height: 30.adaptSize,
                         radius: BorderRadius.circular(36.adaptSize),
@@ -269,14 +271,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                        radius: BorderRadius.circular(70.adaptSize),
                                        fit: BoxFit.cover,
                                        imagePath: controller.homeModel.usersInCities![index].users![i].avatarUrl,
-                                    ),
+                                    )
                                   )
                               ],
                             ),
                           ),
+
                            SizedBox(height: 5.adaptSize),
-                          Text(
-                            '${controller.homeModel.usersInCities?[index].userCount}'.tr,
+                          Text('${controller.homeModel.usersInCities?[index].userCount}'.tr,
                             style: TextStyle(
                               color: const Color(0xff000000),
                               fontFamily: 'Roboto',
@@ -499,8 +501,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Radius.circular(50),
                           )),
                       SizedBox(width: 10.aw),
-                      Text(
-                        '${controller.homeModel.posts?[index].user?.handle}'.capitalizeFirst!,
+                      Text('${controller.homeModel.posts?[index].user?.handle}'.capitalizeFirst!,
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,

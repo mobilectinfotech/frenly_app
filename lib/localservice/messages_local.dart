@@ -502,8 +502,7 @@ class Messages extends Translations {
           "Apps": "Appar",
           "Uiux": "UI/UX",
           "Nature": "Natur",
-          "Sowe":
-              "Så när användaren registrerar sig kommer han att läggas till sin egen åldersgrupp, där han kan ange tiden för sitt lopp som kommer att jämföras med andra användare i samma grupp och kommer att visa en lista över de 100 bästa användarna på diagrammet.",
+          "Sowe": "Så när användaren registrerar sig kommer han att läggas till sin egen åldersgrupp, där han kan ange tiden för sitt lopp som kommer att jämföras med andra användare i samma grupp och kommer att visa en lista över de 100 bästa användarna på diagrammet.",
           "Result": "Resultat för",
           "Addnew": "Natur",
           "Editblog": "Redigera blogg",
