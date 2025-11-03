@@ -49,6 +49,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
             SizedBox(height: 10.ah,),
             buildUserInfoRow(),
 
+            ///PramodCode
             // Padding(
             //   padding:  EdgeInsets.all(20.0.aw),
             //   child: Obx(()=> CustomImageView(
