@@ -998,7 +998,8 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
                         fontWeight: FontWeight.w500,
                         fontSize: 15,
                       ),
-                      recognizer: (TapGestureRecognizer()
+                      recognizer: (
+                          TapGestureRecognizer()
                         ..onTap = () {
                           final user = controller.vlogByIdModel.value?.vlog?.user;
                           Get.to(() => UserProfileScreen(userId: "${user?.id}"));

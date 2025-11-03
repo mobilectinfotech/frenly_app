@@ -211,7 +211,8 @@ class _PostViewScreenState extends State<PostViewScreen> {
                     height: 21.aw,
                   ),
                 ),
-              const SizedBox(width: 20),
+
+              SizedBox(width: 20),
               InkWell(
                 onTap: () {
                   VlogBottomSheets.shareBottomSheet(
