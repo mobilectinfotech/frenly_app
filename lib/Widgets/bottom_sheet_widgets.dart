@@ -398,21 +398,19 @@ class CustomBottomSheets {
                           )
                         : SizedBox(
                             height: MediaQuery.of(context).size.height * .40,
-                            child: controller.allFriendsModel.friends?.length ==
-                                    0
+                            child: controller.allFriendsModel.friends?.length == 0
                                 ? Center(child: Text("no_friends_found".tr))
                                 : ListView.builder(
                                     //  shrinkWrap: true,
                                     // physics: const NeverScrollableScrollPhysics(),
-                                    itemCount: controller
-                                            .allFriendsModel.friends?.length ??
-                                        0,
+                                    itemCount: controller.allFriendsModel.friends?.length ?? 0,
                                     scrollDirection: Axis.vertical,
                                     itemBuilder: (context, index) {
                                       return Padding(
                                         padding: EdgeInsets.all(10.0.adaptSize),
                                         child: InkWell(
-                                          onTap: () async {
+                                         /*
+                                         onTap: () async {
                                             Get.back();
 
                                             CreateChatModel createChatModel =
@@ -428,7 +426,8 @@ class CustomBottomSheets {
                                             // "send_a_vlog": "Send a Vlog of",
                                             // "send_a_blog": "Send a blog of",
                                             // "send_a_post": "Send a post of",
-                                            //
+
+
                                             var msg = ".";
                                             var post = "send_a_post".tr;
                                             var vlog = "send_a_vlog".tr;
@@ -453,6 +452,42 @@ class CustomBottomSheets {
                                                     isUrl: isUrl,
                                                     isLinkId: id);
                                           },
+                                          */
+
+                                          onTap: () async {
+                                            Get.back();
+                                            CreateChatModel createChatModel = await ApiRepository.createChat(
+                                              userId: "${controller.allFriendsModel.friends?[index].id}",
+                                            );
+
+                                            int indexxx = "${createChatModel.payload?.participants?[0].id}" == PrefUtils().getUserId() ? 1 : 0;
+
+                                            // 🧠 Fetch translations at runtime, after language is already active
+                                            String post = 'send_a_post'.tr;
+                                            String vlog = 'send_a_vlog'.tr;
+                                            String blog = 'send_a_blog'.tr;
+
+                                            String msg = '';
+                                            if (postType.name == "post") {
+                                              msg = "$post $userName";
+                                            } else if (postType.name == "vlog") {
+                                              msg = "$vlog $userName";
+                                            } else if (postType.name == "blog") {
+                                              msg = "$blog $userName";
+                                            }
+
+                                            print('🗣️ Message Sent in Locale: ${Get.locale}');
+                                            print('📝 Message: $msg');
+
+                                            final response = await ApiRepository.sendMessageWithShare(
+                                              message: msg,
+                                              chatId: createChatModel.payload!.id.toString(),
+                                              postType: postType,
+                                              isUrl: isUrl,
+                                              isLinkId: id,
+                                            );
+                                          },
+
                                           child: Row(
                                             children: [
                                               Container(
@@ -461,20 +496,14 @@ class CustomBottomSheets {
                                                 child: CustomImageView(
                                                   height: 60.adaptSize,
                                                   width: 60.adaptSize,
-                                                  imagePath: controller
-                                                      .allFriendsModel
-                                                      .friends?[index]
-                                                      .avatarUrl,
+                                                  imagePath: controller.allFriendsModel.friends?[index].avatarUrl,
                                                   fit: BoxFit.cover,
-                                                  radius: BorderRadius.circular(
-                                                      45.adaptSize),
+                                                  radius: BorderRadius.circular(45.adaptSize),
                                                 ),
                                               ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                  "${controller.allFriendsModel.friends?[index].fullName}")
+
+                                              SizedBox(width: 10),
+                                              Text("${controller.allFriendsModel.friends?[index].fullName}")
                                             ],
                                           ),
                                         ),

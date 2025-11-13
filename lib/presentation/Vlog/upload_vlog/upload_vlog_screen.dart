@@ -1,5 +1,7 @@
 import 'dart:io';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_textfield.dart';
 import 'package:frenly_app/core/constants/app_dialogs.dart';
 import 'package:frenly_app/core/constants/my_textfield.dart';
@@ -10,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../post/upload_post/upload_post_screen.dart';
 
 class UploadVlogScreen extends StatefulWidget {
   const UploadVlogScreen({super.key});
@@ -26,7 +30,6 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -131,7 +134,7 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                 validator: Validator.notEmpty,
               ),
 
-              SizedBox(height: 10.ah),
+              SizedBox(height: 20.ah),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text('Description'.tr,
@@ -141,19 +144,18 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                       fontSize: 15.fSize),
                 ),
               ),
-              SizedBox(
-                height: 10.ah,
-              ),
+
+              SizedBox(height: 10.ah),
               CustomTextFormField(
                 context: context,
                 hintText: "enterdescription".tr,
-                controller: controller.desController,
+                controller: controller.descriptionController,
                 maxLines: 4,
                 validator: Validator.notEmpty,
               ),
-              SizedBox(
-                height: 130.ah,
-              ),
+
+
+              SizedBox(height: 130.ah),
               Center(
                 child: Obx(
                   ()=> CustomPrimaryBtn1(
@@ -167,16 +169,14 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                           AppDialog.taostMessage("Video Not be Empty");
                         }
                       }
-
                       //Navigator.push(context, MaterialPageRoute(builder: (context) => Demo_deshboardPage()));
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => EditBlog_Screen()));
                     },
                   ),
                 ),
               ),
-              SizedBox(
-                height: 40.ah,
-              ),
+              SizedBox(height: 40.ah),
+
             ],
           ),
         ),
@@ -232,3 +232,4 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
         });
   }
 }
+

@@ -36,8 +36,7 @@ class _PostListScreenState extends State<PostListScreen> {
     return Scaffold(
       appBar: appBarPrimary(title: "Posts".tr ,),
       body: SafeArea(
-        child: Obx(
-              ()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Padding(
+        child: Obx(()=> controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.aw,vertical: 15.ah),
                 child: ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -53,6 +52,17 @@ class _PostListScreenState extends State<PostListScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           buildUserInfoRow(index),
+                          SizedBox(height: 10.ah),
+                          Obx(() {
+                            return Text(controller.postListModel.value!.posts![index].location.toString(),
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.70),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.fSize,
+                              ),
+                            );
+                          }),
+
                           SizedBox(height: 20.ah,),
                           Obx(()=> CustomImageView(
                               radius: BorderRadius.circular(20),
@@ -242,9 +252,8 @@ class _PostListScreenState extends State<PostListScreen> {
                    style: TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.w600,
-                  fontSize: 14.fSize,
-                                ),
-                              ),
+                  fontSize: 14.fSize)
+                  ),
                 ),
           ),
       ],
@@ -283,7 +292,7 @@ class _PostListScreenState extends State<PostListScreen> {
               // }),
               const SizedBox(height: 5,),
               Obx(() {
-                final createdAt =   controller.postListModel.value?.posts![index].createdAt?.toString() ?? "";
+                final createdAt = controller.postListModel.value?.posts![index].createdAt?.toString() ?? "";
                 return Text(
                   calculateTimeDifference(createdAt),
                   style: TextStyle(

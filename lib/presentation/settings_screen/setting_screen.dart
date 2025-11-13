@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:frenly_app/presentation/settings_screen/widget/change_password.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -118,7 +119,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             color: HexColor('#E8E8E8'),
                             borderRadius: BorderRadius.circular(6)),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 10, right: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,40 +156,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                   //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
                                 ],
                               ),
-                             SizedBox(height: 10.ah),
 
-                              /*Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('hide_Like'.tr,
-                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                                  ),
-                                  Transform.scale(
-                                    scale: 0.4,
-                                    child: CupertinoSwitch(
-                                      //activeColor: Colors.blueGrey,
-                                      activeColor: Colors.pinkAccent.withOpacity(0.40),
-                                      trackColor: Colors.grey,
-                                      onLabelColor: Colors.brown,
-                                      offLabelColor: Colors.red,
-                                      //   thumbColor: const Color(0xff001649),
-                                      thumbColor: Colors.pinkAccent,
-                                      value: controller.mySettingModel!.userSetting.lastSeen,
-                                      onChanged: (bool value) {
-                                        setState(() {
-                                          controller.mySettingModel!.userSetting.lastSeen =
-                                          !controller.mySettingModel!.userSetting.lastSeen;
-                                          controller.mySettingsUpdate();
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
-                                ],
-                              ),
-                              SizedBox(height: 10.ah),*/
 
+                              SizedBox(height: 10.ah),
                               //profile private public
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -218,7 +188,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
                                 ],
                               ),
-                             SizedBox(height: 10.ah),
+
+                              SizedBox(height: 10.ah),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,15 +219,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ),
                                 ],
                               ),
+
                              SizedBox(height: 10.ah),
                             ],
                           ),
                         ),
                       ),
+
                       SizedBox(height: 20.ah),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
+                        decoration: BoxDecoration(color: HexColor('#E8E8E8'),
+                            borderRadius: BorderRadius.circular(6)),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
@@ -264,14 +238,11 @@ class _SettingScreenState extends State<SettingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                'ACCOUNT'.tr,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontFamily: 'inter',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16.fSize),
-                              ),
+                              Text('ACCOUNT'.tr,
+                                style: TextStyle(color: Colors.grey,
+                                    fontFamily: 'inter', fontWeight: FontWeight.w600,
+                                    fontSize: 16.fSize)),
+
                               SizedBox(height: 20.ah),
                               InkWell(
                                 onTap: () {
@@ -289,30 +260,26 @@ class _SettingScreenState extends State<SettingScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Get.to(() => const MyBlockedUserListScreen());
+                                     Get.to(() => const MyBlockedUserListScreen());
                                     },
                                     child: Text('Blocked List'.tr,
-                                      style: TextStyle(
-                                          color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                     ),
                                   ),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(''.tr,
-                                        style: TextStyle(
-                                            color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                                      ),
+                                      Text(''.tr, style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),),
                                       SizedBox(width: 10.aw),
                                       Text('Contacts'.tr,
-                                        style: TextStyle(
-                                            color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                        style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
+
                               SizedBox(height: 20.ah),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,24 +296,25 @@ class _SettingScreenState extends State<SettingScreen> {
                                     child: Text(
                                      //  "${locale?.languageCode}" == "en" ? 'Eng'.tr :  "swedish".tr,
                                       Get.locale?.languageCode == "en"
-                                          ? 'english'.tr
-                                          : "swedish".tr,
-                                 //     "${locale?.languageCode}" == "en" ? 'english'.tr : "swedish".tr,
+                                          ? 'english'.tr : "swedish".tr,
+                                      //"${locale?.languageCode}" == "en" ? 'english'.tr : "swedish".tr,
                                       style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                     ),
                                   ),
                                 ],
                               ),
 
-                              //SizedBox(height: 20.ah),
-                              // InkWell(
-                              //   onTap: () {
-                              //  // _showDeleteConfirmationDialog(context);
-                              //   },
-                              //   child: Text('change_password'.tr,
-                              //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                              //   ),
-                              // ),
+                              SizedBox(height: 20.ah),
+                              InkWell(
+                                onTap: () {
+                                 //  _showDeleteConfirmationDialog(context);
+                                  Get.to(() => ChangePassword());
+                                  },
+                                child: Text('change_password'.tr,
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                ),
+                              ),
+
 
                               SizedBox(height: 20.ah),
                               InkWell(
@@ -354,7 +322,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   _showDeleteConfirmationDialog(context);
                                 },
                                 child: Text('Delete Account'.tr,
-                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  style:TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
                               ),
 
@@ -364,8 +332,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.to(All_Categories());
                                 },
                                 child: Text('AllCategory'.tr,
-                                  style:
-                                      TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  style:TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                                 ),
                               ),
                               SizedBox(height: 20.ah),
@@ -387,11 +354,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text('NOTIFICATIONS'.tr,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontFamily: 'inter',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16.fSize),
+                                style: TextStyle(color: Colors.grey, fontFamily: 'inter',
+                                    fontWeight: FontWeight.w600, fontSize: 16.fSize)
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -427,9 +391,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Feedd'.tr,
-                                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
-                                  ),
+                                  Text('Feedd'.tr, style: TextStyle(color:Colors.black,fontWeight: FontWeight.w500,fontSize: 16.fSize)),
                                   //Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
                                   // SizedBox(width: 50.aw),
 
@@ -456,9 +418,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 60.ah,
-                      ),
+
+                      SizedBox(height: 60.ah),
                       Center(
                         child: CustomPrimaryBtn1(
                           title: 'Logout'.tr,
@@ -470,22 +431,21 @@ class _SettingScreenState extends State<SettingScreen> {
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+
+                      SizedBox(height: 40),
+                 ],
+               ),
+            ),
+          ),
       ),
     );
   }
 
-  // Function to show delete confirmation dialog
+  //Function to show delete confirmation dialog
   Future<void> _showDeleteConfirmationDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // Dialog is dismissible by tapping on the barrier
+      barrierDismissible: false, //Dialog is dismissible by tapping on the barrier
       builder: (BuildContext context) {
         return AlertDialog(
           title:  Text('confirm_deletion'.tr),
@@ -500,7 +460,6 @@ class _SettingScreenState extends State<SettingScreen> {
             TextButton(
               child:  Text('cancel'.tr),
               onPressed: () {
-                // Close the dialog and do nothing
                 Navigator.of(context).pop();
               },
             ),
@@ -523,7 +482,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // Prevent dismiss by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('confirm_logout'.tr),
@@ -545,7 +504,6 @@ class _SettingScreenState extends State<SettingScreen> {
               child: Text('Logout'.tr),
               onPressed: () async {
                 Navigator.of(context).pop();
-                // 🔹 Call your existing logout logic
                 onTapLogOutBtn();
               },
             ),
@@ -563,3 +521,36 @@ void onTapLogOutBtn() {
    Get.delete<SaveController>(force: true);
   Get.offAll(() => const LoginScreen());
 }
+
+
+
+
+
+
+/*
+SizedBox(height: 10.ah),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('hide_Like'.tr, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize)),
+
+                                  Transform.scale(
+                                    scale: 0.4,
+                                    child: CupertinoSwitch(
+                                      //activeColor: Colors.blueGrey,
+                                      activeColor: Colors.pinkAccent.withOpacity(0.40),
+                                      trackColor: Colors.grey,
+                                      onLabelColor: Colors.brown,
+                                      offLabelColor: Colors.red,
+                                      thumbColor: Colors.pinkAccent,
+                                      //value: controller.mySettingModel!.userSetting.lastSeen,
+                                      value: controller.hideLikes.value,
+                                      onChanged: (bool value) {
+                                        controller.toggleHideLikes(value);
+                                      },
+                                    ),
+                                  ),
+                                  //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                                ],
+                              ),*/

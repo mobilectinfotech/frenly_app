@@ -1,9 +1,6 @@
-// To parse this JSON data, do
-//
-//     final postSingleViewModel = postSingleViewModelFromJson(jsonString);
+
 
 import 'dart:convert';
-
 import 'package:frenly_app/data/models/post_model.dart';
 
 PostSingleViewModel postSingleViewModelFromJson(String str) => PostSingleViewModel.fromJson(json.decode(str));
@@ -49,6 +46,7 @@ class User {
     String? fcmToken;
     String? avatarUrl;
     String? coverPhotoUrl;
+    String location;
     dynamic token;
     String? actToken;
     bool? isVerified;
@@ -70,6 +68,7 @@ class User {
         this.bio,
         this.handle,
         this.fcmToken,
+        required this.location,
         this.avatarUrl,
         this.coverPhotoUrl,
         this.token,
@@ -97,6 +96,7 @@ class User {
         avatarUrl: json["avatar_url"],
         coverPhotoUrl: json["cover_photo_url"],
         token: json["token"],
+        location: json["location"],
         actToken: json["act_token"],
         isVerified: json["isVerified"],
         numberOfFollower: json["numberOfFollower"],
@@ -121,6 +121,7 @@ class User {
         "avatar_url": avatarUrl,
         "cover_photo_url": coverPhotoUrl,
         "token": token,
+        "location": location,
         "act_token": actToken,
         "isVerified": isVerified,
         "numberOfFollower": numberOfFollower,
@@ -134,3 +135,4 @@ class User {
         "lastSeen": lastSeen,
     };
 }
+

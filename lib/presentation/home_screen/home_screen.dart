@@ -467,11 +467,9 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return InkWell(
               onTap: () {
-                Get.to(()=>PostViewScreen(id: "${controller.homeModel.posts?[index].id}",));
-
+                Get.to(()=>PostViewScreen(id: "${controller.homeModel.posts?[index].id}"));
                 // Get.to(()=>UserProfileScreen(userId: "${controller.homeModel.posts?[index].user?.id}"));
               },
-
             child: Padding(
               padding:  const EdgeInsets.only(right: 5.0),
               child: Column(
@@ -483,8 +481,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 82.ah,
                       fit: BoxFit.cover,
                       imagePath: controller.homeModel.posts?[index].imageUrl,
-                      radius:  BorderRadius.all(Radius.circular(10.adaptSize),
-                      )),
+                      radius:BorderRadius.all(Radius.circular(10.adaptSize),
+                      )
+                  ),
                   SizedBox(height: 15.ah),
                   Row(
                     mainAxisSize: MainAxisSize.min,

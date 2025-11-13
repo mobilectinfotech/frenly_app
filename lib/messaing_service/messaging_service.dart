@@ -42,8 +42,7 @@ class MessagingService {
       sound: true,
     );
 
-    debugPrint(
-        'User granted notifications permission: ${settings.authorizationStatus}');
+    debugPrint('User granted notifications permission: ${settings.authorizationStatus}');
 
     // Retrieving the FCM token
     fcmToken = await _fcm.getToken();

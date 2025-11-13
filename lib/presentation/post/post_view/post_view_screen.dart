@@ -1,11 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
-import 'package:photo_view/photo_view.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:pinch_zoom_release_unzoom/pinch_zoom_release_unzoom.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/post/post_view/post_view_controller.dart';
 import 'package:get/get.dart';
+import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
 import '../../../../Widgets/bottom_sheet_widgets.dart';
 import '../../../../Widgets/custom_image_view.dart';
 import '../../../../core/constants/my_colour.dart';
@@ -48,7 +50,20 @@ class _PostViewScreenState extends State<PostViewScreen> {
           children: [
             SizedBox(height: 10.ah,),
             buildUserInfoRow(),
-           // buildUserInfoRow(),
+
+            SizedBox(height: 10.ah),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.aw),
+              child: Obx(() {
+                return Text(controller.postSingleViewModel.value!.post!.location.toString(),
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.70),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.fSize,
+                  ),
+                );
+              }),
+            ),
 
             ///PramodCode...
             // Padding(
@@ -61,16 +76,35 @@ class _PostViewScreenState extends State<PostViewScreen> {
             //   ),
             // ),
 
+            // Padding(
+            //   padding: EdgeInsets.all(20.0.aw),
+            //   child: Obx(()=> InstaImageViewer(
+            //           child: CustomImageView(
+            //             radius: BorderRadius.circular(20),
+            //             fit: BoxFit.cover, imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
+            //      ),
+            //    ),
+            //   ),
+            // ),
+
+            SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.all(20.0.aw),
-              child: Obx(()=> InstaImageViewer(
-                      child: CustomImageView(
-                        radius: BorderRadius.circular(20),
-                        fit: BoxFit.cover, imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
-                 ),
-               ),
+              child: Obx(()=> PinchZoomReleaseUnzoomWidget(
+                child: CustomImageView(
+                  radius: BorderRadius.circular(20),
+                  fit: BoxFit.cover, imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
+                ),
+                twoFingersOn: () => setState(() => controller.blockScroll = true),
+                twoFingersOff: () => Future.delayed(
+                  PinchZoomReleaseUnzoomWidget.defaultResetDuration,
+                      () => setState(() => controller.blockScroll = false),
+                ),
+              ),
               ),
             ),
+
+
 
             // Padding(
             //   padding: EdgeInsets.all(20.0.aw),
@@ -263,29 +297,24 @@ class _PostViewScreenState extends State<PostViewScreen> {
 
           SizedBox(height: 5.ah,),
           if(controller.postSingleViewModel.value?.post?.numberOfLikes != 0)
-            Obx(
-                  ()=> Row(
-                    mainAxisSize: MainAxisSize.min,  // To prevent the Row from taking up more space than necessary
+            Obx(()=> Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('${controller.postSingleViewModel.value?.post?.numberOfLikes}',  // Likes count
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11.fSize,
+                      Text('${controller.postSingleViewModel.value?.post?.numberOfLikes}',
+                        style: TextStyle(color: Colors.black,
+                          fontWeight: FontWeight.w600, fontSize: 11.fSize,
                         ),
                       ),
+
                       SizedBox(width: 4),  // Adds space between the number of likes and the word "likes"
                       Text(controller.postSingleViewModel.value?.post?.numberOfLikes == 1 ? '_like'.tr : '_likes'.tr,  // The text "likes"
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11.fSize,
+                        style: TextStyle(color: Colors.black,
+                          fontWeight: FontWeight.w600, fontSize: 11.fSize,
                         ),
                       ),
                     ],
-                  ),
+            )),
 
-            ),
         ],
       ),
     );
@@ -300,15 +329,13 @@ class _PostViewScreenState extends State<PostViewScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Obx(
-                //       ()=> controller.postSingleViewModel.value?.post?.tags != null ?
+                // Obx(()=> controller.postSingleViewModel.value?.post?.tags != null ?
                 //   tags() : SizedBox(),
                 // ),
                 Obx(() {
                   final views = "${controller.postSingleViewModel.value?.post?.caption}" ?? "0";
                   // return Text(
                   //   views.capitalizeFirst!,
-
                   // );
                   return HighlightHashtags(text: views,);
                 }),
@@ -325,6 +352,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                     ),
                   );
                 }),
+
               ],
             ),
           ),

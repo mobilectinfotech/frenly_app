@@ -24,12 +24,10 @@ class MyProfileController extends GetxController {
   RxBool isLoading = false.obs;
 
   getProfile() async {
-
     isLoading.value = true;
     final response = await ApiRepository.myProfile();
     getUserByIdModelData(response);
     getUserByIdModelData.refresh();
-
     isLoading.value = false;
   }
 }

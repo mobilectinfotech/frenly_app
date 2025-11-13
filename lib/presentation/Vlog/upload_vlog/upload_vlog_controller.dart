@@ -10,8 +10,12 @@ class UploadVlogController extends GetxController{
 
 
   TextEditingController titleController =TextEditingController();
-  TextEditingController desController =TextEditingController();
+  TextEditingController descriptionController =TextEditingController();
+  TextEditingController locationController =TextEditingController();
   XFile? pikedVideo ;
+
+  String? lat;
+  String? lng;
 
   RxBool isLoading = false.obs;
 
@@ -44,7 +48,7 @@ class UploadVlogController extends GetxController{
       isPost = await ApiRepository.postVlog(
           photoPath: compressedFile.path,
           title: titleController.text,
-          des: desController.text
+          des: descriptionController.text
       );
     } else {
       // If compression failed, use the original video
@@ -54,7 +58,7 @@ class UploadVlogController extends GetxController{
       isPost = await ApiRepository.postVlog(
           photoPath: originalVideoFile.path,
           title: titleController.text,
-          des: desController.text
+          des: descriptionController.text
       );
     }
 

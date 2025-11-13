@@ -442,8 +442,10 @@
 
 // ignore_for_file: unused_import
 import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:insta_image_viewer/insta_image_viewer.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:pinch_zoom_release_unzoom/pinch_zoom_release_unzoom.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
@@ -488,37 +490,57 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
 
   final VlogFullViewController controller = Get.put(VlogFullViewController());
 
+  bool blockScroll = false;
+
+
   @override
   void initState() {
     super.initState();
-         controller.getBlogById(id: widget.id);
+    controller.getBlogById(id: widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Blog".tr,
+        title: Text("Blog".tr,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: Obx(
-          ()=> controller.isLoadingBolg.value ? Center(child: CircularProgressIndicator()) : ListView(
+      body: Obx(()=> controller.isLoadingBolg.value ?
+      Center(child: CircularProgressIndicator()) :
+      ListView(
             padding: EdgeInsets.zero,
             children: [
-              SizedBox(height: 15.ah),
+
+            SizedBox(height: 15.ah),
             buildUserInfoRow(),
-            Padding(
-              padding:  EdgeInsets.all(20.0.aw),
-              child: Obx(()=> InstaImageViewer(
+
+            // Padding(
+            //   padding: EdgeInsets.all(20.0.aw),
+            //   child: Obx(()=> InstaImageViewer(
+            //       child: CustomImageView(
+            //         radius: BorderRadius.circular(20),
+            //         imagePath: controller.blogByIdModel.value?.blog?.imageUrl,
+            //       ))),
+            // ),
+
+              Padding(
+              padding: EdgeInsets.all(20.0.aw),
+              child: Obx(()=> PinchZoomReleaseUnzoomWidget(
                   child: CustomImageView(
                     radius: BorderRadius.circular(20),
                     imagePath: controller.blogByIdModel.value?.blog?.imageUrl,
                   ),
+                twoFingersOn: () => setState(() => blockScroll = true),
+                twoFingersOff: () => Future.delayed(
+                  PinchZoomReleaseUnzoomWidget.defaultResetDuration,
+                      () => setState(() => blockScroll = false),
                 ),
+              )
               ),
             ),
+
             buildVlogDetails(),
             const SizedBox(height: 15),
             buildLikeShareSaveRow(),
@@ -553,10 +575,11 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                   imagePath: user?.avatarUrl,
                 );
               }),
-              const SizedBox(width: 10),
+
+              SizedBox(width: 10),
               Obx(() {
                 final handle = controller.blogByIdModel.value?.blog?.user?.handle ?? "";
-                return Text( handle,
+                return Text(handle,
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.90),
                     fontWeight: FontWeight.w600,
@@ -586,6 +609,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
       ],
     );
   }
+
   Widget buildLikeShareSaveRow() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.aw),
@@ -693,6 +717,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
       ),
     );
   }
+
   Widget buildVlogDetails() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.aw),
@@ -716,6 +741,18 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                     ),
                   );
                 }),
+
+                // AutoSizeText(
+                //   controller.blogByIdModel.value?.blog?.title ?? "0",
+                //   style: TextStyle(
+                //     fontSize: 16,
+                //     color: Colors.grey[800],
+                //   ),
+                //   maxLines: 4,
+                //   minFontSize: 12,
+                //   overflow: TextOverflow.ellipsis,
+                // ),
+
                 SizedBox(height: 5,),
                 Obx(() {
                   final handle = controller.blogByIdModel.value?.blog?.user?.handle ?? "";

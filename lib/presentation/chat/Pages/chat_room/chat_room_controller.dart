@@ -118,8 +118,6 @@ class ChatRoomController extends GetxController {
   }
 */
 
-
-
 }
 
 // class ChatRoomController extends GetxController {

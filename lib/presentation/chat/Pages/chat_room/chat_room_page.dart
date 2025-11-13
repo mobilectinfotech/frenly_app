@@ -38,7 +38,6 @@ enum MessageType { text, image, video, audio, gif }
 
 class ChatRoomPage extends StatefulWidget {
 //  final String userId;
-
   const ChatRoomPage({
     Key? key,
     required this.participant,
@@ -52,7 +51,6 @@ class ChatRoomPage extends StatefulWidget {
   @override
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
-
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
   final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
@@ -441,6 +439,8 @@ extension on MessageModel1 {
   operator [](int other) {}
 }
 
+
+
 // String formatLastSeenn(DateTime seenTime) {
 //   final now = DateTime.now();
 //   final difference = now.difference(seenTime);
@@ -458,8 +458,6 @@ extension on MessageModel1 {
 //     return '${"Last_seen".tr} $monthsAgo ${"month_ago".tr}'; // visades 2 mån sedan
 //   }
 // }
-
-
 
 
 /*
@@ -623,6 +621,7 @@ void _showImagePiker() {
         );
       });
 }
+
 
 // Helper for the three right-side icons (keeps code DRY)
 Widget _iconButton(IconData icon, VoidCallback onTap) {

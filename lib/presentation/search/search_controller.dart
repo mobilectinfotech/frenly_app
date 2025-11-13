@@ -66,7 +66,6 @@ class SearchVlogController extends GetxController{
 
 
 
-
   Rx<SertchUserModel> getUserData =SertchUserModel().obs;
   SertchUserModel get searchUserModel => getUserData.value;
   RxBool isLoadingUsers =false.obs;
@@ -79,15 +78,6 @@ class SearchVlogController extends GetxController{
     getUserData.refresh();
     isLoadingUsers.value =false;
   }
-
-
-
-
-
-
-
-
-
 
   @override
   void onClose() {

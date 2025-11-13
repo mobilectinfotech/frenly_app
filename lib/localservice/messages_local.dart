@@ -309,7 +309,16 @@ class Messages extends Translations {
           "sep": "sep",
           "oct": "oct",
           "nov": "nov",
-          "dec": "dec"
+          "dec": "dec",
+          "Tag_Location": "Tag Location",
+          "EnterYourNewPassword": "Enter Your New Password",
+          "EnterYourConfirmPassword": "Enter Your Confirm Password",
+          "EnterYourOldPassword": "Enter Your Old Password",
+          "password_changed_successfully": "Password Changed Successfully",
+
+          // "Vlog_not_Found": "Vlog not Found",
+          // "Blog_not_Found": "Blog not Found",
+          // "Photo_not_Found": "Photo not Found",
         },
 
         'swe_SE': {
@@ -406,8 +415,7 @@ class Messages extends Translations {
           "creatnpass": "Skapa ny\n",
           "Contin": "Fortsätta",
           "reep": "Återställ lösenord",
-          "Let me show some white vibes of the london":
-              "Låt mig visa några vita vibbar från london",
+          "Let me show some white vibes of the london": "Låt mig visa några vita vibbar från london",
           "Foru": "För dig",
           "Fren": "Frenly",
           "Check": "Checka in",
@@ -432,10 +440,8 @@ class Messages extends Translations {
           "Unfollow": "Sluta följa",
           "Follow": "Följ",
           "MyNamePro": "Jag heter Brett Pit och jag tycker om att träffa nya",
-          "Circle":
-              "Circular Quay hamn är nav för livet vid vattnet,\nmed den välvda hamnbron",
-          "Circlee":
-              "Circular Quay-hamnen är nav för livet vid vattnet \nmed den välvda Harbour Bridge",
+          "Circle": "Circular Quay hamn är nav för livet vid vattnet,\nmed den välvda hamnbron",
+          "Circlee": "Circular Quay-hamnen är nav för livet vid vattnet \nmed den välvda Harbour Bridge",
           "Allcit": "Alla städer",
           "Discover": "Upptäck",
           "Bio": "Bio",
@@ -550,12 +556,9 @@ class Messages extends Translations {
           "You don't have any following yet": "Du har inga Följande ånnu",
           "You don't have any friends yet": "Du har inga väljare ånnu",
           "You don't have any vloggers yet": "Du har inga vloggare ånnu",
-          "No results match your search criteria.":
-              "Inga resultat matchar dina sokekriterier.",
-          "No followers found for this user.":
-              "Inga Följare hittades för detta användare.",
-          "No following found for this user.":
-              "Inga Följande hittades för detta användare.",
+          "No results match your search criteria.": "Inga resultat matchar dina sokekriterier.",
+          "No followers found for this user.": "Inga Följare hittades för detta användare.",
+          "No following found for this user.": "Inga Följande hittades för detta användare.",
           "category": "Kategori",
           "all": "Alla",
           "today": "i dag",
@@ -570,7 +573,6 @@ class Messages extends Translations {
           "months_ago": "månader sedan",
           "weeks_ago": "veckor sedan",
           "You don't have any blocked users" : "Du har inga blockerade användare",
-
           "please_enter_your_email": "Vänligen ange din e-postadress",
           "please_enter_a_valid_email": "Ange en giltig e-postadress",
           "please_enter_your_password": "Vänligen ange ditt lösenord",
@@ -605,9 +607,9 @@ class Messages extends Translations {
           "access_denied": "Åtkomst nekad",
           "you_have_been_blocked_by_the_admin": "Du har blivit blockerad av administratören.",
           "ok": "OK",
-          "i_agree_to": "Jag accepterar ",
+          "i_agree_to": "Jag accepterar",
           "terms_conditions": "allmänna villkor",
-          "and_the": " och ",
+          "and_the": " och",
           "privacy_policy": "sekretesspolicy",
           "confirm_logout": "Bekräfta utloggning",
           "Are_you_sure_logout": "Är du säker på att du vill logga ut?",
@@ -630,8 +632,16 @@ class Messages extends Translations {
           "oct": "okt",
           "nov": "nov",
           "dec": "dec",
-          "change_password": "Byt senores"
+          "change_password": "Byt senores",
+          "EnterYourNewPassword": "Ange ditt nya lösenord",
+          "EnterYourConfirmPassword" : "Ange ditt bekräftelselösenord",
+          "Tag_Location" : "Tagga plats",
+          "EnterYourOldPassword": "Ange ditt gamla lösenord",
+          "password_changed_successfully": "Lösenordet har ändrats framgångsrikt"
 
+          // "Vlog_not_Found": "Vlogg hittades inte",
+          // "Blog_not_Found": "Blogg hittades inte",
+          // "Photo_not_Found": "Foto hittades inte"
         }
       };
 }
@@ -643,3 +653,212 @@ class Messages extends Translations {
 //   result = '${daysDifference}${"days_ago".tr}';
 // } else {
 //   result = '${weeksDifference}${"weeks_ago".tr}'  ;
+
+
+//CreatePost
+/*  SizedBox(height: 20.h),
+              Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text('Tag_Location'.tr,
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
+
+              SizedBox(height: 10.h),
+              GooglePlacesAutoCompleteTextFormField(
+                cursorColor:Colors.black,
+                cursorHeight: 20.h,
+                fetchCoordinates: true,
+                autocorrect: true,
+                decoration:InputDecoration(
+                  hintText:'Tag_Location'.tr,
+                  hintStyle:  TextStyle(
+                      color: Colors.black.withOpacity(.40),
+                      fontWeight: FontWeight.bold, fontSize: 12.fSize),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.aw),
+                    child:Icon(Icons.location_on_outlined,size: 20.fSize),
+                    //Image.asset(Assets.imagesGPS, fit: BoxFit.contain, height: 32.h, width: 32.aw),
+                  ),
+                  prefixIconConstraints: BoxConstraints(minHeight: 24.ah, minWidth: 24.aw),
+                  suffixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.aw),
+                  isDense: true,
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.aw, vertical: 12.h,),
+                  fillColor: Colors.white70,
+                  filled: true,
+                  border:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                ),
+
+                //googleAPIKey: 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE',
+                googleAPIKey: 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE',
+                textEditingController: controller.locationController,
+                debounceTime: 100, // defaults to 600 ms
+                scrollPhysics: BouncingScrollPhysics(),
+                onSuggestionClicked: (prediction) async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  print('placeDetails: lat=${prediction.lat}, lng=${prediction.lng}');
+                  if (prediction.lat != null && prediction.lng != null) {
+                    controller.lat = prediction.lat!;
+                    controller.lng = prediction.lng!;
+                  } else {
+                    // controller.lat = null;
+                    // controller.lng = null;
+                  //  Toasts.getErrorToast(text: "Successfully fetch the coordinates for this location");
+                  }
+                  controller.lat = prediction.lat ?? "";
+                  controller.lng = prediction.lng ?? "";
+                  controller.locationController.text = prediction.description ?? "";
+                  controller.locationController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description?.length ?? 0));
+                  if (prediction.placeId != null) {
+                    await fetchCoordinates(prediction.placeId!, controller);
+                  } else {
+                  //  Toasts.getErrorToast(text: "Unable to fetch coordinates for this location");
+                  }
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                onChanged: (value) {
+                  controller.lat = null;
+                  controller.lng = null;
+                },
+              ),*/
+/*
+Future<void> fetchCoordinates(String placeId, UploadPostController controller) async {
+  // const apiKey = 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE';
+  const apiKey = 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE';
+  final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=$apiKey';
+
+  try {
+    final dio = Dio();
+    final response = await dio.get(url);
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final location = data['result']['geometry']['location'];
+      controller.lat = location['lat'].toString();
+      controller.lng = location['lng'].toString();
+      print('Fetched coordinates: lat=${controller.lat}, lng=${controller.lng}');
+    } else {
+     // Toasts.getErrorToast(text: "Failed to fetch coordinates");
+    }
+  } catch (e) {
+   // Toasts.getErrorToast(text: "Error fetching coordinates: $e");
+  }
+}
+*/
+
+
+//CreateVlog
+/* SizedBox(height: 20.h),
+              Padding(padding: const EdgeInsets.only(left: 10),
+                  child: Text('Tag_Location'.tr,
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
+
+              SizedBox(height: 10.h),
+              GooglePlacesAutoCompleteTextFormField(
+                cursorColor:Colors.black,
+                cursorHeight: 20.h,
+                fetchCoordinates: true,
+                autocorrect: true,
+                decoration:InputDecoration(
+                  hintText:'Tag_Location'.tr,
+                  hintStyle:  TextStyle(
+                      color: Colors.black.withOpacity(.40),
+                      fontWeight: FontWeight.bold, fontSize: 12.fSize),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.aw),
+                    child:Icon(Icons.location_on_outlined,size: 20.fSize),
+                    //Image.asset(Assets.imagesGPS, fit: BoxFit.contain, height: 32.h, width: 32.aw),
+                  ),
+                  prefixIconConstraints: BoxConstraints(minHeight: 24.ah, minWidth: 24.aw),
+                  suffixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.aw),
+                  isDense: true,
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.aw, vertical: 12.h,),
+                  fillColor: Colors.white70,
+                  filled: true,
+                  border:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: BorderSide(color: Colors.grey,width: 1),
+                  ),
+                ),
+                //googleAPIKey: 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE',
+                googleAPIKey: 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE',
+                textEditingController: controller.locationController,
+                debounceTime: 100, // defaults to 600 ms
+                scrollPhysics: BouncingScrollPhysics(),
+                onSuggestionClicked: (prediction) async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  print('placeDetails: lat=${prediction.lat}, lng=${prediction.lng}');
+                  if (prediction.lat != null && prediction.lng != null) {
+                    controller.lat = prediction.lat!;
+                    controller.lng = prediction.lng!;
+                  } else {
+                    // controller.lat = null;
+                    // controller.lng = null;
+                    //  Toasts.getErrorToast(text: "Successfully fetch the coordinates for this location");
+                  }
+                  controller.lat = prediction.lat ?? "";
+                  controller.lng = prediction.lng ?? "";
+                  controller.locationController.text = prediction.description ?? "";
+                  controller.locationController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description?.length ?? 0));
+                  if (prediction.placeId != null) {
+                    await fetchCoordinates(prediction.placeId!, controller);
+                  } else {
+                    //  Toasts.getErrorToast(text: "Unable to fetch coordinates for this location");
+                  }
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                onChanged: (value) {
+                  controller.lat = null;
+                  controller.lng = null;
+                },
+              ),*/
+/*
+Future<void> fetchCoordinates(String placeId, UploadVlogController controller) async {
+  // const apiKey = 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE';
+  const apiKey = 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE';
+  final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=$apiKey';
+
+  try {
+    final dio = Dio();
+    final response = await dio.get(url);
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final location = data['result']['geometry']['location'];
+      controller.lat = location['lat'].toString();
+      controller.lng = location['lng'].toString();
+      print('Fetched coordinates: lat=${controller.lat}, lng=${controller.lng}');
+    } else {
+      // Toasts.getErrorToast(text: "Failed to fetch coordinates");
+    }
+  } catch (e) {
+    // Toasts.getErrorToast(text: "Error fetching coordinates: $e");
+  }
+}
+*/

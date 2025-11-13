@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/services.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -22,6 +24,7 @@ class CustomPrimaryBtn1 extends StatelessWidget {
       child: Container(
         height: 50.ah,
         width: 333.aw,
+       // width: Get.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           gradient: LinearGradient(

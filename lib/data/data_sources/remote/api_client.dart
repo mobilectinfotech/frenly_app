@@ -11,7 +11,8 @@ import '../../../presentation/auth/no_internet/no_internet.dart';
 
 class ApiClient {
   //live
-   static const String mainUrl = "https://www.frenly.se:4000/";
+  // static const String mainUrl = "https://www.frenly.se:4000/";
+   static const String mainUrl = "http://192.168.1.19:4000/";
 
   //local
  // static const String mainUrl = "http://192.168.29.177:3001/";

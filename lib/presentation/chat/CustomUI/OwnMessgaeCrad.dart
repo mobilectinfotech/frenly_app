@@ -19,7 +19,7 @@ class OwnMessageCard extends StatelessWidget {
     DateTime time = DateTime.now().toUtc();
     print("$time");
 
-    // convert local date time to string format local date time
+    //Convert local date time to string format local date time
     return Align(
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
@@ -78,14 +78,18 @@ class OwnMessageCard extends StatelessWidget {
                       ),
                       ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width*.70, // Set the maximum width here
+                            maxWidth: MediaQuery.of(context).size.width*.70,
                           ),
-                          child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ?  Colors.black :  MyColor.primaryColor,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold))),
+                          child: Text("${message.content?.tr}",
+                              style: TextStyle(color:message.isLink== 0 ? Colors.black : MyColor.primaryColor,
+                              fontWeight:message.isLink== 0 ? FontWeight.normal : FontWeight.bold))
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
+
             SizedBox(height: 3.v),
             Opacity(
                 opacity: 0.5,
@@ -245,3 +249,16 @@ String _monthName(int month) {
 //     ][localTime.month - 1]} ${formatTime(localTime)}"; // e.g. "12 Okt 10:30"
 //   }
 // }
+
+/*
+the .tr value gets translated immediately and then saved as plain text (for example in your backend database).
+
+Changing app language later won’t change existing stored messages, because the string "Send a post of Camilla" is no longer linked to .tr.
+It’s just a regular message now.
+
+💬 Example Analogy
+
+Imagine WhatsApp messages:
+If you change phone language after sending a message, your old chats don’t change to the new language — because they are saved text, not translatable templates.
+
+Same thing here.*/

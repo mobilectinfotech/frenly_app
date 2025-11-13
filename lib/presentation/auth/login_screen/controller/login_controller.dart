@@ -23,7 +23,10 @@ class LoginController extends GetxController {
 
   Future<void> loginWithEmail() async {
       isLoading(true);
-    bool login = await ApiRepository.loginWithEmailPassword(email: emaillController.text, password: passworddController.text);
+    bool login = await ApiRepository.loginWithEmailPassword(
+        email: emaillController.text,
+        password: passworddController.text
+    );
       isLoading(false);
       if (login) {
         SocketService().socketDisconnect();

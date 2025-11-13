@@ -26,8 +26,6 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen>
     with SingleTickerProviderStateMixin {
 
-
-
   int  _currentIndex = 0 ;
 
   void _onItemTapped(int index) {
@@ -165,6 +163,7 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
+
   Widget photos() {
     List<int> cont = [
       1,
@@ -199,9 +198,7 @@ class _SearchScreenState extends State<SearchScreen>
                         child: Center(
                             child: InkWell(
                           onTap: () {
-                            Get.to(() => PostViewScreen(
-                                  id: "${searchController.searchPhotosModel.posts![index].id}",
-                                ));
+                            Get.to(() => PostViewScreen(id: "${searchController.searchPhotosModel.posts![index].id}"));
                           },
                           child: CustomImageView(
                             imagePath: searchController.searchPhotosModel.posts![index].imageUrl,

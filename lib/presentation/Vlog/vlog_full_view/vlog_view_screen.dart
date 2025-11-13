@@ -778,7 +778,6 @@ import '../../user_profile_screen/user_profile_screen.dart';
 //   }
 // }
 
-
 class VlogViewScreen extends StatefulWidget {
   final String videoUrl;
   final String vlogId;
@@ -827,15 +826,14 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
         InkWell(
           onTap: () {
             final user = controller.vlogByIdModel.value?.vlog?.user;
-            Get.to(() => UserProfileScreen(userId: "${user?.id}"));
+            Get.to(() => UserProfileScreen(userId:"${user?.id}"));
           },
           child: Row(
             children: [
               Obx(() {
                 final user = controller.vlogByIdModel.value?.vlog?.user;
                 return CustomImageView(
-                  height: 30.adaptSize,
-                  width: 30.adaptSize,
+                  height: 30.adaptSize, width: 30.adaptSize,
                   fit: BoxFit.cover,
                   onTap: () {
                     Get.to(() => UserProfileScreen(userId: "${user?.id}"));
@@ -848,12 +846,10 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
               const SizedBox(width: 10),
               Obx(() {
                 final handle = controller.vlogByIdModel.value?.vlog?.user?.handle ?? "";
-                return Text(
-                  handle,
+                return Text(handle,
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.90),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12.fSize,
+                    fontWeight: FontWeight.w600, fontSize: 12.fSize,
                   ),
                 );
               }),

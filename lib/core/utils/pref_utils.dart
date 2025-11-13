@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefUtils {
   static SharedPreferences? _sharedPreferences;
+  static const String _hideLikesKey = 'hideLikes';
 
   PrefUtils() {
     // init();
@@ -14,8 +15,6 @@ class PrefUtils {
   /// Sets the user's authentication token
   Future<void> setAuthToken(String token) {return _sharedPreferences!.setString('authToken', token);}
   String getAuthToken() {try {return _sharedPreferences!.getString('authToken')!;} catch (e) {return '';}}
-
-
 
   /// Sets the user ID
   Future<void> setUserId(String userId) {return _sharedPreferences!.setString('userId', userId);}
@@ -30,24 +29,17 @@ class PrefUtils {
   String getUserCity() {try {return _sharedPreferences!.getString('userCity')!;} catch (e) {return '';}}
 
 
-
   /// Sets the user Language
   // Future<void> setUserLanguage(bool isEnglish) {return _sharedPreferences!.setBool('userLanguage', isEnglish);}
   // bool getUserLanguage() {try {return _sharedPreferences!.getBool('userLanguage')!;} catch (e) {return false;}}
-
-
 
 
   /// Checks if the user is logged in
   bool isLoggedIn() {String token = getAuthToken();return token.isNotEmpty;}
   void logout() {clearPreferencesData();}
 
-
-
-
   /// Checks if the user is logged in
-
-
+  ///
   Future<void> setUserFirstName(String firstName) {return _sharedPreferences!.setString('userFirstName', firstName);}
   String getUserFirstName() {try {return _sharedPreferences!.getString('userFirstName')!;} catch (e) {return '';}}
 
@@ -65,33 +57,12 @@ class PrefUtils {
   Future<void> setUserCoverUrl(String profileUrl) {return _sharedPreferences!.setString('userCoverUrl', profileUrl);}
   String getUserCoverUrl() {try {return _sharedPreferences!.getString('userProfileUrl')!;} catch (e) {return '';}}
 
-
-
-
-
-
-
   void clearPreferencesData() async {_sharedPreferences!.clear();}
-
-
-
-
-
 
   Future<void> init() async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
     print('SharedPreference Initialized');
   }
-
-
-
-
-
-
-
-
-
-
 
 
   /// Sets the theme data
@@ -106,5 +77,17 @@ class PrefUtils {
     } catch (e) {
       return 'primary';
     }
+  }
+
+  /// Save hideLikes value locally
+  Future<void> setHideLikes(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hideLikesKey, value);
+  }
+
+  /// Load saved hideLikes value
+  Future<bool> getHideLikes() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_hideLikesKey) ?? false;
   }
 }

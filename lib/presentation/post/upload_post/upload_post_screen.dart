@@ -1,6 +1,9 @@
 import 'package:detectable_text_field/widgets/detectable_text_editing_controller.dart';
 import 'package:detectable_text_field/widgets/detectable_text_field.dart';
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/constants/app_dialogs.dart';
 import 'package:frenly_app/core/constants/my_textfield.dart';
@@ -32,9 +35,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
           key: _formKeyLogin,
           child: ListView(
             children: [
-              SizedBox(
-                height: 20.ah,
-              ),
+              SizedBox(height: 20.ah),
               Center(
                 child: InkWell(
                   onTap: () {
@@ -51,26 +52,19 @@ class _PostPostScreenState extends State<PostPostScreen> {
                           ),
                           child: CustomImageView(
                             radius: BorderRadius.circular(20.adaptSize),
-                            height: 330.aw,
-                            width: 330.aw,
+                            height: 330.aw, width: 330.aw,
                             imagePath: controller.coverPhoto?.path ?? "assets/icons/Frame 1171278712.png",
                             fit: BoxFit.cover,
                           ),
                         ),
 
                         Positioned(
-                            right: 15.aw,
-                            bottom: 15.ah,
+                            right: 15.aw, bottom: 15.ah,
                             child: InkWell(
                                 onTap: () {
                                   _showImagePiker();
                                 },
-                                child: Image.asset(
-                                  'assets/image/edit.png',
-                                  height: 38.adaptSize,
-                                  width: 38.adaptSize,
-                                  fit: BoxFit.fill,
-                                ))),
+                                child: Image.asset('assets/image/edit.png', height: 38.adaptSize, width: 38.adaptSize, fit: BoxFit.fill))),
                       ],
                     ),
                   ),
@@ -79,12 +73,97 @@ class _PostPostScreenState extends State<PostPostScreen> {
 
               SizedBox(height: 30.ah),
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(left: 10),
                 child: Text('Caption'.tr,
                   style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
 
               SizedBox(height:20.ah),
               DetectableTextFieldWidget(detectableTextEditingController:controller.detectableCaptionTextEditingController),
+
+                SizedBox(height: 20.h),
+              Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text('Tag_Location'.tr,
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
+
+              SizedBox(height: 30.h),
+              GooglePlacesAutoCompleteTextFormField(
+                cursorColor:Colors.black,
+                cursorHeight: 20.h,
+                fetchCoordinates: true,
+                autocorrect: true,
+                decoration:InputDecoration(
+                  hintText:'Tag_Location'.tr,
+                  hintStyle:  TextStyle(
+                      color: Colors.black.withOpacity(.40),
+                      fontWeight: FontWeight.bold, fontSize: 12.fSize),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.aw),
+                    child:Icon(Icons.location_on_outlined,size: 20.fSize),
+                    //Image.asset(Assets.imagesGPS, fit: BoxFit.contain, height: 32.h, width: 32.aw),
+                  ),
+                  prefixIconConstraints: BoxConstraints(minHeight: 24.ah, minWidth: 24.aw),
+                  suffixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.aw),
+                  isDense: true,
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.aw, vertical: 12.h,),
+                  fillColor: Colors.white70,
+                  filled: true,
+                  border:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                ),
+
+                //googleAPIKey: 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE',
+                googleAPIKey: 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE',
+                textEditingController: controller.locationController,
+                debounceTime: 100, // defaults to 600 ms
+                scrollPhysics: BouncingScrollPhysics(),
+                onSuggestionClicked: (prediction) async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  print('placeDetails: lat=${prediction.lat}, lng=${prediction.lng}');
+                  if (prediction.lat != null && prediction.lng != null) {
+                    controller.lat = prediction.lat!;
+                    controller.lng = prediction.lng!;
+                  } else {
+                    // controller.lat = null;
+                    // controller.lng = null;
+                  //  Toasts.getErrorToast(text: "Successfully fetch the coordinates for this location");
+                  }
+                  controller.lat = prediction.lat ?? "";
+                  controller.lng = prediction.lng ?? "";
+                  controller.locationController.text = prediction.description ?? "";
+                  controller.locationController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description?.length ?? 0));
+                  if (prediction.placeId != null) {
+                    await fetchCoordinates(prediction.placeId!, controller);
+                  } else {
+                  //  Toasts.getErrorToast(text: "Unable to fetch coordinates for this location");
+                  }
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                onChanged: (value) {
+                  controller.lat = null;
+                  controller.lng = null;
+                },
+              ),
 
               SizedBox(height: 60.ah),
               Center(
@@ -94,10 +173,9 @@ class _PostPostScreenState extends State<PostPostScreen> {
                     isLoading: controller.isLoading.value,
                     onTap: () {
                       if (_formKeyLogin.currentState!.validate()) {
-                        if (controller.coverPhoto != null && controller.detectableCaptionTextEditingController.text.isNotEmpty) {
+                        if (controller.coverPhoto != null && controller.detectableCaptionTextEditingController.text.isNotEmpty){
                           controller.postPost();
                         }
-
                         else {
                           if(controller.coverPhoto == null){
                             AppDialog.taostMessage("_photo_can_not_be_empty".tr);
@@ -107,16 +185,14 @@ class _PostPostScreenState extends State<PostPostScreen> {
                           }
                         }
                       }
-
                       //Navigator.push(context, MaterialPageRoute(builder: (context) => Demo_deshboardPage()));
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => EditBlog_Screen()));
                     },
                   ),
                 ),
               ),
-              SizedBox(
-                height: 40.ah,
-              ),
+
+              SizedBox(height: 40.ah),
             ],
           ),
         ),
@@ -161,7 +237,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
                         );
                         Navigator.of(context).pop();
                       }),
-                  ListTile(
+                   ListTile(
                     leading: const Icon(Icons.video_camera_back_rounded),
                     title: Text('camera'.tr),
                     onTap: () async {
@@ -175,9 +251,9 @@ class _PostPostScreenState extends State<PostPostScreen> {
               ),
             ),
           );
-        });
+        }
+   );
   }
-
 }
 
 
@@ -192,7 +268,6 @@ class DetectableTextFieldWidget extends StatefulWidget {
 }
 
 class _DetectableTextFieldWidgetState extends State<DetectableTextFieldWidget> {
-
 
   @override
   void initState() {
@@ -268,7 +343,31 @@ class _DetectableTextFieldWidgetState extends State<DetectableTextFieldWidget> {
           color: Color(0xffff0121),
           width: 1,
         ),
-      ));
+      )
+  );
+}
+
+
+Future<void> fetchCoordinates(String placeId, UploadPostController controller) async {
+  // const apiKey = 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE';
+  const apiKey = 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE';
+  final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=$apiKey';
+
+  try {
+    final dio = Dio();
+    final response = await dio.get(url);
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final location = data['result']['geometry']['location'];
+      controller.lat = location['lat'].toString();
+      controller.lng = location['lng'].toString();
+      print('Fetched coordinates: lat=${controller.lat}, lng=${controller.lng}');
+    } else {
+     // Toasts.getErrorToast(text: "Failed to fetch coordinates");
+    }
+  } catch (e) {
+   // Toasts.getErrorToast(text: "Error fetching coordinates: $e");
+  }
 }
 
 

@@ -11,17 +11,18 @@ class PostViewController extends GetxController{
   }
 
   RxBool isLoadingPostsingle = false.obs ;
+  bool blockScroll = false;
+
+
   Rxn<PostSingleViewModel> postSingleViewModel = Rxn<PostSingleViewModel>();
 
   getPostByid({required String id,bool ? isLoading}) async {
     if(isLoading==null){
       isLoadingPostsingle.value=true;
     }
-    postSingleViewModel.value = await   ApiRepository.getPostsByID(id: id);
+    postSingleViewModel.value = await
+    ApiRepository.getPostsByID(id: id);
     isLoadingPostsingle.value=false;
   }
-
-
-
 
 }

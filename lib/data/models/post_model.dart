@@ -5,6 +5,7 @@ class Post {
   int? id;
   String? caption;
   String? imageUrl;
+  String? location;
   int? userId;
   int? numberOfLikes;
   int? numberOfShares;
@@ -22,6 +23,7 @@ class Post {
     this.caption,
     this.imageUrl,
     this.userId,
+    this.location,
     this.numberOfLikes,
     this.numberOfShares,
     this.numberOfComments,
@@ -43,6 +45,7 @@ class Post {
     caption: json["caption"],
     imageUrl: json["image_url"],
     userId: json["userId"],
+    location: json["location"],
     numberOfLikes: json["numberOfLikes"],
     numberOfShares: json["numberOfShares"],
     numberOfComments: json["numberOfComments"],
@@ -60,6 +63,7 @@ class Post {
     "caption": caption,
     "image_url": imageUrl,
     "userId": userId,
+    "location": location,
     "numberOfLikes": numberOfLikes,
     "numberOfShares": numberOfShares,
     "numberOfComments": numberOfComments,
@@ -80,6 +84,7 @@ class User {
   String? fullName;
   dynamic bio;
   String? handle;
+  String? location;
   String? fcmToken;
   String? avatarUrl;
   String? coverPhotoUrl;
@@ -100,6 +105,7 @@ class User {
     this.password,
     this.fullName,
     this.bio,
+    this.location,
     this.handle,
     this.fcmToken,
     this.avatarUrl,
@@ -122,6 +128,7 @@ class User {
     password: json["password"],
     fullName: json["full_name"],
     bio: json["bio"],
+    location: json["location"],
     handle: json["handle"],
     fcmToken: json["fcm_token"],
     avatarUrl: json["avatar_url"],
@@ -149,6 +156,7 @@ class User {
     "avatar_url": avatarUrl,
     "cover_photo_url": coverPhotoUrl,
     "token": token,
+    "location": location,
     "act_token": actToken,
     "isVerified": isVerified,
     "numberOfFollower": numberOfFollower,

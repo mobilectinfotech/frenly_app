@@ -260,7 +260,9 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:frenly_app/presentation/auth/my_profile_view/my_profile_controller.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:frenly_app/presentation/auth/my_profile_view/my_profile_controller.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/presentation/Blog/upload_blog/upload_blog_screen.dart';
 import '../../core/utils/pref_utils.dart';
@@ -324,7 +326,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Material(
@@ -338,6 +339,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           toggleButtonMargin: 20,
           radius: 120,
           items: [
+
             CircularMenuItem(color: Colors.transparent, onTap: () {}),
 
             CircularMenuItem(
@@ -351,6 +353,28 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   Get.to(() => PostPostScreen());
                 }
                 ),
+
+            // CircularMenuItem(
+            //   padding: 100,
+            //   iconSize: 20,
+            //   margin: 20,
+            //   //badgeRadius: 20,
+            //   color: const Color(0xFF001649),
+            //   onTap: () {
+            //     key.currentState?.reverseAnimation();
+            //     Get.to(() => const UploadBlogScreen());
+            //   },
+            //   // Use 'child:' instead of 'icon:' or 'widget:'
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: Center(
+            //       child:  Image.asset(
+            //         'assets/image/message_icon.png',
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             CircularMenuItem(
                 boxShadow: [],
@@ -377,8 +401,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             CircularMenuItem(
                 color: Colors.transparent,
                 onTap: () {
-
-            }),
+                }
+            ),
           ],
           backgroundWidget: Stack(
             children: [
@@ -386,7 +410,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 bottomNavigationBar: Container(
                     width: double.infinity,
                     height: 95.0.adaptSize,
-                    padding:  EdgeInsets.symmetric(horizontal: 16.aw, vertical: 0.ah),
+                    padding: EdgeInsets.symmetric(horizontal: 16.aw, vertical: 0.ah),
                     decoration: BoxDecoration(
                       color: const Color(0xFF001649),
                       borderRadius: BorderRadius.only(
@@ -480,6 +504,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               ],
                             ),
                           ),
+
                           _selectedIndex == 3
                               ? Container(
                             height: 38.adaptSize,
@@ -494,8 +519,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               ),
                               onPressed: () => _onItemTapped(3),
                             ),
-                          )
-                              : Container(
+                          ): Container(
                             height: 38.adaptSize,
                             width: 38.adaptSize,
                             child: IconButton(
@@ -506,6 +530,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               onPressed: () => _onItemTapped(3),
                             ),
                           ),
+
                           _selectedIndex == 4
                               ? Container(
                             height: 38.adaptSize,
@@ -515,20 +540,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               color: Colors.white,
                             ),
                             child: IconButton(
-                              icon: Image.asset(
-                                'assets/image/personVector.png',
-                              ),
+                              icon: Image.asset('assets/image/personVector.png'),
                               onPressed: () => _onItemTapped(4),
                             ),
-                          )
-                              : Container(
+                          ): Container(
                             height: 38.adaptSize,
                             width: 38.adaptSize,
                             child: IconButton(
-                              icon: Image.asset(
-                                'assets/image/Vector.png',
-                                color: Colors.white,
-                              ),
+                              icon: Image.asset('assets/image/Vector.png',
+                                color: Colors.white),
                               onPressed: () => _onItemTapped(4),
                             ),
                           ),
@@ -539,6 +559,55 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+class CustomCircularMenuItem extends StatefulWidget {
+  final Color color;
+  final double size;
+  final VoidCallback onTap;
+  final Widget child;
+
+  const CustomCircularMenuItem({
+    super.key,
+    required this.color,
+    required this.onTap,
+    required this.child,
+    this.size = 50,
+  });
+
+  @override
+  State<CustomCircularMenuItem> createState() => _CustomCircularMenuItemState();
+}
+
+class _CustomCircularMenuItemState extends State<CustomCircularMenuItem>
+    with SingleTickerProviderStateMixin {
+  double _scale = 1.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _scale = 0.9),
+      onTapUp: (_) => setState(() => _scale = 1.0),
+      onTapCancel: () => setState(() => _scale = 1.0),
+      onTap: widget.onTap,
+      child: AnimatedScale(
+        scale: _scale,
+        duration: const Duration(milliseconds: 150),
+        child: Container(
+          width: widget.size,
+          height: widget.size,
+          decoration: BoxDecoration(
+            color: widget.color,
+            shape: BoxShape.circle,
+          ),
+          child: Center(child: widget.child),
         ),
       ),
     );

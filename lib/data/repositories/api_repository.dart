@@ -497,8 +497,8 @@ class ApiRepository {
     return CreateChatModel();
   }
 
-  static Future<bool> postPost({required String photoPath, required String title}) async {
-  //static Future<bool> postPost({required String photoPath, required String title,required String location}) async {
+  //static Future<bool> postPost({required String photoPath, required String title}) async {
+  static Future<bool> postPost({required String photoPath, required String title,required String location}) async {
     print("sjdsfkjfdskjdfs${photoPath}");
     var data;
     data = FormData.fromMap({
@@ -506,7 +506,7 @@ class ApiRepository {
         photoPath
       ),
       'caption': title,
-      //'caption': location,
+      'location': location,
     });
 
     Map<String, dynamic>? response = await ApiClient().postRequest(
@@ -983,12 +983,13 @@ class ApiRepository {
     }
   }
 
+
   static Future<bool> mySettingsUpdate(
       {required bool lastSeen,
-      required bool commentsAllowed,
-      required bool chatNotification,
-      required bool feedNotification,
-      required String language}) async {
+        required bool commentsAllowed,
+        required bool chatNotification,
+        required bool feedNotification,
+        required String language}) async {
     final response = await ApiClient().patchRequest(endPoint: "user/settings", body: {
       "lastSeen": lastSeen,
       "commentsAllowed": commentsAllowed,
@@ -1003,6 +1004,7 @@ class ApiRepository {
     }
   }
 
+
   static Future<ReqModel> getUserFollowingReqest() async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "notification/followRequests",
@@ -1016,7 +1018,8 @@ class ApiRepository {
   static Future<bool> updateAccountPrivate({
     required bool isPrivate,
   }) async {
-    final response = await ApiClient().patchRequest(endPoint: "user/updateProfileVisibilty", body: {
+    final response = await ApiClient().patchRequest(endPoint: "user/updateProfileVisibilty",
+        body: {
       "isPrivate": isPrivate,
     });
     if (response != null) {
@@ -1050,12 +1053,15 @@ class ApiRepository {
     if (response != null) {
       var msg = "password_reset_link_sent_successfully_please_check_your_email".tr;
       AppDialog.taostMessage(msg);
-
       return true;
     } else {
       return false;
     }
   }
+
+
+
+
 
   static Future<bool> viewVlog({required String id}) async {
     print("sdfghjhgfdsdfghjhgfdsdfghjhgfdfghj");
@@ -1424,3 +1430,7 @@ class ApiRepository {
     }
   }
 }
+
+
+
+

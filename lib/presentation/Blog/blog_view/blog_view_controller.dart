@@ -12,6 +12,7 @@ class BlogViewController extends GetxController{
   }
   late BuildContext context;
 
+  bool blockScroll = false;
 
   BlogModel blogModel= BlogModel();
 

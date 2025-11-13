@@ -52,8 +52,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
-    toggel();
-    _listenForDeepLinks();
+  //  toggel();
+   // _listenForDeepLinks();
   }
   late final isAccepted = false.obs;
 
@@ -189,12 +189,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-            () {
-          if (apiLoading.value)
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+      body: Obx(() {
+          // if (apiLoading.value)
+          //   return Center(
+          //     child: CircularProgressIndicator(),
+          //   );
           return Column(
             children: [
               Expanded(
