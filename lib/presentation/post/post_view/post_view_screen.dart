@@ -16,6 +16,7 @@ import '../../../../data/repositories/api_repository.dart';
 import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
 import '../../auth/my_profile_view/my_profile_screen.dart';
 import '../../search/search_page.dart';
+import '../../settings_screen/setting_controller.dart';
 import '../../user_profile_screen/user_profile_screen.dart';
 
 class PostViewScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class PostViewScreen extends StatefulWidget {
 
 class _PostViewScreenState extends State<PostViewScreen> {
   final PostViewController controller = Get.put(PostViewController());
+   SettingsController controllerr = Get.put(SettingsController());
 
   @override
   void initState() {
@@ -52,18 +54,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
             buildUserInfoRow(),
 
             SizedBox(height: 10.ah),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.aw),
-              child: Obx(() {
-                return Text(controller.postSingleViewModel.value!.post!.location.toString(),
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.70),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12.fSize,
-                  ),
-                );
-              }),
-            ),
+
 
             ///PramodCode...
             // Padding(
@@ -103,8 +94,6 @@ class _PostViewScreenState extends State<PostViewScreen> {
               ),
               ),
             ),
-
-
 
             // Padding(
             //   padding: EdgeInsets.all(20.0.aw),
@@ -210,11 +199,15 @@ class _PostViewScreenState extends State<PostViewScreen> {
               InkWell(
                 onTap: () async {
                   if(controller.postSingleViewModel.value!.post!.alreadyLiked){
-                    controller.postSingleViewModel.value!.post!.numberOfLikes = (controller.postSingleViewModel.value!.post!.numberOfLikes! -1);                    controller.postSingleViewModel.value!.post!.alreadyLiked=true;
+                    controller.postSingleViewModel.value!.post!.numberOfLikes = (
+                    controller.postSingleViewModel.value!.post!.numberOfLikes! -1);
+                    controller.postSingleViewModel.value!.post!.alreadyLiked=true;
                     controller.postSingleViewModel.value!.post!.alreadyLiked=false;
                   }else{
                     controller.postSingleViewModel.value!.post!.alreadyLiked=true;
-                    controller.postSingleViewModel.value!.post!.numberOfLikes = (controller.postSingleViewModel.value!.post!.numberOfLikes! +1);                    controller.postSingleViewModel.value!.post!.alreadyLiked=true;
+                    controller.postSingleViewModel.value!.post!.numberOfLikes = (
+                     controller.postSingleViewModel.value!.post!.numberOfLikes! +1);
+                    controller.postSingleViewModel.value!.post!.alreadyLiked=true;
                   }
                   controller.postSingleViewModel.refresh();
                     await ApiRepository.likeVlogBlogPost(userId: "${controller.postSingleViewModel.value?.post?.id}", postType:PostType.post);
@@ -229,7 +222,8 @@ class _PostViewScreenState extends State<PostViewScreen> {
                   ),
                 ),
               ),
-              const SizedBox(width: 20),
+
+              SizedBox(width: 20),
               if(controller.postSingleViewModel.value?.post?.commentAllowed ?? true)
                 InkWell(
                   onTap: () {
@@ -296,24 +290,64 @@ class _PostViewScreenState extends State<PostViewScreen> {
           ),
 
           SizedBox(height: 5.ah,),
-          if(controller.postSingleViewModel.value?.post?.numberOfLikes != 0)
-            Obx(()=> Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('${controller.postSingleViewModel.value?.post?.numberOfLikes}',
-                        style: TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.w600, fontSize: 11.fSize,
-                        ),
-                      ),
+          // if(controller.postSingleViewModel.value?.post?.numberOfLikes != 0)
+          //   Obx(()=> Row(
+          //           mainAxisSize: MainAxisSize.min,
+          //           children: [
+          //             Text('${controller.postSingleViewModel.value?.post?.numberOfLikes}',
+          //               style: TextStyle(color: Colors.black,
+          //                 fontWeight: FontWeight.w600, fontSize: 11.fSize,
+          //               ),
+          //             ),
+          //
+          //             SizedBox(width: 4),  // Adds space between the number of likes and the word "likes"
+          //             Text(controller.postSingleViewModel.value?.post?.numberOfLikes == 1 ? '_like'.tr : '_likes'.tr,  // The text "likes"
+          //               style: TextStyle(color: Colors.black,
+          //                 fontWeight: FontWeight.w600, fontSize: 11.fSize,
+          //               ),
+          //             ),
+          //           ],
+          //   )),
+          SizedBox(height: 5.ah),
 
-                      SizedBox(width: 4),  // Adds space between the number of likes and the word "likes"
-                      Text(controller.postSingleViewModel.value?.post?.numberOfLikes == 1 ? '_like'.tr : '_likes'.tr,  // The text "likes"
-                        style: TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.w600, fontSize: 11.fSize,
-                        ),
-                      ),
-                    ],
-            )),
+          Obx(() {
+            // ❌ If hideLikes = true → do NOT show likes
+            if (controllerr.hideLikes.value) {
+              return SizedBox.shrink();  // Hides likes completely
+            }
+
+            // ❌ If no likes, hide row
+            if ((controller.postSingleViewModel.value?.post?.numberOfLikes ?? 0) == 0) {
+              return SizedBox.shrink();
+            }
+
+            // ✅ Otherwise show Likes normally
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${controller.postSingleViewModel.value?.post?.numberOfLikes}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.fSize,
+                  ),
+                ),
+                SizedBox(width: 4),
+                Text(
+                  controller.postSingleViewModel.value?.post?.numberOfLikes == 1
+                      ? '_like'.tr
+                      : '_likes'.tr,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11.fSize,
+                  ),
+                ),
+              ],
+            );
+          }),
+
 
         ],
       ),
@@ -465,3 +499,27 @@ class HighlightHashtags extends StatelessWidget {
   }
 }
 
+/*Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Image.asset(
+                    'assets/image/location-outline.png',
+                    width: 21.ah,
+                    height: 21.ah,
+                    color: Colors.black.withOpacity(0.70),
+                  ),
+                ),
+
+                SizedBox(width: 5),
+                Obx(() {
+                  return Text(controller.postSingleViewModel.value!.post!.location.toString(),
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.70),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.fSize,
+                    ),
+                  );
+                }),
+              ],
+            ),*/

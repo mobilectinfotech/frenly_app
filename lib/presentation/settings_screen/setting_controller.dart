@@ -14,7 +14,7 @@ class SettingsController extends GetxController {
   RxBool isLoading = false.obs;
   MySettingModel? mySettingModel;
 
-  var hideLikes = false.obs; // ✅ added local toggle
+  RxBool hideLikes = false.obs; // ✅ added local toggle
   final PrefUtils _prefs = Get.find<PrefUtils>();
 
   final TextEditingController oldPassword = TextEditingController();
@@ -22,10 +22,28 @@ class SettingsController extends GetxController {
   final TextEditingController confirmPassword = TextEditingController();
 
   /// ✅ Toggle Hide Likes
+  // void toggleHideLikes(bool value) async {
+  //   hideLikes.value = value;
+  //   await _prefs.setHideLikes(value);
+  // }
   void toggleHideLikes(bool value) async {
     hideLikes.value = value;
+    // Save locally
     await _prefs.setHideLikes(value);
+    // Update server settings
+    await ApiRepository.mySettingsUpdate(
+      lastSeen: mySettingModel!.userSetting.lastSeen,
+      commentsAllowed: mySettingModel!.userSetting.commentsAllowed,
+      chatNotification: mySettingModel!.userSetting.chatNotification,
+      feedNotification: mySettingModel!.userSetting.feedNotification,
+      language: mySettingModel!.userSetting.language,
+      hideLikes: value,
+    );
+
+    // Update local model also
+    mySettingModel!.userSetting.hideLikes = value;
   }
+
 
   /// ✅ Load stored setting properly (async)
   void loadHideLikes() async {
@@ -33,12 +51,20 @@ class SettingsController extends GetxController {
     hideLikes.value = storedValue;
   }
 
+  void loadHideLikesFromAPI() async {
+    await mySettings();   // Fetch from server
+    hideLikes.value = mySettingModel!.userSetting.hideLikes;
+    await _prefs.setHideLikes(hideLikes.value);
+  }
+
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     mySettings();
-    loadHideLikes();
+   // loadHideLikes();
+    loadHideLikesFromAPI();
   }
 
 
@@ -77,7 +103,30 @@ class SettingsController extends GetxController {
     print("MySettingModel");
     isLoading.value = true;
     mySettingModel = await ApiRepository.mySettings();
+    hideLikes.value = mySettingModel!.userSetting.hideLikes;
     isLoading.value = false;
+  }
+
+  mySettingsUpdate() {
+    ApiRepository.mySettingsUpdate(
+      lastSeen: mySettingModel!.userSetting.lastSeen,
+      commentsAllowed: mySettingModel!.userSetting.commentsAllowed,
+      chatNotification: mySettingModel!.userSetting.chatNotification,
+      feedNotification: mySettingModel!.userSetting.feedNotification,
+      language: mySettingModel!.userSetting.language,
+      hideLikes: mySettingModel!.userSetting.hideLikes,
+    );
+  }
+
+
+
+
+/*  Future<void> mySettings() async {
+    print("MySettingModel");
+    isLoading.value = true;
+    mySettingModel = await ApiRepository.mySettings();
+    isLoading.value = false;
+
   }
 
   mySettingsUpdate() {
@@ -86,10 +135,15 @@ class SettingsController extends GetxController {
         commentsAllowed: mySettingModel!.userSetting.commentsAllowed,
         chatNotification: mySettingModel!.userSetting.chatNotification,
         feedNotification: mySettingModel!.userSetting.feedNotification,
-        language: mySettingModel!.userSetting.language
+        language: mySettingModel!.userSetting.language,
+       // hideLikes: mySettingModel!.userSetting.hideLikes
     );
-  }
+  }*/
+
+
 }
+
+
 // if (_formKeyLogin.currentState!.validate()) {
 // print("object");
 // controller.changePassword();

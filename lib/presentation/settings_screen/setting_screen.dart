@@ -220,6 +220,33 @@ class _SettingScreenState extends State<SettingScreen> {
                                 ],
                               ),
 
+                              //SizedBox(height: 10.ah),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('hide_Like'.tr, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize)),
+
+                                  Transform.scale(
+                                    scale: 0.4,
+                                    child: CupertinoSwitch(
+                                      //activeColor: Colors.blueGrey,
+                                      activeColor: Colors.pinkAccent.withOpacity(0.40),
+                                      trackColor: Colors.grey,
+                                      onLabelColor: Colors.brown,
+                                      offLabelColor: Colors.red,
+                                      thumbColor: Colors.pinkAccent,
+                                     // value: controller.mySettingModel!.userSetting.hideLikes,
+                                      value: controller.hideLikes.value,
+                                      onChanged: (bool value) {
+                                        controller.toggleHideLikes(value);
+                                      },
+                                    ),
+                                  ),
+                                  //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                                ],
+                              ),
+
                              SizedBox(height: 10.ah),
                             ],
                           ),
@@ -527,30 +554,3 @@ void onTapLogOutBtn() {
 
 
 
-/*
-SizedBox(height: 10.ah),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('hide_Like'.tr, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize)),
-
-                                  Transform.scale(
-                                    scale: 0.4,
-                                    child: CupertinoSwitch(
-                                      //activeColor: Colors.blueGrey,
-                                      activeColor: Colors.pinkAccent.withOpacity(0.40),
-                                      trackColor: Colors.grey,
-                                      onLabelColor: Colors.brown,
-                                      offLabelColor: Colors.red,
-                                      thumbColor: Colors.pinkAccent,
-                                      //value: controller.mySettingModel!.userSetting.lastSeen,
-                                      value: controller.hideLikes.value,
-                                      onChanged: (bool value) {
-                                        controller.toggleHideLikes(value);
-                                      },
-                                    ),
-                                  ),
-                                  //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
-                                ],
-                              ),*/

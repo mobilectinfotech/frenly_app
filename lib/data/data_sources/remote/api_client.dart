@@ -12,7 +12,8 @@ import '../../../presentation/auth/no_internet/no_internet.dart';
 class ApiClient {
   //live
   // static const String mainUrl = "https://www.frenly.se:4000/";
-   static const String mainUrl = "http://192.168.1.19:4000/";
+  // static const String mainUrl = "http://192.168.1.18:4000/";
+   static const String mainUrl = "http://192.168.1.23:4000/";
 
   //local
  // static const String mainUrl = "http://192.168.29.177:3001/";
@@ -23,12 +24,18 @@ class ApiClient {
 
   ApiClient() {
     baseOptions = BaseOptions(
-        receiveTimeout: const Duration(seconds: 30),
-        connectTimeout: const Duration(seconds: 30),
-      baseUrl: mainUrl);
+        // receiveTimeout: const Duration(seconds: 30),
+        // connectTimeout: const Duration(seconds: 30),
+      //sendTimeout: const Duration(minutes: 1),
+
+        receiveTimeout: const Duration(minutes: 5),
+        sendTimeout: const Duration(minutes: 5),
+        connectTimeout: const Duration(minutes: 2),
+        baseUrl: mainUrl
+    );
     dio = Dio(baseOptions);
     options = Options(headers: {"Authorization": "Bearer ${PrefUtils().getAuthToken()}"});
-     dio.interceptors.add(PrettyDioLogger(requestBody: true, requestHeader: true));
+     dio.interceptors.add(PrettyDioLogger(requestBody: true, requestHeader: true,));
   }
 
   /// get Request
@@ -49,9 +56,17 @@ class ApiClient {
   }
 
   /// postRequest
-  Future<dynamic> postRequest({required String endPoint, required dynamic body}) async {
+  Future<dynamic> postRequest({
+    required String endPoint,
+    required dynamic body,
+    Function(int sent, int total)? onSendProgress,
+  }) async {
     try {
-      Response<dynamic> response = await dio.post(endPoint, data: body, options: options);
+      Response<dynamic> response = await dio.post(
+          endPoint, data:
+        body, options: options,
+        onSendProgress: onSendProgress, // 👈 add this
+      );
       checkUserBlockMyAdminOrNot();
       return _processResponse(response);
     } on DioException catch (e) {

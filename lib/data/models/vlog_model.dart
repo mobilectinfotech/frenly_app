@@ -5,6 +5,7 @@ class Vlog {
   int? id;
   String? title;
   String? description;
+  String? location;
   String? videoUrl;
   String? thumbnailUrl;
   int? userId;
@@ -25,6 +26,7 @@ class Vlog {
     this.id,
     this.title,
     this.description,
+    this.location,
     this.videoUrl,
     this.thumbnailUrl,
     this.userId,
@@ -46,6 +48,7 @@ class Vlog {
     id: json["id"],
     title: json["title"],
     description: json["description"],
+    location: json["location"],
     videoUrl: json["video_url"],
     thumbnailUrl: json["thumbnail_url"],
     userId: json["userId"],
@@ -62,6 +65,4 @@ class Vlog {
     alreadySaved: json["alreadySaved"],
     commentAllowed: json["commentAllowed"],
   );
-
-
 }

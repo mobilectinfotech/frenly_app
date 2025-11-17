@@ -49,6 +49,7 @@ class ProfileUser {
   int? numberOfFollower;
   int? numberOfFollowing;
   String? city;
+  String? location;
   String? country;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -81,6 +82,7 @@ class ProfileUser {
     this.numberOfFollower,
     this.numberOfFollowing,
     this.city,
+    this.location,
     this.country,
     this.createdAt,
     this.updatedAt,
@@ -118,6 +120,7 @@ class ProfileUser {
     numberOfFollower: json["numberOfFollower"],
     numberOfFollowing: json["numberOfFollowing"],
     city: json["city"],
+    location: json["location"],
     country: json["country"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),

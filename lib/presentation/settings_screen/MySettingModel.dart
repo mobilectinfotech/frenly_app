@@ -43,6 +43,7 @@ class UserSetting {
     bool commentsAllowed;
     bool chatNotification;
     bool feedNotification;
+    bool hideLikes;
     String language;
 
     UserSetting({
@@ -52,6 +53,7 @@ class UserSetting {
       required  this.commentsAllowed,
       required  this.chatNotification,
       required  this.feedNotification,
+      required  this.hideLikes,
       required  this.language,
     });
 
@@ -62,6 +64,7 @@ class UserSetting {
         commentsAllowed: json["commentsAllowed"],
         chatNotification: json["chatNotification"],
         feedNotification: json["feedNotification"],
+        hideLikes: json["hideLikes"],
         language: json["language"],
     );
 
@@ -72,6 +75,7 @@ class UserSetting {
         "commentsAllowed": commentsAllowed,
         "chatNotification": chatNotification,
         "feedNotification": feedNotification,
+        "hideLikes": hideLikes,
         "language": language,
     };
 }

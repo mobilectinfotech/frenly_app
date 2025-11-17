@@ -108,7 +108,7 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                       CustomImageView(
                         height: 35.ah,
                         width: 35.ah,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                         imagePath: widget.blog?.user?.avatarUrl,
                         radius: BorderRadius.circular(32),
                       ),
@@ -142,7 +142,6 @@ class _CustomBlogCardState extends State<CustomBlogCard> {
                 ],
               ),
             )
-
 
           ],
         ),

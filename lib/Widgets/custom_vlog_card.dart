@@ -150,7 +150,23 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                       ),
                     ),
                   ),
+
                   vlogInLocationRow(widget.vlog, context),
+
+
+                  // Positioned(
+                  //   top: 40,
+                  //   left: 10,
+                  //   child: Text('${widget.vlog.location}'.capitalizeFirst!,
+                  //     overflow: TextOverflow.ellipsis,
+                  //     style: TextStyle(
+                  //       color: Color(0xffFFFFFF),
+                  //       fontWeight: FontWeight.w600,
+                  //       fontSize: 11.fSize,
+                  //     ),
+                  //   ),
+                  // ),
+
                   SizedBox(
                     height: 196.ah,
                     width: MediaQuery.of(context).size.width,
@@ -161,43 +177,35 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('${widget.vlog.title}'.capitalizeFirst!,
-                            style: TextStyle(
-                                color: const Color(0xffFFFFFF),
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16.fSize,
-                                height: 1.5),
+                            style: TextStyle(color: const Color(0xffFFFFFF),
+                                fontWeight: FontWeight.w700, fontSize: 16.fSize, height: 1.5)
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
+
+                          const SizedBox(height: 5),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               CustomImageView(
-                                height: 30.ah,
-                                width: 30.ah,
+                                height: 30.ah, width: 30.ah,
                                 imagePath: widget.vlog.user?.avatarUrl,
                                 radius: BorderRadius.circular(30.ah),
                                 fit: BoxFit.cover,
                               ),
-                              const SizedBox(
-                                width: 5,
-                              ),
+
+                              SizedBox(width: 5),
                               SizedBox(
                                 width: 80.aw,
                                 child: Text(
-                                  '${widget.vlog.user?.handle}'
-                                      .capitalizeFirst!,
+                                  '${widget.vlog.user?.handle}'.capitalizeFirst!,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    color: const Color(0xffFFFFFF),
+                                    color: Color(0xffFFFFFF),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 11.fSize,
                                   ),
                                 ),
                               ),
                               Spacer(),
-                              //
 
                               // Container(
                               //
@@ -237,9 +245,7 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                               //
                               // ),
 
-                              VlogLikeCommentsShareView(
-                                vlog: widget.vlog,
-                              ),
+                              VlogLikeCommentsShareView(vlog: widget.vlog),
                             ],
                           ),
                         ],
@@ -271,6 +277,16 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                   height: 21.ah,
                 ),
               ),
+
+              // Text('${widget.vlog.location}'.capitalizeFirst!,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: TextStyle(
+              //     color: Color(0xffFFFFFF),
+              //     fontWeight: FontWeight.w600,
+              //     fontSize: 11.fSize,
+              //   ),
+              // ),
+
               Container(
                 // color: Colors.red,
                 width: MediaQuery.of(context).size.width / 2.5,

@@ -806,8 +806,12 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           buildUserInfoRow(),
+
+
           const SizedBox(height: 10),
           VideoPlayerWidget(videoUrl: widget.videoUrl),
           const SizedBox(height: 15),
@@ -843,6 +847,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
                   imagePath: user?.avatarUrl,
                 );
               }),
+
               const SizedBox(width: 10),
               Obx(() {
                 final handle = controller.vlogByIdModel.value?.vlog?.user?.handle ?? "";
@@ -1872,10 +1877,31 @@ class VlogBottomSheets {
               ]);
         });
   }
-
-
-
 }
 
+/*SizedBox(height: 10),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Image.asset(
+                  'assets/image/location-outline.png',
+                  width: 21.ah,
+                  height: 21.ah,
+                  color: Colors.black.withOpacity(0.70),
+                ),
+              ),
 
+              SizedBox(width: 5),
+              Obx(() {
+                final handle = controller.vlogByIdModel.value?.vlog?.location ?? "";
+                return Text(handle,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.70),
+                    fontWeight: FontWeight.w600, fontSize: 12.fSize,
+                  ),
+                );
+              }),
+            ],
+          ),*/
 

@@ -17,10 +17,16 @@ class UploadVlogController extends GetxController{
   String? lat;
   String? lng;
 
+  RxDouble uploadProgress = 0.0.obs;
+  RxBool isUploading = false.obs;
+
   RxBool isLoading = false.obs;
 
   postVlog() async {
     isLoading.value = true;
+    isUploading.value = true;
+    uploadProgress.value = 0.0;
+
 
     // Get the file size before compression
     File originalVideoFile = File(pikedVideo!.path);
@@ -48,7 +54,12 @@ class UploadVlogController extends GetxController{
       isPost = await ApiRepository.postVlog(
           photoPath: compressedFile.path,
           title: titleController.text,
-          des: descriptionController.text
+          des: descriptionController.text,
+          location: locationController.text,
+          onProgress: (sent, total) {
+          uploadProgress.value = sent / total;
+          print("Uploading: ${(uploadProgress.value * 100).toStringAsFixed(0)}%");
+        },
       );
     } else {
       // If compression failed, use the original video
@@ -58,12 +69,22 @@ class UploadVlogController extends GetxController{
       isPost = await ApiRepository.postVlog(
           photoPath: originalVideoFile.path,
           title: titleController.text,
-          des: descriptionController.text
+          des: descriptionController.text,
+          location: locationController.text,
+        //    onProgress: (sent, total) {
+        //   uploadProgress.value = sent / total;
+        //   print("Uploading: ${(uploadProgress.value * 100).toStringAsFixed(0)}%");
+        // },
+
+        onProgress: (sent, total) {
+          uploadProgress.value = sent / total;
+        },
       );
     }
 
     // Reset the loading state
     isLoading.value = false;
+    isUploading.value = false;
     if (isPost) {
       if (Get.isRegistered<MyProfileController>()) {
         Get.find<MyProfileController>().getProfile(); // Update profile
@@ -77,13 +98,13 @@ class UploadVlogController extends GetxController{
 
   editVlog()async{
     isLoading.value=true;
+    isUploading.value = false;
     bool isPost = await ApiRepository.updateVlog(id: '', title: '', body: '', );
     isLoading.value=true;
     if(isPost){
       if(Get.isRegistered<MyProfileController>()) {
         Get.find<MyProfileController>().getProfile(); //done
       }
-
       Get.back();
     }
   }

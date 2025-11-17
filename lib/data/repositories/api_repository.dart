@@ -426,7 +426,9 @@ class ApiRepository {
     }
   }
 
-  static Future<bool> postVlog({required String photoPath, required String title, required String des}) async {
+  static Future<bool> postVlog({required String photoPath, required String title,
+    required String des,required String location,required Function(int, int) onProgress,
+  }) async {
     var data;
     data = FormData.fromMap({
       'video': await MultipartFile.fromFile(
@@ -434,10 +436,12 @@ class ApiRepository {
       ),
       'title': title,
       'description': des,
+      'location': location,
     });
     Map<String, dynamic>? response = await ApiClient().postRequest(
       endPoint: "vlog",
       body: data,
+      onSendProgress: onProgress, // 👈 add this
     );
     if (response != null) {
       AppDialog.taostMessage("${response["message"]}");
@@ -447,7 +451,6 @@ class ApiRepository {
   }
 
   //post
-
   static Future<PostListsModel> searchPosts({required String searchText}) async {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "post?page=1&limit=1000&search=$searchText",
@@ -502,9 +505,7 @@ class ApiRepository {
     print("sjdsfkjfdskjdfs${photoPath}");
     var data;
     data = FormData.fromMap({
-      'image': await MultipartFile.fromFile(
-        photoPath
-      ),
+      'image': await MultipartFile.fromFile(photoPath),
       'caption': title,
       'location': location,
     });
@@ -989,13 +990,15 @@ class ApiRepository {
         required bool commentsAllowed,
         required bool chatNotification,
         required bool feedNotification,
+        required bool hideLikes,
         required String language}) async {
     final response = await ApiClient().patchRequest(endPoint: "user/settings", body: {
       "lastSeen": lastSeen,
       "commentsAllowed": commentsAllowed,
       "chatNotification": chatNotification,
       "feedNotification": feedNotification,
-      "language": language
+      "language": language,
+      "hideLikes": hideLikes
     });
     if (response != null) {
       return true;

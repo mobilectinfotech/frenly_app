@@ -77,7 +77,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
                 child: Text('Caption'.tr,
                   style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
 
-              SizedBox(height:20.ah),
+              SizedBox(height:10.ah),
               DetectableTextFieldWidget(detectableTextEditingController:controller.detectableCaptionTextEditingController),
 
                 SizedBox(height: 20.h),
@@ -86,7 +86,7 @@ class _PostPostScreenState extends State<PostPostScreen> {
                   child: Text('Tag_Location'.tr,
                       style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
 
-              SizedBox(height: 30.h),
+              SizedBox(height: 10.h),
               GooglePlacesAutoCompleteTextFormField(
                 cursorColor:Colors.black,
                 cursorHeight: 20.h,

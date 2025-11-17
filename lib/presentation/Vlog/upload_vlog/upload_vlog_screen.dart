@@ -88,11 +88,10 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
+                            aspectRatio: _controller.value.aspectRatio,
                             child: VideoPlayer(_controller),
                           ),
-                        )
-                            : Container(),
+                        ) : Container(),
                       ),
                     ),
                     Positioned(
@@ -154,11 +153,119 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                 validator: Validator.notEmpty,
               ),
 
+              SizedBox(height: 20.h),
+              Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text('Tag_Location'.tr,
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize))),
+
+              SizedBox(height: 10.h),
+              GooglePlacesAutoCompleteTextFormField(
+                cursorColor:Colors.black,
+                cursorHeight: 20.h,
+                fetchCoordinates: true,
+                autocorrect: true,
+                decoration:InputDecoration(
+                  hintText:'Tag_Location'.tr,
+                  hintStyle:  TextStyle(
+                      color: Colors.black.withOpacity(.40),
+                      fontWeight: FontWeight.bold, fontSize: 12.fSize),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.aw),
+                    child:Icon(Icons.location_on_outlined,size: 20.fSize),
+                    //Image.asset(Assets.imagesGPS, fit: BoxFit.contain, height: 32.h, width: 32.aw),
+                  ),
+                  prefixIconConstraints: BoxConstraints(minHeight: 24.ah, minWidth: 24.aw),
+                  suffixIconConstraints: BoxConstraints(minHeight: 24.h, minWidth: 24.aw),
+                  isDense: true,
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.aw, vertical: 12.h,),
+                  fillColor: Colors.white70,
+                  filled: true,
+                  border:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.h),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                  ),
+                ),
+
+                //googleAPIKey: 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE',
+                googleAPIKey: 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE',
+                textEditingController: controller.locationController,
+                debounceTime: 100, // defaults to 600 ms
+                scrollPhysics: BouncingScrollPhysics(),
+                onSuggestionClicked: (prediction) async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  print('placeDetails: lat=${prediction.lat}, lng=${prediction.lng}');
+                  if (prediction.lat != null && prediction.lng != null) {
+                    controller.lat = prediction.lat!;
+                    controller.lng = prediction.lng!;
+                  } else {
+                    // controller.lat = null;
+                    // controller.lng = null;
+                    //  Toasts.getErrorToast(text: "Successfully fetch the coordinates for this location");
+                  }
+                  controller.lat = prediction.lat ?? "";
+                  controller.lng = prediction.lng ?? "";
+                  controller.locationController.text = prediction.description ?? "";
+                  controller.locationController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description?.length ?? 0));
+                  if (prediction.placeId != null) {
+                    await fetchCoordinates(prediction.placeId!, controller);
+                  } else {
+                    //  Toasts.getErrorToast(text: "Unable to fetch coordinates for this location");
+                  }
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                onChanged: (value) {
+                  controller.lat = null;
+                  controller.lng = null;
+                },
+              ),
+
+
+              // SizedBox(height: 20.ah),
+              // Obx(() {
+              //   if (controller.uploadProgress.value > 0 &&
+              //       controller.uploadProgress.value < 1) {
+              //     return Column(
+              //       children: [
+              //         Text("Uploading ${(controller.uploadProgress.value * 100).toStringAsFixed(0)}%",
+              //        style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700, fontSize: 15.fSize),
+              //         ),
+              //         SizedBox(height: 10),
+              //         LinearProgressIndicator(
+              //           value: controller.uploadProgress.value,
+              //           minHeight: 6,
+              //         ),
+              //         SizedBox(height: 20),
+              //       ],
+              //     );
+              //   } else {
+              //     return SizedBox.shrink();
+              //   }
+              // }),
+              //
 
               SizedBox(height: 130.ah),
               Center(
                 child: Obx(
-                  ()=> CustomPrimaryBtn1(
+                      ()=> CustomPrimaryBtn1(
                     title: 'Postt'.tr,
                     isLoading: controller.isLoading.value,
                     onTap: () {
@@ -175,12 +282,42 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                   ),
                 ),
               ),
+
               SizedBox(height: 40.ah),
 
             ],
           ),
         ),
       ),
+
+      /// FULL SCREEN UPLOAD OVERLAY 👇
+     /* Obx(() {
+        if (controller.isUploading.value == true) {
+          return Container(
+            color: Colors.black.withOpacity(0.6),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    value: controller.uploadProgress.value,
+                    strokeWidth: 6,
+                    color: Colors.pinkAccent,
+                  ),
+                  SizedBox(height: 20),
+                  Text("Uploading ${ (controller.uploadProgress.value * 100).toStringAsFixed(0) }%",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20, fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        }
+        return SizedBox.shrink();
+      }),*/
     );
   }
 
@@ -233,3 +370,25 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
   }
 }
 
+
+Future<void> fetchCoordinates(String placeId, UploadVlogController controller) async {
+  // const apiKey = 'AIzaSyBft0B13N7l_6rzORlvwevfmFzQ4bbX-DE';
+  const apiKey = 'AIzaSyBkRszzvipjTTFm7qII6QkK5hoWVbewtrE';
+  final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=geometry&key=$apiKey';
+
+  try {
+    final dio = Dio();
+    final response = await dio.get(url);
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final location = data['result']['geometry']['location'];
+      controller.lat = location['lat'].toString();
+      controller.lng = location['lng'].toString();
+      print('Fetched coordinates: lat=${controller.lat}, lng=${controller.lng}');
+    } else {
+      // Toasts.getErrorToast(text: "Failed to fetch coordinates");
+    }
+  } catch (e) {
+    // Toasts.getErrorToast(text: "Error fetching coordinates: $e");
+  }
+}
