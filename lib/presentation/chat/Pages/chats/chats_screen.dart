@@ -61,8 +61,16 @@ class ChatsScreen extends StatelessWidget {
               chatId: controller.chatsModel.value!.chats![index].id.toString(),
             ))?.then(
           (value) {
-            controller.chatsModel.value!.chats![index].unreadCount = 0;
-            controller.chatsModel.refresh();
+            // controller.chatsModel.value!.chats![index].unreadCount = 0;
+            // controller.chatsModel.refresh();
+            controller.chatsModel.update((val) {
+              val!.chats![index].unreadCount = 0;
+
+              // val.chats!.sort((a, b) =>
+              //     (b.lastMessage?.createdAt ?? DateTime(2000))
+              //         .compareTo(a.lastMessage?.createdAt ?? DateTime(2000)));
+
+            });
           },
         );
       },

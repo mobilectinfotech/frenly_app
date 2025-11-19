@@ -22,6 +22,4 @@ class ChatScreenController extends GetxController{
     chatsModel.value = ChatsModel.fromJson(response);
     isLoading.value=false;
   }
-
-
 }

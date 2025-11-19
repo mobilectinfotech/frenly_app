@@ -984,7 +984,6 @@ class ApiRepository {
     }
   }
 
-
   static Future<bool> mySettingsUpdate(
       {required bool lastSeen,
         required bool commentsAllowed,

@@ -810,7 +810,31 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           buildUserInfoRow(),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Image.asset(
+                  'assets/image/location-outline.png',
+                  width: 21.ah,
+                  height: 21.ah,
+                  color: Colors.black.withOpacity(0.70),
+                ),
+              ),
 
+              SizedBox(width: 5),
+              Obx(() {
+                final handle = controller.vlogByIdModel.value?.vlog?.location ?? "null";
+                return Text(handle,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.70),
+                    fontWeight: FontWeight.w600, fontSize: 12.fSize,
+                  ),
+                );
+              }),
+            ],
+          ),
 
           const SizedBox(height: 10),
           VideoPlayerWidget(videoUrl: widget.videoUrl),
@@ -818,6 +842,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
           buildLikeShareSaveRow(),
           const SizedBox(height: 10),
           buildVlogDetails(),
+
         ],
       ),
     );

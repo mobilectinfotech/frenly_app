@@ -53,7 +53,26 @@ class _PostListScreenState extends State<PostListScreen> {
                         children: [
                           buildUserInfoRow(index),
                           SizedBox(height: 10.ah),
+                             Row(
+                            children: [
+                              Image.asset('assets/image/location-outline.png',
+                                width: 21.ah, height: 21.ah,
+                                color: Colors.black.withOpacity(0.70),
+                              ),
 
+                              SizedBox(width: 5),
+                              Obx(() {
+                                return Text(controller.postListModel.value!.posts![index].location.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.70),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12.fSize,
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
 
                           SizedBox(height: 20.ah,),
                           Obx(()=> CustomImageView(
@@ -301,6 +320,9 @@ class _PostListScreenState extends State<PostListScreen> {
     );
   }
 }
+
+
+
 /*   Row(
                             children: [
                               Image.asset('assets/image/location-outline.png',

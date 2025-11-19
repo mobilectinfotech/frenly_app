@@ -53,7 +53,8 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
-  final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
+ // final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
+  final ChatRoomController controller = Get.put(ChatRoomController());
 
   final FocusNode focusNode = FocusNode();
   final TextEditingController _messageController = TextEditingController();
@@ -156,6 +157,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     focusNode.removeListener(_handleFocusChange);
     _messageController.dispose();
     focusNode.dispose();
+    SocketService().activeChatId.value = -1; // not 0 !
     super.dispose();
   }
 

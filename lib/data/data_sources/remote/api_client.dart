@@ -11,9 +11,10 @@ import '../../../presentation/auth/no_internet/no_internet.dart';
 
 class ApiClient {
   //live
-  // static const String mainUrl = "https://www.frenly.se:4000/";
+   static const String mainUrl = "https://www.frenly.se:4000/";
   // static const String mainUrl = "http://192.168.1.18:4000/";
-   static const String mainUrl = "http://192.168.1.23:4000/";
+   //static const String mainUrl = "http://192.168.1.23:4000/";
+  // static const String mainUrl = "http://192.168.1.20:4000/";
 
   //local
  // static const String mainUrl = "http://192.168.29.177:3001/";
@@ -28,7 +29,7 @@ class ApiClient {
         // connectTimeout: const Duration(seconds: 30),
       //sendTimeout: const Duration(minutes: 1),
 
-        receiveTimeout: const Duration(minutes: 5),
+        receiveTimeout: const Duration(minutes: 2),
         sendTimeout: const Duration(minutes: 5),
         connectTimeout: const Duration(minutes: 2),
         baseUrl: mainUrl

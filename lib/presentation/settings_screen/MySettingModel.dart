@@ -64,7 +64,7 @@ class UserSetting {
         commentsAllowed: json["commentsAllowed"],
         chatNotification: json["chatNotification"],
         feedNotification: json["feedNotification"],
-        hideLikes: json["hideLikes"],
+        hideLikes: json["hideLikes"] ?? false,
         language: json["language"],
     );
 

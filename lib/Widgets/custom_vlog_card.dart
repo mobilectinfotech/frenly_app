@@ -96,8 +96,7 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
           if (widget.isRedrectRormVlogPage == true) {
             Get.back();
           }
-          Get.to(() =>
-              VlogViewScreen(
+          Get.to(() => VlogViewScreen(
                 videoUrl: '${widget.vlog.videoUrl}',
                 vlogId: widget.vlog.id.toString(),
               ));
@@ -124,6 +123,7 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                       }),
                     ),
                   ),
+
                   // CustomImageView(
                   //   height: 196.ah,
                   //   width: MediaQuery.of(context).size.width,
@@ -153,19 +153,18 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
 
                   vlogInLocationRow(widget.vlog, context),
 
-
-                  // Positioned(
-                  //   top: 40,
-                  //   left: 10,
-                  //   child: Text('${widget.vlog.location}'.capitalizeFirst!,
-                  //     overflow: TextOverflow.ellipsis,
-                  //     style: TextStyle(
-                  //       color: Color(0xffFFFFFF),
-                  //       fontWeight: FontWeight.w600,
-                  //       fontSize: 11.fSize,
-                  //     ),
-                  //   ),
-                  // ),
+                  Positioned(
+                    top: 40,
+                    left: 10,
+                    child: Text('${widget.vlog.location}'.capitalizeFirst!,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11.fSize,
+                      ),
+                    ),
+                  ),
 
                   SizedBox(
                     height: 196.ah,
@@ -208,7 +207,6 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                               Spacer(),
 
                               // Container(
-                              //
                               //   height: 30.ah,
                               //   width: MediaQuery.of(context).size.width/4,
                               //   child: Row(
@@ -238,8 +236,6 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                               //           ),
                               //         ),
                               //       ),
-                              //
-                              //
                               //     ],
                               //   ),
                               //

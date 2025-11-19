@@ -41,20 +41,51 @@ class ChatRoomController extends GetxController {
     isLoading.value = false;
   }
 
+  ///Pramod COde
+  // Future<bool> sendMessage({required String message, required String chatId}) async {
+  //   final response = await ApiClient().postRequest(
+  //       endPoint: "message/${chatId}",
+  //       body: {"content": "${message}"});
+  //
+  //   var msggg = response["message"];
+  //   SingleMessage getSingleMsgModel = SingleMessage.fromJson(msggg);
+  //   allMsg.messages!.insert(0, getSingleMsgModel);
+  //   allMsgNOTUSE.refresh();
+  //   return true;
+  // }
+
+
   Future<bool> sendMessage({required String message, required String chatId}) async {
     final response = await ApiClient().postRequest(
-        endPoint: "message/${chatId}",
-        body: {"content": "${message}"});
+        endPoint: "message/$chatId",
+        body: {"content": message});
 
-    var msggg = response["message"];
-    SingleMessage getSingleMsgModel = SingleMessage.fromJson(msggg);
-    allMsg.messages!.insert(0, getSingleMsgModel);
-    allMsgNOTUSE.refresh();
+    var msgData = response["message"];
+    SingleMessage sentMessage = SingleMessage.fromJson(msgData);
+
+    /// Insert into ChatRoom immediately
+    allMsgNOTUSE.update((val) {
+      val!.messages!.insert(0, sentMessage);
+    });
+
+    /// 🔥 UPDATE CHAT LIST (VERY IMPORTANT)
+    final chatScreenController = Get.find<ChatScreenController>();
+
+    final chat = chatScreenController.chatsModel.value?.chats
+        ?.firstWhereOrNull((c) => c.id.toString() == chatId);
+
+    if (chat != null) {
+      chat.lastMessage?.content = message;                   // latest message text
+      chat.lastMessage?.createdAt = DateTime.now();          // latest time
+      chat.unreadCount = 0;                                  // own message → no unread
+      chatScreenController.chatsModel.refresh();             // refresh UI
+    }
 
     return true;
   }
 
-@override
+
+  @override
   void dispose() {
   print("line 60");
     super.dispose();

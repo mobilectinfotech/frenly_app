@@ -52,8 +52,35 @@ class _PostViewScreenState extends State<PostViewScreen> {
           children: [
             SizedBox(height: 10.ah,),
             buildUserInfoRow(),
+             SizedBox(height: 10.ah),
+             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Image.asset('assets/image/location-outline.png',
+                    width: 21.ah,
+                    height: 21.ah,
+                    color: Colors.black.withOpacity(0.70),
+                  ),
+                ),
 
-            SizedBox(height: 10.ah),
+                SizedBox(width: 5),
+                Obx(() {
+                  return SizedBox(
+                    width: 320.aw,
+                    child: Text(controller.postSingleViewModel.value!.post!.location.toString(),
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.70),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.fSize,
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
 
 
             ///PramodCode...
@@ -67,18 +94,8 @@ class _PostViewScreenState extends State<PostViewScreen> {
             //   ),
             // ),
 
-            // Padding(
-            //   padding: EdgeInsets.all(20.0.aw),
-            //   child: Obx(()=> InstaImageViewer(
-            //           child: CustomImageView(
-            //             radius: BorderRadius.circular(20),
-            //             fit: BoxFit.cover, imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
-            //      ),
-            //    ),
-            //   ),
-            // ),
 
-            SizedBox(height: 10),
+           SizedBox(height:5),
             Padding(
               padding: EdgeInsets.all(20.0.aw),
               child: Obx(()=> PinchZoomReleaseUnzoomWidget(
@@ -88,8 +105,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                 ),
                 twoFingersOn: () => setState(() => controller.blockScroll = true),
                 twoFingersOff: () => Future.delayed(
-                  PinchZoomReleaseUnzoomWidget.defaultResetDuration,
-                      () => setState(() => controller.blockScroll = false),
+                  PinchZoomReleaseUnzoomWidget.defaultResetDuration, () => setState(() => controller.blockScroll = false),
                 ),
               ),
               ),
@@ -169,7 +185,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
           ),
         ),
 
-        const Spacer(),
+        Spacer(),
         InkWell(
           onTap: () {
             VlogBottomSheets.vlogmenuBottomSheet(
@@ -289,7 +305,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
             ],
           ),
 
-          SizedBox(height: 5.ah,),
+          SizedBox(height: 5.ah),
           // if(controller.postSingleViewModel.value?.post?.numberOfLikes != 0)
           //   Obx(()=> Row(
           //           mainAxisSize: MainAxisSize.min,
@@ -308,15 +324,18 @@ class _PostViewScreenState extends State<PostViewScreen> {
           //             ),
           //           ],
           //   )),
+
           SizedBox(height: 5.ah),
 
           Obx(() {
             // ❌ If hideLikes = true → do NOT show likes
+            print('// ❌ If hideLikes = true → do NOT show likes');
             if (controllerr.hideLikes.value) {
               return SizedBox.shrink();  // Hides likes completely
             }
 
             // ❌ If no likes, hide row
+            print('// ❌ If no likes, hide row');
             if ((controller.postSingleViewModel.value?.post?.numberOfLikes ?? 0) == 0) {
               return SizedBox.shrink();
             }
@@ -325,8 +344,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  '${controller.postSingleViewModel.value?.post?.numberOfLikes}',
+                Text('${controller.postSingleViewModel.value?.post?.numberOfLikes}',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
@@ -334,8 +352,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                   ),
                 ),
                 SizedBox(width: 4),
-                Text(
-                  controller.postSingleViewModel.value?.post?.numberOfLikes == 1
+                Text(controller.postSingleViewModel.value?.post?.numberOfLikes == 1
                       ? '_like'.tr
                       : '_likes'.tr,
                   style: TextStyle(
@@ -499,12 +516,13 @@ class HighlightHashtags extends StatelessWidget {
   }
 }
 
-/*Row(
+
+/* SizedBox(height: 10.ah),
+            Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: Image.asset(
-                    'assets/image/location-outline.png',
+                  child: Image.asset('assets/image/location-outline.png',
                     width: 21.ah,
                     height: 21.ah,
                     color: Colors.black.withOpacity(0.70),
