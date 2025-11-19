@@ -122,7 +122,6 @@ class SocketService {
     print('Socket disconnected.');
   }
 
-
   void _addSocketListeners() {
     _socket.onConnect((_) => print('Socket connected successfully!'));
     _socket.onConnectError((data) => print('Connection Error: $data'));
@@ -130,84 +129,84 @@ class SocketService {
     _socket.on('messageReceived', _handleMessageReceived);
   }
 
-  void _handleMessageReceived(dynamic msg) {
-    try {
-      final message = SingleMessage.fromJson(msg);
-
-      final chatRoomController = Get.isRegistered<ChatRoomController>()
-          ? Get.find<ChatRoomController>()
-          : null;
-
-      // If user is in the same chat room → realtime add
-      if (message.chatId == activeChatId.value && chatRoomController != null) {
-        chatRoomController.allMsgNOTUSE.update((val) {
-          val!.messages!.insert(0, message);
-        });
-      }
-
-      // Update chat list (realtime)
-      final chatScreenController = Get.find<ChatScreenController>();
-
-      final chat = chatScreenController.chatsModel.value?.chats
-          ?.firstWhereOrNull((c) => c.id == message.chatId);
-
-      if (chat != null) {
-        chat.lastMessage?.content = message.content;
-        chat.lastMessage?.createdAt = message.createdAt;
-        //chat.unreadCount = chat.id == activeChatId.value ? 0 : (chat.unreadCount ?? 0) + 1;
-        if (message.chatId == SocketService().activeChatId.value) {
-          chat.unreadCount = 0;  // inside current chatroom
-        } else {
-          chat.unreadCount = (chat.unreadCount ?? 0) + 1; // outside chatroom
-        }
-
-        chatScreenController.chatsModel.update((val) {});
-      }
-    } catch (e) {
-      print("Socket error: $e");
-    }
-  }
-
-
-// void _handleMessageReceived(dynamic msg) {
-  //   print('Message received: $msg');
-  //
+  // void _handleMessageReceived(dynamic msg) {
   //   try {
-  //     final SingleMessage message = SingleMessage.fromJson(msg);
+  //     final message = SingleMessage.fromJson(msg);
   //
-  //     /// Check if ChatRoomController exists
   //     final chatRoomController = Get.isRegistered<ChatRoomController>()
   //         ? Get.find<ChatRoomController>()
   //         : null;
   //
-  //     /// If user is in SAME chatRoom
+  //     // If user is in the same chat room → realtime add
   //     if (message.chatId == activeChatId.value && chatRoomController != null) {
-  //
   //       chatRoomController.allMsgNOTUSE.update((val) {
   //         val!.messages!.insert(0, message);
   //       });
-  //
-  //       return; /// Do NOT update unreadCount
   //     }
   //
-  //     /// User is NOT in this chat → update chat list
+  //     // Update chat list (realtime)
   //     final chatScreenController = Get.find<ChatScreenController>();
   //
-  //     final chat = chatScreenController.chatsModel.value!.chats!
-  //         .firstWhereOrNull((c) => c.id == message.chatId);
+  //     final chat = chatScreenController.chatsModel.value?.chats
+  //         ?.firstWhereOrNull((c) => c.id == message.chatId);
   //
   //     if (chat != null) {
-  //       chat.unreadCount = (chat.unreadCount ?? 0) + 1;
   //       chat.lastMessage?.content = message.content;
   //       chat.lastMessage?.createdAt = message.createdAt;
-  //       chatScreenController.chatsModel.refresh();
-  //     } else {
-  //       chatScreenController.getchats();
-  //     }
+  //       //chat.unreadCount = chat.id == activeChatId.value ? 0 : (chat.unreadCount ?? 0) + 1;
+  //       if (message.chatId == SocketService().activeChatId.value) {
+  //         chat.unreadCount = 0;  // inside current chatroom
+  //       } else {
+  //         chat.unreadCount = (chat.unreadCount ?? 0) + 1; // outside chatroom
+  //       }
   //
+  //       chatScreenController.chatsModel.update((val) {});
+  //     }
   //   } catch (e) {
-  //     print('Error processing message: $e');
+  //     print("Socket error: $e");
   //   }
   // }
+
+
+  void _handleMessageReceived(dynamic msg) {
+    print('Message received: $msg');
+
+    try {
+      final SingleMessage message = SingleMessage.fromJson(msg);
+
+      /// Check if ChatRoomController exists
+      final chatRoomController = Get.isRegistered<ChatRoomController>()
+          ? Get.find<ChatRoomController>()
+          : null;
+
+      /// If user is in SAME chatRoom
+      if (message.chatId == activeChatId.value && chatRoomController != null) {
+
+        chatRoomController.allMsgNOTUSE.update((val) {
+          val!.messages!.insert(0, message);
+        });
+
+        return; /// Do NOT update unreadCount
+      }
+
+      /// User is NOT in this chat → update chat list
+      final chatScreenController = Get.find<ChatScreenController>();
+
+      final chat = chatScreenController.chatsModel.value!.chats!
+          .firstWhereOrNull((c) => c.id == message.chatId);
+
+      if (chat != null) {
+        chat.unreadCount = (chat.unreadCount ?? 0) + 1;
+        chat.lastMessage?.content = message.content;
+        chat.lastMessage?.createdAt = message.createdAt;
+        chatScreenController.chatsModel.refresh();
+      } else {
+        chatScreenController.getchats();
+      }
+
+    } catch (e) {
+      print('Error processing message: $e');
+    }
+  }
 }
 

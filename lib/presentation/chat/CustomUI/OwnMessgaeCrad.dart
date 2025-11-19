@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/constants/app_dialogs.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
@@ -94,9 +95,11 @@ class OwnMessageCard extends StatelessWidget {
             Opacity(
                 opacity: 0.5,
                 child: Padding(
-                    padding: EdgeInsets.only(left: 10.h),
-                    child: Text("${createdAt.hour}:${createdAt.minute < 10 ? "0${createdAt.minute}" : createdAt.minute}    ",
-                      style: TextStyle(fontSize: 12.adaptSize))
+                    padding: EdgeInsets.only(right: 10.h),
+                   // child: Text("${createdAt.hour}:${createdAt.minute < 10 ? "0${createdAt.minute}" : createdAt.minute}    ",
+                    child: Text(
+                        DateFormat('hh:mm a').format(createdAt.toLocal()),
+                        style: TextStyle(fontSize: 12.adaptSize))
                 )),
 
             // Opacity(

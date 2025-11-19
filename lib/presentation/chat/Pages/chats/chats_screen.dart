@@ -129,7 +129,8 @@ class ChatsScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   //  String formattedTime = DateFormat('HH:mm').format(now);
-                  Text(DateFormat('HH:mm').format(controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.toLocal() ?? DateTime.now().toLocal())),
+                   Text(DateFormat('hh:mm a').format(controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.toLocal() ?? DateTime.now().toLocal())),
+
                   // Text("${controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.hour}:${(controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute ?? 0) < 10 ? "0${controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute}" : controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute}"),
                   const SizedBox(
                     height: 8,
