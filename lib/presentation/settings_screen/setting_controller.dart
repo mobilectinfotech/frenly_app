@@ -26,6 +26,8 @@ class SettingsController extends GetxController {
   //   hideLikes.value = value;
   //   await _prefs.setHideLikes(value);
   // }
+
+/*
   void toggleHideLikes(bool value) async {
     hideLikes.value = value;
     // Save locally
@@ -43,6 +45,7 @@ class SettingsController extends GetxController {
     // Update local model also
     mySettingModel!.userSetting.hideLikes = value;
   }
+*/
 
 
   /// ✅ Load stored setting properly (async)
@@ -51,10 +54,19 @@ class SettingsController extends GetxController {
     hideLikes.value = storedValue;
   }
 
-  void loadHideLikesFromAPI() async {
-    await mySettings();   // Fetch from server
+  // void loadHideLikesFromAPI() async {
+  //   await mySettings();   // Fetch from server
+  //   hideLikes.value = mySettingModel!.userSetting.hideLikes;
+  //   await _prefs.setHideLikes(hideLikes.value);
+  // }
+  Future<void> fetchSettings() async {
+    isLoading.value = true;
+
+    mySettingModel = await ApiRepository.mySettings();
+
     hideLikes.value = mySettingModel!.userSetting.hideLikes;
-    await _prefs.setHideLikes(hideLikes.value);
+
+    isLoading.value = false;
   }
 
 
@@ -62,11 +74,33 @@ class SettingsController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    mySettings();
+    fetchSettings();   // only one API call
+    // mySettings();
    // loadHideLikes();
-    loadHideLikesFromAPI();
+  //  loadHideLikesFromAPI();
   }
 
+  /// Update Hide Likes Toggle
+  Future<void> toggleHideLikes(bool value) async {
+    hideLikes.value = value;
+
+    bool updated = await ApiRepository.mySettingsUpdate(
+      lastSeen: mySettingModel!.userSetting.lastSeen,
+      commentsAllowed: mySettingModel!.userSetting.commentsAllowed,
+      chatNotification: mySettingModel!.userSetting.chatNotification,
+      feedNotification: mySettingModel!.userSetting.feedNotification,
+      language: mySettingModel!.userSetting.language,
+      hideLikes: value,
+    );
+
+    if (updated) {
+      mySettingModel!.userSetting.hideLikes = value;
+    } else {
+      // Revert if failed
+      hideLikes.value = mySettingModel!.userSetting.hideLikes;
+      AppDialog.taostMessage("Failed to update settings");
+    }
+  }
 
   Future<bool> changePassword() async {
     isLoading.value = true;

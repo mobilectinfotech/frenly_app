@@ -30,7 +30,10 @@ class PostViewScreen extends StatefulWidget {
 
 class _PostViewScreenState extends State<PostViewScreen> {
   final PostViewController controller = Get.put(PostViewController());
-   SettingsController controllerr = Get.put(SettingsController());
+   SettingsController settingsController = Get.put(SettingsController());
+
+  //final settingsController = Get.find<SettingsController>();
+
 
   @override
   void initState() {
@@ -95,12 +98,12 @@ class _PostViewScreenState extends State<PostViewScreen> {
             // ),
 
 
-           SizedBox(height:5),
+           SizedBox(height:20),
             Padding(
-              padding: EdgeInsets.all(20.0.aw),
+              padding: EdgeInsets.symmetric(horizontal: 20.0.aw),
               child: Obx(()=> PinchZoomReleaseUnzoomWidget(
                 child: CustomImageView(
-                  radius: BorderRadius.circular(20),
+                  radius: BorderRadius.circular(20.adaptSize),
                   fit: BoxFit.cover, imagePath: controller.postSingleViewModel.value?.post?.imageUrl,
                 ),
                 twoFingersOn: () => setState(() => controller.blockScroll = true),
@@ -134,6 +137,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
             //   ),
             // ),
 
+            SizedBox(height:20),
             buildVlogDetails(),
             const SizedBox(height: 15),
             buildLikeShareSaveRow(),
@@ -330,7 +334,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
           Obx(() {
             // ❌ If hideLikes = true → do NOT show likes
             print('// ❌ If hideLikes = true → do NOT show likes');
-            if (controllerr.hideLikes.value) {
+            if (settingsController.hideLikes.value) {
               return SizedBox.shrink();  // Hides likes completely
             }
 

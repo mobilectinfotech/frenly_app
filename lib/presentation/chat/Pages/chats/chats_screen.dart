@@ -37,8 +37,7 @@ class ChatsScreen extends StatelessWidget {
                   ? Center(
                       child: Text("no_chats_found".tr),
                     )
-                  : Obx(
-                      () => ListView.builder(
+                  : Obx(() => ListView.builder(
                         itemCount: controller.chatsModel.value?.chats!.length,
                         itemBuilder: (context, index) => chatsCard(index),
               ),
@@ -49,10 +48,7 @@ class ChatsScreen extends StatelessWidget {
   }
 
   Widget chatsCard(int index) {
-    int indexxx =
-        "${controller.chatsModel.value?.chats![index].participants![0].id}" ==
-            PrefUtils().getUserId()
-            ? 1 : 0;
+    int indexxx = "${controller.chatsModel.value?.chats![index].participants![0].id}" == PrefUtils().getUserId() ? 1 : 0;
 
     return InkWell(
       onTap: () {
@@ -88,8 +84,7 @@ class ChatsScreen extends StatelessWidget {
                   Get.to(()=>UserProfileScreen(userId: "${controller.chatsModel.value?.chats![index].participants![indexxx].id}"));
                 },
                 radius: BorderRadius.circular(30),
-                height: 55,
-                width: 55,
+                height: 55, width: 55,
                 imagePath: controller.chatsModel.value?.chats![index].participants?[indexxx].avatarUrl,
                 fit: BoxFit.cover,
               ),
@@ -100,6 +95,7 @@ class ChatsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
+
                   // Text(
                   //   "${controller.chatsModel.value?.chats![index].participants![indexxx].fullName}".capitalizeFirst!,
                   //   style: const TextStyle(
@@ -107,21 +103,20 @@ class ChatsScreen extends StatelessWidget {
                   //     fontWeight: FontWeight.bold,
                   //   ),
                   // ),
-                  Text(capitalizeEachWord("${controller.chatsModel.value?.chats![index].participants![indexxx].fullName ?? ''}"),
-                    style:TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold,
-                    )),
 
-                  SizedBox(
+                  Text(capitalizeEachWord("${controller.chatsModel.value?.chats![index].participants![indexxx].fullName ?? ''}"),
+                    style:TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+
+                   SizedBox(
                     width: 210.aw,
                     child: Text(
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      controller.chatsModel.value?.chats![index].lastMessage
-                              ?.content ?? "",
+                      controller.chatsModel.value?.chats![index].lastMessage?.content ?? "",
                       style: const TextStyle(fontSize: 13),
                     ),
                   ),
+
                 ],
               ),
               const Spacer(),
@@ -132,47 +127,33 @@ class ChatsScreen extends StatelessWidget {
                    Text(DateFormat('hh:mm a').format(controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.toLocal() ?? DateTime.now().toLocal())),
 
                   // Text("${controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.hour}:${(controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute ?? 0) < 10 ? "0${controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute}" : controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute}"),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  if (controller.chatsModel.value?.chats![index].unreadCount !=
-                      0)
+                  const SizedBox(height: 8),
+                  if (controller.chatsModel.value?.chats![index].unreadCount != 0)
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: MyColor.primaryColor),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: MyColor.primaryColor),
                           child: Center(
                               child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 4.0, bottom: 4, left: 9, right: 9),
-                            child: Text(
-                              "${controller.chatsModel.value?.chats![index].unreadCount}",
-                              style: TextStyle(
-                                  fontSize: 12.adaptSize, color: Colors.white),
-                            ),
+                            padding: const EdgeInsets.only(top: 4.0, bottom: 4, left: 9, right: 9),
+                            child: Text("${controller.chatsModel.value?.chats![index].unreadCount}",
+                              style: TextStyle(fontSize: 12.adaptSize, color: Colors.white)),
                           )),
                         ),
                       ],
                     ),
-                  if (controller.chatsModel.value?.chats![index].unreadCount ==
-                      0)
-                    if (controller.chatsModel.value?.chats![index].lastMessage
-                            ?.content !=
-                        null)
-                      const Icon(Icons.done_all),
+                  if (controller.chatsModel.value?.chats![index].unreadCount == 0)
+                    if (controller.chatsModel.value?.chats![index].lastMessage ?.content != null)
+                      Icon(Icons.done_all),
                 ],
               ),
-              SizedBox(
-                width: 20.aw,
-              ),
+
+              SizedBox(width: 20.aw),
             ],
           ),
-          SizedBox(
-            height: 20.aw,
-          ),
+
+          SizedBox(height: 20.aw),
         ],
       ),
     );
@@ -181,10 +162,6 @@ class ChatsScreen extends StatelessWidget {
 
 String capitalizeEachWord(String text) {
   if (text.isEmpty) return text;
-  return text
-      .split(' ')
-      .map((word) => word.isNotEmpty
-      ? word[0].toUpperCase() + word.substring(1).toLowerCase()
-      : '')
-      .join(' ');
+  return text.split(' ').map((word) => word.isNotEmpty ?
+  word[0].toUpperCase() + word.substring(1).toLowerCase():'').join(' ');
 }
