@@ -59,6 +59,7 @@ class SettingsController extends GetxController {
   //   hideLikes.value = mySettingModel!.userSetting.hideLikes;
   //   await _prefs.setHideLikes(hideLikes.value);
   // }
+
   Future<void> fetchSettings() async {
     isLoading.value = true;
 
@@ -114,7 +115,6 @@ class SettingsController extends GetxController {
     );
 
     isLoading.value = false;
-
     if (response != null && response['success'] == true) {
       // ✅ Show success toast
       AppDialog.taostMessage("password_changed_successfully".tr);

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -15,7 +14,6 @@ class MessagingService {
   MessagingService._internal();
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-
   static FirebaseMessaging fMessaging = FirebaseMessaging.instance;
 
   // for getting firebase messaging token
@@ -29,6 +27,7 @@ class MessagingService {
       }
     });
   }
+
   Future<void> init(BuildContext context) async {
     getFirebaseMessagingToken();
     // Requesting permission for notifications

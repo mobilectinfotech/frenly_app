@@ -10,6 +10,7 @@ import '../../../core/constants/my_colour.dart';
 import '../../../core/utils/calculateTimeDifference.dart';
 import '../../../data/repositories/api_repository.dart';
 import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
+import '../../settings_screen/setting_controller.dart';
 import '../post_view/post_view_screen.dart';
 
 
@@ -156,7 +157,9 @@ class _PostListScreenState extends State<PostListScreen> {
                      controller.postListModel.value?.posts![index].alreadyLiked=false;
                 }else{
                      controller.postListModel.value?.posts![index].alreadyLiked=true;
-                     controller.postListModel.value?.posts![index].numberOfLikes = (   controller.postListModel.value!.posts![index].numberOfLikes! +1);                       controller.postListModel.value?.posts![index].alreadyLiked=true;
+                     controller.postListModel.value?.posts![index].numberOfLikes = (
+                         controller.postListModel.value!.posts![index].numberOfLikes! +1);
+                     controller.postListModel.value?.posts![index].alreadyLiked=true;
                }
                  controller.postListModel.refresh();
                 await ApiRepository.likeVlogBlogPost(userId: "${  controller.postListModel.value?.posts![index].id}", postType:PostType.post);
@@ -207,7 +210,7 @@ class _PostListScreenState extends State<PostListScreen> {
             ),
             const Spacer(),
             Obx(() {
-              final alreadySaved =   controller.postListModel.value?.posts![index].alreadySaved ?? false;
+              final alreadySaved = controller.postListModel.value?.posts![index].alreadySaved ?? false;
               return InkWell(
                 onTap: () async {
                   if (alreadySaved) {
@@ -237,21 +240,38 @@ class _PostListScreenState extends State<PostListScreen> {
           ],
         ),
         SizedBox(height: 5.ah,),
-        if(  controller.postListModel.value?.posts![index].numberOfLikes != 0)
-          Obx(
-                ()=> Text(
-              '${  controller.postListModel.value?.posts![index].numberOfLikes} likes',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: 11.fSize,
-              ),
-            ),
-          ),
-        SizedBox(height: 0.ah,),
+         if(  controller.postListModel.value?.posts![index].numberOfLikes != 0)
+        //   Obx(()=> Text('${ controller.postListModel.value?.posts![index].numberOfLikes} likes',
+        //       style: TextStyle(
+        //         color: Colors.black,
+        //         fontWeight: FontWeight.w600,
+        //         fontSize: 11.fSize,
+        //       ),
+        //     ),
+        //   ),
+
+    Obx(() {
+      SettingsController settingsController = Get.put(SettingsController());
+      if (settingsController.hideLikes.value) {
+        return SizedBox.shrink();
+      }
+
+    // Get likes count safely
+    final likes = controller.postListModel.value?.posts?[index].numberOfLikes ?? 0;
+
+    // ❌ If no likes → hide row
+    if (likes == 0) {
+      return SizedBox.shrink();
+    }
+    return Text("$likes ${likes == 1 ? 'Like' : 'Likes'}",
+    style: TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.w600, fontSize: 11.fSize,
+    ),);}),
+
+    SizedBox(height: 0.ah,),
         if(  controller.postListModel.value?.posts![index].numberOfComments != 0)
-          Obx(
-                ()=> InkWell(
+          Obx(()=> InkWell(
                   onTap: () {
                     VlogBottomSheets.commentsBottomSheet(
                       context: context,
@@ -260,10 +280,8 @@ class _PostListScreenState extends State<PostListScreen> {
                     );
                   },
                   child: Text('View all ${ controller.postListModel.value?.posts![index].numberOfComments} comments',
-                   style: TextStyle(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.fSize)
+                   style: TextStyle(color: Colors.black54,
+                  fontWeight: FontWeight.w600, fontSize: 14.fSize)
                   ),
                 ),
           ),

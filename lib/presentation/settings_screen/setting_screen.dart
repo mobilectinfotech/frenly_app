@@ -31,6 +31,7 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   SettingsController controller = Get.put(SettingsController());
   final LocaleService localeService = LocaleService();
+ // final controller = Get.find<SettingsController>();
 
   String crrentLagnauge = "English";
 
@@ -98,15 +99,14 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarPrimary(title: "Settings".tr),
-      body: Obx(
+      /*body: Obx(
         () => controller.isLoading.value
             ? const Center(
                 child: CircularProgressIndicator(
                   strokeWidth: 1,
                 ),
               )
-            : Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+            : Padding(padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -464,7 +464,381 @@ class _SettingScreenState extends State<SettingScreen> {
                ),
             ),
           ),
-      ),
+      ),*/
+
+        body: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator(strokeWidth: 1));
+          }
+
+          if (controller.mySettingModel == null) {
+            return Center(
+              child: Text(
+                "Failed to load settings (Unauthorized). Please login again.",
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          }
+          return Padding(padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: HexColor('#E8E8E8'),
+                        borderRadius: BorderRadius.circular(6)),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 10.ah),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Last'.tr,
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                              ),
+                              Transform.scale(
+                                scale: 0.4,
+                                child: CupertinoSwitch(
+                                  //   activeColor: Colors.blueGrey,
+                                  activeColor: Colors.pinkAccent.withOpacity(0.40),
+                                  trackColor: Colors.grey,
+                                  onLabelColor: Colors.brown,
+                                  offLabelColor: Colors.red,
+                                  //   thumbColor: const Color(0xff001649),
+                                  thumbColor: Colors.pinkAccent,
+                                  value: controller.mySettingModel!.userSetting.lastSeen,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      controller.mySettingModel!.userSetting.lastSeen =
+                                      !controller.mySettingModel!.userSetting.lastSeen;
+                                      controller.mySettingsUpdate();
+                                    });
+                                  },
+                                ),
+                              ),
+                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                            ],
+                          ),
+
+
+                          SizedBox(height: 10.ah),
+                          //profile private public
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('private_account'.tr,
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                              ),
+                              Transform.scale(
+                                scale: 0.4,
+                                child: CupertinoSwitch(
+                                  // activeColor: Colors.blueGrey,
+                                  activeColor:  Colors.pinkAccent.withOpacity(0.40),
+                                  trackColor: Colors.grey,
+                                  onLabelColor: Colors.brown,
+                                  offLabelColor: Colors.red,
+                                  thumbColor:  Colors.pinkAccent,
+                                  value: widget.isAccountPrivate,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      widget.isAccountPrivate = !widget.isAccountPrivate;
+                                      ApiRepository.updateAccountPrivate(isPrivate: widget.isAccountPrivate);
+                                    });
+                                  },
+                                ),
+                              ),
+                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                            ],
+                          ),
+
+                          SizedBox(height: 10.ah),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('CommentsonP'.tr,
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                              ),
+                              // Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
+                              Transform.scale(
+                                scale: 0.4,
+                                child: CupertinoSwitch(
+                                  //   activeColor: Colors.blueGrey,
+                                  activeColor: Colors.pinkAccent.withOpacity(0.40),
+                                  trackColor: Colors.grey,
+                                  onLabelColor: Colors.brown,
+                                  offLabelColor: Colors.red,
+                                  thumbColor:  Colors.pinkAccent,
+                                  // thumbColor: const Color(0xff001649),
+                                  value: controller.mySettingModel!.userSetting.commentsAllowed,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      controller.mySettingModel!.userSetting.commentsAllowed = value;
+                                      controller.mySettingsUpdate();
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          //SizedBox(height: 10.ah),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('hide_Like'.tr, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize)),
+
+                              Transform.scale(
+                                scale: 0.4,
+                                child: CupertinoSwitch(
+                                  //activeColor: Colors.blueGrey,
+                                  activeColor: Colors.pinkAccent.withOpacity(0.40),
+                                  trackColor: Colors.grey,
+                                  onLabelColor: Colors.brown,
+                                  offLabelColor: Colors.red,
+                                  thumbColor: Colors.pinkAccent,
+                                  // value: controller.mySettingModel!.userSetting.hideLikes,
+                                  value: controller.hideLikes.value,
+                                  onChanged: (bool value) {
+                                    controller.toggleHideLikes(value);
+                                  },
+                                ),
+                              ),
+                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                            ],
+                          ),
+
+                          SizedBox(height: 10.ah),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20.ah),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(color: HexColor('#E8E8E8'),
+                        borderRadius: BorderRadius.circular(6)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('ACCOUNT'.tr,
+                              style: TextStyle(color: Colors.grey,
+                                  fontFamily: 'inter', fontWeight: FontWeight.w600,
+                                  fontSize: 16.fSize)),
+
+                          SizedBox(height: 20.ah),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context, MaterialPageRoute(builder: (context) => const AllSavedScreen()));
+                            },
+                            child: Text('Saved Items'.tr,
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                          ),
+                          SizedBox(height: 20.ah),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.to(() => const MyBlockedUserListScreen());
+                                },
+                                child: Text('Blocked List'.tr,
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                ),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(''.tr, style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),),
+                                  SizedBox(width: 10.aw),
+                                  Text('Contacts'.tr,
+                                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 20.ah),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Languagegg'.tr,
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  _showLanguageDialog(context);
+                                  // isenglish =await   PrefUtils().getUserLanguage();
+                                },
+                                child: Text(
+                                  //  "${locale?.languageCode}" == "en" ? 'Eng'.tr :  "swedish".tr,
+                                  Get.locale?.languageCode == "en"
+                                      ? 'english'.tr : "swedish".tr,
+                                  //"${locale?.languageCode}" == "en" ? 'english'.tr : "swedish".tr,
+                                  style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 20.ah),
+                          InkWell(
+                            onTap: () {
+                              //  _showDeleteConfirmationDialog(context);
+                              Get.to(() => ChangePassword());
+                            },
+                            child: Text('change_password'.tr,
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                          ),
+
+
+                          SizedBox(height: 20.ah),
+                          InkWell(
+                            onTap: () {
+                              _showDeleteConfirmationDialog(context);
+                            },
+                            child: Text('Delete Account'.tr,
+                              style:TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                          ),
+
+                          SizedBox(height: 20.ah),
+                          InkWell(
+                            onTap: () {
+                              Get.to(All_Categories());
+                            },
+                            child: Text('AllCategory'.tr,
+                              style:TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                            ),
+                          ),
+                          SizedBox(height: 20.ah),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.ah),
+                  Container(
+                    height: 142.ah,
+                    width: MediaQuery.of(context).size.width,
+                    //width:351.aw ,
+                    decoration: BoxDecoration(color: HexColor('#E8E8E8'), borderRadius: BorderRadius.circular(6)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('NOTIFICATIONS'.tr,
+                              style: TextStyle(color: Colors.grey, fontFamily: 'inter',
+                                  fontWeight: FontWeight.w600, fontSize: 16.fSize)
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Chat notification'.tr,
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
+                              ),
+                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
+                              Transform.scale(
+                                scale: 0.4,
+                                child: CupertinoSwitch(
+                                  //  activeColor: Colors.blueGrey,
+                                  activeColor:  Colors.pinkAccent.withOpacity(0.40),
+                                  trackColor: Colors.grey,
+                                  onLabelColor: Colors.brown,
+                                  offLabelColor: Colors.red,
+                                  // thumbColor: const Color(0xff001649),
+                                  thumbColor: Colors.pinkAccent,
+                                  value: controller.mySettingModel!.userSetting.chatNotification,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      controller.mySettingModel!.userSetting.chatNotification = value;
+                                      controller.mySettingsUpdate();
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Feedd'.tr, style: TextStyle(color:Colors.black,fontWeight: FontWeight.w500,fontSize: 16.fSize)),
+                              //Image.asset('assets/image/Toggle switch (1).png',width: 28.aw,height: 17.ah,),
+                              // SizedBox(width: 50.aw),
+
+                              Transform.scale(
+                                scale: 0.4,
+                                child: CupertinoSwitch(
+                                  activeColor:Colors.pinkAccent.withOpacity(0.40),
+                                  trackColor: Colors.grey,
+                                  onLabelColor: Colors.brown,
+                                  offLabelColor: Colors.red,
+                                  thumbColor: Colors.pinkAccent,
+                                  value: controller.mySettingModel!.userSetting.feedNotification,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      controller.mySettingModel!.userSetting.feedNotification = value;
+                                      controller.mySettingsUpdate();
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 60.ah),
+                  Center(
+                    child: CustomPrimaryBtn1(
+                      title: 'Logout'.tr,
+                      isLoading: false,
+                      onTap: () {
+                        _showLogoutConfirmationDialog(context);
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => Video_Post_Screen()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                      },
+                    ),
+                  ),
+
+                  SizedBox(height: 40),
+                ],
+              ),
+            ),
+          );
+        })
+
     );
   }
 

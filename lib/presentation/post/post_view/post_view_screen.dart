@@ -31,9 +31,7 @@ class PostViewScreen extends StatefulWidget {
 class _PostViewScreenState extends State<PostViewScreen> {
   final PostViewController controller = Get.put(PostViewController());
    SettingsController settingsController = Get.put(SettingsController());
-
-  //final settingsController = Get.find<SettingsController>();
-
+ // final settingsController = Get.find<SettingsController>();
 
   @override
   void initState() {
@@ -165,9 +163,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
               Obx(() {
                 final user = controller.postSingleViewModel.value?.post?.user;
                 return CustomImageView(
-                  height: 30.adaptSize,
-                  width: 30.adaptSize,
-                  fit: BoxFit.cover,
+                  height: 30.adaptSize, width: 30.adaptSize, fit: BoxFit.cover,
                   onTap:(){
                    Get.to(() => UserProfileScreen(userId: "${user?.id}"));
                   // Get.to(() => MyProfileScreen(userId: "${user?.id}"));
@@ -181,8 +177,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
               Obx(() {
                 final handle = controller.postSingleViewModel.value?.post?.user?.handle ?? "";
                 return Text(handle,
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.90),
+                  style: TextStyle(color: Colors.black.withOpacity(0.90),
                     fontWeight: FontWeight.w600, fontSize: 12.fSize));
               }),
             ],
@@ -236,8 +231,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                 child: Obx(
                       ()=> CustomImageView(
                     imagePath: controller.postSingleViewModel.value?.post?.alreadyLiked?? false
-                        ? 'assets/image/love_true_blue.svg'
-                        : 'assets/image/love_false_blue.svg',
+                        ? 'assets/image/love_true_blue.svg' : 'assets/image/love_false_blue.svg',
                     width: 21.aw, height: 21.aw,
                   ),
                 ),
@@ -248,9 +242,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                 InkWell(
                   onTap: () {
                     VlogBottomSheets.commentsBottomSheet(
-                      context: context,
-                      id: "${widget.id}",
-                      postType: PostType.post,
+                      context: context, id: "${widget.id}", postType: PostType.post,
                     );
                   },
                   child: CustomImageView(
@@ -333,17 +325,16 @@ class _PostViewScreenState extends State<PostViewScreen> {
 
           Obx(() {
             // ❌ If hideLikes = true → do NOT show likes
-            print('// ❌ If hideLikes = true → do NOT show likes');
+            print('// ❌ If hideLikes = true → do NOT show Single Post likes');
             if (settingsController.hideLikes.value) {
               return SizedBox.shrink();  // Hides likes completely
             }
 
             // ❌ If no likes, hide row
-            print('// ❌ If no likes, hide row');
+            print('// ❌ If no likes, Single Post hide row');
             if ((controller.postSingleViewModel.value?.post?.numberOfLikes ?? 0) == 0) {
               return SizedBox.shrink();
             }
-
             // ✅ Otherwise show Likes normally
             return Row(
               mainAxisSize: MainAxisSize.min,
@@ -355,6 +346,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                     fontSize: 11.fSize,
                   ),
                 ),
+
                 SizedBox(width: 4),
                 Text(controller.postSingleViewModel.value?.post?.numberOfLikes == 1
                       ? '_like'.tr
@@ -365,6 +357,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                     fontSize: 11.fSize,
                   ),
                 ),
+
               ],
             );
           }),

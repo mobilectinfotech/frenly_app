@@ -474,6 +474,7 @@ import '../../auth/my_profile_view/my_profile_controller.dart';
 import '../../chat/Pages/all_frined/CreateChatModel.dart';
 import '../../dashboard_screen/dashboardcontroller.dart';
 import '../../search/search_page.dart';
+import '../../settings_screen/setting_controller.dart';
 import '../../user_profile_screen/user_profile_screen.dart';
 
 
@@ -704,16 +705,37 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
             ],
           ),
           SizedBox(height: 5.ah,),
-          if(controller.blogByIdModel.value?.blog?.numberOfLikes != 0)
-          Obx(
-          ()=> Text('${controller.blogByIdModel.value?.blog?.numberOfLikes} likes',
-              style: TextStyle( color: Colors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: 11.fSize,
-              ),
-            ),
-          ),
-        ],
+          // if(controller.blogByIdModel.value?.blog?.numberOfLikes != 0)
+          // Obx(()=> Text('${controller.blogByIdModel.value?.blog?.numberOfLikes} likes',
+          //     style: TextStyle( color: Colors.black,
+          //       fontWeight: FontWeight.w600,
+          //       fontSize: 11.fSize,
+          //     ),
+          //   ),
+          //),
+
+    Obx(() {
+      SettingsController settingsController = Get.put(SettingsController());
+      if (settingsController.hideLikes.value) {
+        return SizedBox.shrink();
+      }
+
+    final likes = controller.blogByIdModel.value?.blog?.numberOfLikes ?? 0;
+
+    // ❌ If no likes → hide row
+    if (likes == 0) {
+      return SizedBox.shrink();
+    }
+
+    // ✅ Show likes normally
+    return Text("$likes ${likes == 1 ? 'Like' : 'Likes'}",
+    style: TextStyle(
+    color: Colors.black, fontWeight: FontWeight.w600,
+      fontSize: 11.fSize,
+    ),
+    );
+    }
+    ),],
       ),
     );
   }

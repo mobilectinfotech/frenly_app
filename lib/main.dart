@@ -17,6 +17,7 @@ import 'messaing_service/messaging_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(PrefUtils(),permanent: true);
+ // Get.put(SettingsController(), permanent: true);
   final localeService = LocaleService();
   final locale = await localeService.getLocale();
   SystemChrome.setPreferredOrientations([
