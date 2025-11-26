@@ -127,6 +127,19 @@ class SocketService {
     _socket.onConnectError((data) => print('Connection Error: $data'));
     _socket.onDisconnect((_) => print('Socket disconnected.'));
     _socket.on('messageReceived', _handleMessageReceived);
+    _socket.on('message_seen', (data) {
+      print("🔵 MESSAGE SEEN EVENT: $data");
+
+      int chatId = data['chatId'];
+      List messageIds = data['messageIds'];
+      final chatRoomController = Get.find<ChatRoomController>();
+      chatRoomController.updateMessagesAsSeen(chatId, messageIds);
+    });
+
+
+
+    print("qwert+$_handleMessageReceived");
+
   }
 
   // void _handleMessageReceived(dynamic msg) {
@@ -169,7 +182,7 @@ class SocketService {
 
 
   void _handleMessageReceived(dynamic msg) {
-    print('Message received: $msg');
+    print('Messabvsfdgbdzge received: $msg');
 
     try {
       final SingleMessage message = SingleMessage.fromJson(msg);

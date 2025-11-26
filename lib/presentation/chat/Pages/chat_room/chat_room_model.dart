@@ -41,6 +41,7 @@ class SingleMessage {
   String? content;
   int? senderId;
   int? chatId;
+  bool? isRead;
   int? isLink;
   String? isLinkId;
   String? isUrl;
@@ -49,11 +50,13 @@ class SingleMessage {
   Sender? sender;
   Chat? chat;
 
+
   SingleMessage({
     this.id,
     this.content,
     this.senderId,
     this.chatId,
+    this.isRead,
     this.isLink,
     this.isLinkId,
     this.isUrl,
@@ -68,6 +71,7 @@ class SingleMessage {
     content: json["content"],
     senderId: json["senderId"],
     chatId: json["chatId"],
+    isRead: json["is_read"],
     isLink: json["isLink"],
     isLinkId: json["isLinkId"],
     isUrl: json["isUrl"],
@@ -82,6 +86,7 @@ class SingleMessage {
     "content": content,
     "senderId": senderId,
     "chatId": chatId,
+    "is_read": isRead,
     "isLink": isLink,
     "isLinkId": isLinkId,
     "isUrl": isUrl,

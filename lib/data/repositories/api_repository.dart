@@ -493,7 +493,8 @@ class ApiRepository {
   }
 
   static Future<CreateChatModel> createChat({required String userId}) async {
-    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "chat/$userId", body: {});
+    Map<String, dynamic>? response = await ApiClient().postRequest(
+        endPoint: "chat/$userId", body: {});
     if (response != null) {
       return CreateChatModel.fromJson(response);
     }
@@ -991,7 +992,9 @@ class ApiRepository {
         required bool feedNotification,
         required bool hideLikes,
         required String language}) async {
-    final response = await ApiClient().patchRequest(endPoint: "user/settings", body: {
+    final response = await ApiClient().patchRequest(
+        endPoint: "user/settings",
+        body: {
       "lastSeen": lastSeen,
       "commentsAllowed": commentsAllowed,
       "chatNotification": chatNotification,

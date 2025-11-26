@@ -76,9 +76,8 @@ class ChatsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 15.aw,
-              ),
+              SizedBox(width: 15.aw),
+
               CustomImageView(
                 onTap: () {
                   Get.to(()=>UserProfileScreen(userId: "${controller.chatsModel.value?.chats![index].participants![indexxx].id}"));

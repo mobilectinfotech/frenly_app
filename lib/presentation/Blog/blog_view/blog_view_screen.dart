@@ -730,13 +730,11 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
     // ✅ Show likes normally
     return Text("$likes ${likes == 1 ? 'Like' : 'Likes'}",
     style: TextStyle(
-    color: Colors.black, fontWeight: FontWeight.w600,
-      fontSize: 11.fSize,
-    ),
-    );
+    color: Colors.black, fontWeight: FontWeight.w600, fontSize: 11.fSize));
     }
-    ),],
-      ),
+    )
+        ],
+      )
     );
   }
 

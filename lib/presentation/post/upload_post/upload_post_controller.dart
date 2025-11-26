@@ -19,9 +19,16 @@ class UploadPostController extends GetxController{
   TextEditingController locationController = TextEditingController();
   TextEditingController gpsLocController = TextEditingController();
 
+  // final detectableCaptionTextEditingController = DetectableTextEditingController(
+  //   regExp: detectionRegExp(),
+  // );
   final detectableCaptionTextEditingController = DetectableTextEditingController(
-    regExp: detectionRegExp(),
+    regExp: RegExp(
+      r"(#\p{L}[\p{L}\p{M}\p{N}_]*)",
+      unicode: true,
+    ),
   );
+
 
   String? lat;
   String? lng;

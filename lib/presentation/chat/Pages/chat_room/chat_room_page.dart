@@ -82,7 +82,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   void _initializeChat() {
     SocketService().activeChatId.value = int.parse(widget.chatId);
-    controller.getAllMsg(chatId: widget.chatId);
+     controller.getAllMsg(chatId: widget.chatId);
     _getLastSeen();
   }
 
@@ -91,8 +91,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       lastSeenModel = await ApiRepository.lastSeen(id: widget.participant.id.toString());
 
       if (lastSeenModel?.data?.isLastSeenAllowed == false) {
-      //  lastSeenUser = "lastSeenHide";
-        lastSeenUser = "lastSeenHide".tr;
+         // lastSeenUser = "lastSeenHide";
+        ///New
+       // lastSeenUser = "lastSeenHide".tr;
+        lastSeenUser = "offline".tr;
+       // lastSeenUser = "";
       } else if (lastSeenModel?.data?.lastSeen == null) {
       //  lastSeenUser = "online";
         lastSeenUser = "online".tr;
@@ -127,7 +130,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   //     print("Error fetching last seen: $e");
   //   }
   // }
-
 
   void _handleFocusChange() {
     if (focusNode.hasFocus) {
@@ -164,9 +166,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-            () => controller.isLoading.value
-            ? const Center(
+      body: Obx(() => controller.isLoading.value
+            ? Center(
           child: CircularProgressIndicator(strokeWidth: 1),
         ) : SafeArea(
           child: Scaffold(
@@ -179,7 +180,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 ),
                 _buildMessageInput(),
 
-               //  SizedBox(height: 30.ah),
+                //  SizedBox(height: 30.ah),
                // _buildMessageInputt(),
                //  SizedBox(height: 10.ah),
 
@@ -217,8 +218,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
              SizedBox(height: 10.ah),
               isOwnMessage
                   ? OwnMessageCard(
+
                 message: message,
                 createdAt: message.createdAt!.toLocal(),
+
               ) :
               ReplyCard(
                 message: message,
@@ -230,6 +233,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
+
+
 
 
   // Widget _buildMessageList() {

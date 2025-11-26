@@ -31,7 +31,8 @@ class ChatRoomController extends GetxController {
   Future<void> getAllMsg({required String chatId}) async {
     isLoading.value = true;
     final response = await ApiClient().getRequest(endPoint: "message/$chatId");
-    print("${response}");
+    print("Apirty+${response}");
+
     messageModel1 = MessageModel1.fromJson(response);
 
     messages = MessageModel1.fromJson(response).messages!;
@@ -102,6 +103,19 @@ class ChatRoomController extends GetxController {
     super.onClose();
     print("line 62");
   }
+
+  void updateMessagesAsSeen(int chatId, List messageIds) {
+    if (allMsgNOTUSE.value.messages == null) return;
+    for (var msg in allMsgNOTUSE.value.messages!) {
+      if (msg.chatId == chatId && messageIds.contains(msg.id)) {
+        msg.isRead = true;
+      }
+    }
+    allMsgNOTUSE.refresh(); // UI update
+  }
+
+
+
 
 /*
   Future<bool> sendMedia({
