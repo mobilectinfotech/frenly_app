@@ -15,7 +15,10 @@ class ChatRoomController extends GetxController {
 
   var allMsgNOTUSE = MessageModel1(messages: []).obs;
 
+  // MessageModel1 get allMsg => allMsgNOTUSE.value;
+
   MessageModel1 get allMsg => allMsgNOTUSE.value;
+  set allMsg(MessageModel1 value) => allMsgNOTUSE.value = value;
 
   CroppedFile? coverPhoto;
 
@@ -104,15 +107,30 @@ class ChatRoomController extends GetxController {
     print("line 62");
   }
 
+  // void updateMessagesAsSeen(int chatId, List messageIds) {
+  //   if (allMsgNOTUSE.value.messages == null) return;
+  //   for (var msg in allMsgNOTUSE.value.messages!) {
+  //     if (msg.chatId == chatId && messageIds.contains(msg.id)) {
+  //       msg.isRead = true;
+  //     }
+  //   }
+  //   allMsgNOTUSE.refresh(); // UI update
+  // }
+
   void updateMessagesAsSeen(int chatId, List messageIds) {
-    if (allMsgNOTUSE.value.messages == null) return;
-    for (var msg in allMsgNOTUSE.value.messages!) {
+    final list = allMsg.messages;
+    if (list == null) return;
+
+    for (var msg in list) {
       if (msg.chatId == chatId && messageIds.contains(msg.id)) {
         msg.isRead = true;
+        msg.seen = true;   // <- VERY IMPORTANT
       }
     }
-    allMsgNOTUSE.refresh(); // UI update
+
+    allMsgNOTUSE.refresh();   // now UI will rebuild
   }
+
 
 
 

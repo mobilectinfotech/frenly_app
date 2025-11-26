@@ -80,9 +80,27 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     focusNode.addListener(_handleFocusChange);
   }
 
+///Pramode Code
+  // void _initializeChat() {
+  //   SocketService().activeChatId.value = int.parse(widget.chatId);
+  //    controller.getAllMsg(chatId: widget.chatId);
+  //   SocketService()._socket.emit("joinChat", chatId);
+  //   SocketService().joinChatRoom(widget.chatId);
+  //   _getLastSeen();
+  // }
+
   void _initializeChat() {
-    SocketService().activeChatId.value = int.parse(widget.chatId);
-     controller.getAllMsg(chatId: widget.chatId);
+    // set activeChatId
+    SocketService().activeChatId.value = int.tryParse(widget.chatId) ?? -1;
+
+    controller.getAllMsg(chatId: widget.chatId);
+
+    // use public API to join room — DO NOT access _socket directly
+    SocketService().joinChat(widget.chatId);
+
+    // optional: if you previously joined another chat, you can leave it
+    // SocketService().leaveChat(previousChatId);
+
     _getLastSeen();
   }
 
@@ -154,12 +172,24 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
+  ///Pramode
+  // @override
+  // void dispose() {
+  //   focusNode.removeListener(_handleFocusChange);
+  //   _messageController.dispose();
+  //   focusNode.dispose();
+  //   SocketService().activeChatId.value = -1; // not 0 !
+  //   super.dispose();
+  // }
+
   @override
   void dispose() {
     focusNode.removeListener(_handleFocusChange);
     _messageController.dispose();
     focusNode.dispose();
-    SocketService().activeChatId.value = -1; // not 0 !
+    // leave current chat room
+    SocketService().leaveChat(widget.chatId);
+    SocketService().activeChatId.value = -1;
     super.dispose();
   }
 
@@ -218,7 +248,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
              SizedBox(height: 10.ah),
               isOwnMessage
                   ? OwnMessageCard(
-
                 message: message,
                 createdAt: message.createdAt!.toLocal(),
 
