@@ -174,11 +174,27 @@ class SocketService {
   void _addSocketListeners() {
     _socket.onConnect((_) => print('Socket connected successfully!'));
     _socket.onConnectError((data) => print('Connection Error: $data'));
-    _socket.onDisconnect((_) => print('Socket disconnected.'));
+    _socket.onDisconnect((_) => print('Socket disconnected......'));
     // debug all events
     _socket.onAny((event, data) {
       print("🔔 SOCKET EVENT: $event => $data");
     });
+
+
+    _socket.on('user_status_updated', (data) {
+      print("USER STATUS UPDATED: $data");
+
+      final int userId = data['userId'];
+      final bool isOnline = data['isOnline'] == 1 || data['isOnline'] == true;
+      final String? lastSeen = data['lastSeen'];
+      final bool isLastSeenAllowed = data['isLastSeenAllowed'];
+
+      if (Get.isRegistered<ChatRoomController>()) {
+        final chatRoomController = Get.find<ChatRoomController>();
+        chatRoomController.updateUserStatus(userId, isOnline, lastSeen,isLastSeenAllowed);
+      }
+    });
+
 
     _socket.on('messageReceived', _handleMessageReceived);
 
@@ -197,6 +213,26 @@ class SocketService {
     });
 
     print("Socket listeners added.");
+
+    _socket.off('user_status_updated');
+
+    // _socket.on("my_last_seen_setting_changed", (data) {
+    //   print("SOCKET: last seen setting changed => $data");
+    //
+    //   if (Get.isRegistered<ChatRoomController>()) {
+    //     final controller = Get.find<ChatRoomController>();
+    //
+    //     controller.lastSeenAllowed.value = data["isLastSeenAllowed"];
+    //
+    //     if (!controller.lastSeenAllowed.value) {
+    //       controller.statusText.value = "offline".tr;
+    //     } else {
+    //       // if allowed again, show last seen via API or previous state
+    //       // optional: you can trigger a refresh here
+    //     }
+    //   }
+    // });
+
   }
 
   void _handleMessageReceived(dynamic msg) {

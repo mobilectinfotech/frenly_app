@@ -62,22 +62,25 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   bool show = false;
   bool sendButton = false;
   LastSeenModel? lastSeenModel;
+  RxString statusText = "".obs;   // last seen / online / offline
+  RxBool lastSeenAllowed = true.obs;
+  RxBool isOnline = false.obs;
 
-// 1. Audio recorder (created once)
-/*
-  late final FlutterSoundRecorder _audioRecorder;
-*/
 
-// 2. Recording flag
-/*
-  bool _isRecording = false;
-*/
+/*// 1. Audio recorder (created once)
+  late final FlutterSoundRecorder _audioRecorder;*/
+
+/*// 2. Recording flag
+  bool _isRecording = false;*/
 
   @override
   void initState() {
     super.initState();
+    controller.currentParticipantId = widget.participant.id.toString();
+
     _initializeChat();
     focusNode.addListener(_handleFocusChange);
+
   }
 
 ///Pramode Code
@@ -92,39 +95,61 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   void _initializeChat() {
     // set activeChatId
     SocketService().activeChatId.value = int.tryParse(widget.chatId) ?? -1;
+    controller.currentParticipantId = widget.participant.id.toString();
 
     controller.getAllMsg(chatId: widget.chatId);
-
-    // use public API to join room — DO NOT access _socket directly
     SocketService().joinChat(widget.chatId);
-
     // optional: if you previously joined another chat, you can leave it
     // SocketService().leaveChat(previousChatId);
+  //  _getLastSeen();
+    _loadInitialLastSeen(); // NEW
 
-    _getLastSeen();
   }
 
-  Future<void> _getLastSeen() async {
+  // Future<void> _getLastSeen() async {
+  //   try {
+  //     lastSeenModel = await ApiRepository.lastSeen(id: widget.participant.id.toString());
+  //
+  //     if (lastSeenModel?.data?.isLastSeenAllowed == false) {
+  //        // lastSeenUser = "lastSeenHide";
+  //       ///New
+  //      // lastSeenUser = "lastSeenHide".tr;
+  //       lastSeenUser = "offline".tr;
+  //      // lastSeenUser = "";
+  //     } else if (lastSeenModel?.data?.lastSeen == null) {
+  //     //  lastSeenUser = "online";
+  //       lastSeenUser = "online".tr;
+  //     } else {
+  //       lastSeenUser = timeago.format(lastSeenModel!.data!.lastSeen!.toLocal());
+  //     }
+  //     setState(() {});
+  //   } catch (e) {
+  //     print("Error fetching last seen: $e");
+  //   }
+  // }
+
+  Future<void> _loadInitialLastSeen() async {
     try {
       lastSeenModel = await ApiRepository.lastSeen(id: widget.participant.id.toString());
 
-      if (lastSeenModel?.data?.isLastSeenAllowed == false) {
-         // lastSeenUser = "lastSeenHide";
-        ///New
-       // lastSeenUser = "lastSeenHide".tr;
-        lastSeenUser = "offline".tr;
-       // lastSeenUser = "";
-      } else if (lastSeenModel?.data?.lastSeen == null) {
-      //  lastSeenUser = "online";
-        lastSeenUser = "online".tr;
-      } else {
-        lastSeenUser = timeago.format(lastSeenModel!.data!.lastSeen!.toLocal());
+      controller.lastSeenAllowed.value = lastSeenModel?.data?.isLastSeenAllowed ?? true;
+
+      if (!controller.lastSeenAllowed.value) {
+        controller.statusText.value = "offline".tr;
+        return;
       }
-      setState(() {});
+
+      if (lastSeenModel?.data?.lastSeen == null) {
+        controller.statusText.value = "online".tr;
+      } else {
+        final dt = lastSeenModel!.data!.lastSeen!.toLocal();
+        controller.statusText.value = timeago.format(dt);
+      }
     } catch (e) {
-      print("Error fetching last seen: $e");
+      print("Error loading last seen: $e");
     }
   }
+
 
   // Future<void> _getLastSeen() async {
   //   try {
@@ -209,11 +234,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                   child: _buildMessageList(),
                 ),
                 _buildMessageInput(),
-
-                //  SizedBox(height: 30.ah),
-               // _buildMessageInputt(),
-               //  SizedBox(height: 10.ah),
-
+                // SizedBox(height: 30.ah),
+              // _buildMessageInputt(),
+                SizedBox(height: 10.ah),
               ],
             ),
           ),
@@ -222,14 +245,30 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
+  // PreferredSizeWidget _buildCustomAppBar(BuildContext context) {
+  //   print("widget.participant.coverPhotoUrl${widget.participant.coverPhotoUrl}");
+  //   return customAppbarForChat(
+  //     userId:widget.participant.id.toString(),
+  //     context: context,
+  //    // handle: lastSeenUser,
+  //     handle: controller.statusText.value,
+  //     name: widget.participant.fullName?.capitalizeFirst,
+  //     imagepath: widget.participant.avatarUrl,
+  //   );
+  // }
+
   PreferredSizeWidget _buildCustomAppBar(BuildContext context) {
-    print("widget.participant.coverPhotoUrl${widget.participant.coverPhotoUrl}");
-    return customAppbarForChat(
-      userId:widget.participant.id.toString(),
-      context: context,
-      handle: lastSeenUser,
-      name: widget.participant.fullName?.capitalizeFirst,
-      imagepath: widget.participant.avatarUrl,
+    return PreferredSize(
+      preferredSize: Size.fromHeight(70),  // adjust height if needed
+      child: Obx(() {
+        return customAppbarForChat(
+          userId: widget.participant.id.toString(),
+          context: context,
+          handle: controller.statusText.value,   // LIVE STRING
+          name: widget.participant.fullName?.capitalizeFirst,
+          imagepath: widget.participant.avatarUrl,
+        );
+      }),
     );
   }
 
@@ -249,9 +288,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               isOwnMessage
                   ? OwnMessageCard(
                 message: message,
-                createdAt: message.createdAt!.toLocal(),
-
-              ) :
+                createdAt: message.createdAt!.toLocal()
+              ):
               ReplyCard(
                 message: message,
                 createdAt: message.createdAt!.toLocal(),
@@ -262,7 +300,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
-
 
 
 

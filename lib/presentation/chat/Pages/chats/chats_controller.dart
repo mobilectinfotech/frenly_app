@@ -22,4 +22,13 @@ class ChatScreenController extends GetxController{
     chatsModel.value = ChatsModel.fromJson(response);
     isLoading.value=false;
   }
+
+  // void updateUnread(int index) {
+  //   chatsModel.update((val) {
+  //     if (val != null && val.chats != null && val.chats!.length > index) {
+  //       val.chats![index].unreadCount = 0;
+  //     }
+  //   });
+  // }
+
 }

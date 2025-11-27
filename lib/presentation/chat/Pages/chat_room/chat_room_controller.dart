@@ -1,17 +1,26 @@
-import 'package:get/get.dart' hide FormData, MultipartFile;
+// import 'package:get/get.dart' hide FormData, MultipartFile;
+import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import '../../../../data/data_sources/remote/api_client.dart';
 import '../../Model/msg_model.dart';
 import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
-// import 'package:dio/dio.dart';   // for FormData
-
+// import 'package:dio/dio.dart'; // for FormData
 
 // enum MessageType { text, image, video, audio, gif }
 class ChatRoomController extends GetxController {
   MessageModel1 messageModel1 = MessageModel1(messages: []);
   GetSingleMsgModel? getSingleMsgModel = GetSingleMsgModel();
   List<SingleMessage> messages = [];
+
+  RxString statusText = "".obs;
+  RxBool lastSeenAllowed = true.obs;
+  RxBool isOnline = false.obs;
+
+  late String currentParticipantId;
+
+
 
   var allMsgNOTUSE = MessageModel1(messages: []).obs;
 
@@ -129,6 +138,46 @@ class ChatRoomController extends GetxController {
     }
 
     allMsgNOTUSE.refresh();   // now UI will rebuild
+  }
+
+
+  // void updateUserStatus(int userId, bool isOnline, String? lastSeen) {
+  //   try {
+  //     final list = allMsg.messages;
+  //     if (list == null) return;
+  //
+  //     for (var msg in list) {
+  //       if (msg.senderId == userId) {
+  //         msg.sender?.isOnline = isOnline ? 1 : 0;
+  //         msg.sender?.lastSeen = lastSeen;
+  //       }
+  //     }
+  //
+  //     allMsgNOTUSE.refresh();
+  //
+  //     print("✅ USER STATUS UPDATED: user $userId → online: $isOnline, lastSeen: $lastSeen");
+  //   } catch (e) {
+  //     print("❌ Error in updateUserStatus: $e");
+  //   }
+  // }
+
+  void updateUserStatus(int userId, bool online, String? lastSeenUtc, bool isLastSeenAllowed) {
+
+    if (userId.toString() != currentParticipantId) {
+      return;
+    }
+
+    if (!isLastSeenAllowed) {
+      statusText.value = "offline".tr;
+      return;
+    }
+
+    if (online) {
+      statusText.value = "online".tr;
+    } else if (lastSeenUtc != null) {
+      final dt = DateTime.parse(lastSeenUtc).toLocal();
+      statusText.value = timeago.format(dt);
+    }
   }
 
 

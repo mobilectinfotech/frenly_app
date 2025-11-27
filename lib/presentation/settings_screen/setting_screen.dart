@@ -16,6 +16,7 @@ import '../../../core/constants/my_textfield.dart';
 import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../core/utils/pref_utils.dart';
 import '../../localservice/local_service.dart';
+import '../../socket_service/socket_service.dart';
 import '../auth/login_screen/login_screen.dart';
 import '../my_block_list/my_blocklist_screen.dart';
 
@@ -519,9 +520,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                   value: controller.mySettingModel!.userSetting.lastSeen,
                                   onChanged: (bool value) {
                                     setState(() {
+                                      // controller.mySettingModel!.userSetting.lastSeen =
+                                      // !controller.mySettingModel!.userSetting.lastSeen;
+                                      // controller.mySettingsUpdate();
                                       controller.mySettingModel!.userSetting.lastSeen =
                                       !controller.mySettingModel!.userSetting.lastSeen;
+
                                       controller.mySettingsUpdate();
+                                      // 🔥 NEW: notify socket
+                                      SocketService().socket.emit("update_last_seen_setting", {
+                                        "isLastSeenAllowed": controller.mySettingModel!.userSetting.lastSeen
+                                      });
+
                                     });
                                   },
                                 ),
