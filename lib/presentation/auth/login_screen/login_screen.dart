@@ -86,12 +86,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 60.ah),
-                  Center(
-                    child: SizedBox(
-                        height: 100,
-                        child: CustomImageView(imagePath:  "assets/icons/transparent bakgrund.svg")),
-                    // Image.asset('assets/image/image 1.png',height: 151.ah,width: 148.aw,)
-                  ),
+                  // Center(
+                  //   child: SizedBox(
+                  //       height: 100,
+                  //    //   child: CustomImageView(imagePath:  "assets/icons/transparent bakgrund.svg")),
+                  //   // Image.asset('assets/image/image 1.png',height: 151.ah,width: 148.aw,)
+                  // ),
                   const Spacer(),
                   Padding(
                     padding:  EdgeInsets.only(left: 10.h, right: 10.h),

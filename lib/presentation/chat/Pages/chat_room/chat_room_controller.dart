@@ -93,7 +93,6 @@ class ChatRoomController extends GetxController {
       chat.unreadCount = 0;                                  // own message → no unread
       chatScreenController.chatsModel.refresh();             // refresh UI
     }
-
     return true;
   }
 
@@ -140,7 +139,6 @@ class ChatRoomController extends GetxController {
     allMsgNOTUSE.refresh();   // now UI will rebuild
   }
 
-
   // void updateUserStatus(int userId, bool isOnline, String? lastSeen) {
   //   try {
   //     final list = allMsg.messages;
@@ -179,10 +177,6 @@ class ChatRoomController extends GetxController {
       statusText.value = timeago.format(dt);
     }
   }
-
-
-
-
 
 /*
   Future<bool> sendMedia({

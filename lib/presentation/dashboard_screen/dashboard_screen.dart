@@ -337,7 +337,21 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           toggleButtonColor: Colors.transparent,
           toggleButtonIconColor: Colors.transparent,
           toggleButtonMargin: 20,
-          radius: 120,
+          //radius: 120,
+          radius: 130,
+
+          /// Required parameters 🔥🔥🔥
+          // startingAngleInRadian: -1.5,
+          // endingAngleInRadian: 1.5,
+          /// FINAL FIXED RADIAN VALUES 🔥
+          // startingAngleInRadian: 3.14 / 2,     // 1.57 → 90° clockwise
+          // endingAngleInRadian: 3.14 * 1.5,     // 4.71 → 270° clockwise
+          // startingAngleInRadian: 3.6,    // ~200° (thoda left side se shuru)
+          // endingAngleInRadian: 5.9,      // 360° right
+          startingAngleInRadian: 3.2,    // ~200° (thoda left side se shuru)
+          endingAngleInRadian: 6.2,      // 360° right
+          curve: Curves.easeOutBack,
+          reverseCurve: Curves.easeInBack,
           items: [
 
             CircularMenuItem(color: Colors.transparent, onTap: () {}),
@@ -403,6 +417,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 onTap: () {
                 }
             ),
+
+
           ],
           backgroundWidget: Stack(
             children: [
@@ -564,9 +580,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     );
   }
 }
-
-
-
 
 class CustomCircularMenuItem extends StatefulWidget {
   final Color color;

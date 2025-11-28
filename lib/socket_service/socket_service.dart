@@ -118,9 +118,20 @@ class SocketService {
     }
   }
 
+  // Future<void> socketDisconnect() async {
+  //   try {
+  //     _socket.disconnect();
+  //     print('Socket disconnected.');
+  //   } catch (e) {
+  //     print('Socket disconnect failed: $e');
+  //   }
+  // }
   Future<void> socketDisconnect() async {
     try {
-      _socket.disconnect();
+      if (_socket.connected) {
+        _socket.disconnect();
+      }
+      _socket.dispose();  // REQUIRED: stops reconnection loop
       print('Socket disconnected.');
     } catch (e) {
       print('Socket disconnect failed: $e');
@@ -172,13 +183,31 @@ class SocketService {
   }
 
   void _addSocketListeners() {
-    _socket.onConnect((_) => print('Socket connected successfully!'));
-    _socket.onConnectError((data) => print('Connection Error: $data'));
-    _socket.onDisconnect((_) => print('Socket disconnected......'));
-    // debug all events
-    _socket.onAny((event, data) {
-      print("🔔 SOCKET EVENT: $event => $data");
+    // _socket.onConnect((_) => print('Socket connected successfully!'));
+    // _socket.onConnectError((data) => print('Connection Error: $data'));
+    // _socket.onDisconnect((_) => print('Socket disconnected......'));
+    //
+    // // debug all events
+    // _socket.onAny((event, data) {
+    //   print("🔔 SOCKET EVENT: $event => $data");
+    // });
+
+    _socket.onConnect((_) {
+      print('Socket connected successfully!');
     });
+
+    _socket.onDisconnect((_) {
+      print('Socket disconnected......');
+    });
+
+    _socket.onConnectError((err) {
+      print('Connection Error: $err');
+    });
+
+    _socket.onAny((event, [data]) {
+      print("🔔 ANY EVENT: $event   DATA: $data");
+    });
+
 
 
     _socket.on('user_status_updated', (data) {
@@ -214,14 +243,11 @@ class SocketService {
 
     print("Socket listeners added.");
 
-    _socket.off('user_status_updated');
-
     // _socket.on("my_last_seen_setting_changed", (data) {
     //   print("SOCKET: last seen setting changed => $data");
     //
     //   if (Get.isRegistered<ChatRoomController>()) {
     //     final controller = Get.find<ChatRoomController>();
-    //
     //     controller.lastSeenAllowed.value = data["isLastSeenAllowed"];
     //
     //     if (!controller.lastSeenAllowed.value) {

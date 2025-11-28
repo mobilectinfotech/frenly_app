@@ -147,7 +147,7 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _socketService.socketConnect();
+  //  _socketService.socketConnect();
   }
 
   @override

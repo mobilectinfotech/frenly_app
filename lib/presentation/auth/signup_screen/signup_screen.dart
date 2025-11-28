@@ -224,11 +224,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     height: 1.2.ah,
                                   ),
                                 ),
-                                Container(
-                                  height: 100.ah,
-                                  width: 100.aw,
-                                  child: CustomImageView(imagePath: "assets/icons/transparent bakgrund.svg"),
-                                ),
+                                // Container(
+                                //   height: 100.ah,
+                                //   width: 100.aw,
+                                //   color: Colors.red,
+                                //   //child: CustomImageView(imagePath: "assets/icons/transparent bakgrund.svg"),
+                                // ),
                                 SizedBox(width: 20.aw),
                               ],
                             ),

@@ -29,9 +29,9 @@ class LoginController extends GetxController {
     );
       isLoading(false);
       if (login) {
-        SocketService().socketDisconnect();
+        // SocketService().socketDisconnect();
         SocketService().socketConnect();
-        print('.socketConnect()');
+        print('.socketConnect().....LOGIN');
         Get.offAll(() => const DashBoardScreen());
     }
   }
