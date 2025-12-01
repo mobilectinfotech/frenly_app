@@ -812,6 +812,8 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
           buildUserInfoRow(),
           SizedBox(height: 10),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
@@ -824,15 +826,18 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
               ),
 
               SizedBox(width: 5),
-              Obx(() {
-                final handle = controller.vlogByIdModel.value?.vlog?.location ?? "null";
-                return Text(handle,
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.70),
-                    fontWeight: FontWeight.w600, fontSize: 12.fSize,
-                  ),
-                );
-              }),
+              Container(
+                width: 280.aw,
+                child: Obx(() {
+                  final handle = controller.vlogByIdModel.value?.vlog?.location ?? "null";
+                  return Text(handle,
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.70),
+                      fontWeight: FontWeight.w600, fontSize: 12.fSize,
+                    ),
+                  );
+                }),
+              ),
             ],
           ),
 
@@ -1151,12 +1156,8 @@ class VlogBottomSheets {
                                     height:
                                     40.adaptSize,
                                     imagePath:
-                                    commentsController
-                                        .getCommentsModel
-                                        .comments?[
-                                    index]
-                                        .user
-                                        ?.avatarUrl,
+                                    commentsController.getCommentsModel.comments?[
+                                    index].user?.avatarUrl,
                                     fit: BoxFit.cover,
                                     radius: BorderRadius
                                         .circular(45
@@ -1164,9 +1165,8 @@ class VlogBottomSheets {
                                     onTap: () {
                                       Get.back();
                                       Get.to(() =>
-                                          UserProfileScreen(
-                                              userId:
-                                              "${commentsController.getCommentsModel.comments?[index].user?.id}"));
+                                          UserProfileScreen(userId:
+                                          "${commentsController.getCommentsModel.comments?[index].user?.id}"));
                                     },
                                   ),
                                   SizedBox(
@@ -1183,11 +1183,10 @@ class VlogBottomSheets {
                                       Row(
                                         children: [
                                           Text(
-                                            "${commentsController.getCommentsModel.comments?[index].user?.fullName}  ",
+                                            "${commentsController.getCommentsModel.comments?[index].user?.handle}  ",
                                             style:
                                             TextStyle(
-                                              color: Colors
-                                                  .black,
+                                              color: Colors.black,
                                               fontSize:
                                               14.adaptSize,
                                               fontFamily:

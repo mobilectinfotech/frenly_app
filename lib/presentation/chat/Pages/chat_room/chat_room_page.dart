@@ -53,8 +53,8 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
- // final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
-  final ChatRoomController controller = Get.put(ChatRoomController());
+  final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
+  //final ChatRoomController controller = Get.put(ChatRoomController());
 
   final FocusNode focusNode = FocusNode();
   final TextEditingController _messageController = TextEditingController();
@@ -102,8 +102,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     // optional: if you previously joined another chat, you can leave it
     // SocketService().leaveChat(previousChatId);
   //  _getLastSeen();
-    _loadInitialLastSeen(); // NEW
 
+    _loadInitialLastSeen(); // NEW
   }
 
   // Future<void> _getLastSeen() async {
@@ -264,6 +264,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         return customAppbarForChat(
           userId: widget.participant.id.toString(),
           context: context,
+             // handle: lastSeenUser
           handle: controller.statusText.value,   // LIVE STRING
           name: widget.participant.fullName?.capitalizeFirst,
           imagepath: widget.participant.avatarUrl,
@@ -300,7 +301,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
-
 
 
   // Widget _buildMessageList() {

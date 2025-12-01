@@ -339,7 +339,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           toggleButtonMargin: 20,
           //radius: 120,
           radius: 130,
-
           /// Required parameters 🔥🔥🔥
           // startingAngleInRadian: -1.5,
           // endingAngleInRadian: 1.5,
@@ -359,14 +358,20 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             CircularMenuItem(
                 boxShadow: [],
                 iconSize: 20,
+              //  icon: Icons.image_outlined,
                 icon: Icons.image_outlined,
                 color: Color(0xFF001649),
+                //child: ,
                 onTap: () {
                   print("Circular menu item");
                   key.currentState?.reverseAnimation();
                   Get.to(() => PostPostScreen());
-                }
-                ),
+                },
+            //   child:Text('Post',
+            //   style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300,
+            //       fontSize: 16.fSize),
+            // ),
+            ),
 
             // CircularMenuItem(
             //   padding: 100,
@@ -390,6 +395,38 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             //   ),
             // ),
 
+            // CircularMenuItem(
+            //   boxShadow: [],
+            //   badgeRadius: 130,
+            //   color: const Color(0xFF001649),
+            //   onTap: () {
+            //     key.currentState?.reverseAnimation();
+            //     Get.to(() => PostPostScreen());
+            //   },
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     mainAxisSize: MainAxisSize.min,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Icon(
+            //         Icons.image_outlined,
+            //         size: 22.fSize,
+            //         color: Colors.white,
+            //       ),
+            //
+            //       SizedBox(height: 3.ah),
+            //       Text("Post",
+            //         style: TextStyle(
+            //           color: Colors.white,
+            //           fontSize: 11,
+            //           fontWeight: FontWeight.w400,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
+
             CircularMenuItem(
                 boxShadow: [],
                 iconSize: 20,
@@ -399,7 +436,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   key.currentState?.reverseAnimation();
                   print("Circular menu item");
                   Get.to(() => UploadVlogScreen());
-                }),
+                }
+                ),
 
             CircularMenuItem(
                 boxShadow: [],
@@ -417,9 +455,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 onTap: () {
                 }
             ),
-
-
           ],
+
           backgroundWidget: Stack(
             children: [
               Scaffold(
@@ -440,8 +477,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          _selectedIndex == 0
-                              ? Container(
+                          _selectedIndex == 0 ? Container(
                             height: 38.adaptSize,
                             width: 38.adaptSize,
                             decoration: const BoxDecoration(
@@ -463,12 +499,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               color: Colors.transparent,
                             ),
                             child: IconButton(
-                              icon: Image.asset(
-                                'assets/image/icoohome.png',
-                              ),
+                              icon: Image.asset('assets/image/icoohome.png'),
                               onPressed: () => _onItemTapped(0),
                             ),
                           ),
+
                           _selectedIndex == 1
                               ? Container(
                             height: 38.adaptSize,
@@ -478,9 +513,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               color: Colors.white,
                             ),
                             child: IconButton(
-                              icon: Image.asset(
-                                'assets/image/serch.png',
-                              ),
+                              icon: Image.asset('assets/image/serch.png'),
                               onPressed: () => _onItemTapped(1),
                             ),
                           ) : Container(

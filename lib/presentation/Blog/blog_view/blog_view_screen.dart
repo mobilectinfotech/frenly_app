@@ -714,7 +714,38 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
           //   ),
           //),
 
-    Obx(() {
+      Obx(() {
+    final blog = controller.blogByIdModel.value?.blog;
+
+    // ⛔ If blog is null → return nothing
+    if (blog == null) return SizedBox.shrink();
+
+    // ⛔ Hide like count if blog.hideLikes is true
+    if (blog.hideLikes == true) {
+    return SizedBox.shrink();
+    }
+
+    // Get like count
+    final likes = blog.numberOfLikes ?? 0;
+
+    // ⛔ If no likes → hide UI
+    if (likes == 0) {
+    return SizedBox.shrink();
+    }
+
+    // ✅ Show like count
+    return Text(
+    "$likes ${likes == 1 ? 'Like' : 'Likes'}",
+    style: TextStyle(
+    color: Colors.black,
+    fontWeight: FontWeight.w600,
+    fontSize: 11.fSize,
+    ),
+    );
+    }),
+
+
+    /* Obx(() {
       SettingsController settingsController = Get.put(SettingsController());
       if (settingsController.hideLikes.value) {
         return SizedBox.shrink();
@@ -731,8 +762,8 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
     return Text("$likes ${likes == 1 ? 'Like' : 'Likes'}",
     style: TextStyle(
     color: Colors.black, fontWeight: FontWeight.w600, fontSize: 11.fSize));
-    }
-    )
+    }*/
+
         ],
       )
     );

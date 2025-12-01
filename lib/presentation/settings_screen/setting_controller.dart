@@ -152,9 +152,6 @@ class SettingsController extends GetxController {
     );
   }
 
-
-
-
 /*  Future<void> mySettings() async {
     print("MySettingModel");
     isLoading.value = true;
@@ -174,9 +171,7 @@ class SettingsController extends GetxController {
     );
   }*/
 
-
 }
-
 
 // if (_formKeyLogin.currentState!.validate()) {
 // print("object");

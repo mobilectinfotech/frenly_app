@@ -6,9 +6,11 @@ import '../../../../data/data_sources/remote/api_client.dart';
 import '../../Model/msg_model.dart';
 import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
-// import 'package:dio/dio.dart'; // for FormData
 
-// enum MessageType { text, image, video, audio, gif }
+/*
+enum MessageType { text, image, video, audio, gif }
+*/
+
 class ChatRoomController extends GetxController {
   MessageModel1 messageModel1 = MessageModel1(messages: []);
   GetSingleMsgModel? getSingleMsgModel = GetSingleMsgModel();
@@ -20,11 +22,7 @@ class ChatRoomController extends GetxController {
 
   late String currentParticipantId;
 
-
-
   var allMsgNOTUSE = MessageModel1(messages: []).obs;
-
-  // MessageModel1 get allMsg => allMsgNOTUSE.value;
 
   MessageModel1 get allMsg => allMsgNOTUSE.value;
   set allMsg(MessageModel1 value) => allMsgNOTUSE.value = value;
@@ -68,6 +66,41 @@ class ChatRoomController extends GetxController {
   // }
 
 
+
+  Future<bool> sendMessage({required String message, required String chatId}) async {
+    final response = await ApiClient().postRequest(
+        endPoint: "message/$chatId",
+        body: {"content": message});
+
+    print("SEND RESPONSE: $response");
+
+    var msgData = response["data"];   // <-- FIXED
+    SingleMessage sentMessage = SingleMessage.fromJson(msgData);
+
+    /// Insert into ChatRoom immediately
+    allMsgNOTUSE.update((val) {
+      val!.messages!.insert(0, sentMessage);
+    });
+
+    /// Update chat list screen
+    final chatScreenController = Get.find<ChatScreenController>();
+
+    final chat = chatScreenController.chatsModel.value?.chats
+        ?.firstWhereOrNull((c) => c.id.toString() == chatId);
+
+    if (chat != null) {
+      chat.lastMessage?.content = message;
+      chat.lastMessage?.createdAt = DateTime.now();
+      chat.unreadCount = 0;
+      chatScreenController.chatsModel.refresh();
+    }
+
+    return true;
+  }
+
+
+  ///OldPramod Without Multimedia
+/*
   Future<bool> sendMessage({required String message, required String chatId}) async {
     final response = await ApiClient().postRequest(
         endPoint: "message/$chatId",
@@ -78,6 +111,7 @@ class ChatRoomController extends GetxController {
 
     /// Insert into ChatRoom immediately
     allMsgNOTUSE.update((val) {
+      print('kabirrrrrrr');
       val!.messages!.insert(0, sentMessage);
     });
 
@@ -95,6 +129,7 @@ class ChatRoomController extends GetxController {
     }
     return true;
   }
+*/
 
 
   @override
@@ -159,22 +194,30 @@ class ChatRoomController extends GetxController {
   //   }
   // }
 
+
   void updateUserStatus(int userId, bool online, String? lastSeenUtc, bool isLastSeenAllowed) {
 
-    if (userId.toString() != currentParticipantId) {
-      return;
-    }
+    // Only update if event is for the person in this chatroom
+    if (userId.toString() != currentParticipantId) return;
 
+    // If toggle says: hide last seen
     if (!isLastSeenAllowed) {
       statusText.value = "offline".tr;
       return;
     }
 
+    // Show ONLINE if connected
     if (online) {
       statusText.value = "online".tr;
-    } else if (lastSeenUtc != null) {
+      return;
+    }
+
+    // Show LAST SEEN time (converted to local)
+    if (lastSeenUtc != null) {
       final dt = DateTime.parse(lastSeenUtc).toLocal();
       statusText.value = timeago.format(dt);
+    } else {
+      statusText.value = "offline".tr;
     }
   }
 
@@ -223,8 +266,156 @@ class ChatRoomController extends GetxController {
     }
   }
 */
-
+///LAST Line
 }
+
+
+// class ChatRoomController extends GetxController {
+//   // Keep the original MessageModel1 for backwards compatibility if needed
+//   MessageModel1 messageModel1 = MessageModel1(messages: []);
+//   // Reactive messages list used by UI
+//   RxList<SingleMessage> messagesRx = <SingleMessage>[].obs;
+//
+//   RxString statusText = "".obs;
+//   RxBool lastSeenAllowed = true.obs;
+//   RxBool isOnline = false.obs;
+//
+//   late String currentParticipantId;
+//
+//   // Optional: If you still want a combined MessageModel1 observable for older code
+//   var allMsgNOTUSE = MessageModel1(messages: []).obs;
+//
+//   CroppedFile? coverPhoto;
+//
+//   RxBool isLoading = false.obs;
+//
+//   // Reference to ChatScreenController for updating chat list
+//   ChatScreenController chatScreenController = Get.find<ChatScreenController>();
+//
+//   @override
+//   void onInit() {
+//     super.onInit();
+//   }
+//
+//   /// Fetch all messages for a chat and populate messagesRx
+//   Future<void> getAllMsg({required String chatId}) async {
+//     try {
+//       isLoading.value = true;
+//       final response = await ApiClient().getRequest(endPoint: "message/$chatId");
+//       // parse to model
+//       messageModel1 = MessageModel1.fromJson(response);
+//
+//       // assign to reactive list
+//       messagesRx.value = messageModel1.messages ?? [];
+//
+//       // if you still want to keep the old MessageModel1 observable in sync:
+//       allMsgNOTUSE(MessageModel1(messages: messagesRx.toList()));
+//       allMsgNOTUSE.refresh();
+//     } catch (e) {
+//       print("Error in getAllMsg: $e");
+//     } finally {
+//       isLoading.value = false;
+//     }
+//   }
+//
+//   /// Send a text message, insert instantly into messagesRx so UI updates immediately
+//   Future<bool> sendMessage({required String message, required String chatId}) async {
+//     try {
+//       final response = await ApiClient().postRequest(
+//         endPoint: "message/$chatId",
+//         body: {"content": message},
+//       );
+//
+//       print("SEND RESPONSE: $response");
+//
+//       // Backend returns the actual message object in "data"
+//       final msgData = response["data"];
+//       if (msgData == null) {
+//         print("Warning: response['data'] is null");
+//         return false;
+//       }
+//
+//       SingleMessage sentMessage = SingleMessage.fromJson(msgData);
+//
+//       // Insert to reactive list (at top)
+//       messagesRx.insert(0, sentMessage);
+//
+//       // Keep legacy object in sync (if some UI uses allMsgNOTUSE)
+//       allMsgNOTUSE(MessageModel1(messages: messagesRx.toList()));
+//       allMsgNOTUSE.refresh();
+//
+//       // Update chat list screen (if open)
+//       try {
+//         final chat = chatScreenController.chatsModel.value?.chats
+//             ?.firstWhereOrNull((c) => c.id.toString() == chatId);
+//
+//         if (chat != null) {
+//           chat.lastMessage?.content = message;
+//           chat.lastMessage?.createdAt = DateTime.now();
+//           chat.unreadCount = 0;
+//           chatScreenController.chatsModel.refresh();
+//         }
+//       } catch (e) {
+//         print("Error updating chat list: $e");
+//       }
+//
+//       return true;
+//     } catch (e) {
+//       print("sendMessage error: $e");
+//       return false;
+//     }
+//   }
+//
+//   /// Update messages (mark seen/read)
+//   void updateMessagesAsSeen(int chatId, List messageIds) {
+//     for (var msg in messagesRx) {
+//       if (msg.chatId == chatId && messageIds.contains(msg.id)) {
+//         msg.isRead = true;
+//         msg.seen = true;
+//       }
+//     }
+//
+//     // If some parts of the app use allMsgNOTUSE:
+//     allMsgNOTUSE(MessageModel1(messages: messagesRx.toList()));
+//     allMsgNOTUSE.refresh();
+//     // notify Obx
+//     messagesRx.refresh();
+//   }
+//
+//   /// Update user status for this chatroom participant
+//   void updateUserStatus(int userId, bool online, String? lastSeenUtc, bool isLastSeenAllowed) {
+//     // Only update if event is for the person in this chatroom
+//     if (userId.toString() != currentParticipantId) return;
+//
+//     if (!isLastSeenAllowed) {
+//       statusText.value = "offline".tr;
+//       return;
+//     }
+//
+//     if (online) {
+//       statusText.value = "online".tr;
+//       return;
+//     }
+//
+//     if (lastSeenUtc != null) {
+//       final dt = DateTime.parse(lastSeenUtc).toLocal();
+//       statusText.value = timeago.format(dt);
+//     } else {
+//       statusText.value = "offline".tr;
+//     }
+//   }
+//
+//   @override
+//   void onClose() {
+//     super.onClose();
+//   }
+// }
+
+
+
+
+
+
 
 // class ChatRoomController extends GetxController {
 //   /// Reactive list of all messages in the chat
@@ -286,6 +477,10 @@ class ChatRoomController extends GetxController {
 //     chatScreenController.getchats();
 //   }
 // }
+
+
+
+
 
 /*
 import 'package:get/get.dart';

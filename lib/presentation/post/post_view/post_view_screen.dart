@@ -326,8 +326,11 @@ class _PostViewScreenState extends State<PostViewScreen> {
           Obx(() {
             // ❌ If hideLikes = true → do NOT show likes
             print('// ❌ If hideLikes = true → do NOT show Single Post likes');
-            if (settingsController.hideLikes.value) {
-              return SizedBox.shrink();  // Hides likes completely
+            // if (settingsController.hideLikes.value) {
+            //   return SizedBox.shrink();  // Hides likes completely
+            // }
+            if (controller.postSingleViewModel.value?.post?.hideLikes == true) {
+              return SizedBox.shrink();
             }
 
             // ❌ If no likes, hide row

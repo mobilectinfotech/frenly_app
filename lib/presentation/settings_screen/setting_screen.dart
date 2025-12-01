@@ -518,28 +518,40 @@ class _SettingScreenState extends State<SettingScreen> {
                                   //   thumbColor: const Color(0xff001649),
                                   thumbColor: Colors.pinkAccent,
                                   value: controller.mySettingModel!.userSetting.lastSeen,
+                                  // onChanged: (bool value) {
+                                  //   setState(() {
+                                  //     // controller.mySettingModel!.userSetting.lastSeen =
+                                  //     // !controller.mySettingModel!.userSetting.lastSeen;
+                                  //     // controller.mySettingsUpdate();
+                                  //     controller.mySettingModel!.userSetting.lastSeen =
+                                  //     !controller.mySettingModel!.userSetting.lastSeen;
+                                  //
+                                  //     controller.mySettingsUpdate();
+                                  //     // 🔥 NEW: notify socket
+                                  //     SocketService().socket.emit("update_last_seen_setting", {
+                                  //       "isLastSeenAllowed": controller.mySettingModel!.userSetting.lastSeen
+                                  //     });
+                                  //
+                                  //   });
+                                  // },
+
                                   onChanged: (bool value) {
                                     setState(() {
-                                      // controller.mySettingModel!.userSetting.lastSeen =
-                                      // !controller.mySettingModel!.userSetting.lastSeen;
-                                      // controller.mySettingsUpdate();
-                                      controller.mySettingModel!.userSetting.lastSeen =
-                                      !controller.mySettingModel!.userSetting.lastSeen;
+                                      controller.mySettingModel!.userSetting.lastSeen = value;
+                                      controller.mySettingsUpdate(); // update in DB
 
-                                      controller.mySettingsUpdate();
-                                      // 🔥 NEW: notify socket
+                                      // notify socket
                                       SocketService().socket.emit("update_last_seen_setting", {
-                                        "isLastSeenAllowed": controller.mySettingModel!.userSetting.lastSeen
+                                        "isLastSeenAllowed": value
                                       });
-
                                     });
                                   },
+
                                 ),
                               ),
                               //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
                             ],
                           ),
-
 
                           SizedBox(height: 10.ah),
                           //profile private public
@@ -550,6 +562,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               Text('private_account'.tr,
                                 style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.fSize),
                               ),
+
                               Transform.scale(
                                 scale: 0.4,
                                 child: CupertinoSwitch(
@@ -602,8 +615,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             ],
                           ),
-
-                          //SizedBox(height: 10.ah),
+///LIKE UNLIKE
+                          SizedBox(height: 10.ah),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -626,7 +639,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                   },
                                 ),
                               ),
-                              //Image.asset('assets/image/Toggle switch.png',width: 28.aw,height: 17.ah,),
                             ],
                           ),
 

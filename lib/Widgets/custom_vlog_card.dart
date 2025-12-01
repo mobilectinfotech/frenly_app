@@ -154,15 +154,28 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
                   vlogInLocationRow(widget.vlog, context),
 
                   Positioned(
-                    top: 40,
+                    top: 35,
                     left: 10,
-                    child: Text('${widget.vlog.location}'.capitalizeFirst!,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Color(0xffFFFFFF),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11.fSize,
-                      ),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/image/location-outline.png',
+                          width: 20.ah,
+                          height: 20.ah,
+                        ),
+                        SizedBox(width:5.aw),
+                        Container(
+                          width: 280.aw,
+                          child: Text('${widget.vlog.location}'.capitalizeFirst!,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Color(0xffFFFFFF),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11.fSize,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
@@ -265,14 +278,14 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
         children: [
           Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Image.asset(
-                  'assets/image/location-outline.png',
-                  width: 21.ah,
-                  height: 21.ah,
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 10.0),
+              //   child: Image.asset(
+              //     'assets/image/location-outline.png',
+              //     width: 21.ah,
+              //     height: 21.ah,
+              //   ),
+              // ),
 
               // Text('${widget.vlog.location}'.capitalizeFirst!,
               //   overflow: TextOverflow.ellipsis,
@@ -283,28 +296,28 @@ class _CustomVlogCardState extends State<CustomVlogCard> {
               //   ),
               // ),
 
-              Container(
-                // color: Colors.red,
-                width: MediaQuery.of(context).size.width / 2.5,
-                child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(children: [
-                      TextSpan(
-                          text: "${vlog.user?.city ?? ""}",
-                          style: TextStyle(
-                            color: HexColor('#FFFFFF'),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11.fSize,
-                          )),
-                      TextSpan(
-                          text: '${vlog.user?.country}',
-                          style: TextStyle(
-                            color: HexColor('#FFFFFF'),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11.fSize,
-                          )),
-                    ])),
-              ),
+              // Container(
+              //   // color: Colors.red,
+              //   width: MediaQuery.of(context).size.width / 2.5,
+              //   child: RichText(
+              //       overflow: TextOverflow.ellipsis,
+              //       text: TextSpan(children: [
+              //         TextSpan(
+              //             text: "${vlog.user?.city ?? ""}",
+              //             style: TextStyle(
+              //               color: HexColor('#FFFFFF'),
+              //               fontWeight: FontWeight.w600,
+              //               fontSize: 11.fSize,
+              //             )),
+              //         TextSpan(
+              //             text: '${vlog.user?.country}',
+              //             style: TextStyle(
+              //               color: HexColor('#FFFFFF'),
+              //               fontWeight: FontWeight.w600,
+              //               fontSize: 11.fSize,
+              //             )),
+              //       ])),
+              // ),
             ],
           ),
           const Spacer(),

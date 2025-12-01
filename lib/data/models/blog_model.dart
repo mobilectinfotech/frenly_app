@@ -20,6 +20,7 @@ class Blog {
   bool  alreadyLiked;
   bool? alreadySaved;
   bool? commentAllowed;
+  bool? hideLikes;
 
   Blog({
     this.id,
@@ -40,6 +41,7 @@ class Blog {
     required this.alreadyLiked,
     this.alreadySaved,
     this.commentAllowed,
+    this.hideLikes,
   });
 
   factory Blog.fromJson(Map<String, dynamic> json) => Blog(
@@ -61,6 +63,7 @@ class Blog {
     alreadyLiked: json["alreadyLiked"] ?? false,
     alreadySaved: json["alreadySaved"],
     commentAllowed: json["commentAllowed"],
+    hideLikes: json["hideLikes"],
   );
 
 

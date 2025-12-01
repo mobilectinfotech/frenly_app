@@ -17,6 +17,7 @@ class Post {
   bool? alreadySaved;
   bool? commentAllowed;
   bool alreadyLiked;
+  bool? hideLikes;
 
   Post({
     this.id,
@@ -33,6 +34,7 @@ class Post {
     this.user,
     this.alreadySaved,
     this.commentAllowed,
+    this.hideLikes,
     required this.alreadyLiked,
   });
 
@@ -55,6 +57,7 @@ class Post {
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     alreadySaved: json["alreadySaved"],
     commentAllowed: json["commentAllowed"],
+    hideLikes: json["hideLikes"],
     alreadyLiked: json["alreadyLiked"] ?? false,
   );
 
@@ -74,6 +77,7 @@ class Post {
     "alreadySaved": alreadySaved,
     "commentAllowed": commentAllowed,
     "alreadyLiked": alreadyLiked,
+    "hideLikes": hideLikes,
   };
 }
 
