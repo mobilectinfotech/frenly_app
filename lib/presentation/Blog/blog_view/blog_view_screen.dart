@@ -629,7 +629,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                     controller.blogByIdModel.value!.blog!.numberOfLikes = (controller.blogByIdModel.value!.blog!.numberOfLikes! +1);                    controller.blogByIdModel.value!.blog!.alreadyLiked=true;
                   }
                   controller.blogByIdModel.refresh();
-                //  await ApiRepository.likeVlogBlogPost(userId: "${controller.blogByIdModel.value?.blog?.id}", postType:PostType.blog);
+                  await ApiRepository.likeVlogBlogPost(userId: "${controller.blogByIdModel.value?.blog?.id}", postType:PostType.blog);
                 //  controller.getBlogById(id: widget.id,isLoadingg: false);
                 },
                 child: Obx(
@@ -642,6 +642,37 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                   ),
                 ),
               ),
+
+              // ❤️ LIKE BUTTON
+              // InkWell(
+              //   onTap: () async {
+              //     final blog = controller.blogByIdModel.value!.blog!;
+              //
+              //     if (blog.alreadyLiked) {
+              //       blog.alreadyLiked = false;
+              //       blog.numberOfLikes = (blog.numberOfLikes ?? 1) - 1;
+              //     } else {
+              //       blog.alreadyLiked = true;
+              //       blog.numberOfLikes = (blog.numberOfLikes ?? 0) + 1;
+              //     }
+              //
+              //     controller.blogByIdModel.refresh();  // 🔥 UI Refresh
+              //
+              //     // Optional (API call)
+              //     // await ApiRepository.likeVlogBlogPost(
+              //     //   userId: blog.id.toString(),
+              //     //   postType: PostType.blog,
+              //     // );
+              //   },
+              //   child: Obx(() => CustomImageView(
+              //     imagePath: controller.blogByIdModel.value?.blog?.alreadyLiked == true
+              //         ? 'assets/image/love_true_blue.svg'
+              //         : 'assets/image/love_false_blue.svg',
+              //     width: 21.aw,
+              //     height: 21.aw,
+              //   )),
+              // ),
+
               const SizedBox(width: 20),
                if(controller.blogByIdModel.value?.blog?.commentAllowed ?? true)
                 InkWell(
@@ -704,6 +735,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
               }),
             ],
           ),
+
           SizedBox(height: 5.ah,),
           // if(controller.blogByIdModel.value?.blog?.numberOfLikes != 0)
           // Obx(()=> Text('${controller.blogByIdModel.value?.blog?.numberOfLikes} likes',

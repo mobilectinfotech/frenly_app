@@ -26,36 +26,78 @@ class ChangePassword extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 100.ah),
-            CustomTextFormField(hintText: 'EnterYourOldPassword'.tr,
-                context: context,
-                controller: controller.oldPassword),
 
-            SizedBox(height: 25.h),
-            CustomTextFormField(hintText: 'EnterYourNewPassword'.tr,
-                context: context,
-                controller: controller.newPassword),
-
-            // kTextField(hintTxt: 'Enter Your Old Password',
-            //   obscureText: true,
-            //   textEditingController: controller.enterOldPasswprdController,
+            // CustomTextFormField(hintText: 'EnterYourOldPassword'.tr,
+            //   context: context,
+            //   controller: controller.oldPassword,
             // ),
+            // SizedBox(height: 25.h),
 
-            SizedBox(height: 25.h),
-            CustomTextFormField(hintText: 'EnterYourConfirmPassword'.tr,
+            Obx(() {
+              return CustomTextFormField(
                 context: context,
-                controller: controller.confirmPassword),
-
-            // kTextField(
-            //   hintTxt: 'Enter Your New Password',
-            //   obscureText: true,
-            //   textEditingController: controller.enterNewPasswordController,
-            // ),
+                suffix: InkWell(
+                    onTap: () {
+                      controller.isShowPassword.value =
+                      !controller.isShowPassword.value;
+                    },
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
+                        child: controller.isShowPassword.value ? const Icon(
+                            Icons.visibility_off) :
+                        const Icon(Icons.visibility)
+                    )),
+                hintText: 'EnterYourOldPassword'.tr,
+                controller: controller.oldPassword,
+                obscureText: controller.isShowPassword.value,
+              );
+            }),
 
             SizedBox(height: 25.h),
-            // kTextField(
-            //     hintTxt: 'Enter Your Confirm Password',
-            //     obscureText: true,
-            //     textEditingController: controller.enterConfirmPasswordController),
+            Obx(() {
+              return CustomTextFormField(
+                context: context,
+                suffix: InkWell(
+                    onTap: () {
+                      controller.isShowPasswordds.value =
+                      !controller.isShowPasswordds.value;
+                    },
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
+                        child: controller.isShowPasswordds.value ? const Icon(
+                            Icons.visibility_off) :
+                        const Icon(Icons.visibility)
+                    )),
+                hintText: 'EnterYourNewPassword'.tr,
+                controller: controller.newPassword,
+                obscureText: controller.isShowPasswordds.value,
+              );
+            }),
+
+
+            SizedBox(height: 25.h),
+            Obx(() {
+              return CustomTextFormField(
+                context: context,
+                suffix: InkWell(
+                    onTap: () {
+                      controller.isShowPasswordss.value =
+                      !controller.isShowPasswordss.value;
+                    },
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
+                        child: controller.isShowPasswordss.value ? const Icon(
+                            Icons.visibility_off) :
+                        const Icon(Icons.visibility)
+                    )),
+                hintText: 'EnterYourConfirmPassword'.tr,
+                controller: controller.confirmPassword,
+                obscureText: controller.isShowPasswordss.value,
+              );
+            }),
+
+
+            SizedBox(height: 25.h),
 
             Spacer(),
 

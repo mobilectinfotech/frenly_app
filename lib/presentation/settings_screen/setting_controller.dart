@@ -13,6 +13,9 @@ class SettingsController extends GetxController {
 
   RxBool isLoading = false.obs;
   MySettingModel? mySettingModel;
+  Rx<bool> isShowPassword = true.obs;
+  Rx<bool> isShowPasswordds = true.obs;
+  Rx<bool> isShowPasswordss = true.obs;
 
   RxBool hideLikes = false.obs; // ✅ added local toggle
   final PrefUtils _prefs = Get.find<PrefUtils>();

@@ -93,14 +93,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   // }
 
   void _initializeChat() {
-    // set activeChatId
     SocketService().activeChatId.value = int.tryParse(widget.chatId) ?? -1;
     controller.currentParticipantId = widget.participant.id.toString();
-
     controller.getAllMsg(chatId: widget.chatId);
     SocketService().joinChat(widget.chatId);
-    // optional: if you previously joined another chat, you can leave it
-    // SocketService().leaveChat(previousChatId);
   //  _getLastSeen();
 
     _loadInitialLastSeen(); // NEW
@@ -130,6 +126,34 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   Future<void> _loadInitialLastSeen() async {
     try {
+      lastSeenModel = await ApiRepository.lastSeen(
+        id: widget.participant.id.toString(),
+      );
+
+      controller.lastSeenAllowed.value = lastSeenModel?.data?.isLastSeenAllowed ?? true;
+
+      if (!controller.lastSeenAllowed.value) {
+        controller.statusText.value = "offline".tr;
+        return;
+      }
+
+      if (lastSeenModel?.data?.lastSeen == null) {
+        controller.statusText.value = "online".tr;
+      } else {
+        final dt = lastSeenModel!.data!.lastSeen!.toLocal();
+        controller.statusText.value = timeago.format(
+          dt,
+          locale: 'swe', // 🇸🇪 show Swedish text
+        );
+      }
+    } catch (e) {
+      print("Error loading last seen: $e");
+    }
+  }
+
+/*
+  Future<void> _loadInitialLastSeen() async {
+    try {
       lastSeenModel = await ApiRepository.lastSeen(id: widget.participant.id.toString());
 
       controller.lastSeenAllowed.value = lastSeenModel?.data?.isLastSeenAllowed ?? true;
@@ -143,12 +167,14 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         controller.statusText.value = "online".tr;
       } else {
         final dt = lastSeenModel!.data!.lastSeen!.toLocal();
-        controller.statusText.value = timeago.format(dt);
+        controller.statusText.value = timeago.format(dt,locale: 'swe',);
+
       }
     } catch (e) {
       print("Error loading last seen: $e");
     }
   }
+*/
 
 
   // Future<void> _getLastSeen() async {

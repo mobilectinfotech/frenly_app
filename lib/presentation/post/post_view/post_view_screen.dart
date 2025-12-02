@@ -225,7 +225,10 @@ class _PostViewScreenState extends State<PostViewScreen> {
                     controller.postSingleViewModel.value!.post!.alreadyLiked=true;
                   }
                   controller.postSingleViewModel.refresh();
-                    await ApiRepository.likeVlogBlogPost(userId: "${controller.postSingleViewModel.value?.post?.id}", postType:PostType.post);
+                    await ApiRepository.likeVlogBlogPost(
+                        userId: "${controller.postSingleViewModel.value?.post?.id}",
+                        postType:PostType.post
+                    );
                     // controller.getBlogById(id: widget.id,isLoadingg: false);
                 },
                 child: Obx(
@@ -360,11 +363,9 @@ class _PostViewScreenState extends State<PostViewScreen> {
                     fontSize: 11.fSize,
                   ),
                 ),
-
               ],
             );
           }),
-
 
         ],
       ),

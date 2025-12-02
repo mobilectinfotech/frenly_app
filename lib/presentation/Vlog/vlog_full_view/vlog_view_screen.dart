@@ -931,6 +931,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
               ),
             );
           }),
+
           const SizedBox(width: 20),
           if (controller.vlogByIdModel.value?.vlog?.commentAllowed ?? true)
             InkWell(
