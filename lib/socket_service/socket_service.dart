@@ -113,6 +113,7 @@ class SocketService {
 
       // Then connect
       _socket.connect();
+      print("Socket Connected");
     } catch (e) {
       print('Socket connection failed: $e');
     }
@@ -129,6 +130,7 @@ class SocketService {
   Future<void> socketDisconnect() async {
     try {
       if (_socket.connected) {
+
         _socket.disconnect();
       }
       _socket.dispose();  // REQUIRED: stops reconnection loop

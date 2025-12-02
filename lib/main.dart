@@ -8,6 +8,7 @@ import 'package:frenly_app/presentation/auth/splash_screen/splash_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'LifeCycleManager/life_cycle_manager.dart';
 import 'firebase_options.dart';
 import 'localservice/local_service.dart';
@@ -20,6 +21,10 @@ Future<void> main() async {
  // Get.put(SettingsController(), permanent: true);
   final localeService = LocaleService();
   final locale = await localeService.getLocale();
+  // REGISTER timeago languages
+  // timeago.setLocaleMessages('en', timeago.EnMessages());
+  // timeago.setLocaleMessages('sv', timeago.SvMessages());
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

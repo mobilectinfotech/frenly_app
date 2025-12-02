@@ -66,7 +66,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   RxBool lastSeenAllowed = true.obs;
   RxBool isOnline = false.obs;
 
-
 /*// 1. Audio recorder (created once)
   late final FlutterSoundRecorder _audioRecorder;*/
 
@@ -77,13 +76,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   void initState() {
     super.initState();
     controller.currentParticipantId = widget.participant.id.toString();
-
     _initializeChat();
     focusNode.addListener(_handleFocusChange);
-
   }
 
-///Pramode Code
+///Pramod Code
   // void _initializeChat() {
   //   SocketService().activeChatId.value = int.parse(widget.chatId);
   //    controller.getAllMsg(chatId: widget.chatId);
@@ -98,7 +95,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     controller.getAllMsg(chatId: widget.chatId);
     SocketService().joinChat(widget.chatId);
   //  _getLastSeen();
-
     _loadInitialLastSeen(); // NEW
   }
 
@@ -145,11 +141,22 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           dt,
           locale: 'swe', // 🇸🇪 show Swedish text
         );
+       // controller.statusText.value = formatLastSeen(dt);
       }
     } catch (e) {
       print("Error loading last seen: $e");
     }
   }
+
+  String formatLastSeen(DateTime dt) {
+    String lang = Get.locale?.languageCode ?? "en";
+
+    return timeago.format(
+      dt,
+      locale: lang, // automatically en or sv
+    );
+  }
+
 
 /*
   Future<void> _loadInitialLastSeen() async {
@@ -285,13 +292,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   PreferredSizeWidget _buildCustomAppBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(70),  // adjust height if needed
+      preferredSize: Size.fromHeight(70),
       child: Obx(() {
         return customAppbarForChat(
           userId: widget.participant.id.toString(),
           context: context,
-             // handle: lastSeenUser
-          handle: controller.statusText.value,   // LIVE STRING
+          // handle: lastSeenUser
+          handle: controller.statusText.value, //LIVE STRING
           name: widget.participant.fullName?.capitalizeFirst,
           imagepath: widget.participant.avatarUrl,
         );
@@ -309,7 +316,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-             // SizedBox(height: 10.v),
+             //SizedBox(height: 10.v),
               _buildTimestamp(index),
              SizedBox(height: 10.ah),
               isOwnMessage
@@ -416,12 +423,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
       if (formatTimestamp(currentMessage.createdAt!) != formatTimestamp(previousMessage.createdAt!)) {
         return Text(formatTimestamp(currentMessage.createdAt!).capitalizeFirst!,
-          style: TextStyle(
-            fontSize: 15.adaptSize,
-            fontWeight: FontWeight.w600,
-            fontFamily: "Roboto",
-          ),
-        );
+          style: TextStyle(fontSize: 15.adaptSize,
+            fontWeight: FontWeight.w600, fontFamily: "Roboto",
+          ));
       }
     } catch (e) {
       return const SizedBox.shrink();
