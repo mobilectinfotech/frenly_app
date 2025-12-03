@@ -229,7 +229,6 @@ class OwnMessageCard extends StatelessWidget {
             ),
 
             SizedBox(height: 3.v),
-
             /// TIME + SEEN/SENT
             Opacity(
               opacity: 0.5,
@@ -244,11 +243,9 @@ class OwnMessageCard extends StatelessWidget {
                       style: TextStyle(fontSize: 12.adaptSize),
                     ),
 
-                    SizedBox(width: 6),
-
+                    SizedBox(width: 6.aw),
                     /// SENT / SEEN
-                    Text(
-                      message.isRead == true
+                    Text(message.isRead == true
                           ? "seen".tr
                           : "sent".tr,
                       style: TextStyle(fontSize: 12.adaptSize),
@@ -257,7 +254,6 @@ class OwnMessageCard extends StatelessWidget {
                 ),
               ),
             ),
-
             SizedBox(height: 10.v),
           ],
         ),
