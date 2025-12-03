@@ -11,9 +11,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
-import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
-import 'package:frenly_app/data/data_sources/remote/api_client.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/data/models/LastSeenModel.dart';
 import 'package:frenly_app/socket_service/socket_service.dart';
@@ -62,7 +60,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   bool show = false;
   bool sendButton = false;
   LastSeenModel? lastSeenModel;
-  RxString statusText = "".obs;   // last seen / online / offline
+  RxString statusText = "".obs; // last seen / online / offline
   RxBool lastSeenAllowed = true.obs;
   RxBool isOnline = false.obs;
 
@@ -89,12 +87,17 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   //   _getLastSeen();
   // }
 
-  void _initializeChat() {
+  Future<void> _initializeChat() async {
+    // WAIT for socket connection
+    if (!SocketService().socket.connected) {
+      await SocketService().socketConnect();
+    }
+
     SocketService().activeChatId.value = int.tryParse(widget.chatId) ?? -1;
     controller.currentParticipantId = widget.participant.id.toString();
     controller.getAllMsg(chatId: widget.chatId);
     SocketService().joinChat(widget.chatId);
-  //  _getLastSeen();
+    //_getLastSeen();
     _loadInitialLastSeen(); // NEW
   }
 
@@ -126,6 +129,34 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         id: widget.participant.id.toString(),
       );
 
+      controller.lastSeenAllowed.value =
+          lastSeenModel?.data?.isLastSeenAllowed ?? true;
+
+      if (!controller.lastSeenAllowed.value) {
+        controller.statusText.value = "offline".tr;
+        return;
+      }
+
+      final lastSeen = lastSeenModel?.data?.lastSeen;
+
+      if (lastSeen == null) {
+        controller.statusText.value = "online".tr;
+      } else {
+        final dt = lastSeen.toLocal();
+        controller.statusText.value = formatLastSeen(dt);
+      }
+    } catch (e) {
+      print("Error loading last seen: $e");
+    }
+  }
+
+  ///OldWorking Code
+/*  Future<void> _loadInitialLastSeen() async {
+    try {
+      lastSeenModel = await ApiRepository.lastSeen(
+        id: widget.participant.id.toString(),
+      );
+
       controller.lastSeenAllowed.value = lastSeenModel?.data?.isLastSeenAllowed ?? true;
 
       if (!controller.lastSeenAllowed.value) {
@@ -141,21 +172,21 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           dt,
           locale: 'swe', // 🇸🇪 show Swedish text
         );
-       // controller.statusText.value = formatLastSeen(dt);
+        controller.statusText.value = formatLastSeen(dt);
       }
     } catch (e) {
       print("Error loading last seen: $e");
     }
-  }
+  }*/
 
   String formatLastSeen(DateTime dt) {
-    String lang = Get.locale?.languageCode ?? "en";
-
+    String lang = Get.locale?.languageCode ?? "en"; // gives "en" or "sv"
     return timeago.format(
       dt,
-      locale: lang, // automatically en or sv
+      locale: lang,
     );
   }
+
 
 
 /*
@@ -316,7 +347,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-             //SizedBox(height: 10.v),
+            // SizedBox(height: 10.v),
               _buildTimestamp(index),
              SizedBox(height: 10.ah),
               isOwnMessage

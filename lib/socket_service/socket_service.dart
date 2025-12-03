@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:timeago/timeago.dart' as timeago;
 import '../core/utils/pref_utils.dart';
 import '../data/data_sources/remote/api_client.dart';
 import '../presentation/chat/Pages/chat_room/chat_room_controller.dart';
@@ -84,6 +85,8 @@ class SocketService {
 */
 
 
+///MY Code
+/*
 class SocketService {
   late IO.Socket _socket;
   IO.Socket get socket => _socket; // public getter if you ever need raw socket
@@ -111,7 +114,6 @@ class SocketService {
       // IMPORTANT: add listeners BEFORE connecting
       _addSocketListeners();
 
-      // Then connect
       _socket.connect();
       print("Socket Connected");
     } catch (e) {
@@ -127,10 +129,10 @@ class SocketService {
   //     print('Socket disconnect failed: $e');
   //   }
   // }
+
   Future<void> socketDisconnect() async {
     try {
       if (_socket.connected) {
-
         _socket.disconnect();
       }
       _socket.dispose();  // REQUIRED: stops reconnection loop
@@ -160,6 +162,7 @@ class SocketService {
         activeChatId.value = -1;
       }
       _socket.emit("leaveChat", cid);
+
       void leaveChat(dynamic chatId) {
         try {
           if (chatId == null) return;
@@ -169,7 +172,6 @@ class SocketService {
           if (activeChatId.value == int.tryParse(cid)) {
             activeChatId.value = -1;
           }
-
           _socket.emit("leaveChat", cid);
           print("Left chat room: $cid");
 
@@ -177,7 +179,6 @@ class SocketService {
           print("leaveChat error: $e");
         }
       }
-
       print("Left chat room: $cid");
     } catch (e) {
       print("leaveChat error: $e");
@@ -185,6 +186,7 @@ class SocketService {
   }
 
   void _addSocketListeners() {
+
     // _socket.onConnect((_) => print('Socket connected successfully!'));
     // _socket.onConnectError((data) => print('Connection Error: $data'));
     // _socket.onDisconnect((_) => print('Socket disconnected......'));
@@ -280,10 +282,7 @@ class SocketService {
         print("Error processing message_seen event: $e");
       }
     });
-
     print("Socket listeners added.");
-
-
   }
 
   void _handleMessageReceived(dynamic msg) {
@@ -321,6 +320,218 @@ class SocketService {
     }
   }
 }
+*/
+
+
+class SocketService {
+  static final SocketService _instance = SocketService._internal();
+  factory SocketService() => _instance;
+
+  SocketService._internal();
+
+  late IO.Socket _socket;
+  IO.Socket get socket => _socket;
+
+  RxInt activeChatId = (-1).obs;
+
+  Future<void> socketConnect() async {
+    try {
+      final headers = {
+        "Authorization": "Bearer ${PrefUtils().getAuthToken()}",
+      };
+
+      _socket = IO.io(
+        ApiClient.mainUrl,
+        {
+          "transports": ["websocket"],
+          "extraHeaders": headers,
+          "autoConnect": false,
+        },
+      );
+
+      _addSocketListeners();
+      _socket.connect();
+
+      print("🟢 SOCKET → Connecting...");
+    } catch (e) {
+      print("❌ Socket connection failed: $e");
+    }
+  }
+
+  Future<void> socketDisconnect() async {
+    try {
+      if (_socket.connected) _socket.disconnect();
+      _socket.dispose();
+      activeChatId.value = -1;
+      print("🔴 SOCKET → Disconnected");
+    } catch (e) {
+      print("❌ socketDisconnect error: $e");
+    }
+  }
+
+  // -------- JOIN / LEAVE CHAT --------
+
+  void joinChat(dynamic chatId) {
+    if (chatId == null) return;
+
+    final cid = chatId.toString();
+    activeChatId.value = int.tryParse(cid) ?? -1;
+
+    _socket.emit("joinChat", cid);
+    print("➡️ JOINED chat room: $cid");
+  }
+
+  void leaveChat(dynamic chatId) {
+    if (chatId == null) return;
+
+    final cid = chatId.toString();
+    _socket.emit("leaveChat", cid);
+
+    if (activeChatId.value == int.tryParse(cid)) {
+      activeChatId.value = -1;
+    }
+
+    print("⬅️ LEFT chat room: $cid");
+  }
+
+  // -------- EVENT LISTENERS --------
+
+  void _addSocketListeners() {
+    _socket.onConnect((_) {
+      print("🟢 SOCKET CONNECTED");
+
+      if (Get.isRegistered<ChatRoomController>()) {
+        Get.find<ChatRoomController>().statusText.value = "online".tr;
+      }
+    });
+
+    _socket.onDisconnect((_) {
+      print("🔴 SOCKET DISCONNECTED");
+
+      if (Get.isRegistered<ChatRoomController>()) {
+        Get.find<ChatRoomController>().statusText.value = "offline".tr;
+      }
+    });
+
+    _socket.onConnectError((err) {
+      print("❌ SOCKET Connect Error: $err");
+    });
+
+    // Debug ANY event
+    _socket.onAny((event, data) {
+      print("🔔 EVENT: $event | DATA: $data");
+    });
+
+    // ---- USER STATUS UPDATED ----
+    _socket.on('user_status_updated', (data) {
+      print("🟢 USER STATUS UPDATED: $data");
+
+      final int userId = data['userId'];
+      final bool isOnline =
+          data['isOnline'] == true || data['isOnline'] == 1;
+
+      final String? lastSeen = data['lastSeen'];
+      final bool isLastSeenAllowed = data['isLastSeenAllowed'] ?? true; // ⭐ SAFE FIX
+
+      if (Get.isRegistered<ChatRoomController>()) {
+        final c = Get.find<ChatRoomController>();
+        c.updateUserStatus(userId, isOnline, lastSeen, isLastSeenAllowed);
+      }
+    });
+
+    // _socket.on('user_status_updated', (data) {
+    //   print("🟢 USER STATUS UPDATED: $data");
+    //
+    //   final int userId = data['userId'];
+    //   final bool isOnline = data['isOnline'] == true || data['isOnline'] == 1;
+    //   final String? lastSeen = data['lastSeen'];
+    //   final bool isLastSeenAllowed = data['isLastSeenAllowed'] ?? true;
+    //
+    //   if (Get.isRegistered<ChatRoomController>()) {
+    //     final c = Get.find<ChatRoomController>();
+    //
+    //     if (c.currentParticipantId == userId.toString()) {
+    //
+    //       // If last seen OFF → override everything with "offline"
+    //       if (!isLastSeenAllowed) {
+    //         c.lastSeenAllowed.value = false;
+    //         c.statusText.value = "offline".tr;
+    //         return;
+    //       }
+    //
+    //       // If online TRUE → show online
+    //       if (isOnline) {
+    //         c.statusText.value = "online".tr;
+    //       }
+    //       // Else show last seen time
+    //       else if (lastSeen != null) {
+    //         final dt = DateTime.parse(lastSeen).toLocal();
+    //         c.statusText.value = timeago.format(dt, locale: Get.locale!.languageCode);
+    //       }
+    //     }
+    //   }
+    // });
+
+
+    // ---- MESSAGE RECEIVED ----
+    _socket.on('messageReceived', _handleMessageReceived);
+
+    // ---- MESSAGE SEEN ----
+    _socket.on('message_seen', (data) {
+      try {
+        final chatId = int.parse("${data['chatId']}");
+        final messageIds = List.from(data['messageIds'] ?? []);
+
+        if (Get.isRegistered<ChatRoomController>()) {
+          Get.find<ChatRoomController>()
+              .updateMessagesAsSeen(chatId, messageIds);
+        }
+      } catch (e) {
+        print("❌ message_seen error: $e");
+      }
+    });
+
+    print("✅ Socket listeners added");
+  }
+
+  // -------- HANDLE NEW MESSAGE --------
+  void _handleMessageReceived(dynamic msg) {
+    try {
+      final message = SingleMessage.fromJson(msg);
+
+      final chatRoomController =
+      Get.isRegistered<ChatRoomController>() ? Get.find<ChatRoomController>() : null;
+
+      // If current chat is open → push to chat UI directly
+      if (chatRoomController != null &&
+          message.chatId == activeChatId.value) {
+        chatRoomController.allMsgNOTUSE.update((val) {
+          val!.messages!.insert(0, message);
+        });
+        return;
+      }
+
+      // Else update chat list
+      final chatScreen = Get.find<ChatScreenController>();
+
+      final chat = chatScreen.chatsModel.value?.chats
+          ?.firstWhereOrNull((c) => c.id == message.chatId);
+
+      if (chat != null) {
+        chat.unreadCount = (chat.unreadCount ?? 0) + 1;
+        chat.lastMessage?.content = message.content;
+        chat.lastMessage?.createdAt = message.createdAt;
+
+        chatScreen.chatsModel.refresh();
+      } else {
+        chatScreen.getchats();
+      }
+    } catch (e) {
+      print("❌ Error parsing messageReceived: $e");
+    }
+  }
+}
+
 
 
 // class SocketService {

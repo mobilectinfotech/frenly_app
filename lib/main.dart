@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:frenly_app/core/utils/initial_bindings.dart';
 import 'package:frenly_app/core/utils/pref_utils.dart';
 import 'package:frenly_app/presentation/auth/splash_screen/splash_screen.dart';
+import 'package:frenly_app/socket_service/socket_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +22,9 @@ Future<void> main() async {
  // Get.put(SettingsController(), permanent: true);
   final localeService = LocaleService();
   final locale = await localeService.getLocale();
+  // FIX: Start socket globally
+  await SocketService().socketConnect();
+   print("Start socket globally");
   // REGISTER timeago languages
   // timeago.setLocaleMessages('en', timeago.EnMessages());
   // timeago.setLocaleMessages('sv', timeago.SvMessages());
@@ -76,8 +80,8 @@ Future<void> main() async {
   // FlutterError.onError = (errorDetails) {FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);};
   // PlatformDispatcher.instance.onError = (error, stack) {FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);return true;};
   ///for crush Analitics end
-  ///
-  ///
+
+  setupTimeagoLocales();
   runApp(MyApp(locale: locale));
 }
 
@@ -93,6 +97,7 @@ class MyApp extends StatelessWidget {
       },
       child: LifeCycleManager(
         child: GetMaterialApp(
+          localizationsDelegates: [DefaultMaterialLocalizations.delegate, ],
           debugShowCheckedModeBanner: false,
           translations: Messages(),
           locale: locale ?? const Locale('swe', 'SE'), // Default locale if no saved locale
@@ -120,6 +125,10 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+void setupTimeagoLocales() {
+  timeago.setLocaleMessages('en', timeago.EnMessages());
+  timeago.setLocaleMessages('swe', timeago.SvMessages());
 }
 
 ///Priyanshu Update 24// oct // 29 Oct // 3rd Nov

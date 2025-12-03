@@ -35,5 +35,4 @@ class LoginController extends GetxController {
         Get.offAll(() => const DashBoardScreen());
     }
   }
-
 }
