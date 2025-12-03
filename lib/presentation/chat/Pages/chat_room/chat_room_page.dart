@@ -98,7 +98,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     controller.getAllMsg(chatId: widget.chatId);
     SocketService().joinChat(widget.chatId);
     //_getLastSeen();
-    _loadInitialLastSeen(); // NEW
+    _loadInitialLastSeen(); //NEW
   }
 
   // Future<void> _getLastSeen() async {
@@ -128,17 +128,14 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       lastSeenModel = await ApiRepository.lastSeen(
         id: widget.participant.id.toString(),
       );
-
       controller.lastSeenAllowed.value =
           lastSeenModel?.data?.isLastSeenAllowed ?? true;
-
       if (!controller.lastSeenAllowed.value) {
         controller.statusText.value = "offline".tr;
         return;
       }
 
       final lastSeen = lastSeenModel?.data?.lastSeen;
-
       if (lastSeen == null) {
         controller.statusText.value = "online".tr;
       } else {
@@ -188,7 +185,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
 
-
 /*
   Future<void> _loadInitialLastSeen() async {
     try {
@@ -213,7 +209,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 */
-
 
   // Future<void> _getLastSeen() async {
   //   try {
@@ -281,7 +276,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     SocketService().activeChatId.value = -1;
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -328,7 +322,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         return customAppbarForChat(
           userId: widget.participant.id.toString(),
           context: context,
-          // handle: lastSeenUser
+          //handle: lastSeenUser
           handle: controller.statusText.value, //LIVE STRING
           name: widget.participant.fullName?.capitalizeFirst,
           imagepath: widget.participant.avatarUrl,
