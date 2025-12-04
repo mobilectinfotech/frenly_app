@@ -1,4 +1,3 @@
-// import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -28,7 +27,6 @@ class ChatRoomController extends GetxController {
   set allMsg(MessageModel1 value) => allMsgNOTUSE.value = value;
 
   CroppedFile? coverPhoto;
-
 
   @override
   void onInit() {
@@ -66,7 +64,6 @@ class ChatRoomController extends GetxController {
   // }
 
 
-
   Future<bool> sendMessage({required String message, required String chatId}) async {
     final response = await ApiClient().postRequest(
         endPoint: "message/$chatId",
@@ -97,7 +94,6 @@ class ChatRoomController extends GetxController {
 
     return true;
   }
-
 
   ///OldPramod Without Multimedia
 /*
@@ -130,7 +126,6 @@ class ChatRoomController extends GetxController {
     return true;
   }
 */
-
 
   @override
   void dispose() {
@@ -477,9 +472,6 @@ class ChatRoomController extends GetxController {
 //     chatScreenController.getchats();
 //   }
 // }
-
-
-
 
 
 /*

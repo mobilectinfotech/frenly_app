@@ -3,7 +3,6 @@ import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:frenly_app/presentation/user_profile_screen/user_profile_model.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../my_profile_view/my_profile_controller.dart';
 
 class EditProfileController extends GetxController {

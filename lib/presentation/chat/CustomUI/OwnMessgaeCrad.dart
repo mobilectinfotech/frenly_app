@@ -237,19 +237,21 @@ class OwnMessageCard extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    /// Swedish formatted time
-                    Text(
-                      formatMessageTime(createdAt),
-                      style: TextStyle(fontSize: 12.adaptSize),
-                    ),
 
-                    SizedBox(width: 6.aw),
                     /// SENT / SEEN
                     Text(message.isRead == true
                           ? "seen".tr
                           : "sent".tr,
                       style: TextStyle(fontSize: 12.adaptSize),
                     ),
+
+                    SizedBox(width: 3.aw),
+
+                    /// Swedish formatted time
+                    Text( formatMessageTime(createdAt),
+                      style: TextStyle(fontSize: 12.adaptSize),
+                    ),
+
                   ],
                 ),
               ),
@@ -262,51 +264,75 @@ class OwnMessageCard extends StatelessWidget {
   }
 }
 
-/*
+
 String formatMessageTime(DateTime dateTime) {
   final now = DateTime.now();
-  final localTime = dateTime.toLocal();
+  final local = dateTime.toLocal();
 
-  // Format AM/PM time
-  String formatTime(DateTime t) {
-    final hour = t.hour > 12 ? t.hour - 12 : (t.hour == 0 ? 12 : t.hour);
-    final minute = t.minute.toString().padLeft(2, '0');
-    final amPm = t.hour >= 12 ? 'PM' : 'AM';
-    return "$hour:$minute $amPm";
-  }
+  String lang = Get.locale?.languageCode ?? "en";
 
-  // Check if same day
-  bool isToday = now.day == localTime.day &&
-      now.month == localTime.month &&
-      now.year == localTime.year;
+  String formatTime(DateTime t) =>
+      "${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}";
 
-  // Check if within same week
-  final weekStart = now.subtract(Duration(days: now.weekday - 1)); // Monday
-  final weekEnd = weekStart.add(Duration(days: 6));
-  bool isSameWeek = localTime.isAfter(weekStart) && localTime.isBefore(weekEnd);
+  final diff = now.difference(local);
 
+  // LANGUAGE-SPECIFIC STRINGS
+  String minsAgo(int m) =>
+      lang == "swe" || lang == "sv" ? "$m min sedan" : "$m min ago";
+
+  String hoursAgo(int h) =>
+      lang == "swe" || lang == "sv" ? "$h timmar sedan" : "$h hours ago";
+
+  String justNow =
+  lang == "swe" || lang == "sv" ? "nyss" : "just now";
+
+  String yesterdayWord =
+  lang == "swe" || lang == "sv" ? "Igår" : "Yesterday";
+
+  // WEEKDAY names based on language
+  final weekdays = lang == "swe" || lang == "sv"
+      ? ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
+      : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  // MONTH names based on language
+  final months = lang == "swe" || lang == "sv"
+      ? ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec']
+      : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  bool isToday = now.year == local.year &&
+      now.month == local.month &&
+      now.day == local.day;
+
+  bool isYesterday = now.subtract(Duration(days: 1)).day == local.day &&
+      now.month == local.month &&
+      now.year == local.year;
+
+  // FIXED week range (inclusive)
+  DateTime weekStart = now.subtract(Duration(days: now.weekday - 1)); // Monday
+  DateTime weekEnd = weekStart.add(Duration(days: 6)); // Sunday
+  bool isThisWeek = !local.isBefore(weekStart) && !local.isAfter(weekEnd);
+
+  // --- TODAY → show "ago" text ---
   if (isToday) {
-    return formatTime(localTime); // e.g. "10:30 AM"
-  } else if (isSameWeek) {
-    final dayOfWeek = [
-      'Mon',
-      'Tue',
-      'Wed',
-      'Thu',
-      'Fri',
-      'Sat',
-      'Sun'
-    ][localTime.weekday - 1];
-    return "$dayOfWeek ${formatTime(localTime)}"; // e.g. "Wed 11:45 AM"
-  } else {
-    return "${localTime.day} ${[
-      'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'
-    ][localTime.month - 1]} ${formatTime(localTime)}"; // e.g. "12 Oct 10:30 AM"
+    if (diff.inMinutes < 1) return justNow;
+    if (diff.inMinutes < 60) return minsAgo(diff.inMinutes);
+    if (diff.inHours < 24) return hoursAgo(diff.inHours);
+    return formatTime(local);
   }
-}
-*/
 
-String formatSeenTime(DateTime seenTime) {
+  if (isYesterday) {
+    return "$yesterdayWord ${formatTime(local)}";
+  }
+
+  if (isThisWeek) {
+    return "${weekdays[local.weekday - 1]} ${formatTime(local)}";
+  }
+
+  return "${local.day} ${months[local.month - 1]} ${formatTime(local)}";
+}
+
+
+/*String formatSeenTime(DateTime seenTime) {
   final now = DateTime.now();
   final difference = now.difference(seenTime);
 
@@ -377,8 +403,7 @@ String formatMessageTime(DateTime dateTime) {
       'Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'
     ][localTime.month - 1]} ${formatTime(localTime)}"; // "12 Okt 10:30"
   }
-}
-
+}*/
 
 
 // Perfect — you want this same logic but localized to Swedish, so:
@@ -434,7 +459,7 @@ String formatMessageTime(DateTime dateTime) {
 // }
 
 /*
-the .tr value gets translated immediately and then saved as plain text (for example in your backend database).
+the .tr value  2 min ago 3 hour ago like gets translated immediately and then saved as plain text (for example in your backend database).
 
 Changing app language later won’t change existing stored messages, because the string "Send a post of Camilla" is no longer linked to .tr.
 It’s just a regular message now.
