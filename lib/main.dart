@@ -126,6 +126,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 void setupTimeagoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('swe', timeago.SvMessages());
