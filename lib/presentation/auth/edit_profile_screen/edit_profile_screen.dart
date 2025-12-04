@@ -143,9 +143,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         context: context,
                       ),
                     ],
-                  )
-                      : Container()
-                 ,
+                  ) : Container(),
 
                   // Padding(
                   //   padding: EdgeInsets.only(left: 10.h),

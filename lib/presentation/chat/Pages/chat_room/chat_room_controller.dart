@@ -1,10 +1,13 @@
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../../data/data_sources/remote/api_client.dart';
 import '../../Model/msg_model.dart';
 import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
+import 'chat_room_page.dart';
+import 'package:dio/dio.dart';
+
 
 /*
 enum MessageType { text, image, video, audio, gif }
@@ -216,51 +219,85 @@ class ChatRoomController extends GetxController {
     }
   }
 
-/*
   Future<bool> sendMedia({
     required String chatId,
     required String filePath,
     required MessageType type,
   }) async {
     try {
-      // 1. Upload file
       final formData = FormData.fromMap({
-        'file': await MultipartFile.fromFile(filePath),
+        'content': 'file',
+        'isLink': "0",
+        'file': await MultipartFile.fromFile(
+          filePath,
+          filename: filePath.split('/').last,
+        ),
       });
 
-      final uploadResponse = await ApiClient().postRequest(
-        endPoint: "upload/chat-media",   // <-- YOUR BACKEND ENDPOINT
+      final response = await ApiClient().postRequest(
+        endPoint: "message/$chatId",
         body: formData,
       );
 
-      final String? fileUrl = uploadResponse['url'] as String?;
-      if (fileUrl == null) {
-        Get.snackbar('Error', 'Upload failed');
-        return false;
-      }
+      final msg = SingleMessage.fromJson(response["data"]);
 
-      // 2. Send message with URL + type
-      final messageResponse = await ApiClient().postRequest(
-        endPoint: "message/$chatId",
-        body: {
-          "content": fileUrl,
-          "type": type.toString().split('.').last, // "image", "audio", etc.
-        },
-      );
-
-      final msgJson = messageResponse["message"];
-      final newMsg = SingleMessage.fromJson(msgJson);
-
-      allMsg.messages!.insert(0, newMsg);
-      allMsgNOTUSE.refresh();
+      /// 🔥 Update UI IMMEDIATELY
+      allMsgNOTUSE.update((val) {
+        val!.messages!.insert(0, msg);
+      });
 
       return true;
     } catch (e) {
-      Get.snackbar('Error', 'Send failed: $e');
+      print("SEND MEDIA ERROR: $e");
       return false;
     }
   }
-*/
+
+
+
+// Future<bool> sendMedia({
+  //   required String chatId,
+  //   required String filePath,
+  //   required MessageType type,
+  // }) async {
+  //   try {
+  //     FormData formData = FormData.fromMap({
+  //       'file': await MultipartFile.fromFile(filePath),
+  //       'type': type.toString().split('.').last,
+  //     });
+  //
+  //     final uploadResponse = await ApiClient().postRequest(
+  //       endPoint: "upload/chat-media",
+  //       body: formData,
+  //     );
+  //
+  //     final url = uploadResponse["url"];
+  //     if (url == null) {
+  //       print("Upload failed: No URL returned");
+  //       return false;
+  //     }
+  //
+  //     final messageResponse = await ApiClient().postRequest(
+  //       endPoint: "message/$chatId",
+  //       body: {
+  //         "content": url,
+  //         "type": type.toString().split('.').last,
+  //       },
+  //     );
+  //
+  //     final msg = SingleMessage.fromJson(messageResponse["data"]);
+  //
+  //     allMsg.messages!.insert(0, msg);
+  //     allMsgNOTUSE.refresh();
+  //
+  //     return true;
+  //   } catch (e) {
+  //     print("SEND MEDIA ERROR: $e");
+  //     return false;
+  //   }
+  // }
+
+
 ///LAST Line
 }
 

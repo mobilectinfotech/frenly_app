@@ -45,6 +45,12 @@ class SingleMessage {
   DateTime? updatedAt;
   Sender? sender;
   Chat? chat;
+  String? attachmentType;     // image / video / audio / gif / file
+  String? attachmentUrl;      // uploaded file URL
+  String? thumbnailUrl;       // video thumbnail
+  String? mimeType;           // image/png, video/mp4 etc.
+  int? durationSeconds;       // audio/video duration
+  int? fileSize;              // for size KB or MB
 
 
   SingleMessage({
@@ -61,6 +67,12 @@ class SingleMessage {
     this.updatedAt,
     this.sender,
     this.chat,
+    this.attachmentType,
+    this.attachmentUrl,
+    this.thumbnailUrl,
+    this.mimeType,
+    this.durationSeconds,
+    this.fileSize,
   });
 
   factory SingleMessage.fromJson(Map<String, dynamic> json) => SingleMessage(
@@ -77,6 +89,13 @@ class SingleMessage {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
     chat: json["chat"] == null ? null : Chat.fromJson(json["chat"]),
+    // 🔥 NEW FIELDS
+    attachmentType: json["attachmentType"],
+    attachmentUrl: json["attachmentUrl"],
+    thumbnailUrl: json["thumbnailUrl"],
+    mimeType: json["mimeType"],
+    durationSeconds: json["durationSeconds"],
+    fileSize: json["fileSize"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -93,6 +112,13 @@ class SingleMessage {
     "updatedAt": updatedAt?.toIso8601String(),
     "sender": sender?.toJson(),
     "chat": chat?.toJson(),
+    // 🔥 NEW FIELDS
+    "attachmentType": attachmentType,
+    "attachmentUrl": attachmentUrl,
+    "thumbnailUrl": thumbnailUrl,
+    "mimeType": mimeType,
+    "durationSeconds": durationSeconds,
+    "fileSize": fileSize,
   };
 }
 

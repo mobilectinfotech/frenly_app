@@ -210,17 +210,7 @@ class OwnMessageCard extends StatelessWidget {
                           maxWidth:
                           MediaQuery.of(context).size.width * 0.70,
                         ),
-                        child: Text(
-                          "${message.content?.tr}",
-                          style: TextStyle(
-                            color: message.isLink == 0
-                                ? Colors.black
-                                : MyColor.primaryColor,
-                            fontWeight: message.isLink == 0
-                                ? FontWeight.normal
-                                : FontWeight.bold,
-                          ),
-                        ),
+                        child: buildMessageContent(context),
                       ),
                     ],
                   ),
@@ -262,8 +252,86 @@ class OwnMessageCard extends StatelessWidget {
       ),
     );
   }
-}
 
+  Widget buildMessageContent(BuildContext context) {
+    // If media exists
+    if (message.attachmentUrl != null && message.attachmentUrl!.isNotEmpty) {
+      final url = message.attachmentUrl!;
+      final type = message.attachmentType ?? "";
+      final mime = message.mimeType ?? "";
+
+      // --- FIX 1: Detect images even if backend returns 'file'
+      if (type == "image" ||
+          type == "gif" ||
+          mime.startsWith("image") ||
+          isImageFile(url)) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            url,
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: 220,
+            fit: BoxFit.cover,
+          ),
+        );
+      }
+
+      // --- FIX 2: Video thumbnail
+      if (mime.startsWith("video")) {
+        return Container(
+          width: MediaQuery.of(context).size.width * 0.6,
+          height: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.black12,
+            image: message.thumbnailUrl != null
+                ? DecorationImage(
+              image: NetworkImage(message.thumbnailUrl!),
+              fit: BoxFit.cover,
+            ) : null,
+          ),
+          child: Icon(Icons.play_circle_fill, size: 60, color: Colors.white),
+        );
+      }
+
+      // --- FIX 3: Audio
+      if (mime.startsWith("audio")) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.audiotrack, color: Colors.black87),
+            SizedBox(width: 8),
+            Text("Audio message"),
+          ],
+        );
+      }
+
+      // --- FIX 4: Unknown file type (PDF, Docs, etc.)
+      return Row(
+        children: [
+          Icon(Icons.insert_drive_file, color: Colors.grey),
+          SizedBox(width: 8),
+          Expanded(child: Text("File")),
+        ],
+      );
+    }
+
+    // Default text message
+    return Text("${message.content}",
+      style: TextStyle(
+        color: message.isLink == 0 ? Colors.black : MyColor.primaryColor,
+        fontWeight: message.isLink == 0 ? FontWeight.normal : FontWeight.bold,
+      ),
+    );
+  }
+
+  bool isImageFile(String url) {
+    return url.toLowerCase().endsWith(".jpg") ||
+        url.toLowerCase().endsWith(".jpeg") ||
+        url.toLowerCase().endsWith(".png") ||
+        url.toLowerCase().endsWith(".gif");
+  }
+}
 
 String formatMessageTime(DateTime dateTime) {
   final now = DateTime.now();
