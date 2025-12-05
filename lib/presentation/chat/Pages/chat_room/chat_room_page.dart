@@ -678,6 +678,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   //   }
   // }
 
+
   Future<String> downloadGif(String url) async {
     final response = await Dio().get(url, options: Options(responseType: ResponseType.bytes));
     final dir = await getTemporaryDirectory();

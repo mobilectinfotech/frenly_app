@@ -33,12 +33,12 @@ class ReplyCard extends StatelessWidget {
           children: [
             Container(
                 margin: EdgeInsets.only(left: 10),
-                padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 8.v),
+                padding: EdgeInsets.symmetric(horizontal: 10.ah, vertical: 8.ah),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
+                      topLeft: Radius.circular(10.adaptSize),
+                      topRight: Radius.circular(10.adaptSize),
+                      bottomRight: Radius.circular(10.adaptSize),
                   ),
                   color: MyColor.primaryColor
                 ),
@@ -66,7 +66,6 @@ class ReplyCard extends StatelessWidget {
                     if(message.isLinkId!=null){
                       PostSingleViewModel post = await  ApiRepository.getPostsByID(id: "${message.isLinkId}");
                       Get.to(()=>PostViewScreen(  id: "${post.post?.id}",));
-
                     }else{
                       AppDialog.taostMessage("Photo not Found");
                     }
@@ -76,22 +75,22 @@ class ReplyCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     message.isLink== 0 ? const SizedBox() : Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
+                      padding:EdgeInsets.only(right: 8.0.aw),
                       child: CustomImageView(imagePath: "assets/image/share.png",color: Colors.white,height: 20,),
                     ),
                     ConstrainedBox(
                         constraints: BoxConstraints(
                           maxWidth: MediaQuery.of(context).size.width*.70, // Set the maximum width here
                         ),
-                      child: Text("${message.content}",style: TextStyle(color:message.isLink== 0 ? Colors.white: Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),
-                      )
+                      child: buildReplyContent(context), // 🔥 FIXED
+                      //Text("${message.content}",style: TextStyle(color:message.isLink== 0 ? Colors.white: Colors.white,fontWeight:message.isLink== 0 ?FontWeight.normal : FontWeight.bold),)
                     ),
                   ],
                 ),
               ),
 
             ),
-            SizedBox(height: 3.v),
+            SizedBox(height: 3.ah),
             Opacity(
                 opacity: 0.5,
                 child: Padding(
@@ -113,12 +112,80 @@ class ReplyCard extends StatelessWidget {
             //   ),
             // ),
 
-
             SizedBox(height: 10.v),
-
           ],
         ),
       ),
     );
   }
+
+  Widget buildReplyContent(BuildContext context) {
+    final url = message.attachmentUrl ?? "";
+    final mime = message.mimeType ?? "";
+    final type = message.attachmentType ?? "";
+
+    // ---------- IMAGE ----------
+    if (url.isNotEmpty &&
+        (mime.startsWith("image") ||
+            type == "image" ||
+            type == "gif" ||
+            url.toLowerCase().endsWith(".gif") ||
+            url.toLowerCase().endsWith(".jpg") ||
+            url.toLowerCase().endsWith(".jpeg") ||
+            url.toLowerCase().endsWith(".png"))) {
+
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image.network(
+          url,
+          width: MediaQuery.of(context).size.width * 0.6,
+          height: 220,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    // ---------- VIDEO ----------
+    if (url.isNotEmpty &&
+        (mime.startsWith("video") ||
+            url.endsWith(".mp4") ||
+            url.endsWith(".mov"))) {
+
+      return InkWell(
+        onTap: () {
+          Get.to(() => VideoPlayerScreen(url: url));
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.6,
+          height: 220,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.black12,
+          ),
+          child: const Center(
+            child: Icon(Icons.play_circle_fill, size: 60, color: Colors.white),
+          ),
+        ),
+      );
+    }
+
+    // ---------- AUDIO ----------
+    if (url.isNotEmpty &&
+        (mime.startsWith("audio") ||
+            url.endsWith(".aac") ||
+            url.endsWith(".m4a") ||
+            url.endsWith(".mp3") ||
+            url.endsWith(".wav") ||
+            type == "audio")) {
+
+      return AudioMessagePlayer(url: url);
+    }
+
+    // ---------- NORMAL TEXT ----------
+    return Text(
+      message.content ?? "",
+      style: const TextStyle(color: Colors.white, fontSize: 16),
+    );
+  }
+
 }
