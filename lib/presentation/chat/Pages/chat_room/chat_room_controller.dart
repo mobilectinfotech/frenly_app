@@ -1,3 +1,4 @@
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -7,6 +8,9 @@ import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
 import 'chat_room_page.dart';
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
+import 'package:path/path.dart' as p;
 
 
 /*
@@ -219,18 +223,24 @@ class ChatRoomController extends GetxController {
     }
   }
 
+
   Future<bool> sendMedia({
     required String chatId,
     required String filePath,
     required MessageType type,
   }) async {
     try {
+      // Fix video before upload
+      if (type == MessageType.video) {
+        filePath = await repairVideo(filePath);
+      }
+
       final formData = FormData.fromMap({
-        'content': 'file',
-        'isLink': "0",
-        'file': await MultipartFile.fromFile(
+        "content": "file",
+        "isLink": "0",
+        "file": await MultipartFile.fromFile(
           filePath,
-          filename: filePath.split('/').last,
+          filename: filePath.split("/").last,
         ),
       });
 
@@ -241,16 +251,25 @@ class ChatRoomController extends GetxController {
 
       final msg = SingleMessage.fromJson(response["data"]);
 
-      /// 🔥 Update UI IMMEDIATELY
       allMsgNOTUSE.update((val) {
         val!.messages!.insert(0, msg);
       });
 
       return true;
     } catch (e) {
-      print("SEND MEDIA ERROR: $e");
+      print("❌ SEND MEDIA ERROR: $e");
       return false;
     }
+  }
+
+  Future<String> repairVideo(String inputPath) async {
+    final output = inputPath.replaceAll(".mp4", "_fixed.mp4");
+
+    final command =
+        '-y -i "$inputPath" -c:v libx264 -c:a aac -movflags +faststart "$output"';
+
+    await FFmpegKit.execute(command);
+    return output;
   }
 
 
@@ -297,10 +316,8 @@ class ChatRoomController extends GetxController {
   //   }
   // }
 
-
 ///LAST Line
 }
-
 
 // class ChatRoomController extends GetxController {
 //   // Keep the original MessageModel1 for backwards compatibility if needed
@@ -509,7 +526,6 @@ class ChatRoomController extends GetxController {
 //     chatScreenController.getchats();
 //   }
 // }
-
 
 /*
 import 'package:get/get.dart';

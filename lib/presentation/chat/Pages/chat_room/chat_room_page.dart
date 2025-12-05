@@ -434,7 +434,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               child: Row(
                 children: [
                   GestureDetector(
-                    // onTap: _captureMedia,
+                    //onTap: _captureMedia,
                     onTap: _showImagePiker,
                     child: Container(
                       width: 36.adaptSize,
@@ -490,24 +490,25 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                  //  _iconButton(Icons.mic_none_outlined, _recordAudio),
                 //  _iconButton(Icons.mic_none_outlined, _startVoiceRecording),
             _iconButton(
-              _isRecording ? Icons.stop : Icons.mic_none_outlined,
+              _isRecording ? Icons.mic_off : Icons.mic,
               _recordAudio,
               color: _isRecording ? Colors.red : Colors.black54,
             ),
 
-
+            SizedBox(width: 4.aw),
+          //  _iconButton(Icons.photo_library_outlined, _pickFromGallery),
+                  _iconButton(Icons.photo_library_outlined, _pickFromGallery),
+                  _iconButton(Icons.videocam_outlined, _pickVideo),
 
             SizedBox(width: 4.aw),
-                  _iconButton(Icons.photo_library_outlined, _pickFromGallery),
+            _iconButton(Icons.gif_box_outlined, _pickGif),
 
-                  SizedBox(width: 4.aw),
-                  _iconButton(Icons.gif_box_outlined, _pickGif),
+            SizedBox(width: 8.aw),
+             _buildSendButton(),
 
-                  SizedBox(width: 8.aw),
-                  _buildSendButton(),
                 ],
               ),
-            ),
+         ),
       ),
     );
   }
@@ -557,7 +558,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
                       Navigator.pop(context);
                     },
-
                   ),
                   ListTile(
                     leading: const Icon(Icons.video_camera_back_rounded),
@@ -578,12 +578,20 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           type: MessageType.image,
                         );
                       }
-
                     Get.back();
                    // Get.back();
                     },
-
                   ),
+
+                  ListTile(
+                    leading: Icon(Icons.videocam),
+                    title: Text("Record Video"),
+                    onTap: () async {
+                      await captureVideo();
+                      Get.back();
+                    },
+                  ),
+
                 ],
               ),
             ),
@@ -591,11 +599,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         });
   }
 
-  Widget _iconButton(
+  Widget
+  _iconButton(
       IconData icon,
       VoidCallback onTap, {
-        Color color = Colors.black54,   // <-- OPTIONAL with default value
-      }) {
+        Color color = Colors.black54,  // <-- OPTIONAL with default value
+      })
+  {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20.adaptSize),
@@ -608,13 +618,41 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
 
 
-  Future<void> _captureMedia() async {
+  Future<void> captureMedia() async {
     final XFile? file = await _picker.pickImage(source: ImageSource.camera);
     if (file != null) {
       await controller.sendMedia(
         chatId: widget.chatId,
         filePath: file.path,
         type: MessageType.image,
+      );
+    }
+  }
+
+  Future<void> captureVideo() async {
+    final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
+
+    if (video != null) {
+      await controller.sendMedia(
+        chatId: widget.chatId,
+        filePath: video.path,
+        type: MessageType.video,
+      );
+    }
+  }
+
+
+  Future<void> _pickVideo() async {
+    final XFile? file = await _picker.pickVideo(
+      source: ImageSource.gallery,
+      maxDuration: Duration(minutes: 5),
+    );
+
+    if (file != null) {
+      await controller.sendMedia(
+        chatId: widget.chatId,
+        filePath: file.path,
+        type: MessageType.video,
       );
     }
   }
@@ -630,7 +668,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       );
     }
   }
-
 
   // Future<void> _pickGif() async {
   //   final gif = await GiphyPicker.pickGif(context: context, apiKey: 'hffmbZdBZrBpe9zrzw8AHJwlWNGJDGXt');
@@ -649,13 +686,32 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     return file.path;
   }
 
+  // Future<void> _pickGif() async {
+  //   final gif = await GiphyPicker.pickGif(
+  //       context: context,
+  //       apiKey: 'hffmbZdBZrBpe9zrzw8AHJwlWNGJDGXt',
+  //     showPreviewPage: false,   // 🚀 disables second preview screen
+  //   );
+  //   if (gif != null && gif.url != null) {
+  //     final gifPath = await downloadGif(gif.url!);
+  //
+  //     await controller.sendMedia(
+  //       chatId: widget.chatId,
+  //       filePath: gifPath,
+  //       type: MessageType.gif,
+  //     );
+  //   }
+  // }
 
   Future<void> _pickGif() async {
-    final gif = await GiphyPicker.pickGif(context: context, apiKey: 'hffmbZdBZrBpe9zrzw8AHJwlWNGJDGXt');
-
-    if (gif != null && gif.url != null) {
-      final gifPath = await downloadGif(gif.url!);
-
+    final gif = await GiphyPicker.pickGif(
+      context: context,
+      apiKey: 'hffmbZdBZrBpe9zrzw8AHJwlWNGJDGXt',
+      showPreviewPage: false, // 🚀 remove preview
+    );
+    if (gif != null && gif.images.original != null) {
+      final gifUrl = gif.images.original!.url!;
+      final gifPath = await downloadGif(gifUrl);
       await controller.sendMedia(
         chatId: widget.chatId,
         filePath: gifPath,
@@ -663,8 +719,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       );
     }
   }
-
-
 
   Future<void> _initAudio() async {
     await _audioRecorder.openRecorder();
@@ -706,19 +760,20 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     setState(() {});
   }
 
-
   Future<void> _sendPickedImage(String filePath) async {
     final controller = Get.find<ChatRoomController>();
     final success = await controller.sendMedia(
       chatId: widget.chatId,
       filePath: filePath,
-      type: MessageType.audio,   // <-- audio, not image
+      type: MessageType.image,   // <-- audio, not image
     );
 
     if (success) {
     //  controller.clear();
     }
   }
+
+
 
   Future<void> startVoiceRecording() async {
     if (_isRecording){
