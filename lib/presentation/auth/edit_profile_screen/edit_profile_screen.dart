@@ -240,9 +240,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 30.ah,
-                  ),
+                  SizedBox(height: 30.ah,),
                   Center(
                     child: CustomPrimaryBtn1(
                       title: 'Saveid'.tr,
@@ -395,7 +393,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       leading: const Icon(Icons.photo_library),
                       title:  Text('gallery'.tr),
                       onTap: () async {
-                        controller.coverPhoto = await  imagePicker(source: ImageSource.gallery,cropAspectRatio: cropAspectRatio);
+                        controller.coverPhoto = await
+                        imagePicker(source: ImageSource.gallery,cropAspectRatio: cropAspectRatio);
                         Navigator.of(context).pop();
 
                       }),
@@ -403,8 +402,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     leading: const Icon(Icons.video_camera_back_rounded),
                     title:  Text('camera'.tr),
                     onTap: () async {
-                      controller.coverPhoto = await    imagePicker(source: ImageSource.camera,cropAspectRatio: cropAspectRatio);
-
+                      controller.coverPhoto = await
+                      imagePicker(source: ImageSource.camera,cropAspectRatio: cropAspectRatio);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -436,8 +435,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     leading: const Icon(Icons.video_camera_back_rounded),
                     title:  Text('camera'.tr),
                     onTap: () async {
-                      controller.profilePhoto = await    imagePicker(source: ImageSource.camera,cropAspectRatio: cropAspectRatio);
-
+                      controller.profilePhoto = await
+                      imagePicker(source: ImageSource.camera,cropAspectRatio: cropAspectRatio);
                       Navigator.of(context).pop();
                     },
                   ),

@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 
-
     <application
         android:label="Frenly"
         android:name="${applicationName}"
@@ -61,6 +60,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+
+        <meta-data
+            android:name="cameraX.logging.disable"
+            android:value="true"/>
+
     </application>
 
     <!-- Required to query activities that can process text, see:

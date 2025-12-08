@@ -1,16 +1,17 @@
-import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
+// import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:video_compress/video_compress.dart';
+import 'package:win32/winsock2.dart';
 import '../../../../data/data_sources/remote/api_client.dart';
 import '../../Model/msg_model.dart';
 import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
 import 'chat_room_page.dart';
 import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
-import 'package:path/path.dart' as p;
+// import 'package:http_parser/http_parser.dart';
+// import 'package:path/path.dart' as p;
 
 
 /*
@@ -69,7 +70,6 @@ class ChatRoomController extends GetxController {
   //   allMsgNOTUSE.refresh();
   //   return true;
   // }
-
 
   Future<bool> sendMessage({required String message, required String chatId}) async {
     final response = await ApiClient().postRequest(
@@ -176,27 +176,6 @@ class ChatRoomController extends GetxController {
     allMsgNOTUSE.refresh();   // now UI will rebuild
   }
 
-  // void updateUserStatus(int userId, bool isOnline, String? lastSeen) {
-  //   try {
-  //     final list = allMsg.messages;
-  //     if (list == null) return;
-  //
-  //     for (var msg in list) {
-  //       if (msg.senderId == userId) {
-  //         msg.sender?.isOnline = isOnline ? 1 : 0;
-  //         msg.sender?.lastSeen = lastSeen;
-  //       }
-  //     }
-  //
-  //     allMsgNOTUSE.refresh();
-  //
-  //     print("✅ USER STATUS UPDATED: user $userId → online: $isOnline, lastSeen: $lastSeen");
-  //   } catch (e) {
-  //     print("❌ Error in updateUserStatus: $e");
-  //   }
-  // }
-
-
   void updateUserStatus(int userId, bool online, String? lastSeenUtc, bool isLastSeenAllowed) {
 
     // Only update if event is for the person in this chatroom
@@ -231,8 +210,23 @@ class ChatRoomController extends GetxController {
   }) async {
     try {
       // Fix video before upload
-      if (type == MessageType.video) {
-        filePath = await repairVideo(filePath);
+      // if (type == MessageType.video) {
+      //   filePath = await repairVideo(filePath);
+      // }
+
+      /// ⬇ only compress if video
+      if(type == MessageType.video) {
+        /// ⬇ LISTEN PROGRESS HERE
+        // VideoCompress.compressProgress$.listen((progress){
+        //   print("📉 Compressing: $progress%");
+        // });
+
+        final info = await VideoCompress.compressVideo(
+          filePath,
+          quality: VideoQuality.MediumQuality,
+          deleteOrigin: false,
+        );
+        filePath = info?.path ?? filePath; // Use compressed video
       }
 
       final formData = FormData.fromMap({
@@ -254,7 +248,6 @@ class ChatRoomController extends GetxController {
       allMsgNOTUSE.update((val) {
         val!.messages!.insert(0, msg);
       });
-
       return true;
     } catch (e) {
       print("❌ SEND MEDIA ERROR: $e");
@@ -262,16 +255,12 @@ class ChatRoomController extends GetxController {
     }
   }
 
-  Future<String> repairVideo(String inputPath) async {
-    final output = inputPath.replaceAll(".mp4", "_fixed.mp4");
-
-    final command =
-        '-y -i "$inputPath" -c:v libx264 -c:a aac -movflags +faststart "$output"';
-
-    await FFmpegKit.execute(command);
-    return output;
-  }
-
+  // Future<String> repairVideo(String inputPath) async {
+  //   final output = inputPath.replaceAll(".mp4", "_fixed.mp4");
+  //   final command = '-y -i "$inputPath" -c:v libx264 -c:a aac -movflags +faststart "$output"';
+  //   await FFmpegKit.execute(command);
+  //   return output;
+  // }
 
 
 // Future<bool> sendMedia({

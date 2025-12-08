@@ -129,7 +129,10 @@
 // }
 
 
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';import 'package:velocity_x/velocity_x.dart';
+import '../presentation/chat/Pages/chats/chats_controller.dart';
 import '../socket_service/socket_service.dart';
 
 class LifeCycleManager extends StatefulWidget {
@@ -161,6 +164,10 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
         break;
       case AppLifecycleState.resumed:
         _socketService.socketConnect();
+        // 🔥 refresh chats also
+        if (Get.isRegistered<ChatScreenController>()) {
+          Get.find<ChatScreenController>().getchats();
+        }
         break;
       default:
         _socketService.socketDisconnect();

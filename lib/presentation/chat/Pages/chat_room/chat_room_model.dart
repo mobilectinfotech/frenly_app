@@ -251,6 +251,7 @@ class Sender {
 }
 
 
+
 // To parse this JSON data:
 //
 //     final messageModel1 = messageModel1FromJson(jsonString);

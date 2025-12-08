@@ -66,7 +66,7 @@ class ReplyCard extends StatelessWidget {
                   if(message.isLink==1){
                     if(message.isLinkId!=null){
                       PostSingleViewModel post = await  ApiRepository.getPostsByID(id: "${message.isLinkId}");
-                      Get.to(()=>PostViewScreen(  id: "${post.post?.id}",));
+                      Get.to(()=>PostViewScreen(id:"${post.post?.id}",));
                     }else{
                       AppDialog.taostMessage("Photo not Found");
                     }
@@ -89,8 +89,8 @@ class ReplyCard extends StatelessWidget {
                   ],
                 ),
               ),
-
             ),
+
             SizedBox(height: 3.ah),
             Opacity(
                 opacity: 0.5,
@@ -113,7 +113,7 @@ class ReplyCard extends StatelessWidget {
             //   ),
             // ),
 
-            SizedBox(height: 10.v),
+            SizedBox(height: 10.ah),
           ],
         ),
       ),
@@ -135,21 +135,20 @@ class ReplyCard extends StatelessWidget {
             url.toLowerCase().endsWith(".jpeg") ||
             url.toLowerCase().endsWith(".png"))) {
 
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(12.adaptSize),
-        child: InstaImageViewer(
-          child: Image.network(
-            url,
-            width: MediaQuery.of(context).size.width * 0.6,
-            height: 220,
-            fit: BoxFit.cover,
+         return ClipRRect(
+           borderRadius: BorderRadius.circular(12.adaptSize),
+           child: InstaImageViewer(
+             child: Image.network(url,
+               width: MediaQuery.of(context).size.width * 0.6,
+               height: 220.ah,
+               fit: BoxFit.cover,
           ),
         ),
       );
     }
 
     // ---------- VIDEO ----------
-    if (url.isNotEmpty &&
+   /* if (url.isNotEmpty &&
         (mime.startsWith("video") ||
             url.endsWith(".mp4") ||
             url.endsWith(".mov"))) {
@@ -160,14 +159,25 @@ class ReplyCard extends StatelessWidget {
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.6,
-          height: 220,
+          height: 220.ah,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.adaptSize),
             color: Colors.black12,
           ),
-          child: const Center(
-            child: Icon(Icons.play_circle_fill, size: 60, color: Colors.white),
+          child:Center(
+            child: Icon(Icons.play_circle_fill, size: 60.adaptSize, color: Colors.white),
           ),
+        ),
+      );
+    }*/
+
+
+    if ((mime.startsWith("video") || url.endsWith(".mp4") || url.endsWith(".mov"))) {
+      return InkWell(
+        onTap: () => Get.to(() => VideoPlayerScreen(url: url)),
+        child: VideoBubble(
+          videoUrl: url,
+          thumb: message.thumbnailUrl,   // <--- IMPORTANT
         ),
       );
     }
@@ -180,15 +190,47 @@ class ReplyCard extends StatelessWidget {
             url.endsWith(".mp3") ||
             url.endsWith(".wav") ||
             type == "audio")) {
-
       return AudioMessagePlayer(url: url);
     }
 
     // ---------- NORMAL TEXT ----------
-    return Text(
-      message.content ?? "",
-      style: const TextStyle(color: Colors.white, fontSize: 16),
+    return Text(message.content ?? "",
+      style: TextStyle(color: Colors.white, fontSize: 16.fSize));
+  }
+}
+
+
+class VideoBubble extends StatelessWidget {
+  final String videoUrl;
+  final String? thumb;
+
+  const VideoBubble({required this.videoUrl, this.thumb});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: thumb != null
+              ? Image.network(
+            thumb!,
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: 220.ah,
+            fit: BoxFit.cover,
+          ) : Container(
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: 220.ah,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.adaptSize),
+              color: Colors.black12,
+            ),
+          ),
+        ),
+
+         Icon(Icons.play_circle_filled, size: 60.fSize, color: Colors.white),
+      ],
     );
   }
-
 }

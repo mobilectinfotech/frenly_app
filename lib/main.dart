@@ -9,6 +9,7 @@ import 'package:frenly_app/socket_service/socket_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'LifeCycleManager/life_cycle_manager.dart';
 import 'firebase_options.dart';
@@ -16,13 +17,17 @@ import 'localservice/local_service.dart';
 import 'localservice/messages_local.dart';
 import 'messaing_service/messaging_service.dart';
 
+/*
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   Get.put(PrefUtils(),permanent: true);
+
  // Get.put(SettingsController(), permanent: true);
   final localeService = LocaleService();
   final locale = await localeService.getLocale();
   // FIX: Start socket globally
+
   await SocketService().socketConnect();
    print("Start socket globally");
   // REGISTER timeago languages
@@ -81,8 +86,41 @@ Future<void> main() async {
   // PlatformDispatcher.instance.onError = (error, stack) {FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);return true;};
   ///for crush Analitics end
 
+
   setupTimeagoLocales();
   runApp(MyApp(locale: locale));
+}
+*/
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// Initialize SharedPreferences BEFORE put()
+  await PrefUtils.init();
+
+  /// Initialize GetStorage (if used)
+  // await GetStorage.init();
+
+  /// Setup socket later, after runApp
+   await SocketService().socketConnect();
+
+  /// Firebase first
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (_) {}
+
+  /// Notification permission
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+
+  // timeago
+  setupTimeagoLocales();
+
+  // finally run the UI
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -132,4 +170,18 @@ void setupTimeagoLocales() {
   timeago.setLocaleMessages('swe', timeago.SvMessages());
 }
 
+class PrefUtils {
+  static SharedPreferences? _prefs;
+
+  static Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  SharedPreferences get prefs => _prefs!;
+}
+
+
 ///Priyanshu Update 24// oct // 29 Oct // 3rd Nov
+// https://we.tl/t-VxvzWZEZFk
+
+// jhonk@yopmail.com

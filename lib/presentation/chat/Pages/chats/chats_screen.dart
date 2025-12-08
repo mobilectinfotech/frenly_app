@@ -10,8 +10,9 @@ import '../chat_room/chat_room_page.dart';
 import 'chats_controller.dart';
 import 'package:get/get.dart';
 
-class ChatsScreen extends StatelessWidget {
+import 'chats_model.dart';
 
+class ChatsScreen extends StatelessWidget {
   ChatsScreen({super.key});
 
   ChatScreenController controller = Get.put(ChatScreenController());
@@ -55,9 +56,10 @@ class ChatsScreen extends StatelessWidget {
         Get.to(() => ChatRoomPage(
               participant: controller.chatsModel.value!.chats![index].participants![indexxx],
               chatId: controller.chatsModel.value!.chats![index].id.toString(),
-            ))?.then(
-          (value) {
-            // controller.chatsModel.value!.chats![index].unreadCount = 0;
+            ))?.then((value) {
+            controller.getchats();  // reload full list after back
+
+          // controller.chatsModel.value!.chats![index].unreadCount = 0;
             // controller.chatsModel.refresh();
             controller.chatsModel.update((val) {
               val!.chats![index].unreadCount = 0;
@@ -82,8 +84,8 @@ class ChatsScreen extends StatelessWidget {
                 onTap: () {
                   Get.to(()=>UserProfileScreen(userId: "${controller.chatsModel.value?.chats![index].participants![indexxx].id}"));
                 },
-                radius: BorderRadius.circular(30),
-                height: 55, width: 55,
+                radius: BorderRadius.circular(30.adaptSize),
+                height: 55.ah, width: 55.aw,
                 imagePath: controller.chatsModel.value?.chats![index].participants?[indexxx].avatarUrl,
                 fit: BoxFit.cover,
               ),
@@ -104,9 +106,9 @@ class ChatsScreen extends StatelessWidget {
                   // ),
 
                   Text(capitalizeEachWord("${controller.chatsModel.value?.chats![index].participants![indexxx].fullName ?? ''}"),
-                    style:TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    style:TextStyle(fontSize: 16.fSize, fontWeight: FontWeight.bold)),
 
-                   SizedBox(
+                  /* SizedBox(
                     width: 210.aw,
                     child: Text(
                       maxLines: 1,
@@ -114,10 +116,19 @@ class ChatsScreen extends StatelessWidget {
                       controller.chatsModel.value?.chats![index].lastMessage?.content ?? "",
                       style: const TextStyle(fontSize: 13),
                     ),
-                  ),
+                  ),*/
 
+                  SizedBox(
+                    width: 210.aw,
+                    child:Text(buildLastMessagePreview(controller.chatsModel.value?.chats![index].lastMessage),
+                      style: TextStyle(fontSize: 13.fSize),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  ),
                 ],
               ),
+
               const Spacer(),
               Column(
                 mainAxisSize: MainAxisSize.min,
@@ -126,7 +137,8 @@ class ChatsScreen extends StatelessWidget {
                    Text(DateFormat('hh:mm a').format(controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.toLocal() ?? DateTime.now().toLocal())),
 
                   // Text("${controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.hour}:${(controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute ?? 0) < 10 ? "0${controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute}" : controller.chatsModel.value?.chats![index].lastMessage?.createdAt!.minute}"),
-                  const SizedBox(height: 8),
+
+                   SizedBox(height: 8.ah),
                   if (controller.chatsModel.value?.chats![index].unreadCount != 0)
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -135,7 +147,7 @@ class ChatsScreen extends StatelessWidget {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: MyColor.primaryColor),
                           child: Center(
                               child: Padding(
-                            padding: const EdgeInsets.only(top: 4.0, bottom: 4, left: 9, right: 9),
+                            padding: EdgeInsets.only(top: 4.0.ah, bottom: 4.ah, left: 9.aw, right: 9.aw),
                             child: Text("${controller.chatsModel.value?.chats![index].unreadCount}",
                               style: TextStyle(fontSize: 12.adaptSize, color: Colors.white)),
                           )),
@@ -163,4 +175,30 @@ String capitalizeEachWord(String text) {
   if (text.isEmpty) return text;
   return text.split(' ').map((word) => word.isNotEmpty ?
   word[0].toUpperCase() + word.substring(1).toLowerCase():'').join(' ');
+}
+
+String buildLastMessagePreview(LastMessage? last) {
+  if (last == null) return "";
+
+  final mime = last.mimeType ?? "";
+  final type = last.attachmentType ?? "";
+  final url = last.attachmentUrl ?? "";
+
+  if (mime.startsWith("image") || type == "image" || url.endsWith(".jpg") || url.endsWith(".png")) {
+    return "📷 Photo";
+  }
+
+  if (mime.startsWith("video") || type == "video" || url.endsWith(".mp4")) {
+    return "🎥 Video";
+  }
+
+  if (mime.startsWith("audio") || type == "audio") {
+    return "🎵 Audio";
+  }
+
+  if (type == "gif" || url.endsWith(".gif")) {
+    return "🎞️ GIF";
+  }
+
+  return last.content ?? "";
 }

@@ -87,6 +87,14 @@ class LastMessage {
   int? chatId;
   DateTime? createdAt;
   DateTime? updatedAt;
+  // ADD THIS 👇👇👇
+  String? attachmentType;
+  String? attachmentUrl;
+  String? thumbnailUrl;
+  String? mimeType;
+  int? durationSeconds;
+  int? fileSize;
+
 
   LastMessage({
     this.id,
@@ -95,6 +103,14 @@ class LastMessage {
     this.chatId,
     this.createdAt,
     this.updatedAt,
+
+    // ADD
+    this.attachmentType,
+    this.attachmentUrl,
+    this.thumbnailUrl,
+    this.mimeType,
+    this.durationSeconds,
+    this.fileSize,
   });
 
   factory LastMessage.fromJson(Map<String, dynamic> json) => LastMessage(
@@ -104,6 +120,14 @@ class LastMessage {
     chatId: json["chatId"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+
+    // ADD 👇👇
+    attachmentType: json["attachmentType"],
+    attachmentUrl: json["attachmentUrl"],
+    thumbnailUrl: json["thumbnailUrl"],
+    mimeType: json["mimeType"],
+    durationSeconds: json["durationSeconds"],
+    fileSize: json["fileSize"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -113,6 +137,14 @@ class LastMessage {
     "chatId": chatId,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
+
+    // 👇 newly added
+    "attachmentType": attachmentType,
+    "attachmentUrl": attachmentUrl,
+    "thumbnailUrl": thumbnailUrl,
+    "mimeType": mimeType,
+    "durationSeconds": durationSeconds,
+    "fileSize": fileSize,
   };
 }
 

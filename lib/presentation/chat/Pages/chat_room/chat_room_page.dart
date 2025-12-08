@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:giphy_picker/giphy_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -150,28 +151,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
-  // Future<void> _getLastSeen() async {
-  //   try {
-  //     lastSeenModel = await ApiRepository.lastSeen(
-  //       id: widget.participant.id.toString(),
-  //     );
-  //     if (lastSeenModel?.data?.isLastSeenAllowed == false) {
-  //       // User has hidden last seen
-  //       lastSeenUser = "lastSeenHide".tr;
-  //     } else if (lastSeenModel?.data?.lastSeen == null) {
-  //       // User is currently online
-  //       lastSeenUser = "online".tr;
-  //     } else {
-  //       // User has a last seen timestamp
-  //       final seenTime = lastSeenModel!.data!.lastSeen!.toLocal();
-  //       lastSeenUser = formatLastSeenn(seenTime);
-  //     }
-  //     setState(() {});
-  //   }
-  //   catch (e) {
-  //     print("Error fetching last seen: $e");
-  //   }
-  // }
+
 
   void _handleFocusChange() {
     if (focusNode.hasFocus) {
@@ -414,11 +394,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
-
   Widget _buildMessageInputt() {
-
     final ImagePicker _picker = ImagePicker();
-
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -434,13 +411,25 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               child: Row(
                 children: [
                   GestureDetector(
-                    //onTap: _captureMedia,
-                    onTap: _showImagePiker,
+                    onTap: openWhatsappCamera,
+                    // onTap: _captureMedia,
+                   // onTap: _showImagePiker,
+                   //  onTap: () async {
+                   //    final result = await Get.to(() =>openWhatsappCamera());
+                   //    if (result != null) {
+                   //      if (result.endsWith(".mp4")) {
+                   //        controller.sendMedia(chatId: widget.chatId, filePath: result, type: MessageType.video);
+                   //      } else {
+                   //        controller.sendMedia(chatId: widget.chatId, filePath: result, type: MessageType.image);
+                   //      }
+                   //    }
+                   //    },
                     child: Container(
                       width: 36.adaptSize,
                       height: 36.adaptSize,
                       decoration: const BoxDecoration(
-                        color: Color(0xFF9B59B6),
+                       color:  MyColor.primaryColor,
+                      //  color:Colors.pinkAccent,
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
@@ -473,8 +462,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         hintText: "Messages".tr,
                         hintStyle: TextStyle(
                           color: const Color(0xFFA8A8A8),
-                          //fontSize: 16.adaptSize,
-                          fontSize: 20.adaptSize,
+                          fontSize: 16.adaptSize,
+                        //  fontSize: 20.adaptSize,
                           fontFamily: 'Roboto',
                           fontWeight: FontWeight.w500,
                         ),
@@ -489,18 +478,18 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                   SizedBox(width: 8.aw),
                  //  _iconButton(Icons.mic_none_outlined, _recordAudio),
                 //  _iconButton(Icons.mic_none_outlined, _startVoiceRecording),
+
             _iconButton(
               _isRecording ? Icons.mic_off : Icons.mic,
               _recordAudio,
               color: _isRecording ? Colors.red : Colors.black54,
             ),
 
-            SizedBox(width: 4.aw),
-          //  _iconButton(Icons.photo_library_outlined, _pickFromGallery),
+           // _iconButton(Icons.photo_library_outlined, _pickFromGallery),
                   _iconButton(Icons.photo_library_outlined, _pickFromGallery),
                   _iconButton(Icons.videocam_outlined, _pickVideo),
 
-            SizedBox(width: 4.aw),
+            //SizedBox(width: 4.aw),
             _iconButton(Icons.gif_box_outlined, _pickGif),
 
             SizedBox(width: 8.aw),
@@ -512,6 +501,19 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
+
+  void openWhatsappCamera() {
+    Get.to(() => WhatsappCameraScreen(
+      onCapture: (path, isVideo){
+        controller.sendMedia(
+          chatId: widget.chatId,
+          filePath: path,
+          type: isVideo ? MessageType.video : MessageType.image,
+        );
+      },
+    ));
+  }
+
 
   Future<CroppedFile?> imagePicker(
       {required ImageSource source, CropAspectRatio? cropAspectRatio})
@@ -617,10 +619,58 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
 
+  // Future<void> _captureMedia() async {
+  //   final XFile? file = await _picker.pickImage(source: ImageSource.camera);
+  //   if (file != null) {
+  //     await controller.sendMedia(
+  //       chatId: widget.chatId,
+  //       filePath: file.path,
+  //       type: MessageType.video,
+  //     );
+  //   }
+  // }
 
-  Future<void> captureMedia() async {
-    final XFile? file = await _picker.pickImage(source: ImageSource.camera);
-    if (file != null) {
+/*
+  Future<void> _captureMedia() async {
+    final XFile? video = await _picker.pickVideo(
+      source: ImageSource.camera,
+      maxDuration: const Duration(minutes: 5),
+    );
+
+    if (video != null) {
+      await controller.sendMedia(
+        chatId: widget.chatId,
+        filePath: video.path,
+        type: MessageType.video,
+      );
+      return;
+    }
+
+    // fallback to photo if camera didn't record video
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+
+    if (photo != null) {
+      await controller.sendMedia(
+        chatId: widget.chatId,
+        filePath: photo.path,
+        type: MessageType.image,
+      );
+    }
+  }
+*/
+
+  Future<void> _captureMedia() async {
+    final XFile? file = await _picker.pickMedia();
+
+    if (file == null) return;
+
+    if (file.path.toLowerCase().endsWith(".mp4")) {
+      await controller.sendMedia(
+        chatId: widget.chatId,
+        filePath: file.path,
+        type: MessageType.video,
+      );
+    } else {
       await controller.sendMedia(
         chatId: widget.chatId,
         filePath: file.path,
@@ -628,6 +678,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       );
     }
   }
+
 
   Future<void> captureVideo() async {
     final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
@@ -640,7 +691,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       );
     }
   }
-
 
   Future<void> _pickVideo() async {
     final XFile? file = await _picker.pickVideo(
@@ -656,7 +706,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       );
     }
   }
-
 
   Future<void> _pickFromGallery() async {
     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
@@ -807,6 +856,245 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
 extension on MessageModel1 {
   operator [](int other) {}
+}
+
+
+
+
+
+class WhatsappCameraScreen extends StatefulWidget {
+  final Function(String path, bool isVideo) onCapture;
+
+  const WhatsappCameraScreen({Key? key, required this.onCapture})
+      : super(key: key);
+
+  @override
+  State<WhatsappCameraScreen> createState() => _WhatsappCameraScreenState();
+}
+
+class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
+  CameraController? cam;
+  List<CameraDescription>? cameras;
+  bool recording = false;
+  Timer? timer;
+  int seconds = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    initCamera();
+  }
+
+  Future initCamera() async {
+    cameras = await availableCameras();
+    await setupController(cameras!.first);
+  }
+
+  Future setupController(CameraDescription camera) async {
+    cam?.dispose();
+
+    cam = CameraController(
+      camera,
+      ResolutionPreset.high,
+      enableAudio: true,
+      imageFormatGroup: ImageFormatGroup.jpeg,
+    );
+
+    await cam!.initialize();
+
+    cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+
+
+    cam!.initialize().then((_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  Future switchCamera() async {
+    if (cameras == null) return;
+
+    final lens = cam!.description.lensDirection == CameraLensDirection.back
+        ? CameraLensDirection.front
+        : CameraLensDirection.back;
+
+    final camera = cameras!.firstWhere((c) => c.lensDirection == lens);
+    await setupController(camera);
+  }
+
+  Future capturePhoto() async {
+    try {
+      final file = await cam!.takePicture();
+      await cam?.dispose();
+      widget.onCapture(file.path, false);
+      Get.back();
+    } catch (_) {}
+  }
+
+  Future startRecording() async {
+    try {
+      await cam!.startVideoRecording();
+      recording = true;
+      seconds = 0;
+
+      timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        setState(() => seconds++);
+      });
+
+      setState(() {});
+    } catch (_) {}
+  }
+
+  Future stopRecording() async {
+    try {
+      final file = await cam!.stopVideoRecording();
+      timer?.cancel();
+      recording = false;
+
+      await cam?.dispose();
+      widget.onCapture(file.path, true);
+      Get.back();
+    } catch (_) {}
+  }
+
+  @override
+  void dispose() {
+    try {
+      cam?.stopImageStream();
+    } catch (_) {}
+
+    timer?.cancel();
+    cam?.dispose();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (cam == null || !cam!.value.isInitialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+
+       //   preview – covers screen like whatsapp
+       //    Positioned.fill(
+       //      child: FittedBox(
+       //        fit: BoxFit.cover,
+       //        child: SizedBox(
+       //          width: cam!.value.previewSize!.height,
+       //          height: cam!.value.previewSize!.width,
+       //          child: CameraPreview(cam!),
+       //        ),
+       //      ),
+       //    ),
+
+          Positioned.fill(
+            child: SizedBox.expand(
+              child: ClipRect(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: AspectRatio(
+                    aspectRatio: cam!.value.aspectRatio,
+                    child: CameraPreview(cam!),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // Positioned.fill(
+          //   child: Center(
+          //     child: AspectRatio(
+          //       aspectRatio: cam!.value.aspectRatio,
+          //       child: CameraPreview(cam!),
+          //     ),
+          //   ),
+          // ),
+
+          /// Timer text
+          if (recording)
+            Positioned(
+              top: 80,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Text(
+                  "$seconds s",
+                  style: const TextStyle(color: Colors.red, fontSize: 22),
+                ),
+              ),
+            ),
+
+          /// flip camera button
+          Positioned(
+            top: 60,
+            right: 20,
+            child: GestureDetector(
+              onTap: switchCamera,
+              child: const CircleAvatar(
+                backgroundColor: Colors.black45,
+                child: Icon(Icons.cameraswitch, color: Colors.white),
+              ),
+            ),
+          ),
+
+          /// TAP/HOLD hint
+          Positioned(
+            bottom: 150,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Text(
+                "Tap to capture  |  Hold to record video",
+                style: TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+            ),
+          ),
+
+          /// Capture / Record button
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: GestureDetector(
+                onTap: () {
+                  if (!recording) capturePhoto();
+                },
+                onLongPress: startRecording,
+                onLongPressUp: stopRecording,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: recording ? 85 : 70,
+                  height: recording ? 85 : 70,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(recording ? 0.1 : 0.2),
+                    border: Border.all(
+                      color: recording ? Colors.red : Colors.white,
+                      width: recording ? 6 : 4,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 

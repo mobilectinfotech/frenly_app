@@ -110,7 +110,8 @@ dependencies:
   zoom_pinch_overlay: ^1.4.3
   just_audio: ^0.10.5
   audio_video_progress_bar: ^2.0.3
-  ffmpeg_kit_flutter_new: ^4.1.0
+  video_thumbnail: ^0.5.6
+
 
 
   #  giphy_get: ^3.6.1+1

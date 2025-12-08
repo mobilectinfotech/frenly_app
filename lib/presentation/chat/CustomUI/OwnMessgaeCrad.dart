@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
 import 'package:frenly_app/core/constants/app_dialogs.dart';
@@ -351,11 +352,13 @@ class OwnMessageCard extends StatelessWidget {
           isImageFile(url)) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            url,
-            width: MediaQuery.of(context).size.width * 0.6,
-            height: 220.ah,
-            fit: BoxFit.cover,
+          child: InstaImageViewer(
+            child: Image.network(
+              url,
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: 220.ah,
+              fit: BoxFit.cover,
+            ),
           ),
         );
       }
@@ -415,7 +418,6 @@ class OwnMessageCard extends StatelessWidget {
           ],
         ),
       );
-
 
     }
 
@@ -613,8 +615,6 @@ String formatMessageTime(DateTime dateTime) {
 //     );
 //   }
 // }
-
-
 
 class AudioMessagePlayer extends StatefulWidget {
   final String url;
@@ -819,7 +819,6 @@ class AudioManager {
     }
   }
 }
-
 
 
 class VideoPlayerScreen extends StatefulWidget {
