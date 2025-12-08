@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:pinch_zoom_release_unzoom/pinch_zoom_release_unzoom.dart';import 'package:velocity_x/velocity_x.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,7 @@ class ReplyCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                margin: EdgeInsets.only(left: 10),
+                margin: EdgeInsets.only(left: 10.adaptSize),
                 padding: EdgeInsets.symmetric(horizontal: 10.ah, vertical: 8.ah),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -42,7 +44,6 @@ class ReplyCard extends StatelessWidget {
                   ),
                   color: MyColor.primaryColor
                 ),
-
               child: InkWell(
                 onTap: () async {
                   print("dsafgfdsgdgsfgdgdsgdsgdsfgdgdgfdgdfgd${message.isLink}");
@@ -135,12 +136,14 @@ class ReplyCard extends StatelessWidget {
             url.toLowerCase().endsWith(".png"))) {
 
       return ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Image.network(
-          url,
-          width: MediaQuery.of(context).size.width * 0.6,
-          height: 220,
-          fit: BoxFit.cover,
+        borderRadius: BorderRadius.circular(12.adaptSize),
+        child: InstaImageViewer(
+          child: Image.network(
+            url,
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: 220,
+            fit: BoxFit.cover,
+          ),
         ),
       );
     }
@@ -159,7 +162,7 @@ class ReplyCard extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.6,
           height: 220,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.adaptSize),
             color: Colors.black12,
           ),
           child: const Center(
