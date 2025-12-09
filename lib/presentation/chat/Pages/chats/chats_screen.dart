@@ -185,19 +185,19 @@ String buildLastMessagePreview(LastMessage? last) {
   final url = last.attachmentUrl ?? "";
 
   if (mime.startsWith("image") || type == "image" || url.endsWith(".jpg") || url.endsWith(".png")) {
-    return "📷 Photo";
+    return "📷 ${"Photo".tr}";
   }
 
   if (mime.startsWith("video") || type == "video" || url.endsWith(".mp4")) {
-    return "🎥 Video";
+    return "🎥 ${"Video".tr}";
   }
 
   if (mime.startsWith("audio") || type == "audio") {
-    return "🎵 Audio";
+    return "🎵 ${"Audio".tr}";
   }
 
   if (type == "gif" || url.endsWith(".gif")) {
-    return "🎞️ GIF";
+    return "🎞️ ${"GIF".tr}";
   }
 
   return last.content ?? "";

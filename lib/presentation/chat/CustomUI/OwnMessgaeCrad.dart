@@ -232,7 +232,13 @@ class OwnMessageCard extends StatelessWidget {
                   children: [
 
                     /// SENT / SEEN
-                    Text(message.isRead == true
+                    // Text(message.isRead == true
+                    //       ? "seen".tr
+                    //       : "sent".tr,
+                    //   style: TextStyle(fontSize: 12.adaptSize),
+                    // ),
+
+                    Text((message.seen == true || message.isRead == true)
                           ? "seen".tr
                           : "sent".tr,
                       style: TextStyle(fontSize: 12.adaptSize),
@@ -255,87 +261,6 @@ class OwnMessageCard extends StatelessWidget {
       ),
     );
   }
-
-/*
-  Widget buildMessageContent(BuildContext context) {
-    // If media exists
-    if (message.attachmentUrl != null && message.attachmentUrl!.isNotEmpty) {
-      final url = message.attachmentUrl!;
-      final type = message.attachmentType ?? "";
-      final mime = message.mimeType ?? "";
-
-      // --- FIX 1: Detect images even if backend returns 'file'
-      if (type == "image" ||
-          type == "gif" ||
-          mime.startsWith("image") ||
-          isImageFile(url)) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12.fSize),
-          child: Image.network(
-            url,
-            width: MediaQuery.of(context).size.width * 0.6,
-            height: 220.ah,
-            fit: BoxFit.cover,
-          ),
-        );
-      }
-
-      // --- FIX 2: Video thumbnail
-      if (mime.startsWith("video")) {
-        return Container(
-          width: MediaQuery.of(context).size.width * 0.6,
-          height: 200.ah,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.fSize),
-            color: Colors.black12,
-            image: message.thumbnailUrl != null
-                ? DecorationImage(
-              image: NetworkImage(message.thumbnailUrl!),
-              fit: BoxFit.cover,
-            ) : null,
-          ),
-          child: Icon(Icons.play_circle_fill, size: 60.fSize, color: Colors.white),
-        );
-      }
-
-      // --- FIX 3: Audio
-      // if (mime.startsWith("audio")) {
-      //   return Row(
-      //     mainAxisSize: MainAxisSize.min,
-      //     children: [
-      //       Icon(Icons.audiotrack, color: Colors.black87),
-      //       SizedBox(width: 8.aw),
-      //       Text("Audio message"),
-      //     ],
-      //   );
-      // }
-
-      if (mime.startsWith("audio")) {
-        return AudioMessagePlayer(
-          url: message.attachmentUrl!,
-        );
-      }
-
-      // --- FIX 4: Unknown file type (PDF, Docs, etc.)
-      return Row(
-        children: [
-          Icon(Icons.insert_drive_file, color: Colors.grey),
-          SizedBox(width: 8.aw),
-          Expanded(child: Text("File")),
-        ],
-      );
-     }
-
-    // Default text message
-    return Text("${message.content}",
-      style: TextStyle(
-        color: message.isLink == 0 ? Colors.black : MyColor.primaryColor,
-        fontWeight: message.isLink == 0 ? FontWeight.normal : FontWeight.bold,
-      ),
-    );
-  }
-*/
-
 
 
   Widget buildMessageContent(BuildContext context) {
@@ -401,8 +326,6 @@ class OwnMessageCard extends StatelessWidget {
       }
 
 
-
-
       // ---------- UNKNOWN FILE ----------
       return Container(
         padding: EdgeInsets.all(10.adaptSize),
@@ -414,7 +337,7 @@ class OwnMessageCard extends StatelessWidget {
           children: [
             Icon(Icons.insert_drive_file),
             SizedBox(width: 8.aw),
-            Text("File"),
+            Text("file".tr),
           ],
         ),
       );
@@ -503,118 +426,6 @@ String formatMessageTime(DateTime dateTime) {
   return "${local.day} ${months[local.month - 1]} ${formatTime(local)}";
 }
 
-
-// class AudioMessagePlayer extends StatefulWidget {
-//   final String url;
-//
-//   const AudioMessagePlayer({Key? key, required this.url}) : super(key: key);
-//
-//   @override
-//   _AudioMessagePlayerState createState() => _AudioMessagePlayerState();
-// }
-//
-// class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
-//   final AudioPlayer _player = AudioPlayer();
-//   bool isPlaying = false;
-//
-//   Duration totalDuration = Duration.zero;
-//   Duration currentPosition = Duration.zero;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//
-//     _initAudio();
-//   }
-//
-//   Future<void> _initAudio() async {
-//     await _player.setUrl(widget.url);
-//
-//     // Listen total duration
-//     _player.durationStream.listen((d) {
-//       if (d != null) {
-//         setState(() => totalDuration = d);
-//       }
-//     });
-//
-//     // Listen position
-//     _player.positionStream.listen((p) {
-//       setState(() => currentPosition = p);
-//     });
-//
-//     // 🔥 FIX: Update icon when audio starts / pauses
-//     _player.playingStream.listen((playing) {
-//       setState(() => isPlaying = playing);
-//     });
-//
-//     // 🔥 FIX: When audio ends → reset position + icon
-//     _player.playerStateStream.listen((state) {
-//       if (state.processingState == ProcessingState.completed) {
-//         _player.seek(Duration.zero);
-//         setState(() {
-//           isPlaying = false;
-//           currentPosition = Duration.zero;
-//         });
-//       }
-//     });
-//   }
-//
-//   @override
-//   void dispose() {
-//     _player.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(10),
-//       width: MediaQuery.of(context).size.width * 0.6,
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(20),
-//       ),
-//       child: Row(
-//         children: [
-//           /// PLAY / PAUSE BUTTON
-//           InkWell(
-//             onTap: () async {
-//               if (isPlaying) {
-//                 await _player.pause();
-//               } else {
-//                 await _player.play();
-//               }
-//             },
-//             child: Icon(
-//               isPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill,
-//               size: 40,
-//               color: Colors.pinkAccent,
-//             ),
-//           ),
-//
-//           SizedBox(width: 12),
-//
-//           /// SLIDER
-//           Expanded(
-//             child: Slider(
-//               activeColor: Colors.pinkAccent,
-//               inactiveColor: Colors.grey.shade300,
-//               min: 0,
-//               max: totalDuration.inMilliseconds.toDouble(),
-//               value: currentPosition.inMilliseconds
-//                   .clamp(0, totalDuration.inMilliseconds)
-//                   .toDouble(),
-//               onChanged: (value) async {
-//                 final newPos = Duration(milliseconds: value.toInt());
-//                 await _player.seek(newPos);
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class AudioMessagePlayer extends StatefulWidget {
   final String url;

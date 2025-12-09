@@ -132,6 +132,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';import 'package:velocity_x/velocity_x.dart';
+import '../presentation/chat/Pages/chat_room/chat_room_controller.dart';
 import '../presentation/chat/Pages/chats/chats_controller.dart';
 import '../socket_service/socket_service.dart';
 
@@ -151,7 +152,10 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   //  _socketService.socketConnect();
+    /// ensure socket is connected once at start
+    SocketService().socketConnect();
   }
+
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -160,14 +164,39 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
       case AppLifecycleState.hidden:
-        _socketService.socketDisconnect();
-        break;
+        // _socketService.socketDisconnect();
+       // break;
+      // USER LEFT APP --> GO OFFLINE
+     //  _socketService.socketDisconnect();
+      break;
+
       case AppLifecycleState.resumed:
-        _socketService.socketConnect();
-        // 🔥 refresh chats also
-        if (Get.isRegistered<ChatScreenController>()) {
-          Get.find<ChatScreenController>().getchats();
+      /// ensure socket still alive
+        if(!SocketService().socket.connected) {
+          SocketService().socketConnect();
         }
+
+        /// rejoin chat room
+        if(Get.isRegistered<ChatRoomController>()){
+          final c = Get.find<ChatRoomController>();
+          SocketService().joinChat(c.chatId);
+          SocketService().socket.emit("markSeen", {
+            "chatId": c.chatId
+          });
+        }
+
+      // // USER RETURNED --> GO ONLINE
+      //   _socketService.socketConnect();
+      //
+      //   // REJOIN CHAT
+      //   if(Get.isRegistered<ChatRoomController>()){
+      //     final c = Get.find<ChatRoomController>();
+      //     SocketService().joinChat(c.chatId);
+      //     SocketService().socket.emit("markSeen", {
+      //       "chatId": c.chatId
+      //     });
+      //   }
+
         break;
       default:
         _socketService.socketDisconnect();

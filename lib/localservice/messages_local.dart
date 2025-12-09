@@ -316,6 +316,11 @@ class Messages extends Translations {
           "EnterYourConfirmPassword": "Enter Your Confirm Password",
           "EnterYourOldPassword": "Enter Your Old Password",
           "password_changed_successfully": "Password Changed Successfully",
+          "Tap_to_capture_Hold_video": "Tap to capture  |  Hold to record video",
+          "file": "file",
+          "Video": "Video",
+          "Audio": "Audio",
+          "GIF": "GIF",
 
           // "Vlog_not_Found": "Vlog not Found",
           // "Blog_not_Found": "Blog not Found",
@@ -641,7 +646,13 @@ class Messages extends Translations {
           "EnterYourConfirmPassword" : "Ange ditt bekräftelselösenord",
           "Tag_Location" : "Tagga plats",
           "EnterYourOldPassword": "Ange ditt gamla lösenord",
-          "password_changed_successfully": "Lösenordet har ändrats framgångsrikt"
+          "password_changed_successfully": "Lösenordet har ändrats framgångsrikt",
+         "Tap_to_capture_Hold_video": "Tryck för att ta bild  |  Håll in för att spela in video",
+          "file": "fil",
+          "Video": "Video",
+          "Audio": "Ljud",
+          "GIF": "GIF",
+
 
           // "Vlog_not_Found": "Vlogg hittades inte",
           // "Blog_not_Found": "Blogg hittades inte",

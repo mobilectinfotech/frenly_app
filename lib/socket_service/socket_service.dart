@@ -328,6 +328,7 @@ class SocketService {
   factory SocketService() => _instance;
 
   SocketService._internal();
+  bool listenersAdded = false;
 
   late IO.Socket _socket;
   IO.Socket get socket => _socket;
@@ -349,10 +350,19 @@ class SocketService {
         },
       );
 
-      _addSocketListeners();
+     // _addSocketListeners();
       _socket.connect();
 
-      print("🟢 SOCKET → Connecting...");
+      _socket.onConnect((_) {
+        print("🟢 SOCKET CONNECTED");
+        listenersAdded = false;   // important!
+        _addSocketListeners();
+
+        if (Get.isRegistered<ChatRoomController>()) {
+          Get.find<ChatRoomController>().statusText.value = "online".tr;
+        }
+
+      });
     } catch (e) {
       print("❌ Socket connection failed: $e");
     }
@@ -370,7 +380,6 @@ class SocketService {
   }
 
   // -------- JOIN / LEAVE CHAT --------
-
   void joinChat(dynamic chatId) {
     if (chatId == null) return;
 
@@ -390,16 +399,20 @@ class SocketService {
     if (activeChatId.value == int.tryParse(cid)) {
       activeChatId.value = -1;
     }
-
     print("⬅️ LEFT chat room: $cid");
   }
 
   // -------- EVENT LISTENERS --------
-
   void _addSocketListeners() {
+
+    if(listenersAdded) {
+      print("⚠️ Socket listeners already added");
+      return;
+    }
+    listenersAdded = true;
+
     _socket.onConnect((_) {
       print("🟢 SOCKET CONNECTED");
-
       if (Get.isRegistered<ChatRoomController>()) {
         Get.find<ChatRoomController>().statusText.value = "online".tr;
       }
@@ -407,7 +420,8 @@ class SocketService {
 
     _socket.onDisconnect((_) {
       print("🔴 SOCKET DISCONNECTED");
-
+      // reset listeners
+      listenersAdded = false;
       if (Get.isRegistered<ChatRoomController>()) {
         Get.find<ChatRoomController>().statusText.value = "offline".tr;
       }
@@ -431,7 +445,7 @@ class SocketService {
           data['isOnline'] == true || data['isOnline'] == 1;
 
       final String? lastSeen = data['lastSeen'];
-      final bool isLastSeenAllowed = data['isLastSeenAllowed'] ?? true; // ⭐ SAFE FIX
+      final bool isLastSeenAllowed = data['isLastSeenAllowed'] ?? true; // ⭐SAFE FIX
 
       if (Get.isRegistered<ChatRoomController>()) {
         final c = Get.find<ChatRoomController>();
@@ -441,7 +455,6 @@ class SocketService {
 
     // _socket.on('user_status_updated', (data) {
     //   print("🟢 USER STATUS UPDATED: $data");
-    //
     //   final int userId = data['userId'];
     //   final bool isOnline = data['isOnline'] == true || data['isOnline'] == 1;
     //   final String? lastSeen = data['lastSeen'];
@@ -503,13 +516,33 @@ class SocketService {
       Get.isRegistered<ChatRoomController>() ? Get.find<ChatRoomController>() : null;
 
       // If current chat is open → push to chat UI directly
+      // if (chatRoomController != null &&
+      //     message.chatId == activeChatId.value) {
+      //   chatRoomController.allMsgNOTUSE.update((val) {
+      //     val!.messages!.insert(0, message);
+      //   });
+      //   return;
+      // }
+
       if (chatRoomController != null &&
           message.chatId == activeChatId.value) {
+        // 🔵 avoid duplicates
+        if(chatRoomController.allMsg.messages!.any((m)=>m.id == message.id)) {
+          return;
+        }
+
         chatRoomController.allMsgNOTUSE.update((val) {
           val!.messages!.insert(0, message);
         });
+
+        // 👇 ADD THIS
+        SocketService().socket.emit("markSeen", {
+          "chatId": message.chatId,
+        });
+
         return;
       }
+
 
       // Else update chat list
       final chatScreen = Get.find<ChatScreenController>();

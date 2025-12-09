@@ -5,6 +5,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_compress/video_compress.dart';
 import 'package:win32/winsock2.dart';
 import '../../../../data/data_sources/remote/api_client.dart';
+import '../../../../socket_service/socket_service.dart';
 import '../../Model/msg_model.dart';
 import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
@@ -26,6 +27,7 @@ class ChatRoomController extends GetxController {
   RxString statusText = "".obs;
   RxBool lastSeenAllowed = true.obs;
   RxBool isOnline = false.obs;
+  late String chatId;
 
   late String currentParticipantId;
 
@@ -55,6 +57,11 @@ class ChatRoomController extends GetxController {
     var firstLoad = MessageModel1(messages: messages);
     allMsgNOTUSE(firstLoad);
     allMsgNOTUSE.refresh();
+    // 👇 ADD THIS HERE (after refresh)
+    SocketService().socket.emit("markSeen", {
+      "chatId": chatId,
+    });
+
     isLoading.value = false;
   }
 
@@ -174,6 +181,7 @@ class ChatRoomController extends GetxController {
     }
 
     allMsgNOTUSE.refresh();   // now UI will rebuild
+    update(); // 👈 ADD THIS
   }
 
   void updateUserStatus(int userId, bool online, String? lastSeenUtc, bool isLastSeenAllowed) {
@@ -201,6 +209,7 @@ class ChatRoomController extends GetxController {
       statusText.value = "offline".tr;
     }
   }
+
 
 
   Future<bool> sendMedia({

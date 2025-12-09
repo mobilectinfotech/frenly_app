@@ -152,7 +152,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
 
-
   void _handleFocusChange() {
     if (focusNode.hasFocus) {
       setState(() {
@@ -462,7 +461,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         hintText: "Messages".tr,
                         hintStyle: TextStyle(
                           color: const Color(0xFFA8A8A8),
-                          fontSize: 16.adaptSize,
+                          fontSize: 15.adaptSize,
                         //  fontSize: 20.adaptSize,
                           fontFamily: 'Roboto',
                           fontWeight: FontWeight.w500,
@@ -602,12 +601,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 
   Widget
-  _iconButton(
-      IconData icon,
-      VoidCallback onTap, {
-        Color color = Colors.black54,  // <-- OPTIONAL with default value
-      })
-  {
+  _iconButton(IconData icon, VoidCallback onTap, {
+        Color color = Colors.black54,
+      }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20.adaptSize),
@@ -679,7 +675,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
-
   Future<void> captureVideo() async {
     final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
 
@@ -718,16 +713,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
-  // Future<void> _pickGif() async {
-  //   final gif = await GiphyPicker.pickGif(context: context, apiKey: 'hffmbZdBZrBpe9zrzw8AHJwlWNGJDGXt');
-  //   if (gif?.url != null) {
-  //     // Upload or directly send URL if backend allows
-  //     controller.sendMessage(message: gif!.url??'', chatId: widget.chatId);  // Treat as text URL, or upload
-  //     // Update to sendMedia if uploading
-  //   }
-  // }
-
-
   Future<String> downloadGif(String url) async {
     final response = await Dio().get(url, options: Options(responseType: ResponseType.bytes));
     final dir = await getTemporaryDirectory();
@@ -735,23 +720,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     await file.writeAsBytes(response.data);
     return file.path;
   }
-
-  // Future<void> _pickGif() async {
-  //   final gif = await GiphyPicker.pickGif(
-  //       context: context,
-  //       apiKey: 'hffmbZdBZrBpe9zrzw8AHJwlWNGJDGXt',
-  //     showPreviewPage: false,   // 🚀 disables second preview screen
-  //   );
-  //   if (gif != null && gif.url != null) {
-  //     final gifPath = await downloadGif(gif.url!);
-  //
-  //     await controller.sendMedia(
-  //       chatId: widget.chatId,
-  //       filePath: gifPath,
-  //       type: MessageType.gif,
-  //     );
-  //   }
-  // }
 
   Future<void> _pickGif() async {
     final gif = await GiphyPicker.pickGif(
@@ -822,7 +790,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     //  controller.clear();
     }
   }
-
 
 
   Future<void> startVoiceRecording() async {
@@ -1057,8 +1024,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
             left: 0,
             right: 0,
             child: Center(
-              child: Text(
-                "Tap to capture  |  Hold to record video",
+              child: Text("Tap_to_capture_Hold_video".tr,
                 style: TextStyle(color: Colors.white70, fontSize: 14),
               ),
             ),
