@@ -9,8 +9,8 @@ import '../../../../core/utils/pref_utils.dart';
 import '../chat_room/chat_room_page.dart';
 import 'chats_controller.dart';
 import 'package:get/get.dart';
-
 import 'chats_model.dart';
+
 
 class ChatsScreen extends StatelessWidget {
   ChatsScreen({super.key});
@@ -29,9 +29,9 @@ class ChatsScreen extends StatelessWidget {
             back: false),
         body: Obx(
           () => controller.isLoading.value
-              ? const Center(
+              ? Center(
                   child: CircularProgressIndicator(
-                    strokeWidth: 1,
+                    strokeWidth: 1.adaptSize
                   ),
                 )
               : controller.chatsModel.value?.chats!.length == 0

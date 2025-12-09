@@ -825,7 +825,235 @@ extension on MessageModel1 {
   operator [](int other) {}
 }
 
-
+// class WhatsappCameraScreen extends StatefulWidget {
+//   final Function(String path, bool isVideo) onCapture;
+//
+//   const WhatsappCameraScreen({Key? key, required this.onCapture})
+//       : super(key: key);
+//
+//   @override
+//   State<WhatsappCameraScreen> createState() => _WhatsappCameraScreenState();
+// }
+//
+// class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
+//   CameraController? cam;
+//   List<CameraDescription>? cameras;
+//
+//   bool recording = false;
+//   bool isVideoMode = false;
+//
+//   Timer? timer;
+//   int seconds = 0;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//
+//     SystemChrome.setPreferredOrientations([
+//       DeviceOrientation.portraitUp,
+//     ]);
+//
+//     initCamera();
+//   }
+//
+//   Future initCamera() async {
+//     cameras = await availableCameras();
+//     await setupController(cameras!.first);
+//   }
+//
+//   Future setupController(CameraDescription camera) async {
+//     cam?.dispose();
+//
+//     cam = CameraController(
+//       camera,
+//       ResolutionPreset.high,
+//       enableAudio: true,
+//       imageFormatGroup: ImageFormatGroup.jpeg,
+//     );
+//
+//     await cam!.initialize();
+//
+//     cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+//
+//     if (mounted) setState(() {});
+//   }
+//
+//   Future switchCamera() async {
+//     if (cameras == null) return;
+//
+//     final lens = cam!.description.lensDirection == CameraLensDirection.back
+//         ? CameraLensDirection.front
+//         : CameraLensDirection.back;
+//
+//     final camera = cameras!.firstWhere((c) => c.lensDirection == lens);
+//     await setupController(camera);
+//   }
+//
+//   // PHOTO CAPTURE
+//   Future capturePhoto() async {
+//     try {
+//       final file = await cam!.takePicture();
+//       widget.onCapture(file.path, false);
+//       Get.back();
+//     } catch (_) {}
+//   }
+//
+//   // START RECORDING
+//   Future startRecording() async {
+//     try {
+//       await cam!.startVideoRecording();
+//       recording = true;
+//       seconds = 0;
+//
+//       timer = Timer.periodic(const Duration(seconds: 1), (_) {
+//         setState(() => seconds++);
+//       });
+//
+//       setState(() {});
+//     } catch (_) {}
+//   }
+//
+//   // STOP RECORDING
+//   Future stopRecording() async {
+//     try {
+//       final file = await cam!.stopVideoRecording();
+//       recording = false;
+//
+//       timer?.cancel();
+//       widget.onCapture(file.path, true);
+//       Get.back();
+//     } catch (_) {}
+//   }
+//
+//   @override
+//   void dispose() {
+//     timer?.cancel();
+//     cam?.dispose();
+//
+//     SystemChrome.setPreferredOrientations([
+//       DeviceOrientation.portraitUp,
+//       DeviceOrientation.portraitDown,
+//       DeviceOrientation.landscapeLeft,
+//       DeviceOrientation.landscapeRight,
+//     ]);
+//
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     if (cam == null || !cam!.value.isInitialized) {
+//       return const Center(child: CircularProgressIndicator());
+//     }
+//
+//     return Scaffold(
+//       backgroundColor: Colors.black,
+//       body: Stack(
+//         children: [
+//           /// FULL CAMERA PREVIEW
+//           Positioned.fill(
+//             child: AspectRatio(
+//               aspectRatio: cam!.value.aspectRatio,
+//               child: CameraPreview(cam!),
+//             ),
+//           ),
+//
+//           /// RECORDING TIME
+//           if (recording)
+//             Positioned(
+//               top: 60,
+//               left: 0,
+//               right: 0,
+//               child: Center(
+//                 child: Text(
+//                   "$seconds s",
+//                   style: const TextStyle(color: Colors.red, fontSize: 24),
+//                 ),
+//               ),
+//             ),
+//
+//           /// SWITCH CAMERA
+//           Positioned(
+//             top: 50,
+//             right: 20,
+//             child: GestureDetector(
+//               onTap: switchCamera,
+//               child: const CircleAvatar(
+//                 backgroundColor: Colors.black45,
+//                 child: Icon(Icons.cameraswitch, color: Colors.white),
+//               ),
+//             ),
+//           ),
+//
+//           /// PHOTO / VIDEO MODE SWITCH
+//           Positioned(
+//             bottom: 50,
+//             left: 30,
+//             child: GestureDetector(
+//               onTap: () {
+//                 setState(() => isVideoMode = !isVideoMode);
+//               },
+//               child: Container(
+//                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+//                 decoration: BoxDecoration(
+//                   color: Colors.black54,
+//                   borderRadius: BorderRadius.circular(20),
+//                 ),
+//                 child: Text(
+//                   isVideoMode ? "Video" : "Photo",
+//                   style: const TextStyle(color: Colors.white, fontSize: 16),
+//                 ),
+//               ),
+//             ),
+//           ),
+//
+//           /// MAIN BIG BUTTON
+//           Align(
+//             alignment: Alignment.bottomCenter,
+//             child: Container(
+//               padding: const EdgeInsets.only(bottom: 40),
+//               child: GestureDetector(
+//                 onTap: () {
+//                   if (!isVideoMode) {
+//                     capturePhoto();
+//                   } else {
+//                     if (!recording) {
+//                       startRecording();
+//                     } else {
+//                       stopRecording();
+//                     }
+//                   }
+//                 },
+//                 child: AnimatedContainer(
+//                   duration: const Duration(milliseconds: 200),
+//                   width: 80,
+//                   height: 80,
+//                   decoration: BoxDecoration(
+//                     shape: BoxShape.circle,
+//                     color: isVideoMode
+//                         ? (recording ? Colors.red : Colors.white.withOpacity(0.2))
+//                         : Colors.white.withOpacity(0.2),
+//                     border: Border.all(
+//                       color: recording ? Colors.red : Colors.white,
+//                       width: 6,
+//                     ),
+//                   ),
+//                   child: Icon(
+//                     isVideoMode
+//                         ? (recording ? Icons.stop : Icons.fiber_manual_record)
+//                         : Icons.camera_alt,
+//                     color: Colors.white,
+//                     size: 36,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 
 
@@ -871,13 +1099,13 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     );
 
     await cam!.initialize();
+    await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);  // <-- ADD HERE
+   // cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+    if (mounted) setState(() {});
 
-    cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
-
-
-    cam!.initialize().then((_) {
-      if (mounted) setState(() {});
-    });
+    // cam!.initialize().then((_) {
+    //   if (mounted) setState(() {});
+    // });
   }
 
   Future switchCamera() async {
@@ -969,15 +1197,10 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
        //    ),
 
           Positioned.fill(
-            child: SizedBox.expand(
-              child: ClipRect(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: AspectRatio(
-                    aspectRatio: cam!.value.aspectRatio,
-                    child: CameraPreview(cam!),
-                  ),
-                ),
+            child: Transform.scale(
+              scale: MediaQuery.of(context).size.aspectRatio / cam!.value.aspectRatio,
+              child: Center(
+                child: CameraPreview(cam!),
               ),
             ),
           ),
