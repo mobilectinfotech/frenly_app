@@ -3,7 +3,7 @@ import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_compress/video_compress.dart';
-import 'package:win32/winsock2.dart';
+import '../../../../core/utils/pref_utils.dart';
 import '../../../../data/data_sources/remote/api_client.dart';
 import '../../../../socket_service/socket_service.dart';
 import '../../Model/msg_model.dart';
@@ -11,13 +11,6 @@ import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
 import 'chat_room_page.dart';
 import 'package:dio/dio.dart';
-// import 'package:http_parser/http_parser.dart';
-// import 'package:path/path.dart' as p;
-
-
-/*
-enum MessageType { text, image, video, audio, gif }
-*/
 
 class ChatRoomController extends GetxController {
   MessageModel1 messageModel1 = MessageModel1(messages: []);
@@ -210,8 +203,7 @@ class ChatRoomController extends GetxController {
     }
   }
 
-
-
+/*
   Future<bool> sendMedia({
     required String chatId,
     required String filePath,
@@ -263,56 +255,165 @@ class ChatRoomController extends GetxController {
       return false;
     }
   }
-
-  // Future<String> repairVideo(String inputPath) async {
-  //   final output = inputPath.replaceAll(".mp4", "_fixed.mp4");
-  //   final command = '-y -i "$inputPath" -c:v libx264 -c:a aac -movflags +faststart "$output"';
-  //   await FFmpegKit.execute(command);
-  //   return output;
-  // }
+*/
 
 
-// Future<bool> sendMedia({
-  //   required String chatId,
-  //   required String filePath,
-  //   required MessageType type,
-  // }) async {
-  //   try {
-  //     FormData formData = FormData.fromMap({
-  //       'file': await MultipartFile.fromFile(filePath),
-  //       'type': type.toString().split('.').last,
-  //     });
-  //
-  //     final uploadResponse = await ApiClient().postRequest(
-  //       endPoint: "upload/chat-media",
-  //       body: formData,
-  //     );
-  //
-  //     final url = uploadResponse["url"];
-  //     if (url == null) {
-  //       print("Upload failed: No URL returned");
-  //       return false;
-  //     }
-  //
-  //     final messageResponse = await ApiClient().postRequest(
-  //       endPoint: "message/$chatId",
-  //       body: {
-  //         "content": url,
-  //         "type": type.toString().split('.').last,
-  //       },
-  //     );
-  //
-  //     final msg = SingleMessage.fromJson(messageResponse["data"]);
-  //
-  //     allMsg.messages!.insert(0, msg);
-  //     allMsgNOTUSE.refresh();
-  //
-  //     return true;
-  //   } catch (e) {
-  //     print("SEND MEDIA ERROR: $e");
-  //     return false;
-  //   }
-  // }
+
+  Future<bool> sendMedia({
+    required String chatId,
+    required String filePath,
+    required MessageType type,
+  })
+  async {
+    try {
+      // 1) Optional: compress video
+      if (type == MessageType.video) {
+        final info = await VideoCompress.compressVideo(
+          filePath,
+          quality: VideoQuality.MediumQuality,
+          deleteOrigin: false,
+        );
+        filePath = info?.path ?? filePath;
+      }
+
+      // 2) Create a TEMP local message with uploading = true
+      final tempId = DateTime.now().millisecondsSinceEpoch; // local temp id
+
+      final tempMsg = SingleMessage(
+        id: tempId,
+        content: "",
+        senderId: null, // or your currentUserId if you have it
+        chatId: int.tryParse(chatId),
+        isRead: true,
+        seen: true,
+        isLink: 0,
+        createdAt: DateTime.now(),
+        attachmentType: type.name, // "image" / "video"
+        attachmentUrl: null,
+        mimeType: type == MessageType.image ? "image/*" : "video/*",
+        isUploading: true,
+        uploadProgress: 0.0,
+      );
+
+      // Add temporary bubble to top (index 0)
+      allMsgNOTUSE.update((val) {
+        val!.messages!.insert(0, tempMsg);
+      });
+
+      // 3) Prepare Dio request with progress
+      final dio = Dio();
+      dio.options.headers["Authorization"] =
+      "Bearer ${PrefUtils().getAuthToken()}";
+      final formData = FormData.fromMap({
+        "content": "file",
+        "isLink": "0",
+        "file": await MultipartFile.fromFile(
+          filePath,
+          filename: filePath.split("/").last,
+        ),
+      });
+
+      final response = await dio.post(
+        "${ApiClient.mainUrl}message/$chatId",
+        data: formData,
+        onSendProgress: (sent, total) {
+          if (total != 0) {
+            final progress = sent / total; // 0.0 → 1.0
+
+            tempMsg.uploadProgress = progress;
+            allMsgNOTUSE.refresh(); // rebuild UI
+          }
+        },
+      );
+
+      // 4) Replace temp message with REAL message from backend
+      final realMsg = SingleMessage.fromJson(response.data["data"]);
+      realMsg.isUploading = false;
+      realMsg.uploadProgress = 1.0;
+
+      allMsgNOTUSE.update((val) {
+        final list = val!.messages!;
+        final index = list.indexWhere((m) => m.id == tempId);
+
+        if (index != -1) {
+          list[index] = realMsg;
+        } else {
+          list.insert(0, realMsg);
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print("❌ SEND MEDIA ERROR: $e");
+
+      // On error, mark temp message as failed
+      allMsgNOTUSE.update((val) {
+        final list = val!.messages!;
+        final index = list.indexWhere((m) => m.isUploading == true);
+        if (index != -1) {
+          list[index].isUploading = false;
+          list[index].uploadProgress = 0;
+        }
+      });
+
+      return false;
+    }
+  }
+
+
+
+/*
+  Future<String> repairVideo(String inputPath) async {
+    final output = inputPath.replaceAll(".mp4", "_fixed.mp4");
+    final command = '-y -i "$inputPath" -c:v libx264 -c:a aac -movflags +faststart "$output"';
+    await FFmpegKit.execute(command);
+    return output;
+  }
+*/
+
+
+/*Future<bool> sendMedia({
+    required String chatId,
+    required String filePath,
+    required MessageType type,
+  })
+async {
+    try {
+      FormData formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(filePath),
+        'type': type.toString().split('.').last,
+      });
+
+      final uploadResponse = await ApiClient().postRequest(
+        endPoint: "upload/chat-media",
+        body: formData,
+      );
+
+      final url = uploadResponse["url"];
+      if (url == null) {
+        print("Upload failed: No URL returned");
+        return false;
+      }
+
+      final messageResponse = await ApiClient().postRequest(
+        endPoint: "message/$chatId",
+        body: {
+          "content": url,
+          "type": type.toString().split('.').last,
+        },
+      );
+
+      final msg = SingleMessage.fromJson(messageResponse["data"]);
+
+      allMsg.messages!.insert(0, msg);
+      allMsgNOTUSE.refresh();
+
+      return true;
+    } catch (e) {
+      print("SEND MEDIA ERROR: $e");
+      return false;
+    }
+  }*/
 
 ///LAST Line
 }

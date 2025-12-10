@@ -1207,7 +1207,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
             ),
           ),
 
-
           // Positioned.fill(
           //   child: Center(
           //     child: Transform.rotate(
@@ -1280,7 +1279,12 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
               padding: EdgeInsets.only(bottom: 70.adaptSize,),
               child: GestureDetector(
                 onTap: () {
-                  if (!recording) capturePhoto();
+                if (!recording) capturePhoto();
+              //     if (!recording) {
+              //       startRecording();
+              //     } else {
+              //       stopRecording();
+              //     }
                 },
                 onLongPress: startRecording,
                 onLongPressUp: stopRecording,

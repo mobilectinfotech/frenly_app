@@ -84,8 +84,8 @@ class ChatsScreen extends StatelessWidget {
                 onTap: () {
                   Get.to(()=>UserProfileScreen(userId: "${controller.chatsModel.value?.chats![index].participants![indexxx].id}"));
                 },
-                radius: BorderRadius.circular(30.adaptSize),
-                height: 55.ah, width: 55.aw,
+                radius: BorderRadius.circular(100.adaptSize),
+                height: 55.ah, width: 55.ah,
                 imagePath: controller.chatsModel.value?.chats![index].participants?[indexxx].avatarUrl,
                 fit: BoxFit.cover,
               ),

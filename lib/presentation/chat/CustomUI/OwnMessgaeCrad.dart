@@ -1,4 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:frenly_app/core/constants/my_colour.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:frenly_app/Widgets/custom_image_view.dart';
@@ -10,7 +12,8 @@ import 'package:video_player/video_player.dart';
 import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
 import '../../post/post_view/post_view_screen.dart';
 import '../Pages/chat_room/chat_room_model.dart';
-
+import 'dart:typed_data';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 // class OwnMessageCard extends StatelessWidget {
 //   const OwnMessageCard({Key? key, required this.message, required this.createdAt}) : super(key: key);
@@ -128,7 +131,6 @@ import '../Pages/chat_room/chat_room_model.dart';
 //     );
 //   }
 // }
-
 
 class OwnMessageCard extends StatelessWidget {
   const OwnMessageCard({
@@ -262,7 +264,44 @@ class OwnMessageCard extends StatelessWidget {
     );
   }
 
+  Future<String> _getVideoDuration(String url) async {
+    final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+    await controller.initialize();
+    final duration = controller.value.duration;
+    controller.dispose();
 
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+    return "$minutes:$seconds";
+  }
+
+
+  String formatDuration(int seconds) {
+    final m = (seconds ~/ 60).toString().padLeft(2, '0');
+    final s = (seconds % 60).toString().padLeft(2, '0');
+    return "$m:$s";
+  }
+
+  Future<Uint8List?> _generateThumb(String url) async {
+    try {
+      final bytes = await VideoThumbnail.thumbnailData(
+        video: url,
+        headers: {}, // IMPORTANT for network video
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 600,
+        quality: 75,
+      );
+      return bytes;
+    } catch (e) {
+      print("Thumbnail error: $e");
+      return null;
+    }
+  }
+
+
+
+/*
   Widget buildMessageContent(BuildContext context) {
     final url = message.attachmentUrl ?? "";
     final mime = message.mimeType ?? "";
@@ -341,7 +380,6 @@ class OwnMessageCard extends StatelessWidget {
           ],
         ),
       );
-
     }
 
     // ---------- NORMAL TEXT ----------
@@ -350,7 +388,194 @@ class OwnMessageCard extends StatelessWidget {
       style: TextStyle(fontSize: 16.fSize, color: Colors.black87),
     );
   }
+*/
 
+  Widget buildMessageContent(BuildContext context) {
+    final url = message.attachmentUrl ?? "";
+    final mime = message.mimeType ?? "";
+    final type = message.attachmentType ?? "";
+
+    // ⭐ 1) UPLOAD IN PROGRESS UI
+    if (message.isUploading == true) {
+      final p = (message.uploadProgress ?? 0);
+      final percent = (p * 100).clamp(0, 100).toStringAsFixed(0);
+
+      return Container(
+        width: MediaQuery.of(context).size.width * 0.6,
+        height: 180.ah,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(12.adaptSize),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(
+                  value: p == 0 ? null : p, // null = indeterminate start, then %
+                  strokeWidth: 3.aw,
+                  color: MyColor.primaryColor,
+                ),
+                SizedBox(height: 12.ah),
+                Text("${"uploading".tr} $percent%",
+                  style: TextStyle(
+                    fontSize: 14.fSize,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    // ⭐ 2) NORMAL FILE HANDLING (your existing code)
+    if (url.isNotEmpty) {
+      // IMAGE
+      if (mime.startsWith("image") ||
+          type == "image" ||
+          type == "gif" ||
+          isImageFile(url)) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(12.adaptSize),
+          child: InstaImageViewer(
+            child: Image.network(
+              url,
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: 220.ah,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      }
+
+      // ---------- VIDEO ----------
+      /*
+      if (mime.startsWith("video") || url.endsWith(".mp4") || url.endsWith(".mov")) {
+        return FutureBuilder(
+          future: _getVideoDuration(url),
+          builder: (context, snapshot) {
+            final durationText = snapshot.data ?? "";
+
+            return InkWell(
+              onTap: () {
+                Get.to(() => VideoPlayerScreen(url: message.attachmentUrl!));
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: 220,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.black12,
+                    ),
+                  ),
+
+                  Icon(Icons.play_circle_fill, size: 60.adaptSize, color: Colors.white),
+                  Positioned(
+                    bottom: 10.adaptSize,
+                    right: 10.adaptSize,
+                    child: Text(
+                      durationText,
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
+*/
+
+
+// VIDEO
+      if (mime.startsWith("video") || url.endsWith(".mp4") || url.endsWith(".mov")) {
+        return FutureBuilder<Uint8List?>(
+          future: _generateThumb(url),
+          builder: (context, snap) {
+            final bytes = snap.data;
+
+            return InkWell(
+              onTap: () => Get.to(() => VideoPlayerScreen(url: url)),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.adaptSize),
+                    child: bytes != null
+                        ? Image.memory(bytes,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: 200.adaptSize,
+                      fit: BoxFit.cover,
+                    )
+                        : Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: 200.adaptSize,
+                      color: Colors.black26,
+                    ),
+                  ),
+
+                  Icon(Icons.play_circle_fill, size: 60.fSize, color: Colors.white),
+
+                  if (message.durationSeconds != null)
+                    Positioned(
+                      right: 10.adaptSize,
+                      bottom: 10.adaptSize,
+                      child: Text(
+                        formatDuration(message.durationSeconds!),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        );
+
+      }
+
+
+
+      // AUDIO
+      if (mime.startsWith("audio") ||
+          url.endsWith(".aac") ||
+          url.endsWith(".m4a") ||
+          url.endsWith(".mp3") ||
+          url.endsWith(".wav") ||
+          url.endsWith(".ogg") ||
+          type == "audio") {
+        return AudioMessagePlayer(url: url);
+      }
+
+      // UNKNOWN FILE
+      return Container(
+        padding: EdgeInsets.all(10.adaptSize),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(12.adaptSize),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.insert_drive_file),
+            SizedBox(width: 8.aw),
+            Text("file".tr),
+          ],
+        ),
+      );
+    }
+
+    // TEXT MESSAGE (no attachment)
+    return Text(
+      message.content ?? "",
+      style: TextStyle(fontSize: 16.fSize, color: Colors.black87),
+    );
+  }
 
   bool isImageFile(String url) {
     return url.toLowerCase().endsWith(".jpg") ||
@@ -661,6 +886,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         setState(() => _showPlayButton = false);
       }
     });
+
+    _controller.addListener(() {
+      if (mounted) setState(() {});
+    });
+
   }
 
   @override
@@ -678,6 +908,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       _controller.play();
       setState(() => _showPlayButton = false);
     }
+  }
+
+  String get videoDuration {
+    if (!_initialized) return "";
+    final d = _controller.value.duration;
+    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return "$minutes:$seconds";
+  }
+
+  String get currentPosition {
+    if (!_initialized) return "";
+    final p = _controller.value.position;
+    final minutes = p.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = p.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return "$minutes:$seconds";
   }
 
   @override
@@ -715,10 +961,32 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     _controller.value.isPlaying
                         ? Icons.pause_circle_filled
                         : Icons.play_circle_fill,
-                    size: 90,
+                    size: 90.adaptSize,
                     color: Colors.white.withOpacity(0.9),
                   ),
-                )
+                ),
+
+                Positioned(
+                bottom: 30.adaptSize,
+               // right: 20.adaptSize,
+                child: Container(
+                  width:Get.width,
+                  decoration: BoxDecoration(
+                   // borderRadius: BorderRadius.circular(30.adaptSize),
+                    color: Colors.black,
+                  ),
+                  child: Center(
+                    child: Text("${currentPosition} / ${videoDuration}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+
             ],
           ),
         ),
@@ -726,8 +994,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     );
   }
 }
-
-
 
 
 

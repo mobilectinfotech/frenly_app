@@ -51,6 +51,8 @@ class SingleMessage {
   String? mimeType;           // image/png, video/mp4 etc.
   int? durationSeconds;       // audio/video duration
   int? fileSize;              // for size KB or MB
+  bool? isUploading;
+  double? uploadProgress;
 
 
   SingleMessage({
@@ -73,6 +75,8 @@ class SingleMessage {
     this.mimeType,
     this.durationSeconds,
     this.fileSize,
+    this.isUploading,
+    this.uploadProgress,
   });
 
   factory SingleMessage.fromJson(Map<String, dynamic> json) => SingleMessage(
