@@ -1099,13 +1099,9 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     );
 
     await cam!.initialize();
-    await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);  // <-- ADD HERE
-   // cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+    await cam!.setFlashMode(FlashMode.off); // forces sensor reset
+    await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
     if (mounted) setState(() {});
-
-    // cam!.initialize().then((_) {
-    //   if (mounted) setState(() {});
-    // });
   }
 
   Future switchCamera() async {
@@ -1133,11 +1129,9 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       await cam!.startVideoRecording();
       recording = true;
       seconds = 0;
-
       timer = Timer.periodic(const Duration(seconds: 1), (_) {
         setState(() => seconds++);
       });
-
       setState(() {});
     } catch (_) {}
   }
@@ -1147,7 +1141,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       final file = await cam!.stopVideoRecording();
       timer?.cancel();
       recording = false;
-
       await cam?.dispose();
       widget.onCapture(file.path, true);
       Get.back();
@@ -1162,14 +1155,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
 
     timer?.cancel();
     cam?.dispose();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-
     super.dispose();
   }
 
@@ -1183,55 +1168,78 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-
-       //   preview – covers screen like whatsapp
-       //    Positioned.fill(
-       //      child: FittedBox(
-       //        fit: BoxFit.cover,
-       //        child: SizedBox(
-       //          width: cam!.value.previewSize!.height,
-       //          height: cam!.value.previewSize!.width,
-       //          child: CameraPreview(cam!),
-       //        ),
-       //      ),
-       //    ),
-
-          Positioned.fill(
-            child: Transform.scale(
-              scale: MediaQuery.of(context).size.aspectRatio / cam!.value.aspectRatio,
-              child: Center(
-                child: CameraPreview(cam!),
-              ),
-            ),
-          ),
-
           // Positioned.fill(
           //   child: Center(
-          //     child: AspectRatio(
-          //       aspectRatio: cam!.value.aspectRatio,
-          //       child: CameraPreview(cam!),
+          //     child: Transform.rotate(
+          //       angle: cam!.description.lensDirection == CameraLensDirection.front
+          //           ? -cam!.description.sensorOrientation * 3.1415926535 / 180
+          //           : cam!.description.sensorOrientation * 3.1415926535 / 180,
+          //       child: AspectRatio(
+          //         aspectRatio: cam!.value.aspectRatio,
+          //         child: SizedBox(
+          //             width: cam!.value.previewSize!.height,
+          //             height: cam!.value.previewSize!.width,
+          //             child: CameraPreview(cam!)),
+          //       ),
           //     ),
           //   ),
           // ),
 
-          /// Timer text
+
+          // --- CAMERA PREVIEW FULL SCREEN, NO BLACK BARS ---
+          Positioned.fill(
+            child: Center(
+              child: Transform.rotate(
+                angle: cam!.description.sensorOrientation * 3.1415926535 / 180,
+                child: FittedBox(
+                  fit:  cam!.description.lensDirection == CameraLensDirection.front
+                      ? BoxFit.none
+                      : BoxFit.none,
+                  child: SizedBox(
+                    width: cam!.value.previewSize!.height,
+                    height: cam!.value.previewSize!.width,
+                    child: Transform.scale(
+                        scale: cam!.description.lensDirection == CameraLensDirection.front ? 0.8 : 1.0,
+                        child: CameraPreview(cam!)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+
+          // Positioned.fill(
+          //   child: Center(
+          //     child: Transform.rotate(
+          //       angle: (cam!.description.sensorOrientation * 3.1415926535 / 180),
+          //       child: FittedBox(
+          //         fit: BoxFit.fitHeight,
+          //         child: SizedBox(
+          //           width: cam!.value.previewSize!.height.adaptSize,
+          //           height: cam!.value.previewSize!.height.adaptSize,
+          //           child: CameraPreview(cam!),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+
           if (recording)
             Positioned(
-              top: 80,
-              left: 0,
-              right: 0,
+              top: 80.adaptSize,
+              left: 0.adaptSize,
+              right: 0.adaptSize,
               child: Center(
                 child: Text(
                   "$seconds s",
-                  style: const TextStyle(color: Colors.red, fontSize: 22),
+                  style:TextStyle(color: Colors.red, fontSize: 22.fSize),
                 ),
               ),
             ),
 
-          /// flip camera button
           Positioned(
-            top: 60,
-            right: 20,
+            top: 60.adaptSize,
+            right: 20.adaptSize,
             child: GestureDetector(
               onTap: switchCamera,
               child: const CircleAvatar(
@@ -1241,23 +1249,35 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
             ),
           ),
 
-          /// TAP/HOLD hint
           Positioned(
-            bottom: 150,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Text("Tap_to_capture_Hold_video".tr,
-                style: TextStyle(color: Colors.white70, fontSize: 14),
+            top: 60.adaptSize,
+            left: 20.adaptSize,
+            child: GestureDetector(
+              onTap:(){
+                Get.back();
+              },
+              child:CircleAvatar(
+                backgroundColor: Colors.black45,
+                child: Icon(Icons.close, color: Colors.white,size: 30.adaptSize),
               ),
             ),
           ),
 
-          /// Capture / Record button
+          Positioned(
+            bottom: 150.adaptSize,
+            left: 15.adaptSize,
+            right:0.adaptSize,
+            child: Center(
+              child: Text("Tap_to_capture_Hold_video".tr,
+                style: TextStyle(color: Colors.white70, fontSize: 14.fSize),
+              ),
+            ),
+          ),
+
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              padding: const EdgeInsets.only(bottom: 40),
+              padding: EdgeInsets.only(bottom: 70.adaptSize,),
               child: GestureDetector(
                 onTap: () {
                   if (!recording) capturePhoto();
@@ -1265,7 +1285,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
                 onLongPress: startRecording,
                 onLongPressUp: stopRecording,
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
+                  duration:  Duration(milliseconds: 200),
                   width: recording ? 85 : 70,
                   height: recording ? 85 : 70,
                   decoration: BoxDecoration(
