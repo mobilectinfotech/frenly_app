@@ -742,6 +742,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     await _audioRecorder.openRecorder();
   }
 
+/*
   Future<void> _recordAudio() async {
     // 1️⃣ Request mic permission
     var status = await Permission.microphone.request();
@@ -753,30 +754,85 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
     // 2️⃣ STOP recording
     if (_isRecording) {
+      print('Reconding = ${_isRecording}');
       final path = await _audioRecorder.stopRecorder();
       _isRecording = false;
 
       if (path != null) {
+        //⭐ GET DURATION BEFORE UPLOAD
+        final duration = await controller.getAudioDuration(path);
+        print("🎵 Duration before upload: $duration sec");
+
         await controller.sendMedia(
           chatId: widget.chatId,
           filePath: path,
           type: MessageType.audio,
         );
       }
-
       setState(() {});
       return;
     }
 
     // 3️⃣ START recording
     final dir = await getTemporaryDirectory();
-    final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.aac";
+   //final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.aac";
+   //  final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
+   //
+   //  await _audioRecorder.startRecorder(toFile: filePath, codec: Codec.aacMP4,);
 
-    await _audioRecorder.startRecorder(toFile: filePath);
+
+    final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.aac";
+    await _audioRecorder.startRecorder(
+      toFile: filePath,
+      codec: Codec.aacADTS,   // 🔥 THIS FIXES JUST_AUDIO ERROR
+    );
+
 
     _isRecording = true;
     setState(() {});
   }
+*/
+
+
+  Future<void> _recordAudio() async {
+    // 1️⃣ Request mic permission
+    var status = await Permission.microphone.request();
+    if (!status.isGranted) {
+      AppDialog.taostMessage("Microphone permission required");
+      return;
+    }
+
+    // 2️⃣ STOP recording
+    if (_isRecording) {
+      print('Recording = ${_isRecording}');
+      final path = await _audioRecorder.stopRecorder();
+      _isRecording = false;
+      if (path != null) {
+        //⭐ GET DURATION BEFORE UPLOAD
+        final duration = await controller.getAudioDuration(path);
+        print("🎵 Duration before upload: $duration sec");
+        await controller.sendMedia(
+          chatId: widget.chatId,
+          filePath: path,
+          type: MessageType.audio,
+        );
+      }
+      setState(() {});
+      return;
+    }
+
+    // 3️⃣ START recording
+    final dir = await getTemporaryDirectory();
+    // 🔥 FIXED: Use .m4a with aacMP4 for release compatibility
+    final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
+    await _audioRecorder.startRecorder(
+      toFile: filePath,
+      codec: Codec.aacMP4,  // 🔥 CHANGED: From aacADTS to aacMP4 (MP4 container)
+    );
+    _isRecording = true;
+    setState(() {});
+  }
+
 
   Future<void> _sendPickedImage(String filePath) async {
     final controller = Get.find<ChatRoomController>();
@@ -785,12 +841,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       filePath: filePath,
       type: MessageType.image,   // <-- audio, not image
     );
-
     if (success) {
     //  controller.clear();
     }
   }
-
 
   Future<void> startVoiceRecording() async {
     if (_isRecording){
@@ -810,8 +864,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
     await _audioRecorder.startRecorder(
       toFile: filePath,
-      codec: Codec.aacADTS,
+     // codec: Codec.aacADTS,
+      codec: Codec.aacMP4,
     );
+
     _isRecording = true;
     setState(() {});
     // Optional: auto-stop after 30 seconds
@@ -824,6 +880,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 extension on MessageModel1 {
   operator [](int other) {}
 }
+
 
 // class WhatsappCameraScreen extends StatefulWidget {
 //   final Function(String path, bool isVideo) onCapture;

@@ -292,7 +292,7 @@ class ReplyCard extends StatelessWidget {
             url.endsWith(".mp3") ||
             url.endsWith(".wav") ||
             type == "audio")) {
-      return AudioMessagePlayer(url: url);
+      return AudioMessagePlayer(message: message);
     }
 
     // ---------- NORMAL TEXT ----------

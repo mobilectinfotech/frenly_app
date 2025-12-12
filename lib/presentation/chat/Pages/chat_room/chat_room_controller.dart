@@ -11,6 +11,8 @@ import '../chats/chats_controller.dart';
 import 'chat_room_model.dart';
 import 'chat_room_page.dart';
 import 'package:dio/dio.dart';
+import 'package:just_audio/just_audio.dart';
+
 
 class ChatRoomController extends GetxController {
   MessageModel1 messageModel1 = MessageModel1(messages: []);
@@ -21,6 +23,7 @@ class ChatRoomController extends GetxController {
   RxBool lastSeenAllowed = true.obs;
   RxBool isOnline = false.obs;
   late String chatId;
+  int? durationSec;
 
   late String currentParticipantId;
 
@@ -258,15 +261,118 @@ class ChatRoomController extends GetxController {
 */
 
 
+  // Future<bool> sendMedia({
+  //   required String chatId,
+  //   required String filePath,
+  //   required MessageType type,
+  // })
+  // async {
+  //   try {
+  //     // 1) Optional: compress video
+  //     if (type == MessageType.video) {
+  //       final info = await VideoCompress.compressVideo(
+  //         filePath,
+  //         quality: VideoQuality.MediumQuality,
+  //         deleteOrigin: false,
+  //       );
+  //       filePath = info?.path ?? filePath;
+  //     }
+  //
+  //     // 2) Create a TEMP local message with uploading = true
+  //     final tempId = DateTime.now().millisecondsSinceEpoch; // local temp id
+  //
+  //     final tempMsg = SingleMessage(
+  //       id: tempId,
+  //       content: "",
+  //       senderId: null, //or your currentUserId if you have it
+  //       chatId: int.tryParse(chatId),
+  //       isRead: true,
+  //       seen: true,
+  //       isLink: 0,
+  //       createdAt: DateTime.now(),
+  //       attachmentType: type.name, // "image" / "video"
+  //       attachmentUrl: null,
+  //       mimeType: type == MessageType.image ? "image/*" : "video/*",
+  //       isUploading: true,
+  //       uploadProgress: 0.0,
+  //     );
+  //
+  //     // Add temporary bubble to top (index 0)
+  //     allMsgNOTUSE.update((val) {
+  //       val!.messages!.insert(0, tempMsg);
+  //     });
+  //
+  //     // 3) Prepare Dio request with progress
+  //     final dio = Dio();
+  //     dio.options.headers["Authorization"] =
+  //     "Bearer ${PrefUtils().getAuthToken()}";
+  //
+  //     if (type == MessageType.audio) {
+  //       durationSec = await getAudioDuration(filePath);
+  //       print("🎵 Audio Duration = $durationSec seconds");
+  //     }
+  //     final formData = FormData.fromMap({
+  //       "content": "file",
+  //       "isLink": "0",
+  //       if (durationSec != null) "durationSeconds": durationSec.toString(),
+  //     "file": await MultipartFile.fromFile(
+  //         filePath,
+  //         filename: filePath.split("/").last,
+  //       ),
+  //     });
+  //
+  //     final response = await dio.post(
+  //       "${ApiClient.mainUrl}message/$chatId",
+  //       data: formData,
+  //       onSendProgress: (sent, total) {
+  //         if (total != 0) {
+  //           final progress = sent / total; // 0.0 → 1.0
+  //
+  //           tempMsg.uploadProgress = progress;
+  //           allMsgNOTUSE.refresh(); // rebuild UI
+  //         }
+  //       },
+  //     );
+  //
+  //     // 4) Replace temp message with REAL message from backend
+  //     final realMsg = SingleMessage.fromJson(response.data["data"]);
+  //     realMsg.isUploading = false;
+  //     realMsg.uploadProgress = 1.0;
+  //
+  //     allMsgNOTUSE.update((val) {
+  //       final list = val!.messages!;
+  //       final index = list.indexWhere((m) => m.id == tempId);
+  //
+  //       if (index != -1) {
+  //         list[index] = realMsg;
+  //       } else {
+  //         list.insert(0, realMsg);
+  //       }
+  //     });
+  //
+  //     return true;
+  //   } catch (e) {
+  //     print("❌ SEND MEDIA ERROR: $e");
+  //     // On error, mark temp message as failed
+  //     allMsgNOTUSE.update((val) {
+  //       final list = val!.messages!;
+  //       final index = list.indexWhere((m) => m.isUploading == true);
+  //       if (index != -1) {
+  //         list[index].isUploading = false;
+  //         list[index].uploadProgress = 0;
+  //       }
+  //     });
+  //     return false;
+  //   }
+  // }
 
   Future<bool> sendMedia({
     required String chatId,
     required String filePath,
     required MessageType type,
-  })
-  async {
+  }) async {
     try {
-      // 1) Optional: compress video
+      // 1) Optional: compress video (unchanged)
       if (type == MessageType.video) {
         final info = await VideoCompress.compressVideo(
           filePath,
@@ -276,40 +382,66 @@ class ChatRoomController extends GetxController {
         filePath = info?.path ?? filePath;
       }
 
-      // 2) Create a TEMP local message with uploading = true
-      final tempId = DateTime.now().millisecondsSinceEpoch; // local temp id
+      // 2) Create TEMP local message with uploading = true
+      final tempId = DateTime.now().millisecondsSinceEpoch;
+      String tempMimeType = "application/octet-stream";  // Default
+
+      // 🔥 FIXED: Set proper MIME based on type
+      switch (type) {
+        case MessageType.image:
+          tempMimeType = "image/jpeg";  // Or detect actual
+          break;
+        case MessageType.video:
+          tempMimeType = "video/mp4";
+          break;
+        case MessageType.audio:
+          tempMimeType = "audio/mp4";  // 🔥 CHANGED: For .m4a (aacMP4)
+          break;
+        case MessageType.gif:
+          tempMimeType = "image/gif";
+          break;
+        default:
+          tempMimeType = "application/octet-stream";
+      }
 
       final tempMsg = SingleMessage(
         id: tempId,
         content: "",
-        senderId: null, // or your currentUserId if you have it
+        senderId: null,
         chatId: int.tryParse(chatId),
         isRead: true,
         seen: true,
         isLink: 0,
         createdAt: DateTime.now(),
-        attachmentType: type.name, // "image" / "video"
+        attachmentType: type.name,
         attachmentUrl: null,
-        mimeType: type == MessageType.image ? "image/*" : "video/*",
+        mimeType: tempMimeType,  // 🔥 FIXED: Now correct for audio
         isUploading: true,
         uploadProgress: 0.0,
       );
 
-      // Add temporary bubble to top (index 0)
+      // Add temporary bubble (unchanged)
       allMsgNOTUSE.update((val) {
         val!.messages!.insert(0, tempMsg);
       });
 
-      // 3) Prepare Dio request with progress
+      // 3) Prepare Dio request (unchanged, but duration for audio)
       final dio = Dio();
-      dio.options.headers["Authorization"] =
-      "Bearer ${PrefUtils().getAuthToken()}";
+      dio.options.headers["Authorization"] = "Bearer ${PrefUtils().getAuthToken()}";
+
+      int? durationSec;
+      if (type == MessageType.audio) {
+        durationSec = await getAudioDuration(filePath);
+        print("🎵 Audio Duration = $durationSec seconds");
+      }
+
       final formData = FormData.fromMap({
         "content": "file",
         "isLink": "0",
+        if (durationSec != null) "durationSeconds": durationSec.toString(),
         "file": await MultipartFile.fromFile(
           filePath,
-          filename: filePath.split("/").last,
+          filename: filePath.split("/").last,  // Now .m4a
         ),
       });
 
@@ -318,15 +450,14 @@ class ChatRoomController extends GetxController {
         data: formData,
         onSendProgress: (sent, total) {
           if (total != 0) {
-            final progress = sent / total; // 0.0 → 1.0
-
+            final progress = sent / total;
             tempMsg.uploadProgress = progress;
-            allMsgNOTUSE.refresh(); // rebuild UI
+            allMsgNOTUSE.refresh();
           }
         },
       );
 
-      // 4) Replace temp message with REAL message from backend
+      // 4) Replace temp with real (unchanged)
       final realMsg = SingleMessage.fromJson(response.data["data"]);
       realMsg.isUploading = false;
       realMsg.uploadProgress = 1.0;
@@ -334,7 +465,6 @@ class ChatRoomController extends GetxController {
       allMsgNOTUSE.update((val) {
         final list = val!.messages!;
         final index = list.indexWhere((m) => m.id == tempId);
-
         if (index != -1) {
           list[index] = realMsg;
         } else {
@@ -345,8 +475,7 @@ class ChatRoomController extends GetxController {
       return true;
     } catch (e) {
       print("❌ SEND MEDIA ERROR: $e");
-
-      // On error, mark temp message as failed
+      // Error handling (unchanged)
       allMsgNOTUSE.update((val) {
         final list = val!.messages!;
         final index = list.indexWhere((m) => m.isUploading == true);
@@ -355,11 +484,23 @@ class ChatRoomController extends GetxController {
           list[index].uploadProgress = 0;
         }
       });
-
       return false;
     }
   }
 
+  Future<int?> getAudioDuration(String filePath) async {
+    try {
+      final player = AudioPlayer();
+      await player.setFilePath(filePath);
+      // final duration = player.duration;
+      final duration = player.duration?.inSeconds;
+      await player.dispose();
+      return duration;
+    } catch (e) {
+      print("Audio duration error: $e");
+      return null;
+    }
+  }
 
 
 /*

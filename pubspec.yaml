@@ -108,7 +108,7 @@ dependencies:
   auto_size_text: ^3.0.0
   pinch_zoom_release_unzoom: ^2.0.0
   zoom_pinch_overlay: ^1.4.3
-  just_audio: ^0.10.5
+  just_audio: ^0.9.46  # 🔥 TEMP: Rollback until AGP fix lands
   audio_video_progress_bar: ^2.0.3
   video_thumbnail: ^0.5.6
 

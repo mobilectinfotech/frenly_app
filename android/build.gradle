@@ -1,3 +1,18 @@
+buildscript {
+    ext.kotlin_version = '1.9.10'  // Or your existing Kotlin version (e.g., 1.7.10 or 1.8.22)
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.5.2'  // 🔥 ADDED/UPDATED HERE: Downgrade AGP
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // Add any other classpaths if you have them (e.g., for Firebase: classpath 'com.google.gms:google-services:4.4.0')
+    }
+}
+
+
 allprojects {
     repositories {
         google()
