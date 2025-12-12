@@ -219,6 +219,7 @@ class OwnMessageCard extends StatelessWidget {
                         ),
                         child: buildMessageContent(context),
                       ),
+
                     ],
                   ),
                 ),
@@ -300,7 +301,6 @@ class OwnMessageCard extends StatelessWidget {
       return null;
     }
   }
-
 
 
 /*
@@ -852,36 +852,6 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
     super.dispose();
   }
 
-  // Future<void> _togglePlayPause() async {
-  //   print("AUDIO URL → ${widget.message.attachmentUrl}");
-  //   if (isPlaying) {
-  //     await _player.pause();
-  //     return;
-  //   }
-  //
-  //   // If not playing -> make this the active player (stops any other active player)
-  //   await AudioManager.setActive(_player, widget.message.attachmentUrl!);
-  //
-  //   // ensure the audio is ready
-  //   if (_player.playerState.processingState == ProcessingState.idle) {
-  //     // attempt to set url again
-  //     try {
-  //    //   await _player.setUrl(widget.message.toString());
-  //       await _player.setUrl(widget.message.attachmentUrl!);
-  //
-  //     } catch (e) {
-  //       debugPrint("Audio load error on play: $e");
-  //       return;
-  //     }
-  //   }
-  //
-  //   // finally play
-  //   await _player.play();
-  // }
-
-
-
-
   Future<void> _togglePlayPause() async {
     final url = widget.message.attachmentUrl!;
     print("🎧 PLAY URL → $url");
@@ -905,37 +875,6 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
 
     await _player.play();
   }
-
-
-/*
-  Future<void> _togglePlayPause() async {
-    print("AUDIO URL → ${widget.message.attachmentUrl}");
-    print("MIME FROM API → ${widget.message.mimeType}");
-
-    if (isPlaying) {
-      await _player.pause();
-      return;
-    }
-
-    await AudioManager.setActive(_player, widget.message.attachmentUrl!);
-
-    if (_player.playerState.processingState == ProcessingState.idle) {
-      try {
-      //  await _player.setUrl(widget.message.attachmentUrl!);
-        if (widget.message.mimeType == "application/octet-stream") {
-          print("❌ THIS AUDIO FILE IS CORRUPTED. CAN'T PLAY.");
-          return;
-        }
-
-      } catch (e) {
-        debugPrint("Audio load error on play: $e");
-        return;
-      }
-    }
-
-    await _player.play();
-  }
-*/
 
   String _format(Duration d) {
     final mm = d.inMinutes.remainder(60).toString().padLeft(2, '0');
