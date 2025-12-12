@@ -48,8 +48,8 @@ class ChatRoomPage extends StatefulWidget {
 class _ChatRoomPageState extends State<ChatRoomPage> {
   final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
   //final ChatRoomController controller = Get.put(ChatRoomController());
-  final ImagePicker _picker = ImagePicker();
 
+  final ImagePicker _picker = ImagePicker();
   final FocusNode focusNode = FocusNode();
   final TextEditingController _messageController = TextEditingController();
   String lastSeenUser = '';
