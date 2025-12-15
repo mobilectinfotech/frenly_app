@@ -501,7 +501,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
-  void openWhatsappCamera() {
+  void openWhatsappCamera() async {
+    final ok = await requestCameraPermissions();
+    if (!ok) return;
     Get.to(() => WhatsappCameraScreen(
       onCapture: (path, isVideo){
         controller.sendMedia(
@@ -511,6 +513,37 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         );
       },
     ));
+  }
+
+  Future<bool> requestCameraPermissions() async {
+    // Check current status (do NOT request yet)
+    final cameraStatus = await Permission.camera.status;
+    final micStatus = await Permission.microphone.status;
+
+    // If already granted
+    if (cameraStatus.isGranted && micStatus.isGranted) {
+      return true;
+    }
+
+    // Request permissions
+    final cameraResult = await Permission.camera.request();
+    final micResult = await Permission.microphone.request();
+
+    // Granted after request
+    if (cameraResult.isGranted && micResult.isGranted) {
+      return true;
+    }
+
+    // ❌ Permanently denied → user must go to Settings
+    if (cameraResult.isPermanentlyDenied ||
+        micResult.isPermanentlyDenied) {
+      AppDialog.taostMessage(
+        "Please enable Camera & Microphone access from Settings",
+      );
+      await openAppSettings();
+    }
+
+    return false;
   }
 
 
@@ -600,8 +633,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         });
   }
 
-  Widget
-  _iconButton(IconData icon, VoidCallback onTap, {
+  Widget _iconButton(IconData icon, VoidCallback onTap, {
         Color color = Colors.black54,
       }) {
     return InkWell(
@@ -792,7 +824,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     setState(() {});
   }
 */
-
 
   Future<void> _recordAudio() async {
     // 1️⃣ Request mic permission
@@ -1134,8 +1165,14 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
   @override
   void initState() {
     super.initState();
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    // ]);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
     initCamera();
   }
@@ -1157,7 +1194,17 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
 
     await cam!.initialize();
     await cam!.setFlashMode(FlashMode.off); // forces sensor reset
-    await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+
+  //  await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+  //   cam = CameraController(
+  //     camera,
+  //     ResolutionPreset.high,
+  //     enableAudio: true,
+  //   );
+  //
+ //   await cam!.initialize();
+    // if (mounted) setState(() {});
+
     if (mounted) setState(() {});
   }
 
@@ -1211,7 +1258,10 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     } catch (_) {}
 
     timer?.cancel();
-    cam?.dispose();
+   // cam?.dispose();
+    if (cam != null) {
+      cam!.dispose();
+    }
     super.dispose();
   }
 
@@ -1368,5 +1418,57 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
 }
 
 
-
+// <?xml version="1.0" encoding="UTF-8"?>
+// <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+// <plist version="1.0">
+// <dict>
+// <key>CADisableMinimumFrameDurationOnPhone</key>
+// <true/>
+// <key>CFBundleDevelopmentRegion</key>
+// <string>$(DEVELOPMENT_LANGUAGE)</string>
+// <key>CFBundleDisplayName</key>
+// <string>Frenly</string>
+// <key>CFBundleExecutable</key>
+// <string>$(EXECUTABLE_NAME)</string>
+// <key>CFBundleIdentifier</key>
+// <string>com.cti.frenly</string>
+// <key>CFBundleInfoDictionaryVersion</key>
+// <string>6.0</string>
+// <key>CFBundleName</key>
+// <string>Frenly</string>
+// <key>CFBundlePackageType</key>
+// <string>APPL</string>
+// <key>CFBundleShortVersionString</key>
+// <string>$(FLUTTER_BUILD_NAME)</string>
+// <key>CFBundleSignature</key>
+// <string>????</string>
+// <key>CFBundleVersion</key>
+// <string>$(FLUTTER_BUILD_NUMBER)</string>
+// <key>LSRequiresIPhoneOS</key>
+// <true/>
+// <key>NSCameraUsageDescription</key>
+// <string>To capture profile photo please grant camera access</string>
+// <key>NSPhotoLibraryUsageDescription</key>
+// <string>App needs access to photo lib for profile images</string>
+// <key>UIApplicationSupportsIndirectInputEvents</key>
+// <true/>
+// <key>UILaunchStoryboardName</key>
+// <string>LaunchScreen</string>
+// <key>UIMainStoryboardFile</key>
+// <string>Main</string>
+// <key>UISupportedInterfaceOrientations</key>
+// <array>
+// <string>UIInterfaceOrientationPortrait</string>
+// <string>UIInterfaceOrientationLandscapeLeft</string>
+// <string>UIInterfaceOrientationLandscapeRight</string>
+// </array>
+// <key>UISupportedInterfaceOrientations~ipad</key>
+// <array>
+// <string>UIInterfaceOrientationPortrait</string>
+// <string>UIInterfaceOrientationPortraitUpsideDown</string>
+// <string>UIInterfaceOrientationLandscapeLeft</string>
+// <string>UIInterfaceOrientationLandscapeRight</string>
+// </array>
+// </dict>
+// </plist>
 

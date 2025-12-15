@@ -553,6 +553,7 @@ class OwnMessageCard extends StatelessWidget {
       // }
 
       // In buildMessageContent(), audio if-block:
+
       if (mime.startsWith("audio") ||  // Now correctly "audio/mp4"
           url.toLowerCase().endsWith(".m4a") ||  // 🔥 ADDED: For new extension
           url.toLowerCase().endsWith(".aac") ||  // Legacy support
@@ -792,57 +793,6 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
     });
   }
 
-  // Future<void> _init() async {
-  //   final url = widget.message.attachmentUrl!;
-  //   print("🔍 CHECKING AUDIO URL → $url");
-  //
-  //   // print S3 headers (optional debugging)
-  //   try {
-  //     final response = await http.head(Uri.parse(url));
-  //     print("🔍 S3 HEADERS → ${response.headers}");
-  //   } catch (_) {}
-  //
-  //   // ⭐ DO NOT block audio if MIME is octet-stream
-  //   // JUST load the file and let player decide
-  //   try {
-  //     await _player.setUrl(url);
-  //   } catch (e) {
-  //     print("❌ Audio load error on init: $e");
-  //   }
-  //
-  //   // Duration listener
-  //   _player.durationStream.listen((d) {
-  //     if (!mounted) return;
-  //     if (d == null) return;
-  //     if (widget.message.durationSeconds != null) return;
-  //     setState(() => totalDuration = d);
-  //   });
-  //
-  //
-  //   // Position listener
-  //   _player.positionStream.listen((p) {
-  //     setState(() => currentPosition = p);
-  //   });
-  //
-  //   // Playing listener
-  //   _player.playingStream.listen((playing) {
-  //     setState(() => isPlaying = playing);
-  //   });
-  //
-  //   // Completion listener
-  //   _player.playerStateStream.listen((state) {
-  //     if (state.processingState == ProcessingState.completed) {
-  //       _player.seek(Duration.zero);
-  //       _player.pause();
-  //       setState(() {
-  //         currentPosition = Duration.zero;
-  //         isPlaying = false;
-  //       });
-  //       AudioManager.clearIfActive(_player);
-  //     }
-  //   });
-  // }
-
   @override
   void dispose() {
     // stop & clear active reference if this player is active
@@ -856,6 +806,10 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
     final url = widget.message.attachmentUrl!;
     print("🎧 PLAY URL → $url");
     print("FINAL URL LOADED → $url");
+    if (widget.message.attachmentUrl == null ||
+        widget.message.attachmentUrl!.isEmpty) {
+      return;
+    }
 
     if (isPlaying) {
       await _player.pause();
@@ -934,8 +888,7 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
                     padding: EdgeInsets.zero,
                     min: 0,
                     max: max,
-                    value: currentPosition.inMilliseconds
-                        .clamp(0, totalDuration.inMilliseconds).toDouble(),
+                    value: currentPosition.inMilliseconds.clamp(0, totalDuration.inMilliseconds).toDouble(),
                     onChanged: (value) {
                       final newPos = Duration(milliseconds: value.toInt());
                       _player.seek(newPos);
@@ -959,6 +912,7 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
     );
   }
 }
+
 
 
 /// GLOBAL AUDIO MANAGER — ensures ONLY ONE audio plays at a time
@@ -1133,8 +1087,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     );
   }
 }
-
-
 
 
 /*
