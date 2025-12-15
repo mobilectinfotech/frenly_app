@@ -186,3 +186,11 @@ void setupTimeagoLocales() {
 
 // jhonk@yopmail.com
 // https://we.tl/t-PsH436A0Is
+
+// flutter clean
+// rm -rf ios/Pods ios/Podfile.lock
+// pod cache clean --all
+// flutter pub get
+// cd ios
+// pod deintegrate
+// flutter build ios --config-only --release
