@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:camera/camera.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -487,6 +488,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
            // _iconButton(Icons.photo_library_outlined, _pickFromGallery),
                   _iconButton(Icons.photo_library_outlined, _pickFromGallery),
+
                   _iconButton(Icons.videocam_outlined, _pickVideo),
 
             //SizedBox(width: 4.aw),
@@ -792,20 +794,56 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
+  // Future<void> _pickVideo() async {
+  //   final XFile? file = await _picker.pickVideo(
+  //     source: ImageSource.gallery,
+  //     maxDuration: Duration(minutes: 5),
+  //   );
+  //
+  //   if (file != null) {
+  //     await controller.sendMedia(
+  //       chatId: widget.chatId,
+  //       filePath: file.path,
+  //       type: MessageType.video,
+  //     );
+  //   }
+  // }
+
   Future<void> _pickVideo() async {
+    PermissionStatus status;
+
+    if (Platform.isAndroid) {
+      if (await DeviceInfoPlugin().androidInfo.then((v) => v.version.sdkInt) >= 33) {
+        status = await Permission.videos.request();
+      } else {
+        status = await Permission.storage.request();
+      }
+
+      if (!status.isGranted) {
+        AppDialog.taostMessage("Gallery permission required");
+        return;
+      }
+    }
+
     final XFile? file = await _picker.pickVideo(
       source: ImageSource.gallery,
-      maxDuration: Duration(minutes: 5),
+      maxDuration: const Duration(minutes: 5),
     );
 
-    if (file != null) {
-      await controller.sendMedia(
-        chatId: widget.chatId,
-        filePath: file.path,
-        type: MessageType.video,
-      );
+    if (file == null) {
+      debugPrint("❌ Video picker returned null");
+      return;
     }
+
+    debugPrint("✅ Picked video path: ${file.path}");
+
+    await controller.sendMedia(
+      chatId: widget.chatId,
+      filePath: file.path,
+      type: MessageType.video,
+    );
   }
+
 
   Future<void> _pickFromGallery() async {
     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
@@ -1824,7 +1862,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       print("Video record error: $e");
     }
   }
-
 
   Future stopRecording() async {
     try {
