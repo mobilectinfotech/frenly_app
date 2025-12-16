@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math' as math;
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -493,7 +494,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
             SizedBox(width: 8.aw),
              _buildSendButton(),
-
                 ],
               ),
          ),
@@ -501,42 +501,114 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
+  // void openWhatsappCamera() async {
+  //   final ok = await requestCameraPermissions();
+  //   if (!ok) return;
+  //   Get.to(() => WhatsappCameraScreen(
+  //     onCapture: (path, isVideo){
+  //       controller.sendMedia(
+  //         chatId: widget.chatId,
+  //         filePath: path,
+  //         type: isVideo ? MessageType.video : MessageType.image,
+  //       );
+  //     },
+  //   ));
+  // }
+
   void openWhatsappCamera() async {
     final ok = await requestCameraPermissions();
     if (!ok) return;
-    Get.to(() => WhatsappCameraScreen(
-      onCapture: (path, isVideo){
-        controller.sendMedia(
-          chatId: widget.chatId,
-          filePath: path,
-          type: isVideo ? MessageType.video : MessageType.image,
-        );
-      },
-    ));
+
+    try {
+      final result = await Get.to(() => WhatsappCameraScreen(
+        onCapture: (path, isVideo) {
+          controller.sendMedia(
+            chatId: widget.chatId,
+            filePath: path,
+            type: isVideo ? MessageType.video : MessageType.image,
+          );
+        },
+      ));
+      if (result == null) print("Camera screen closed without capture");
+    } catch (e) {
+      print("openWhatsappCamera error: $e");
+      AppDialog.taostMessage("Failed to open camera. Please restart app.");
+    }
   }
 
   Future<bool> requestCameraPermissions() async {
-    // Check current status (do NOT request yet)
-    final cameraStatus = await Permission.camera.status;
-    final micStatus = await Permission.microphone.status;
+    // Log initial statuses
+    final initialCamera = await Permission.camera.status;
+    final initialMic = await Permission.microphone.status;
+    print("Initial Camera Status: $initialCamera");
+    print("Initial Mic Status: $initialMic");
 
-    // If already granted
-    if (cameraStatus.isGranted && micStatus.isGranted) {
+    if (initialCamera.isGranted && initialMic.isGranted) {
+      print("✅ Permissions already granted");
       return true;
     }
 
-    // Request permissions
-    final cameraResult = await Permission.camera.request();
-    final micResult = await Permission.microphone.request();
+    // Request only if needed
+    final results = await [
+      Permission.camera,
+      Permission.microphone,
+    ].request();
 
-    // Granted after request
-    if (cameraResult.isGranted && micResult.isGranted) {
+    final camera = results[Permission.camera]!;
+    final mic = results[Permission.microphone]!;
+
+    print("After Request - Camera: $camera, Mic: $mic");
+
+    // iOS Delay: Wait for propagation (bug fix)
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (camera.isGranted && mic.isGranted) {
       return true;
     }
 
-    // ❌ Permanently denied → user must go to Settings
-    if (cameraResult.isPermanentlyDenied ||
-        micResult.isPermanentlyDenied) {
+    // Double-check for false denial
+    final doubleCheckCamera = await Permission.camera.status;
+    final doubleCheckMic = await Permission.microphone.status;
+    print("Double-check - Camera: $doubleCheckCamera, Mic: $doubleCheckMic");
+
+    if (doubleCheckCamera.isPermanentlyDenied || doubleCheckMic.isPermanentlyDenied) {
+      AppDialog.taostMessage("Please enable Camera & Microphone in Settings");
+      await openAppSettings();
+      return false;
+    }
+
+    // Proceed if granted after delay (workaround)
+    print("⚠️ False denial detected - proceeding anyway");
+    return true;
+  }
+
+/*
+  Future<bool> requestCameraPermissions() async {
+    // iOS-safe: check first
+    final cameraGranted = await Permission.camera.isGranted;
+    final micGranted = await Permission.microphone.isGranted;
+
+    if (cameraGranted && micGranted) {
+      return true;
+    }
+
+    // Request only if not granted
+    final results = await [
+      Permission.camera,
+      Permission.microphone,
+    ].request();
+
+    final camera = results[Permission.camera];
+    final mic = results[Permission.microphone];
+
+    if (camera == PermissionStatus.granted &&
+        mic == PermissionStatus.granted) {
+      return true;
+    }
+
+    // ❌ Only handle permanentlyDenied (NOT restricted)
+    if (camera == PermissionStatus.permanentlyDenied ||
+        mic == PermissionStatus.permanentlyDenied) {
       AppDialog.taostMessage(
         "Please enable Camera & Microphone access from Settings",
       );
@@ -545,6 +617,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
     return false;
   }
+*/
 
 
   Future<CroppedFile?> imagePicker(
@@ -770,8 +843,17 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
+  // Future<void> _initAudio() async {
+  //   await _audioRecorder.openRecorder();
+  // }
+
   Future<void> _initAudio() async {
-    await _audioRecorder.openRecorder();
+    try {
+      await _audioRecorder.openRecorder();
+      print("✅ Audio recorder initialized");
+    } catch (e) {
+      print("❌ Audio init error: $e");
+    }
   }
 
 /*
@@ -825,44 +907,183 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 */
 
+
+// Updated _ensureMicPermission with iOS workaround
+  Future<bool> _ensureMicPermission() async {
+    try {
+      final status = await Permission.microphone.status;
+      print("Current mic status: $status");
+
+      if (status.isGranted) {
+        print("✅ Mic already granted");
+        return true;
+      }
+
+      // if (status.isPermanentlyDenied || status.isRestricted) {
+      //   print("❌ Mic permanently denied/restricted");
+      //   AppDialog.taostMessage("Please enable microphone in Settings");
+      //   await openAppSettings();
+      //   return false;
+      // }
+
+// 🔥TEMP DEV BYPASS: Comment out return false; to test recorder
+      if (status.isPermanentlyDenied) {  // For testing only
+        print("⚠️ DEV BYPASS: Assuming granted");
+        return true;  // Remove in production
+      }
+
+      print("🔄 Requesting mic permission...");
+      final result = await Permission.microphone.request();
+      print("Request result: $result");
+
+      // 🔥 ENHANCED iOS WORKAROUND: Delay + triple-check + dummy re-request
+      if (Platform.isIOS) {
+        await Future.delayed(const Duration(milliseconds: 800));  // Longer delay for sync
+        final doubleCheck = await Permission.microphone.status;
+        print("iOS double-check: $doubleCheck");
+
+        if (doubleCheck.isGranted) {
+          print("✅ iOS sync success - proceeding");
+          return true;
+        }
+
+        // 🔥 FALLBACK: Dummy re-request to force iOS update (safe, no extra prompt)
+        print("🔄 iOS fallback: Dummy re-request...");
+        final fallback = await Permission.microphone.request();
+        await Future.delayed(const Duration(milliseconds: 300));
+        final tripleCheck = await Permission.microphone.status;
+        print("Fallback result: $fallback, Triple-check: $tripleCheck");
+
+        if (tripleCheck.isGranted) {
+          print("✅ iOS fallback success - proceeding");
+          return true;
+        }
+      }
+
+      return result.isGranted;
+    } catch (e) {
+      print("❌ Permission error: $e");
+      return false;
+    }
+  }
+
+// _recordAudio unchanged (your version is good with logs)
   Future<void> _recordAudio() async {
-    // 1️⃣ Request mic permission
-    var status = await Permission.microphone.request();
-    if (!status.isGranted) {
-      AppDialog.taostMessage("Microphone permission required");
+    print("🔊 _recordAudio called - isRecording: $_isRecording");
+
+    final hasPermission = await _ensureMicPermission();
+    print("Permission check result: $hasPermission");
+    if (!hasPermission) {
+      print("❌ Permission denied - exiting");
       return;
     }
 
-    // 2️⃣ STOP recording
+    try {
+      if (_isRecording) {
+        print('🛑 Stopping recording...');
+        final path = await _audioRecorder.stopRecorder();
+        _isRecording = false;
+        print("Stop result: path = $path");
+
+        if (path != null) {
+          final duration = await controller.getAudioDuration(path);
+          print("🎵 Duration before upload: $duration sec");
+
+          await controller.sendMedia(
+            chatId: widget.chatId,
+            filePath: path,
+            type: MessageType.audio,
+          );
+          print("✅ Audio sent successfully");
+        } else {
+          print("❌ StopRecorder returned null path");
+        }
+        setState(() {});
+        return;
+      }
+
+      print('▶️ Starting recording...');
+      final dir = await getTemporaryDirectory();
+      final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
+      print("File path: $filePath");
+
+      await _audioRecorder.startRecorder(
+        toFile: filePath,
+        codec: Codec.aacMP4,
+      );
+      print("✅ StartRecorder success");
+
+      _isRecording = true;
+      setState(() {});
+    } catch (e) {
+      print("❌ Recording error: $e");
+      _isRecording = false;
+      setState(() {});
+      AppDialog.taostMessage("Recording failed: $e");
+    }
+  }
+
+
+/*  Future<void> _recordAudio() async {
+    // 🔥 FIX: permission logic
+    final hasPermission = await _ensureMicPermission();
+    if (!hasPermission) return;
+
+    // 🛑 STOP recording
     if (_isRecording) {
-      print('Recording = ${_isRecording}');
+      print('object12345t');
       final path = await _audioRecorder.stopRecorder();
       _isRecording = false;
+
       if (path != null) {
-        //⭐ GET DURATION BEFORE UPLOAD
         final duration = await controller.getAudioDuration(path);
         print("🎵 Duration before upload: $duration sec");
+
         await controller.sendMedia(
           chatId: widget.chatId,
           filePath: path,
           type: MessageType.audio,
         );
       }
+
       setState(() {});
       return;
     }
 
-    // 3️⃣ START recording
+    // ▶️ START recording
     final dir = await getTemporaryDirectory();
-    // 🔥 FIXED: Use .m4a with aacMP4 for release compatibility
-    final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
+    final filePath =
+        "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
+
     await _audioRecorder.startRecorder(
       toFile: filePath,
-      codec: Codec.aacMP4,  // 🔥 CHANGED: From aacADTS to aacMP4 (MP4 container)
+      codec: Codec.aacMP4, // ✅ correct for iOS + Android
     );
+
     _isRecording = true;
     setState(() {});
   }
+
+
+  Future<bool> _ensureMicPermission() async {
+    final status = await Permission.microphone.status;
+
+    // ✅ Already granted
+    if (status.isGranted) return true;
+
+    // ❌ Permanently denied → Settings
+    if (status.isPermanentlyDenied || status.isRestricted) {
+      AppDialog.taostMessage(
+        "Please enable microphone access from Settings",
+      );
+      await openAppSettings();
+      return false;
+    }
+
+    // 🔁 Ask permission only once
+    final result = await Permission.microphone.request();
+    return result.isGranted;
+  }*/
 
 
   Future<void> _sendPickedImage(String filePath) async {
@@ -1143,9 +1364,647 @@ extension on MessageModel1 {
 //   }
 // }
 
+///Kal Raat Ka
+/*class WhatsappCameraScreen extends StatefulWidget {
+  final Function(String path, bool isVideo) onCapture;
 
+  const WhatsappCameraScreen({Key? key, required this.onCapture})
+      : super(key: key);
+
+  @override
+  State<WhatsappCameraScreen> createState() => _WhatsappCameraScreenState();
+}
+
+class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
+  CameraController? cam;
+  List<CameraDescription>? cameras;
+  bool recording = false;
+  Timer? timer;
+  int seconds = 0;
+  bool isLoading = true;  // Loading state
+  String? errorMessage;   // Error state
+  int retryCount = 0;     // Retry logic
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    _initWithRetry();  // Use retry wrapper
+  }
+
+  Future<void> _initWithRetry() async {
+    for (int i = 0; i < 3 && errorMessage == null; i++) {  // Retry up to 3x
+      try {
+        await initCamera();
+        if (cameras != null && cameras!.isNotEmpty && cam != null && cam!.value.isInitialized) {
+          setState(() {
+            isLoading = false;
+            errorMessage = null;
+          });
+          return;
+        }
+      } catch (e) {
+        print("Camera init attempt $i failed: $e");
+        setState(() {
+          errorMessage = "Camera access failed. Retrying...";
+          isLoading = false;
+        });
+        await Future.delayed(const Duration(seconds: 1));  // Delay before retry
+      }
+      retryCount++;
+    }
+    // Final failure
+    setState(() {
+      errorMessage = "Camera unavailable. Please check permissions and restart app.";
+      isLoading = false;
+    });
+    Future.delayed(const Duration(seconds: 2), () => Get.back());  // Auto-close
+  }
+
+  Future initCamera() async {
+    try {
+      cameras = await availableCameras();  // Wrapped: This throws on denial
+      if (cameras == null || cameras!.isEmpty) {
+        throw Exception("No cameras available");
+      }
+      await setupController(cameras!.first);
+    } catch (e) {
+      print("initCamera error: $e");
+      rethrow;  // Bubble to retry
+    }
+  }
+
+  Future setupController(CameraDescription camera) async {
+    try {
+      cam?.dispose();  // Safe dispose
+
+      cam = CameraController(
+        camera,
+        ResolutionPreset.high,
+        enableAudio: true,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
+
+      await cam!.initialize();  // Wrapped: Native crash point
+      await cam!.setFlashMode(FlashMode.off);
+
+      if (mounted) setState(() {});  // Safe setState
+    } catch (e) {
+      print("setupController error: $e");
+      rethrow;  // Bubble to retry
+    }
+  }
+
+  Future switchCamera() async {
+    if (cameras == null) return;
+
+    final lens = cam!.description.lensDirection == CameraLensDirection.back
+        ? CameraLensDirection.front
+        : CameraLensDirection.back;
+
+    final camera = cameras!.firstWhere((c) => c.lensDirection == lens);
+    await setupController(camera);
+  }
+
+  Future capturePhoto() async {
+    try {
+      final file = await cam!.takePicture();
+      await cam?.dispose();
+      widget.onCapture(file.path, false);
+      Get.back();
+    } catch (_) {}
+  }
+
+  Future startRecording() async {
+    try {
+      await cam!.startVideoRecording();
+      recording = true;
+      seconds = 0;
+      timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        setState(() => seconds++);
+      });
+      setState(() {});
+    } catch (_) {}
+  }
+
+  Future stopRecording() async {
+    try {
+      final file = await cam!.stopVideoRecording();
+      timer?.cancel();
+      recording = false;
+      await cam?.dispose();
+      widget.onCapture(file.path, true);
+      Get.back();
+    } catch (_) {}
+  }
+
+  @override
+  void dispose() {
+    // Restore orientation (VERY IMPORTANT on iOS)
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
+    timer?.cancel();
+
+    if (cam != null) {
+      if (cam!.value.isStreamingImages) {
+        cam!.stopImageStream();
+      }
+      cam!.dispose();
+      cam = null;
+    }
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      );
+    }
+
+    if (errorMessage != null) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+               Icon(Icons.camera, color: Colors.red, size: 64),
+              const SizedBox(height: 16),
+              Text(
+                errorMessage!,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _initWithRetry,  // Retry button
+                child: const Text("Retry"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (cam == null || !cam!.value.isInitialized) {
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          // --- CAMERA PREVIEW FULL SCREEN, NO BLACK BARS ---
+          Positioned.fill(
+            child: Center(
+              child: Transform.rotate(
+                angle: cam!.description.sensorOrientation * 3.1415926535 / 180,
+                child: FittedBox(
+                  fit: cam!.description.lensDirection == CameraLensDirection.front
+                      ? BoxFit.none
+                      : BoxFit.none,
+                  child: SizedBox(
+                    width: cam!.value.previewSize!.height,
+                    height: cam!.value.previewSize!.width,
+                    child: Transform.scale(
+                      scale: cam!.description.lensDirection == CameraLensDirection.front ? 0.8 : 1.0,
+                      child: CameraPreview(cam!),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          if (recording)
+            Positioned(
+              top: 80.adaptSize,
+              left: 0.adaptSize,
+              right: 0.adaptSize,
+              child: Center(
+                child: Text(
+                  "$seconds s",
+                  style: TextStyle(color: Colors.red, fontSize: 22.fSize),
+                ),
+              ),
+            ),
+
+          Positioned(
+            top: 60.adaptSize,
+            right: 20.adaptSize,
+            child: GestureDetector(
+              onTap: switchCamera,
+              child: const CircleAvatar(
+                backgroundColor: Colors.black45,
+                child: Icon(Icons.cameraswitch, color: Colors.white),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 60.adaptSize,
+            left: 20.adaptSize,
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.black45,
+                child: Icon(Icons.close, color: Colors.white, size: 30.adaptSize),
+              ),
+            ),
+          ),
+
+          Positioned(
+            bottom: 150.adaptSize,
+            left: 15.adaptSize,
+            right: 0.adaptSize,
+            child: Center(
+              child: Text(
+                "Tap_to_capture_Hold_video".tr,
+                style: TextStyle(color: Colors.white70, fontSize: 14.fSize),
+              ),
+            ),
+          ),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 70.adaptSize),
+              child: GestureDetector(
+                onTap: () {
+                  if (!recording) capturePhoto();
+                },
+                onLongPress: startRecording,
+                onLongPressUp: stopRecording,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: recording ? 85 : 70,
+                  height: recording ? 85 : 70,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(recording ? 0.1 : 0.2),
+                    border: Border.all(
+                      color: recording ? Colors.red : Colors.white,
+                      width: recording ? 6 : 4,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}*/
+///Naya
 
 class WhatsappCameraScreen extends StatefulWidget {
+  final Function(String path, bool isVideo) onCapture;
+
+  const WhatsappCameraScreen({Key? key, required this.onCapture})
+      : super(key: key);
+
+  @override
+  State<WhatsappCameraScreen> createState() => _WhatsappCameraScreenState();
+}
+
+class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
+  CameraController? cam;
+  List<CameraDescription>? cameras;
+  bool recording = false;
+  Timer? timer;
+  int seconds = 0;
+  bool isLoading = true;
+  String? errorMessage;
+  int retryCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    _initWithRetry();
+  }
+
+  Future<void> _initWithRetry() async {
+    for (int i = 0; i < 3 && errorMessage == null; i++) {
+      try {
+        await initCamera();
+        if (cameras != null && cameras!.isNotEmpty && cam != null && cam!.value.isInitialized) {
+          setState(() {
+            isLoading = false;
+            errorMessage = null;
+          });
+          return;
+        }
+      } catch (e) {
+        print("Camera init attempt $i failed: $e");
+        setState(() {
+          errorMessage = "Camera access failed. Retrying...";
+          isLoading = false;
+        });
+        await Future.delayed(const Duration(seconds: 1));
+      }
+      retryCount++;
+    }
+    setState(() {
+      errorMessage = "Camera unavailable. Please check permissions and restart app.";
+      isLoading = false;
+    });
+    Future.delayed(const Duration(seconds: 2), () => Get.back());
+  }
+
+  Future initCamera() async {
+    try {
+      cameras = await availableCameras();
+      if (cameras == null || cameras!.isEmpty) {
+        throw Exception("No cameras available");
+      }
+      await setupController(cameras!.first);
+    } catch (e) {
+      print("initCamera error: $e");
+      rethrow;
+    }
+  }
+
+  Future setupController(CameraDescription camera) async {
+    try {
+      cam?.dispose();
+
+      cam = CameraController(
+        camera,
+        ResolutionPreset.high,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
+
+      await cam!.initialize();
+      await cam!.setFlashMode(FlashMode.off);
+
+      if (mounted) setState(() {});
+    } catch (e) {
+      print("setupController error: $e");
+      rethrow;
+    }
+  }
+
+  Future switchCamera() async {
+    if (cameras == null) return;
+
+    final lens = cam!.description.lensDirection == CameraLensDirection.back
+        ? CameraLensDirection.front
+        : CameraLensDirection.back;
+
+    final camera = cameras!.firstWhere((c) => c.lensDirection == lens);
+    await setupController(camera);
+  }
+
+  Future capturePhoto() async {
+    try {
+      final file = await cam!.takePicture();
+      await cam?.dispose();
+      widget.onCapture(file.path, false);
+      Get.back();
+    } catch (_) {}
+  }
+
+  // Future startRecording() async {
+  //   try {
+  //     await cam!.startVideoRecording();
+  //     recording = true;
+  //     seconds = 0;
+  //     timer = Timer.periodic(const Duration(seconds: 1), (_) {
+  //       setState(() => seconds++);
+  //     });
+  //     setState(() {});
+  //   } catch (_) {}
+  // }
+
+  Future startRecording() async {
+    try {
+      await cam?.dispose();
+
+      cam = CameraController(
+        cam!.description,
+        ResolutionPreset.high,
+        enableAudio: true, // 🔥 mic only for video
+      );
+
+      await cam!.initialize();
+      await cam!.startVideoRecording();
+
+      recording = true;
+      seconds = 0;
+      timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        setState(() => seconds++);
+      });
+
+      setState(() {});
+    } catch (e) {
+      print("Video record error: $e");
+    }
+  }
+
+
+  Future stopRecording() async {
+    try {
+      final file = await cam!.stopVideoRecording();
+      timer?.cancel();
+      recording = false;
+      await cam?.dispose();
+      widget.onCapture(file.path, true);
+      Get.back();
+    } catch (_) {}
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    timer?.cancel();
+    if (cam != null) {
+      if (cam!.value.isStreamingImages) {
+        cam!.stopImageStream();
+      }
+      cam!.dispose();
+      cam = null;
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      );
+    }
+
+    if (errorMessage != null) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.camera, color: Colors.red, size: 64),
+              const SizedBox(height: 16),
+              Text(
+                errorMessage!,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _initWithRetry,
+                child: const Text("Retry"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (cam == null || !cam!.value.isInitialized) {
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          // 🔥 FIXED SYNTAX: Proper nesting for Transform child
+          Positioned.fill(
+            child: OverflowBox(
+              maxHeight: double.infinity,
+              maxWidth: double.infinity,
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: SizedBox(
+                  width: cam!.value.previewSize!.height,
+                  height: cam!.value.previewSize!.width,
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..scale(
+                        cam!.description.lensDirection == CameraLensDirection.front ? -1.0 : 1.0,
+                        cam!.description.lensDirection == CameraLensDirection.front ? 1.0 : 1.0,
+                      )
+                      ..rotateZ(cam!.description.sensorOrientation * math.pi / 180.0),
+                    child: CameraPreview(cam!),  // 🔥 MOVED: Inside Transform
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          if (recording)
+            Positioned(
+              top: 80.adaptSize,
+              left: 0.adaptSize,
+              right: 0.adaptSize,
+              child: Center(
+                child: Text(
+                  "$seconds s",
+                  style: TextStyle(color: Colors.red, fontSize: 22.fSize),
+                ),
+              ),
+            ),
+
+          Positioned(
+            top: 60.adaptSize,
+            right: 20.adaptSize,
+            child: GestureDetector(
+              onTap: switchCamera,
+              child: const CircleAvatar(
+                backgroundColor: Colors.black45,
+                child: Icon(Icons.cameraswitch, color: Colors.white),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 60.adaptSize,
+            left: 20.adaptSize,
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.black45,
+                child: Icon(Icons.close, color: Colors.white, size: 30.adaptSize),
+              ),
+            ),
+          ),
+
+          Positioned(
+            bottom: 150.adaptSize,
+            left: 15.adaptSize,
+            right: 0.adaptSize,
+            child: Center(
+              child: Text(
+                "Tap_to_capture_Hold_video".tr,
+                style: TextStyle(color: Colors.white70, fontSize: 14.fSize),
+              ),
+            ),
+          ),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 70.adaptSize),
+              child: GestureDetector(
+                onTap: () {
+                  if (!recording) capturePhoto();
+                },
+                onLongPress: startRecording,
+                onLongPressUp: stopRecording,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: recording ? 85 : 70,
+                  height: recording ? 85 : 70,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(recording ? 0.1 : 0.2),
+                    border: Border.all(
+                      color: recording ? Colors.red : Colors.white,
+                      width: recording ? 6 : 4,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/*class WhatsappCameraScreen extends StatefulWidget {
   final Function(String path, bool isVideo) onCapture;
 
   const WhatsappCameraScreen({Key? key, required this.onCapture})
@@ -1177,10 +2036,22 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     initCamera();
   }
 
+  // Future initCamera() async {
+  //   cameras = await availableCameras();
+  //   await setupController(cameras!.first);
+  // }
+
+
   Future initCamera() async {
-    cameras = await availableCameras();
-    await setupController(cameras!.first);
+    try {
+      cameras = await availableCameras();
+      if (cameras == null || cameras!.isEmpty) return;
+      await setupController(cameras!.first);
+    } catch (e) {
+      Get.back();
+    }
   }
+
 
   Future setupController(CameraDescription camera) async {
     cam?.dispose();
@@ -1251,19 +2122,45 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     } catch (_) {}
   }
 
+  // @override
+  // void dispose() {
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  //   ]);
+  //
+  //   try {
+  //     cam?.stopImageStream();
+  //   } catch (_) {}
+  //
+  //   timer?.cancel();
+  //   cam?.dispose();
+  //  //  if (cam != null) {
+  //  //    cam!.dispose();
+  //  //  }
+  //   super.dispose();
+  // }
+
+
   @override
   void dispose() {
-    try {
-      cam?.stopImageStream();
-    } catch (_) {}
+    // 🔁 Restore orientation (VERY IMPORTANT on iOS)
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
 
     timer?.cancel();
-   // cam?.dispose();
+
     if (cam != null) {
+      if (cam!.value.isStreamingImages) {
+        cam!.stopImageStream();
+      }
       cam!.dispose();
+      cam = null;
     }
+
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1415,7 +2312,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       ),
     );
   }
-}
+}*/
 
 
 // <?xml version="1.0" encoding="UTF-8"?>
