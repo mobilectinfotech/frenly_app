@@ -1316,34 +1316,76 @@ class VlogBottomSheets {
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Row(
                     children: [
+                      // Form(
+                      //   key: commentsController.formKey,
+                      //   child: SizedBox(
+                      //     width: 290.aw,
+                      //     child: TextFormField(
+                      //       decoration: InputDecoration(
+                      //           contentPadding: EdgeInsets.only(left: 15),
+                      //           disabledBorder: InputBorder.none,
+                      //           hintText: "add_comment".tr,
+                      //
+                      //       ),
+                      //       onTap: () {},
+                      //       validator: Validator.pleaseWriteSomething,
+                      //       onEditingComplete: () {
+                      //         if(commentsController.formKey.currentState!.validate()){
+                      //           FocusScope.of(context).unfocus();
+                      //           commentsController.postComments(
+                      //               id: id,
+                      //               postType: postType,
+                      //               comment: commentsController.commnetsTc.text.trim());
+                      //         }
+                      //       },
+                      //       controller: commentsController.commnetsTc,
+                      //       textInputAction: TextInputAction.send,
+                      //     ),
+                      //   ),
+                      // ),
                       Form(
                         key: commentsController.formKey,
                         child: SizedBox(
                           width: 290.aw,
                           child: TextFormField(
+                            // Enable multiline input
+                            maxLines: null,  // Allows unlimited lines; use a fixed number like 5 if you want a limit
+                            minLines: 1,     // Starts with 1 line, expands as needed
+                            expands: false,  // Set to true if you want it to fill available height (but false is better for comments)
+
+                            // Keyboard type for multiline (allows Enter to add new lines)
+                            keyboardType: TextInputType.multiline,
+
                             decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(left: 15),
-                                disabledBorder: InputBorder.none,
-                                hintText: "add_comment".tr),
+                              contentPadding: EdgeInsets.only(left: 15),
+                              disabledBorder: InputBorder.none,
+                              hintText: "add_comment".tr,
+                              // Optional: Add bottom padding for better multiline look
+                           //   contentPadding: EdgeInsets.fromLTRB(15, 12, 15, 12),  // Adjust top/bottom as needed
+                            ),
                             onTap: () {},
                             validator: Validator.pleaseWriteSomething,
                             onEditingComplete: () {
-                              if(commentsController.formKey.currentState!.validate()){
+                              if (commentsController.formKey.currentState!.validate()) {
                                 FocusScope.of(context).unfocus();
                                 commentsController.postComments(
-                                    id: id,
-                                    postType: postType,
-                                    comment: commentsController.commnetsTc.text.trim());
+                                  id: id,
+                                  postType: postType,
+                                  comment: commentsController.commnetsTc.text.trim(),
+                                );
                               }
                             },
                             controller: commentsController.commnetsTc,
+                            // For multiline, Enter adds a new line by default with TextInputType.multiline
+                            // If you want Enter to always send (single-line behavior), keep TextInputAction.send
+                            // But for wrapping, this works fine—users can send via the keyboard's send button or on-screen send
                             textInputAction: TextInputAction.send,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 10.v,
-                      ),
+
+                      SizedBox(width: 10.v),
+
                       InkWell(
                         onTap: () {
                           if(commentsController.formKey.currentState!.validate()){

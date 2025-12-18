@@ -35,8 +35,7 @@ class _VlogLikeCommentsShareViewState extends State<VlogLikeCommentsShareView> {
                 onTap: () async {
                   widget.vlog.alreadyLiked = true;
                   setState(() {});
-                  bool isLiked =
-                      await ApiRepository.vlogLike(userId: "${widget.vlog.id}");
+                  bool isLiked = await ApiRepository.vlogLike(userId: "${widget.vlog.id}");
                 },
                 child: CustomImageView(
                   imagePath: widget.colors == true
@@ -50,8 +49,7 @@ class _VlogLikeCommentsShareViewState extends State<VlogLikeCommentsShareView> {
                 onTap: () async {
                   widget.vlog.alreadyLiked = false;
                   setState(() {});
-                  bool isLiked =
-                      await ApiRepository.vlogLike(userId: "${widget.vlog.id}");
+                  bool isLiked = await ApiRepository.vlogLike(userId: "${widget.vlog.id}");
                 },
                 child: CustomImageView(
                   imagePath: widget.colors == true
@@ -104,8 +102,8 @@ class _VlogLikeCommentsShareViewState extends State<VlogLikeCommentsShareView> {
                   ),
                 ),
               ),
-        SizedBox(width: 11.aw),
 
+        SizedBox(width: 11.aw),
         widget.vlog.alreadySaved == false
             ? InkWell(
           onTap: () async {
@@ -152,7 +150,6 @@ class _VlogLikeCommentsShareViewState extends State<VlogLikeCommentsShareView> {
             height: 21.aw,
           ),
         ),
-
         //save end
       ],
     );

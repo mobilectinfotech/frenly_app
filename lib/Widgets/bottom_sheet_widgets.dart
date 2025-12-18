@@ -286,10 +286,17 @@ class CustomBottomSheets {
                                 child: SizedBox(
                                   width: 290.aw,
                                   child: TextFormField(
+                                    maxLines: null,  // Allows unlimited lines; use a fixed number like 5 if you want a limit
+                                    minLines: 1,     // Starts with 1 line, expands as needed
+                                    expands: false,  // Set to true if you want it to fill available height (but false is better for comments)
+
+                                    // Keyboard type for multiline (allows Enter to add new lines)
+                                    keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                         contentPadding: EdgeInsets.only(left: 15),
                                         disabledBorder: InputBorder.none,
-                                        hintText: "add_comment".tr),
+                                        hintText: "add_comment".tr
+                                    ),
                                     onTap: () {},
                                     validator: Validator.pleaseWriteSomething,
                                     onEditingComplete: () {
