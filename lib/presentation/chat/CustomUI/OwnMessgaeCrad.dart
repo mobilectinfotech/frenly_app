@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:frenly_app/core/constants/my_colour.dart';
@@ -613,7 +615,7 @@ String formatMessageTime(DateTime dateTime) {
       lang == "swe" || lang == "sv" ? "$h timmar sedan" : "$h hours ago";
 
   String justNow =
-  lang == "swe" || lang == "sv" ? "nyss" : "just now";
+  lang == "swe" || lang == "sv" ? "nyss" : "";
 
   String yesterdayWord =
   lang == "swe" || lang == "sv" ? "Igår" : "Yesterday";
@@ -661,8 +663,260 @@ String formatMessageTime(DateTime dateTime) {
 }
 
 
+// class AudioMessagePlayer extends StatefulWidget {
+//  // final String url;
+//   final SingleMessage message;
+//
+//   const AudioMessagePlayer({Key? key, required this.message}) : super(key: key);
+//
+//   @override
+//   _AudioMessagePlayerState createState() => _AudioMessagePlayerState();
+// }
+//
+// class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
+//   late final AudioPlayer _player;
+//   bool isPlaying = false;
+//   Duration totalDuration = Duration.zero;
+//   Duration currentPosition = Duration.zero;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _player = AudioPlayer();
+//     // ⭐ USE BACKEND DURATION FIRST
+//     if (widget.message.durationSeconds != null) {
+//       totalDuration = Duration(seconds: widget.message.durationSeconds!);
+//     }
+//
+//     _init();
+//   }
+//
+// /*
+//   Future<void> _init() async {
+//     // set the source but don't autoplay
+//     try {
+//     //  await _player.setUrl(widget.message.toString());
+//       await _player.setUrl(widget.message.attachmentUrl!);
+//     } catch (e) {
+//       // handle load error if needed
+//       debugPrint("Audio load error: $e");
+//     }
+//
+//     // duration
+//     _player.durationStream.listen((d) {
+//       if (widget.message.durationSeconds != null) return; // 🔥 ignore metadata
+//       if (d != null) {
+//         setState(() => totalDuration = d);
+//       }
+//     });
+//
+//     // position
+//     _player.positionStream.listen((p) {
+//       setState(() => currentPosition = p);
+//     });
+//
+//     // playing state -> update icon automatically
+//     _player.playingStream.listen((playing) {
+//       setState(() => isPlaying = playing);
+//     });
+//
+//     // handle completion
+//     _player.playerStateStream.listen((state) {
+//       if (state.processingState == ProcessingState.completed) {
+//         // reset to start and update UI
+//         _player.seek(Duration.zero);
+//         _player.pause();
+//         setState(() {
+//           currentPosition = Duration.zero;
+//           isPlaying = false;
+//         });
+//         // if this player was the active one, clear it
+//         AudioManager.clearIfActive(_player);
+//       }
+//     });
+//   }
+// */
+//
+//   // In _AudioMessagePlayerState._init():
+//   Future<void> _init() async {
+//     final url = widget.message.attachmentUrl!;
+//     print("🔍 CHECKING AUDIO URL → $url");
+//
+//     // Optional: Debug S3 headers (add import above)
+//     try {
+//       final response = await http.head(Uri.parse(url));
+//       print("🔍 S3 HEADERS → ${response.headers}");
+//     } catch (_) {
+//       // Ignore in release
+//     }
+//
+//     try {
+//       await _player.setUrl(url);
+//     } catch (e) {
+//       // 🔥 ADDED: Handle release decoding errors
+//       print("❌ Audio load error on init: $e");
+//       if (mounted) {
+//         setState(() {
+//           totalDuration = Duration.zero;  // Fallback
+//         });
+//       }
+//       return;  // Skip listeners if load fails
+//     }
+//
+//     // Duration listener (prioritize backend, unchanged)
+//     _player.durationStream.listen((d) {
+//       if (!mounted) return;
+//       if (d == null) return;
+//       if (widget.message.durationSeconds != null) return;
+//       if (mounted) setState(() => totalDuration = d);
+//     });
+//
+//     // Position, playing, completion listeners (unchanged)
+//     _player.positionStream.listen((p) {
+//       if (mounted) setState(() => currentPosition = p);
+//     });
+//
+//     _player.playingStream.listen((playing) {
+//       if (mounted) setState(() => isPlaying = playing);
+//     });
+//
+//     _player.playerStateStream.listen((state) {
+//       if (state.processingState == ProcessingState.completed) {
+//         _player.seek(Duration.zero);
+//         _player.pause();
+//         if (mounted) {
+//           setState(() {
+//             currentPosition = Duration.zero;
+//             isPlaying = false;
+//           });
+//         }
+//         AudioManager.clearIfActive(_player);
+//       }
+//     });
+//   }
+//
+//   @override
+//   void dispose() {
+//     // stop & clear active reference if this player is active
+//     AudioManager.clearIfActive(_player);
+//     _player.stop();
+//     _player.dispose();
+//     super.dispose();
+//   }
+//
+//   Future<void> _togglePlayPause() async {
+//     final url = widget.message.attachmentUrl!;
+//     print("🎧 PLAY URL → $url");
+//     print("FINAL URL LOADED → $url");
+//     if (widget.message.attachmentUrl == null ||
+//         widget.message.attachmentUrl!.isEmpty) {
+//       return;
+//     }
+//
+//     if (isPlaying) {
+//       await _player.pause();
+//       return;
+//     }
+//
+//     await AudioManager.setActive(_player, url);
+//
+//     if (_player.playerState.processingState == ProcessingState.idle) {
+//       try {
+//         await _player.setUrl(url);
+//       } catch (e) {
+//         print("❌ Audio load error: $e");
+//         return;
+//       }
+//     }
+//
+//     await _player.play();
+//   }
+//
+//   String _format(Duration d) {
+//     final mm = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+//     final ss = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+//     return "$mm:$ss";
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//   //  final max = totalDuration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
+//     final backendDuration = widget.message.durationSeconds;
+//     final displayEnd = backendDuration != null
+//         ? _format(Duration(seconds: backendDuration))
+//         : _format(totalDuration);
+//
+//     // final max = totalDuration.inMilliseconds.toDouble();
+//     final max = totalDuration.inMilliseconds > 0
+//         ? totalDuration.inMilliseconds.toDouble()
+//         : 1.0;
+//
+//
+//     return Container(
+//       padding: EdgeInsets.symmetric(horizontal: 12.aw, vertical: 20.ah),
+//       width: Get.width,
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(20.adaptSize),
+//       ),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         mainAxisAlignment: MainAxisAlignment.start,
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           /// play/pause
+//           InkWell(
+//             onTap: _togglePlayPause,
+//             child: Icon(
+//               isPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill,
+//               size: 30.fSize,
+//               color: Colors.pinkAccent,
+//             ),
+//           ),
+//
+//           SizedBox(width: 10.aw),
+//           /// slider and times
+//           Expanded(
+//             child: Padding(
+//               padding: EdgeInsets.only(left: 10.aw,top: 2.ah),
+//               child: Column(
+//                 mainAxisSize: MainAxisSize.min,
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 children: [
+//                   Slider(
+//                     activeColor: Colors.pinkAccent,
+//                     inactiveColor: Colors.grey.shade300,
+//                     padding: EdgeInsets.zero,
+//                     min: 0,
+//                     max: max,
+//                     value: currentPosition.inMilliseconds.clamp(0, totalDuration.inMilliseconds).toDouble(),
+//                     onChanged: (value) {
+//                       final newPos = Duration(milliseconds: value.toInt());
+//                       _player.seek(newPos);
+//                     },
+//                   ),
+//                   SizedBox(height: 5.ah),
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: [
+//                       Text(_format(currentPosition), style: TextStyle(fontSize: 12.fSize)),
+//                       Text(displayEnd, style: TextStyle(fontSize: 12.fSize)),
+//                     ],
+//                   )
+//                 ],
+//
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+
 class AudioMessagePlayer extends StatefulWidget {
- // final String url;
   final SingleMessage message;
 
   const AudioMessagePlayer({Key? key, required this.message}) : super(key: key);
@@ -676,100 +930,40 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
   bool isPlaying = false;
   Duration totalDuration = Duration.zero;
   Duration currentPosition = Duration.zero;
+  Timer? _debounceTimer;  // 🔥 NEW: Debounce for multiple taps
 
   @override
   void initState() {
     super.initState();
     _player = AudioPlayer();
-    // ⭐ USE BACKEND DURATION FIRST
     if (widget.message.durationSeconds != null) {
       totalDuration = Duration(seconds: widget.message.durationSeconds!);
     }
-
     _init();
   }
 
-/*
-  Future<void> _init() async {
-    // set the source but don't autoplay
-    try {
-    //  await _player.setUrl(widget.message.toString());
-      await _player.setUrl(widget.message.attachmentUrl!);
-    } catch (e) {
-      // handle load error if needed
-      debugPrint("Audio load error: $e");
-    }
-
-    // duration
-    _player.durationStream.listen((d) {
-      if (widget.message.durationSeconds != null) return; // 🔥 ignore metadata
-      if (d != null) {
-        setState(() => totalDuration = d);
-      }
-    });
-
-    // position
-    _player.positionStream.listen((p) {
-      setState(() => currentPosition = p);
-    });
-
-    // playing state -> update icon automatically
-    _player.playingStream.listen((playing) {
-      setState(() => isPlaying = playing);
-    });
-
-    // handle completion
-    _player.playerStateStream.listen((state) {
-      if (state.processingState == ProcessingState.completed) {
-        // reset to start and update UI
-        _player.seek(Duration.zero);
-        _player.pause();
-        setState(() {
-          currentPosition = Duration.zero;
-          isPlaying = false;
-        });
-        // if this player was the active one, clear it
-        AudioManager.clearIfActive(_player);
-      }
-    });
-  }
-*/
-
-  // In _AudioMessagePlayerState._init():
   Future<void> _init() async {
     final url = widget.message.attachmentUrl!;
     print("🔍 CHECKING AUDIO URL → $url");
 
-    // Optional: Debug S3 headers (add import above)
     try {
       final response = await http.head(Uri.parse(url));
       print("🔍 S3 HEADERS → ${response.headers}");
-    } catch (_) {
-      // Ignore in release
-    }
+    } catch (_) {}
 
     try {
       await _player.setUrl(url);
     } catch (e) {
-      // 🔥 ADDED: Handle release decoding errors
       print("❌ Audio load error on init: $e");
-      if (mounted) {
-        setState(() {
-          totalDuration = Duration.zero;  // Fallback
-        });
-      }
-      return;  // Skip listeners if load fails
+      if (mounted) setState(() => totalDuration = Duration.zero);
+      return;
     }
 
-    // Duration listener (prioritize backend, unchanged)
     _player.durationStream.listen((d) {
-      if (!mounted) return;
-      if (d == null) return;
-      if (widget.message.durationSeconds != null) return;
+      if (!mounted || d == null || widget.message.durationSeconds != null) return;
       if (mounted) setState(() => totalDuration = d);
     });
 
-    // Position, playing, completion listeners (unchanged)
     _player.positionStream.listen((p) {
       if (mounted) setState(() => currentPosition = p);
     });
@@ -782,12 +976,10 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
       if (state.processingState == ProcessingState.completed) {
         _player.seek(Duration.zero);
         _player.pause();
-        if (mounted) {
-          setState(() {
-            currentPosition = Duration.zero;
-            isPlaying = false;
-          });
-        }
+        if (mounted) setState(() {
+          currentPosition = Duration.zero;
+          isPlaying = false;
+        });
         AudioManager.clearIfActive(_player);
       }
     });
@@ -795,7 +987,7 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
 
   @override
   void dispose() {
-    // stop & clear active reference if this player is active
+    _debounceTimer?.cancel();  // Cancel debounce
     AudioManager.clearIfActive(_player);
     _player.stop();
     _player.dispose();
@@ -803,11 +995,15 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
   }
 
   Future<void> _togglePlayPause() async {
+    // 🔥 DEBOUNCE: Ignore rapid taps (prevents multiple calls)
+    if (_debounceTimer?.isActive ?? false) return;
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {});  // 500ms cooldown
+
     final url = widget.message.attachmentUrl!;
     print("🎧 PLAY URL → $url");
     print("FINAL URL LOADED → $url");
-    if (widget.message.attachmentUrl == null ||
-        widget.message.attachmentUrl!.isEmpty) {
+
+    if (widget.message.attachmentUrl == null || widget.message.attachmentUrl!.isEmpty) {
       return;
     }
 
@@ -821,13 +1017,25 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
     if (_player.playerState.processingState == ProcessingState.idle) {
       try {
         await _player.setUrl(url);
+        await _player.load();  // Preload
       } catch (e) {
         print("❌ Audio load error: $e");
         return;
       }
     }
 
-    await _player.play();
+    // 🔥 FULL VOLUME + iOS SESSION REFRESH
+    await _player.setVolume(1.0);
+    print("🔊 Volume set to max (1.0) for full playback");
+
+    if (Platform.isIOS) {
+      // Reset session for playback after recording (Dart side—lightweight)
+      await _player.play();  // Force refresh
+    } else {
+      await _player.play();
+    }
+
+    print("✅ Playback started at full volume");
   }
 
   String _format(Duration d) {
@@ -838,17 +1046,14 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
 
   @override
   Widget build(BuildContext context) {
-  //  final max = totalDuration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
     final backendDuration = widget.message.durationSeconds;
     final displayEnd = backendDuration != null
         ? _format(Duration(seconds: backendDuration))
         : _format(totalDuration);
 
-    // final max = totalDuration.inMilliseconds.toDouble();
     final max = totalDuration.inMilliseconds > 0
         ? totalDuration.inMilliseconds.toDouble()
         : 1.0;
-
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.aw, vertical: 20.ah),
@@ -862,21 +1067,18 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          /// play/pause
           InkWell(
-            onTap: _togglePlayPause,
+            onTap: _togglePlayPause,  // Debounced tap
             child: Icon(
               isPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill,
               size: 30.fSize,
               color: Colors.pinkAccent,
             ),
           ),
-
           SizedBox(width: 10.aw),
-          /// slider and times
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 10.aw,top: 2.ah),
+              padding: EdgeInsets.only(left: 10.aw, top: 2.ah),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -903,7 +1105,6 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
                     ],
                   )
                 ],
-
               ),
             ),
           ),
@@ -912,7 +1113,6 @@ class _AudioMessagePlayerState extends State<AudioMessagePlayer> {
     );
   }
 }
-
 
 
 /// GLOBAL AUDIO MANAGER — ensures ONLY ONE audio plays at a time

@@ -486,6 +486,8 @@ class ApiRepository {
     Map<String, dynamic>? response = await ApiClient().getRequest(
       endPoint: "home/friends",
     );
+    print("🔥 FRIEND API RESPONSE: $response"); // ADD THIS
+
     if (response != null) {
       return AllFriendsModel.fromJson(response);
     }

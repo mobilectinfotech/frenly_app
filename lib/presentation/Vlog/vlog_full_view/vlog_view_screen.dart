@@ -1419,6 +1419,7 @@ class VlogBottomSheets {
     Get.find<DashBoardController>().bottomBarShow.value = true;
   }
 
+
   static Future<void> shareBottomSheet({
     required BuildContext context,
     required String id,
@@ -1455,8 +1456,7 @@ class VlogBottomSheets {
                   ),
                 ),
 
-                Obx(
-                      () => controller.isLoading.value
+                Obx(() => controller.isLoading.value
                       ? const Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 1,

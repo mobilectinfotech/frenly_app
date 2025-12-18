@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:audio_session/audio_session.dart';
 import 'package:camera/camera.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -884,17 +885,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   // Future<void> _initAudio() async {
   //   await _audioRecorder.openRecorder();
   // }
-
-  Future<void> _initAudio() async {
-    try {
-      await _audioRecorder.openRecorder();
-      print("✅ Audio recorder initialized");
-    } catch (e) {
-      print("❌ Audio init error: $e");
-    }
-  }
-
-/*
+  /*
   Future<void> _recordAudio() async {
     // 1️⃣ Request mic permission
     var status = await Permission.microphone.request();
@@ -946,7 +937,107 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 */
 
 
-// Updated _ensureMicPermission with iOS workaround
+  // Future<void> _initAudio() async {
+  //   try {
+  //     await _audioRecorder.openRecorder();
+  //     print("✅ Audio recorder initialized");
+  //   } catch (e) {
+  //     print("❌ Audio init error: $e");
+  //   }
+  // }
+
+
+  // Updated _initAudio (add AVAudioSession config for iOS volume)
+  Future<void> _initAudio() async {
+    try {
+      await _audioRecorder.openRecorder();
+      print("✅ Audio recorder initialized");
+
+      // 🔥 iOS VOLUME FIX: Set session category for full mic input
+      // if (Platform.isIOS) {
+      //   // final session = AVAudioSession.sharedInstance();
+      //   // await session.setCategory(AVAudioSessionCategory.playAndRecord);
+      //   // await session.setActive(true);
+      //   print("✅ iOS AVAudioSession configured for full volume");
+      // }
+    } catch (e) {
+      print("❌ Audio init error: $e");
+    }
+  }
+
+// Updated _recordAudio with bitrate/sampleRate for speed fix
+
+
+  Future<void> _recordAudio() async {
+    print("🔊 _recordAudio called - isRecording: $_isRecording");
+
+    final hasPermission = await _ensureMicPermission();
+    if (!hasPermission) {
+      print("❌ Mic permission denied");
+      return;
+    }
+
+    try {
+      /// 🛑 STOP RECORDING
+      if (_isRecording) {
+        print('🛑 Stopping recording...');
+        final path = await _audioRecorder.stopRecorder();
+        _isRecording = false;
+
+        if (path != null) {
+          final duration = await controller.getAudioDuration(path);
+          print("🎵 Duration: $duration sec");
+
+          await controller.sendMedia(
+            chatId: widget.chatId,
+            filePath: path,
+            type: MessageType.audio,
+          );
+          print("✅ Audio sent");
+        }
+
+        /// 🔥 MOST IMPORTANT LINE (FIX)
+        await IOSAudioSessionHelper.prepareForPlayback();
+
+        setState(() {});
+        return;
+      }
+
+      /// ▶️ START RECORDING
+      print('▶️ Starting recording...');
+
+      /// 🔥 PREPARE iOS FOR RECORDING
+      await IOSAudioSessionHelper.prepareForRecording();
+
+      final dir = await getTemporaryDirectory();
+      final filePath =
+          "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
+
+      await _audioRecorder.startRecorder(
+        toFile: filePath,
+        codec: Codec.aacMP4,
+        bitRate: 128000,
+        numChannels: 1,
+        sampleRate: 44100,
+      );
+
+      _isRecording = true;
+      setState(() {});
+      print("✅ Recording started");
+
+    } catch (e) {
+      print("❌ Recording error: $e");
+      _isRecording = false;
+
+      /// SAFETY: Reset session if error occurs
+      await IOSAudioSessionHelper.prepareForPlayback();
+
+      setState(() {});
+      AppDialog.taostMessage("Recording failed");
+    }
+  }
+
+  // Updated _ensureMicPermission with iOS workaround
   Future<bool> _ensureMicPermission() async {
     try {
       final status = await Permission.microphone.status;
@@ -965,7 +1056,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       // }
 
 // 🔥TEMP DEV BYPASS: Comment out return false; to test recorder
-      if (status.isPermanentlyDenied) {  // For testing only
+
+      if (status.isPermanentlyDenied) {
         print("⚠️ DEV BYPASS: Assuming granted");
         return true;  // Remove in production
       }
@@ -1005,61 +1097,129 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
-// _recordAudio unchanged (your version is good with logs)
-  Future<void> _recordAudio() async {
-    print("🔊 _recordAudio called - isRecording: $_isRecording");
 
-    final hasPermission = await _ensureMicPermission();
-    print("Permission check result: $hasPermission");
-    if (!hasPermission) {
-      print("❌ Permission denied - exiting");
-      return;
-    }
 
-    try {
-      if (_isRecording) {
-        print('🛑 Stopping recording...');
-        final path = await _audioRecorder.stopRecorder();
-        _isRecording = false;
-        print("Stop result: path = $path");
+// // Updated _ensureMicPermission with iOS workaround
+//   Future<bool> _ensureMicPermission() async {
+//     try {
+//       final status = await Permission.microphone.status;
+//       print("Current mic status: $status");
+//
+//       if (status.isGranted) {
+//         print("✅ Mic already granted");
+//         return true;
+//       }
+//
+//       // if (status.isPermanentlyDenied || status.isRestricted) {
+//       //   print("❌ Mic permanently denied/restricted");
+//       //   AppDialog.taostMessage("Please enable microphone in Settings");
+//       //   await openAppSettings();
+//       //   return false;
+//       // }
+//
+// // 🔥TEMP DEV BYPASS: Comment out return false; to test recorder
+//       if (status.isPermanentlyDenied) {  // For testing only
+//         print("⚠️ DEV BYPASS: Assuming granted");
+//         return true;  // Remove in production
+//       }
+//
+//       print("🔄 Requesting mic permission...");
+//       final result = await Permission.microphone.request();
+//       print("Request result: $result");
+//
+//       // 🔥 ENHANCED iOS WORKAROUND: Delay + triple-check + dummy re-request
+//       if (Platform.isIOS) {
+//         await Future.delayed(const Duration(milliseconds: 800));  // Longer delay for sync
+//         final doubleCheck = await Permission.microphone.status;
+//         print("iOS double-check: $doubleCheck");
+//
+//         if (doubleCheck.isGranted) {
+//           print("✅ iOS sync success - proceeding");
+//           return true;
+//         }
+//
+//         // 🔥 FALLBACK: Dummy re-request to force iOS update (safe, no extra prompt)
+//         print("🔄 iOS fallback: Dummy re-request...");
+//         final fallback = await Permission.microphone.request();
+//         await Future.delayed(const Duration(milliseconds: 300));
+//         final tripleCheck = await Permission.microphone.status;
+//         print("Fallback result: $fallback, Triple-check: $tripleCheck");
+//
+//         if (tripleCheck.isGranted) {
+//           print("✅ iOS fallback success - proceeding");
+//           return true;
+//         }
+//       }
+//
+//       return result.isGranted;
+//     } catch (e) {
+//       print("❌ Permission error: $e");
+//       return false;
+//     }
+//   }
+//
+// // _recordAudio unchanged (your version is good with logs)
+//   Future<void> _recordAudio() async {
+//     print("🔊 _recordAudio called - isRecording: $_isRecording");
+//
+//     final hasPermission = await _ensureMicPermission();
+//     print("Permission check result: $hasPermission");
+//     if (!hasPermission) {
+//       print("❌ Permission denied - exiting");
+//       return;
+//     }
+//
+//     try {
+//       if (_isRecording) {
+//         print('🛑 Stopping recording...');
+//         final path = await _audioRecorder.stopRecorder();
+//         _isRecording = false;
+//         print("Stop result: path = $path");
+//
+//         if (path != null) {
+//           final duration = await controller.getAudioDuration(path);
+//           print("🎵 Duration before upload: $duration sec");
+//
+//           await controller.sendMedia(
+//             chatId: widget.chatId,
+//             filePath: path,
+//             type: MessageType.audio,
+//           );
+//           print("✅ Audio sent successfully");
+//         } else {
+//           print("❌ StopRecorder returned null path");
+//         }
+//         setState(() {});
+//         return;
+//       }
+//
+//       print('▶️ Starting recording...');
+//       final dir = await getTemporaryDirectory();
+//       final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
+//       print("File path: $filePath");
+//
+//       await _audioRecorder.startRecorder(
+//         toFile: filePath,
+//         codec: Codec.aacMP4,
+//       );
+//       print("✅ StartRecorder success");
+//
+//       _isRecording = true;
+//       setState(() {});
+//     } catch (e) {
+//       print("❌ Recording error: $e");
+//       _isRecording = false;
+//       setState(() {});
+//       AppDialog.taostMessage("Recording failed: $e");
+//     }
+//   }
 
-        if (path != null) {
-          final duration = await controller.getAudioDuration(path);
-          print("🎵 Duration before upload: $duration sec");
 
-          await controller.sendMedia(
-            chatId: widget.chatId,
-            filePath: path,
-            type: MessageType.audio,
-          );
-          print("✅ Audio sent successfully");
-        } else {
-          print("❌ StopRecorder returned null path");
-        }
-        setState(() {});
-        return;
-      }
 
-      print('▶️ Starting recording...');
-      final dir = await getTemporaryDirectory();
-      final filePath = "${dir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a";
-      print("File path: $filePath");
 
-      await _audioRecorder.startRecorder(
-        toFile: filePath,
-        codec: Codec.aacMP4,
-      );
-      print("✅ StartRecorder success");
 
-      _isRecording = true;
-      setState(() {});
-    } catch (e) {
-      print("❌ Recording error: $e");
-      _isRecording = false;
-      setState(() {});
-      AppDialog.taostMessage("Recording failed: $e");
-    }
-  }
+
+
 
 
 /*  Future<void> _recordAudio() async {
@@ -1710,8 +1870,8 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     );
   }
 }*/
-///Naya
 
+///Naya Working
 class WhatsappCameraScreen extends StatefulWidget {
   final Function(String path, bool isVideo) onCapture;
 
@@ -1921,7 +2081,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
         ),
       );
     }
-
     if (cam == null || !cam!.value.isInitialized) {
       return const Scaffold(
         backgroundColor: Colors.black,
@@ -2002,8 +2161,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
             left: 15.adaptSize,
             right: 0.adaptSize,
             child: Center(
-              child: Text(
-                "Tap_to_capture_Hold_video".tr,
+              child: Text("Tap_to_capture_Hold_video".tr,
                 style: TextStyle(color: Colors.white70, fontSize: 14.fSize),
               ),
             ),
@@ -2041,7 +2199,39 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
   }
 }
 
-/*class WhatsappCameraScreen extends StatefulWidget {
+class IOSAudioSessionHelper {
+  /// Call BEFORE recording
+  static Future<void> prepareForRecording() async {
+    if (!Platform.isIOS) return;
+
+    final session = await AudioSession.instance;
+    await session.configure(
+       AudioSessionConfiguration(
+        avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+        avAudioSessionMode: AVAudioSessionMode.defaultMode,
+        avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.defaultToSpeaker |
+        AVAudioSessionCategoryOptions.allowBluetooth,
+      ),
+    );
+    await session.setActive(true);
+  }
+
+  /// Call AFTER recording (VERY IMPORTANT)
+  static Future<void> prepareForPlayback() async {
+    if (!Platform.isIOS) return;
+
+    final session = await AudioSession.instance;
+    await session.configure(
+      const AudioSessionConfiguration.music(),
+    );
+    await session.setActive(true);
+  }
+}
+
+
+
+/*
+class WhatsappCameraScreen extends StatefulWidget {
   final Function(String path, bool isVideo) onCapture;
 
   const WhatsappCameraScreen({Key? key, required this.onCapture})

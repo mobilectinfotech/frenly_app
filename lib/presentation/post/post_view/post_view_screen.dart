@@ -272,6 +272,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                   height: 21.aw,
                 ),
               ),
+
               const Spacer(),
               Obx(() {
                 final alreadySaved = controller.postSingleViewModel.value?.post?.alreadySaved ?? false;
