@@ -25,10 +25,13 @@ import 'package:frenly_app/presentation/chat/Pages/chat_room/chat_room_controlle
 import 'package:frenly_app/presentation/chat/Pages/chat_room/chat_room_model.dart';
 import 'package:frenly_app/presentation/chat/Pages/chats/chats_model.dart';
 import '../../../../core/constants/app_dialogs.dart';
+import '../../../../core/utils/pref_utils.dart';
 import '../../CustomUI/OwnMessgaeCrad.dart';
 import '../../CustomUI/ReplyCard.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_sound/flutter_sound.dart';   // <-- ADD THIS IMPORT
+import 'package:flutter_sound/flutter_sound.dart';
+
+import '../chats/chats_controller.dart';   // <-- ADD THIS IMPORT
 
 enum MessageType { text, image, video, audio, gif }
 
@@ -69,17 +72,37 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 // 2. Recording flag
   bool _isRecording = false;
 
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   controller.currentParticipantId = widget.participant.id.toString();
+  //   _initializeChat();
+  //   _audioRecorder = FlutterSoundRecorder();
+  //   _initAudio();
+  //   focusNode.addListener(_handleFocusChange);
+  // }
+
   @override
   void initState() {
     super.initState();
-    controller.currentParticipantId = widget.participant.id.toString();
+    final chatController = Get.find<ChatRoomController>();
+    chatController.currentParticipantId = widget.participant.id.toString();
     _initializeChat();
     _audioRecorder = FlutterSoundRecorder();
     _initAudio();
     focusNode.addListener(_handleFocusChange);
   }
 
-///Pramod Code
+  @override
+  void onReady() {
+    ever(Get.locale!.obs, (_) {
+      statusText.refresh();
+    });
+  }
+
+
+  ///Pramod Code
   // void _initializeChat() {
   //   SocketService().activeChatId.value = int.parse(widget.chatId);
   //    controller.getAllMsg(chatId: widget.chatId);
@@ -93,8 +116,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       await SocketService().socketConnect();
     }
     SocketService().activeChatId.value = int.tryParse(widget.chatId) ?? -1;
+   // controller.currentParticipantId = widget.participant.id.toString();
+    controller.chatId = widget.chatId;
     controller.currentParticipantId = widget.participant.id.toString();
-    controller.getAllMsg(chatId: widget.chatId);
+   await controller.getAllMsg(chatId: widget.chatId);
     SocketService().joinChat(widget.chatId);
     //_getLastSeen();
     _loadInitialLastSeen(); //NEW
@@ -122,6 +147,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   //   }
   // }
 
+  ///Working
+/*
   Future<void> _loadInitialLastSeen() async {
     try {
       lastSeenModel = await ApiRepository.lastSeen(
@@ -145,14 +172,57 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       print("Error loading last seen: $e");
     }
   }
+*/
 
+  Future<void> _loadInitialLastSeen() async {
+    try {
+      lastSeenModel = await ApiRepository.lastSeen(
+        id: widget.participant.id.toString(),
+      );
+
+      controller.lastSeenAllowed.value =
+          lastSeenModel?.data?.isLastSeenAllowed ?? true;
+
+      if (!controller.lastSeenAllowed.value) {
+        controller.statusText.value = "offline"; // English
+        return;
+      }
+
+      final lastSeen = lastSeenModel?.data?.lastSeen;
+
+      if (lastSeen == null) {
+        controller.statusText.value = "online"; // English
+      } else {
+        final dt = lastSeen.toLocal();
+        final locale = Get.locale?.languageCode ?? "en";
+
+        controller.statusText.value = timeago.format(
+          dt,
+          locale: locale,
+        );
+      }
+    } catch (e) {
+      print("Error loading last seen: $e");
+    }
+  }
+
+
+  // String formatLastSeen(DateTime dt) {
+  //   String lang = Get.locale?.languageCode ?? "en";
+  //   return timeago.format(
+  //     dt,
+  //     locale: lang,
+  //   );
+  // }
   String formatLastSeen(DateTime dt) {
-    String lang = Get.locale?.languageCode ?? "en";
+    final langCode = Get.locale?.languageCode;
+
     return timeago.format(
       dt,
-      locale: lang,
+      locale: langCode == 'swe' ? 'swe' : 'en',
     );
   }
+
 
 
   void _handleFocusChange() {
@@ -231,6 +301,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   // }
 
   PreferredSizeWidget _buildCustomAppBar(BuildContext context) {
+    final ChatScreenController controllerChat = Get.put(ChatScreenController());
+    final myUserId = int.parse(PrefUtils().getUserId());
+    final otherUser = controllerChat.chatsModel.value!.chats!.first.participants!.firstWhere((p) => p.id != myUserId);
+
     return PreferredSize(
       preferredSize: Size.fromHeight(70),
       child: Obx(() {
@@ -240,10 +314,23 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           //handle: lastSeenUser
           handle: controller.statusText.value, //LIVE STRING
           name: widget.participant.fullName?.capitalizeFirst,
-          imagepath: widget.participant.avatarUrl,
+         // imagepath: widget.participant.avatarUrl,
+          imagepath: fixedAvatar(otherUser.avatarUrl),
+          // imagepath: otherUser.avatarUrl, // ✅ CORRECT,
         );
       }),
     );
+  }
+
+  String? fixedAvatar(String? url) {
+    if (url == null) return null;
+    if (url.contains('https://www.frenly.se:4000/images/https')) {
+      return url.replaceFirst(
+        'https://www.frenly.se:4000/images/',
+        '',
+      );
+    }
+    return url;
   }
 
   Widget _buildMessageList() {
@@ -1980,7 +2067,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
   Future capturePhoto() async {
     try {
       final file = await cam!.takePicture();
-      await cam?.dispose();
+      // await cam?.dispose();
       widget.onCapture(file.path, false);
       Get.back();
     } catch (_) {}
@@ -2028,7 +2115,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       final file = await cam!.stopVideoRecording();
       timer?.cancel();
       recording = false;
-      await cam?.dispose();
       widget.onCapture(file.path, true);
       Get.back();
     } catch (_) {}
@@ -2093,7 +2179,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       body: Stack(
         children: [
           // 🔥 FIXED SYNTAX: Proper nesting for Transform child
-          Positioned.fill(
+         /* Positioned.fill(
             child: OverflowBox(
               maxHeight: double.infinity,
               maxWidth: double.infinity,
@@ -2115,7 +2201,23 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
                 ),
               ),
             ),
+          ),*/
+          Positioned.fill(
+            child: SizedBox(
+              width: Get.width,
+              height: Get.height,
+              child: cam!.description.lensDirection == CameraLensDirection.back
+                  ? CameraPreview(cam!)
+                  : Transform(
+                alignment: Alignment.topCenter,
+                transform: Matrix4.rotationY(
+                  GetPlatform.isAndroid ? math.pi : 0,
+                ),
+                child: CameraPreview(cam!),
+              ),
+            ),
           ),
+
 
           if (recording)
             Positioned(
@@ -2198,6 +2300,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     );
   }
 }
+
 
 class IOSAudioSessionHelper {
   /// Call BEFORE recording

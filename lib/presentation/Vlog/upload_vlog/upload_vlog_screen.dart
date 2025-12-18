@@ -273,7 +273,7 @@ class _UploadVlogScreenState extends State<UploadVlogScreen> {
                         if(controller.pikedVideo != null ){
                           controller.postVlog();
                         }else{
-                          AppDialog.taostMessage("Video Not be Empty");
+                          AppDialog.taostMessage("videoNotBeEmpty".tr);
                         }
                       }
                       //Navigator.push(context, MaterialPageRoute(builder: (context) => Demo_deshboardPage()));

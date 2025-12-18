@@ -244,7 +244,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               // Navigate to ChatRoomPage
                                               Get.off(() => ChatRoomPage(
                                                 participant: createChatModel.payload!.participants![indexxx],
-                                                chatId: chatId,
+                                              chatId: chatId,
+                                              //   chatId: createChatModel.payload!.id.toString(), // ✅ only chatId
                                               ));
                                             } catch (e) {
                                               print("Navigation to ChatRoomPage failed: $e");

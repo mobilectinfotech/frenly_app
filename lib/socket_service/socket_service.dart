@@ -335,6 +335,13 @@ class SocketService {
 
   RxInt activeChatId = (-1).obs;
 
+  void emitOnline() {
+    socket.emit("user_online");
+  }
+  void emitOffline() {
+    socket.emit("user_offline");
+  }
+
   Future<void> socketConnect() async {
     try {
       final headers = {

@@ -39,6 +39,15 @@ class ChatRoomController extends GetxController {
     // TODO: implement onInit
     super.onInit();
   }
+  @override
+  void onReady() {
+    super.onReady();
+
+    ever(Get.locale!.obs, (_) {
+      statusText.refresh();
+    });
+  }
+
 
   RxBool isLoading = false.obs;
 
@@ -188,19 +197,31 @@ class ChatRoomController extends GetxController {
     // If toggle says: hide last seen
     if (!isLastSeenAllowed) {
       statusText.value = "offline".tr;
+      // statusText.refresh();
+      // update();
       return;
     }
 
     // Show ONLINE if connected
     if (online) {
       statusText.value = "online".tr;
+      // statusText.refresh();
+      // update();
       return;
     }
 
     // Show LAST SEEN time (converted to local)
     if (lastSeenUtc != null) {
       final dt = DateTime.parse(lastSeenUtc).toLocal();
-      statusText.value = timeago.format(dt);
+     // statusText.value = timeago.format(dt);
+      final locale = Get.locale?.languageCode ?? "en";
+
+      statusText.value = timeago.format(
+        dt,
+       // locale: Get.locale?.languageCode == 'swe' ? 'swe' : 'en',
+        locale:locale, // ✅ Swedish allowed here
+      );
+
     } else {
       statusText.value = "offline".tr;
     }

@@ -444,7 +444,8 @@ class ApiRepository {
       onSendProgress: onProgress, // 👈 add this
     );
     if (response != null) {
-      AppDialog.taostMessage("${response["message"]}");
+      //AppDialog.taostMessage("${response["message"]}");
+      AppDialog.taostMessage("vlog_created_successfully".tr);
       return true;
     }
     return false;

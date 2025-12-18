@@ -168,6 +168,9 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
        // break;
       // USER LEFT APP --> GO OFFLINE
      //  _socketService.socketDisconnect();
+      if (_socketService.socket.connected) {
+        _socketService.emitOffline(); // ⭐ KEY FIX
+      }
       break;
 
       case AppLifecycleState.resumed:
@@ -175,6 +178,7 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
         if(!SocketService().socket.connected) {
           SocketService().socketConnect();
         }
+        _socketService.emitOnline(); // ⭐ KEY FIX
 
         /// rejoin chat room
         if(Get.isRegistered<ChatRoomController>()){
@@ -212,6 +216,8 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    /// app fully closed
+    _socketService.emitOffline(); // ⭐ safety
     _socketService.socketDisconnect();
     super.dispose();
   }

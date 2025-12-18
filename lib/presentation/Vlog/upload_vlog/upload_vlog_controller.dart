@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_compress/video_compress.dart';
 import 'dart:io';
+import '../../../core/constants/app_dialogs.dart';
 import '../../auth/my_profile_view/my_profile_controller.dart';
 
 class UploadVlogController extends GetxController{
-
 
   TextEditingController titleController =TextEditingController();
   TextEditingController descriptionController =TextEditingController();
@@ -86,6 +86,7 @@ class UploadVlogController extends GetxController{
     isLoading.value = false;
     isUploading.value = false;
     if (isPost) {
+      //AppDialog.taostMessage("vlog_created_successfully".tr);
       if (Get.isRegistered<MyProfileController>()) {
         Get.find<MyProfileController>().getProfile(); // Update profile
       }

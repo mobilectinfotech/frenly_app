@@ -322,6 +322,8 @@ class Messages extends Translations {
           "Audio": "Audio",
           "GIF": "GIF",
           "uploading": "uploading",
+          "videoNotBeEmpty": "Video Not be Empty",
+          "vlog_created_successfully": "vlog Created Successfully",
 
           // "Vlog_not_Found": "Vlog not Found",
           // "Blog_not_Found": "Blog not Found",
@@ -653,7 +655,10 @@ class Messages extends Translations {
           "Video": "Video",
           "Audio": "Ljud",
           "GIF": "GIF",
-          "uploading": "Laddar upp"
+          "uploading": "Laddar upp",
+          "videoNotBeEmpty": "Videon får inte vara tom",
+          "vlog_created_successfully": "vlogg skapad",
+
 
           // "Vlog_not_Found": "Vlogg hittades inte",
           // "Blog_not_Found": "Blogg hittades inte",
