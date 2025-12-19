@@ -965,6 +965,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
               height: 21.aw,
             ),
           ),
+
           const Spacer(),
           Obx(() {
             final alreadySaved = controller.vlogByIdModel.value?.vlog?.alreadySaved ?? false;
@@ -998,6 +999,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
       ),
     );
   }
+
   Widget buildVlogDetails() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.aw),
@@ -1494,10 +1496,12 @@ class VlogBottomSheets {
                                   ? 1
                                   : 0;
                               print("chatId $indexxx");
+
                               // "send_a_vlog": "Send a Vlog of",
                               // "send_a_blog": "Send a blog of",
                               // "send_a_post": "Send a post of",
                               //
+
                               var msg = ".";
                               var post = "send_a_post".tr;
                               var vlog = "send_a_vlog".tr;
@@ -1512,8 +1516,7 @@ class VlogBottomSheets {
                                 msg = "${blog} $userName";
                               }
 
-                              final response = await ApiRepository
-                                  .sendMessageWithShare(
+                              final response = await ApiRepository.sendMessageWithShare(
                                   message: msg,
                                   chatId: createChatModel
                                       .payload!.id

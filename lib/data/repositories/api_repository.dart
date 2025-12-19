@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:frenly_app/data/models/loginWithBankIDCheckModel.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -776,7 +777,8 @@ class ApiRepository {
     required String id,
     required PostType postType,
     required String comment,
-  }) async {
+  })
+  async {
 
     Map<String, dynamic>? response =
     await ApiClient().postRequest(
@@ -793,7 +795,6 @@ class ApiRepository {
 
     return PostCommentResponse.fromJson(response);
   }
-
 
   static Future<bool> deleteCommentAll({required String id, required PostType postType, required String commentId}) async {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(
@@ -821,6 +822,7 @@ class ApiRepository {
 
 //////////////////////comments//////////////////////////////////////////////////////////////////////////
 
+/*
   static Future<bool> shareAllBlogPostVlog({required String shareId, required PostType postType}) async {
     final response = await ApiClient().postRequest(
       endPoint: "${postType.name}/share/${shareId}",
@@ -833,14 +835,50 @@ class ApiRepository {
       return false;
     }
   }
+*/
 
-  static Future<bool> sendMessageWithShare({
+
+  static Future<bool> shareAllBlogPostVlog({
+    required String shareId,
+    required PostType postType,
+  }) async {
+    final endPoint = _shareEndpoint(postType, shareId);
+
+    final response = await ApiClient().postRequest(
+      endPoint: endPoint,
+      body: {},
+    );
+
+    if (response != null) {
+      AppDialog.taostMessage(
+        response["message"] ?? "Shared successfully",
+      );
+      return true;
+    }
+    return false;
+  }
+
+
+  static String _shareEndpoint(PostType type, String id) {
+    switch (type) {
+      case PostType.post:
+        return "post/share/$id";
+      case PostType.blog:
+        return "blog/share/$id";
+      case PostType.vlog:
+        return "vlog/share/$id"; // ✅ SINGULAR
+    }
+  }
+
+
+/*  static Future<bool> sendMessageWithShare({
     required String message,
     required String chatId,
     required String isLinkId,
     required String isUrl,
     required PostType postType,
-  }) async {
+  })
+  async {
     var isLinkIdd = 0;
     if (postType.name == "post") {
       isLinkIdd = 1;
@@ -859,7 +897,53 @@ class ApiRepository {
     } else {
       return false;
     }
+  }*/
+
+  static Future<bool> sendMessageWithShare({
+    required String message,
+    required String chatId,
+    required String isLinkId,
+    required String isUrl,
+    required PostType postType,
+  }) async {
+
+    int isLinkIdd = 0;
+    switch (postType) {
+      case PostType.post:
+        isLinkIdd = 1;
+        break;
+      case PostType.blog:
+        isLinkIdd = 2;
+        break;
+      case PostType.vlog:
+        isLinkIdd = 3;
+        break;
+    }
+
+    final response = await ApiClient().postRequest(
+      endPoint: "message/$chatId",
+      body: {
+        "content": message,
+        "isLink": isLinkIdd,
+        "isLinkId": isLinkId,
+        "isUrl": isUrl,
+      },
+    );
+    if (response != null) {
+      // 🔥 share count API (safe call)
+      try {
+        await shareAllBlogPostVlog(
+          shareId: isLinkId,
+          postType: postType,
+        );
+      } catch (e) {
+        debugPrint("Share API failed: $e");
+      }
+      return true;
+    }
+    return false;
   }
+
 
   static Future<bool> saveAllById({required String id, required String categoryId, required PostType postType}) async {
     print("postType ${postType}");

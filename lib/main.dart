@@ -29,6 +29,7 @@ Future<void> main() async {
 
   await SocketService().socketConnect();
    print("Start socket globally");
+
   // REGISTER timeago languages
   // timeago.setLocaleMessages('en', timeago.EnMessages());
   // timeago.setLocaleMessages('sv', timeago.SvMessages());

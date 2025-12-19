@@ -348,7 +348,8 @@ class CustomBottomSheets {
     required BuildContext context,
     required String id,
     required PostType postType,
-  }) async {
+  })
+  async {
 
     final ComnetsController commentsController =
     Get.isRegistered<ComnetsController>()
@@ -668,7 +669,6 @@ class CustomBottomSheets {
                 ]),
               ));
         });
-
     Get.find<DashBoardController>().bottomBarShow.value = true;
   }
 
@@ -949,3 +949,5 @@ class PostCommentResponse {
     );
   }
 }
+
+
