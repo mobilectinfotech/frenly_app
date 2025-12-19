@@ -23,8 +23,8 @@ enum PostType {
 }
 
 class CustomBottomSheets {
-  ///comments boottom sheet
-  static Future<void> commentsBottomSheet(
+  ///comments boottom sheet pramod code
+/*  static Future<void> commentsBottomSheet(
       {required BuildContext context,
       required String id,
       required PostType postType}) async {
@@ -70,8 +70,7 @@ class CustomBottomSheets {
                                 )
                               : Expanded(
                                   child:
-                                      commentsController.getCommentsModel
-                                                  .comments?.length ==
+                                      commentsController.getCommentsModel.value.comments?.length ==
                                               0
                                           ? Center(
                                               child: Text(
@@ -86,7 +85,7 @@ class CustomBottomSheets {
                                               reverse: true,
                                               itemCount: commentsController
                                                   .getCommentsModel
-                                                  .comments
+                                                  .value.comments
                                                   ?.length,
                                               itemBuilder:
                                                   (BuildContext context,
@@ -116,7 +115,7 @@ class CustomBottomSheets {
                                                             imagePath:
                                                                 commentsController
                                                                     .getCommentsModel
-                                                                    .comments?[
+                                                                    .value.comments?[
                                                                         index]
                                                                     .user
                                                                     ?.avatarUrl,
@@ -128,8 +127,7 @@ class CustomBottomSheets {
                                                               Get.back();
                                                               Get.to(() =>
                                                                   UserProfileScreen(
-                                                                      userId:
-                                                                          "${commentsController.getCommentsModel.comments?[index].user?.id}"));
+                                                                      userId: "${commentsController.getCommentsModel.value.comments?[index].user?.id}"));
                                                             },
                                                           ),
                                                           SizedBox(
@@ -146,7 +144,7 @@ class CustomBottomSheets {
                                                               Row(
                                                                 children: [
                                                                   Text(
-                                                                    "${commentsController.getCommentsModel.comments?[index].user?.fullName}  ",
+                                                                    "${commentsController.getCommentsModel.value.comments?[index].user?.fullName}  ",
                                                                     style:
                                                                         TextStyle(
                                                                       color: Colors
@@ -162,7 +160,7 @@ class CustomBottomSheets {
                                                                   ),
                                                                   Text(
                                                                     calculateTimeDifference(
-                                                                        "${commentsController.getCommentsModel.comments?[index].createdAt}"),
+                                                                        "${commentsController.getCommentsModel.value.comments?[index].createdAt}"),
                                                                     style:
                                                                         TextStyle(
                                                                       color: Colors
@@ -186,7 +184,7 @@ class CustomBottomSheets {
                                                                     width:
                                                                         230.aw,
                                                                     child: Text(
-                                                                      "${commentsController.getCommentsModel.comments?[index].content}",
+                                                                      "${commentsController.getCommentsModel.value.comments?[index].content}",
                                                                       style:
                                                                           TextStyle(
                                                                         color: Colors
@@ -213,11 +211,11 @@ class CustomBottomSheets {
                                                                             //  Get.snackbar("title", "${commentsController.getCommentsModel.comments?[index].id}");
                                                                             //  print("object_sdfdsfdfdsf");
                                                                               Get.snackbar("", '',backgroundColor:  const Color(0xFF001649),colorText: Colors.white,titleText:const Text("Please write something",style: TextStyle(color: Colors.white),));
-                                                                              commentsController.getCommentsModel.comments?[index].isLikedByMe.value = !commentsController.getCommentsModel.comments![index].isLikedByMe.value;
-                                                                              if (commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true) {
-                                                                                commentsController.getCommentsModel.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.comments?[index].numberOfLikes.value ?? 1) + 1;
+                                                                              commentsController.getCommentsModel.value.comments?[index].isLikedByMe.value = !commentsController.getCommentsModel.value.comments![index].isLikedByMe.value;
+                                                                              if (commentsController.getCommentsModel.value.comments?[index].isLikedByMe.value == true) {
+                                                                                commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value ?? 1) + 1;
                                                                               } else {
-                                                                                commentsController.getCommentsModel.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.comments?[index].numberOfLikes.value ?? 1) - 1;
+                                                                                commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value ?? 1) - 1;
                                                                               }
 
                                                                               // setState(() {});
@@ -225,27 +223,27 @@ class CustomBottomSheets {
                                                                               // widget.blog.numberOfLikes =
                                                                               //     widget.blog.numberOfLikes! - 1;
                                                                               // setState(() {});
-                                                                              bool isLiked = await ApiRepository.commnetLikeONvlog(volgId: "${commentsController.getCommentsModel.comments?[index].id}",postType: postType);
+                                                                              bool isLiked = await ApiRepository.commnetLikeONvlog(volgId: "${commentsController.getCommentsModel.value.comments?[index].id}",postType: postType);
                                                                             },
                                                                             child: CustomImageView(
-                                                                              imagePath: commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true ? "assets/image/love_true_blue.svg" : 'assets/image/love_false_blue.svg',
+                                                                              imagePath: commentsController.getCommentsModel.value.comments?[index].isLikedByMe.value == true ? "assets/image/love_true_blue.svg" : 'assets/image/love_false_blue.svg',
                                                                               width: 21.aw,
                                                                               height: 21.aw,
                                                                             )),
                                                                       ),
                                                                       Obx(() {
                                                                         return Text(
-                                                                          "${commentsController.getCommentsModel.comments?[index].numberOfLikes.value == 0 ? "" : commentsController.getCommentsModel.comments?[index].numberOfLikes}",
+                                                                          "${commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value == 0 ? "" : commentsController.getCommentsModel.value.comments?[index].numberOfLikes}",
                                                                         );
                                                                       }),
                                                                     ],
                                                                   )
                                                                 ],
                                                               ),
-                                                              if ("${commentsController.getCommentsModel.comments?[index].user?.id}" == PrefUtils().getUserId())
+                                                              if ("${commentsController.getCommentsModel.value.comments?[index].user?.id}" == PrefUtils().getUserId())
                                                                 InkWell(
                                                                   onTap: () async {
-                                                                    commentsController.deleteComments(id: id, postType: postType, commentId: "${commentsController.getCommentsModel.comments?[index].id}");
+                                                                    commentsController.deleteComments(id: id, postType: postType, commentId: "${commentsController.getCommentsModel.value.comments?[index].id}");
                                                                   },
                                                                   child: Text(
                                                                     "Delete".tr,
@@ -345,7 +343,155 @@ class CustomBottomSheets {
         });
     print("pramod");
     Get.find<DashBoardController>().bottomBarShow.value = true;
+  }*/
+  static Future<void> commentsBottomSheet({
+    required BuildContext context,
+    required String id,
+    required PostType postType,
+  }) async {
+
+    final ComnetsController commentsController =
+    Get.isRegistered<ComnetsController>()
+        ? Get.find<ComnetsController>()
+        : Get.put(ComnetsController());
+
+    commentsController.getComments(id: id, postType: postType);
+
+    await Get.bottomSheet(
+      FractionallySizedBox(
+        heightFactor: .55,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {},
+          child: Padding(
+            padding: EdgeInsets.only(left: 20.aw, right: 20.aw),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                SizedBox(height: 20.ah),
+
+                Center(
+                  child: Text(
+                    'comments'.tr,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.98,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20.ah),
+
+                Obx(() {
+                  if (commentsController.isLoading.value) {
+                    return const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(strokeWidth: 1),
+                      ),
+                    );
+                  }
+
+                  final comments =
+                      commentsController.getCommentsModel.value.comments ?? [];
+
+                  if (comments.isEmpty) {
+                    return const Expanded(
+                      child: Center(child: Text("No comments")),
+                    );
+                  }
+
+                  return Expanded(
+                    child: ListView.builder(
+                      reverse: true,
+                      itemCount: comments.length,
+                      itemBuilder: (_, index) {
+                        final comment = comments[index];
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 10.ah),
+                          child: Text(comment.content ?? ""),
+                        );
+                      },
+                    ),
+                  );
+                }),
+
+                SizedBox(height: 10.v),
+
+                /// COMMENT INPUT
+                Row(
+                  children: [
+                    Expanded(
+                      child: Form(
+                        key: commentsController.formKey,
+                        child: TextFormField(
+                          controller: commentsController.commnetsTc,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.send,
+                          validator: Validator.pleaseWriteSomething,
+                          decoration: InputDecoration(
+                            hintText: "add_comment".tr,
+                            contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 12),
+                          ),
+                          onEditingComplete: () {
+                            if (commentsController.formKey.currentState!.validate()) {
+                              FocusScope.of(context).unfocus();
+                              commentsController.postComments(
+                                id: id,
+                                postType: postType,
+                                comment:
+                                commentsController.commnetsTc.text.trim(),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    InkWell(
+                      onTap: () {
+                        if (commentsController.formKey.currentState!.validate()) {
+                          FocusScope.of(context).unfocus();
+                          commentsController.postComments(
+                            id: id,
+                            postType: postType,
+                            comment:
+                            commentsController.commnetsTc.text.trim(),
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Post'.tr,
+                        style: const TextStyle(
+                          color: Color(0xFF001649),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ),
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+
+    /// CLEANUP (VERY IMPORTANT)
+    Get.delete<ComnetsController>();
+
+    Get.find<DashBoardController>().bottomBarShow.value = true;
   }
+
 
   static Future<void> shareBottomSheet({
     required BuildContext context,
@@ -405,12 +551,12 @@ class CustomBottomSheets {
                           )
                         : SizedBox(
                             height: MediaQuery.of(context).size.height * .40,
-                            child: controller.allFriendsModel.friends?.length == 0
+                            child: controller.allFriendsModel.value.friends?.length == 0
                                 ? Center(child: Text("no_friends_found".tr))
                                 : ListView.builder(
                                     //  shrinkWrap: true,
                                     // physics: const NeverScrollableScrollPhysics(),
-                                    itemCount: controller.allFriendsModel.friends?.length ?? 0,
+                                    itemCount: controller.allFriendsModel.value.friends?.length ?? 0,
                                     scrollDirection: Axis.vertical,
                                     itemBuilder: (context, index) {
                                       return Padding(
@@ -464,7 +610,7 @@ class CustomBottomSheets {
                                           onTap: () async {
                                             Get.back();
                                             CreateChatModel createChatModel = await ApiRepository.createChat(
-                                              userId: "${controller.allFriendsModel.friends?[index].id}",
+                                              userId: "${controller.allFriendsModel.value.friends?[index].id}",
                                             );
 
                                             int indexxx = "${createChatModel.payload?.participants?[0].id}" == PrefUtils().getUserId() ? 1 : 0;
@@ -503,14 +649,14 @@ class CustomBottomSheets {
                                                 child: CustomImageView(
                                                   height: 60.adaptSize,
                                                   width: 60.adaptSize,
-                                                  imagePath: controller.allFriendsModel.friends?[index].avatarUrl,
+                                                  imagePath: controller.allFriendsModel.value.friends?[index].avatarUrl,
                                                   fit: BoxFit.cover,
                                                   radius: BorderRadius.circular(45.adaptSize),
                                                 ),
                                               ),
 
                                               SizedBox(width: 10),
-                                              Text("${controller.allFriendsModel.friends?[index].fullName}")
+                                              Text("${controller.allFriendsModel.value.friends?[index].fullName}")
                                             ],
                                           ),
                                         ),
@@ -646,7 +792,9 @@ class CustomBottomSheets {
 }
 
 class ComnetsController extends GetxController {
-  GetCommentsModel getCommentsModel = GetCommentsModel();
+ // GetCommentsModel getCommentsModel = GetCommentsModel();
+  Rx<GetCommentsModel> getCommentsModel = GetCommentsModel().obs;
+
   RxBool isLoading = false.obs;
 
   TextEditingController commnetsTc = TextEditingController();
@@ -656,9 +804,9 @@ class ComnetsController extends GetxController {
 
   getComments({required String id, required PostType postType}) async {
     isLoading.value = true;
-    getCommentsModel =
-        await ApiRepository.getCommentsAll(id: id, postType: postType);
-    numberOfCommnets.value = getCommentsModel.comments?.length ?? 2000;
+    getCommentsModel.value =
+    await ApiRepository.getCommentsAll(id: id, postType: postType);
+    numberOfCommnets.value = getCommentsModel.value.comments?.length ?? 2000;
     isLoading.value = false;
   }
 
@@ -670,10 +818,21 @@ class ComnetsController extends GetxController {
     required String comment,
   }) async {
     isLoadingPostCommnets.value = true;
-    await ApiRepository.postCommentAll(id: id, postType: postType, comment: comment);
-    commnetsTc.clear();
+    final res =   await ApiRepository.postCommentAll(id: id, postType: postType, comment: comment);
+  //  commnetsTc.clear();
+    if (res.success == true && res.comment != null) {
+      getCommentsModel.value.comments ??= [];
+      getCommentsModel.value.comments!.insert(0, res.comment!);
+      commnetsTc.clear();
+      getCommentsModel.refresh();
+    }
+
     if (postType.name == "blog") {
-      Get.find<BlogViewController>().getBlogById(id: id,isLoadingg: false);
+   //   Get.find<BlogViewController>().getBlogById(id: id,isLoadingg: false);
+      if (Get.isRegistered<BlogViewController>()) {
+        Get.find<BlogViewController>().getBlogById( id: id);
+      }
+
     }
     if (postType.name == "post") {
       //Todo 001
@@ -698,26 +857,52 @@ class ComnetsController extends GetxController {
   }
 }
 
+// class ShareController extends GetxController {
+//   @override
+//   void onInit() {
+//     // TODO: implement onInit
+//     super.onInit();
+//     getFriends();
+//   }
+//
+//   RxBool isLoading = false.obs;
+//   AllFriendsModel allFriendsModel = AllFriendsModel();
+//
+//   getFriends() async {
+//     isLoading.value = true;
+//     allFriendsModel = await ApiRepository.getFriends();
+//     isLoading.value = false;
+//   }
+//
+// //
+// }
 
 class ShareController extends GetxController {
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
-    getFriends();
+    getFriends(); // initial load
   }
 
   RxBool isLoading = false.obs;
-  AllFriendsModel allFriendsModel = AllFriendsModel();
 
-  getFriends() async {
+  Rx<AllFriendsModel> allFriendsModel = AllFriendsModel().obs;
+
+  Future<void> getFriends({bool force = false}) async {
+    if (isLoading.value) return;
+
     isLoading.value = true;
-    allFriendsModel = await ApiRepository.getFriends();
-    isLoading.value = false;
+    try {
+      final data = await ApiRepository.getFriends();
+      allFriendsModel.value = data;
+    } catch (e) {
+      debugPrint("ShareController error: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
-
-//
 }
+
 
 class SaveController extends GetxController {
   Rxn<CategoryModel> cateogoryModel = Rxn();
@@ -736,5 +921,31 @@ class SaveController extends GetxController {
       cateogoryModel.value = value;
     });
     isloading.value = false;
+  }
+}
+
+
+class PostCommentResponse {
+  int? status;
+  bool? success;
+  String? message;
+  Comment? comment;
+
+  PostCommentResponse({
+    this.status,
+    this.success,
+    this.message,
+    this.comment,
+  });
+
+  factory PostCommentResponse.fromJson(Map<String, dynamic> json) {
+    return PostCommentResponse(
+      status: json['status'],
+      success: json['success'],
+      message: json['message'],
+      comment: json['comment'] != null
+          ? Comment.fromJson(json['comment'])
+          : null,
+    );
   }
 }

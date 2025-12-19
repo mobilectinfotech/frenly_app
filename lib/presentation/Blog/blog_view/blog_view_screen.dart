@@ -476,6 +476,7 @@ import '../../dashboard_screen/dashboardcontroller.dart';
 import '../../search/search_page.dart';
 import '../../settings_screen/setting_controller.dart';
 import '../../user_profile_screen/user_profile_screen.dart';
+import 'blog_view_controller.dart';
 
 
 class BlogViewScreen extends StatefulWidget {
@@ -498,6 +499,8 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
   void initState() {
     super.initState();
     controller.getBlogById(id: widget.id);
+    Get.put(BlogViewController());
+
   }
 
   @override
@@ -688,6 +691,7 @@ class _BlogViewScreenState extends State<BlogViewScreen> {
                     width: 21.aw, height: 21.aw,
                   ),
                 ),
+
               const SizedBox(width: 20),
               InkWell(
                 onTap: () {

@@ -1071,7 +1071,7 @@ class _VlogViewScreenState extends State<VlogViewScreen> {
 
 class VlogBottomSheets {
   static TextEditingController reasonController = TextEditingController();
-
+///
   static Future<void> commentsBottomSheet(
       {required BuildContext context,
         required String id,
@@ -1113,8 +1113,7 @@ class VlogBottomSheets {
                   )
                       : Expanded(
                     child:
-                    commentsController.getCommentsModel
-                        .comments?.length ==
+                    commentsController.getCommentsModel.value.comments?.length ==
                         0
                         ? Center(
                       child: Text(
@@ -1129,7 +1128,7 @@ class VlogBottomSheets {
                       reverse: true,
                       itemCount: commentsController
                           .getCommentsModel
-                          .comments
+                          .value.comments
                           ?.length,
                       itemBuilder:
                           (BuildContext context,
@@ -1157,7 +1156,7 @@ class VlogBottomSheets {
                                     height:
                                     40.adaptSize,
                                     imagePath:
-                                    commentsController.getCommentsModel.comments?[
+                                    commentsController.getCommentsModel.value.comments?[
                                     index].user?.avatarUrl,
                                     fit: BoxFit.cover,
                                     radius: BorderRadius
@@ -1167,7 +1166,7 @@ class VlogBottomSheets {
                                       Get.back();
                                       Get.to(() =>
                                           UserProfileScreen(userId:
-                                          "${commentsController.getCommentsModel.comments?[index].user?.id}"));
+                                          "${commentsController.getCommentsModel.value.comments?[index].user?.id}"));
                                     },
                                   ),
                                   SizedBox(
@@ -1184,7 +1183,7 @@ class VlogBottomSheets {
                                       Row(
                                         children: [
                                           Text(
-                                            "${commentsController.getCommentsModel.comments?[index].user?.handle}  ",
+                                            "${commentsController.getCommentsModel.value.comments?[index].user?.handle}  ",
                                             style:
                                             TextStyle(
                                               color: Colors.black,
@@ -1199,7 +1198,7 @@ class VlogBottomSheets {
                                           ),
                                           Text(
                                             calculateTimeDifference(
-                                                "${commentsController.getCommentsModel.comments?[index].createdAt}"),
+                                                "${commentsController.getCommentsModel.value.comments?[index].createdAt}"),
                                             style:
                                             TextStyle(
                                               color: Colors
@@ -1223,7 +1222,7 @@ class VlogBottomSheets {
                                             width:
                                             230.aw,
                                             child: Text(
-                                              "${commentsController.getCommentsModel.comments?[index].content}",
+                                              "${commentsController.getCommentsModel.value.comments?[index].content}",
                                               style:
                                               TextStyle(
                                                 color: Colors
@@ -1250,11 +1249,11 @@ class VlogBottomSheets {
                                                       //  Get.snackbar("title", "${commentsController.getCommentsModel.comments?[index].id}");
                                                       //  print("object_sdfdsfdfdsf");
                                                       //    Get.snackbar("", '',backgroundColor:  const Color(0xFF001649),colorText: Colors.white,titleText:const Text("Please write something",style: TextStyle(color: Colors.white),));
-                                                      commentsController.getCommentsModel.comments?[index].isLikedByMe.value = !commentsController.getCommentsModel.comments![index].isLikedByMe.value;
-                                                      if (commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true) {
-                                                        commentsController.getCommentsModel.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.comments?[index].numberOfLikes.value ?? 1) + 1;
+                                                      commentsController.getCommentsModel.value.comments?[index].isLikedByMe.value = !commentsController.getCommentsModel.value.comments![index].isLikedByMe.value;
+                                                      if (commentsController.getCommentsModel.value.comments?[index].isLikedByMe.value == true) {
+                                                        commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value ?? 1) + 1;
                                                       } else {
-                                                        commentsController.getCommentsModel.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.comments?[index].numberOfLikes.value ?? 1) - 1;
+                                                        commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value = (commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value ?? 1) - 1;
                                                       }
 
                                                       // setState(() {});
@@ -1262,27 +1261,27 @@ class VlogBottomSheets {
                                                       // widget.blog.numberOfLikes =
                                                       //     widget.blog.numberOfLikes! - 1;
                                                       // setState(() {});
-                                                      bool isLiked = await ApiRepository.commnetLikeONvlog(volgId: "${commentsController.getCommentsModel.comments?[index].id}",postType: postType);
+                                                      bool isLiked = await ApiRepository.commnetLikeONvlog(volgId: "${commentsController.getCommentsModel.value.comments?[index].id}",postType: postType);
                                                     },
                                                     child: CustomImageView(
-                                                      imagePath: commentsController.getCommentsModel.comments?[index].isLikedByMe.value == true ? "assets/image/love_true_blue.svg" : 'assets/image/love_false_blue.svg',
+                                                      imagePath: commentsController.getCommentsModel.value.comments?[index].isLikedByMe.value == true ? "assets/image/love_true_blue.svg" : 'assets/image/love_false_blue.svg',
                                                       width: 21.aw,
                                                       height: 21.aw,
                                                     )),
                                               ),
                                               Obx(() {
                                                 return Text(
-                                                  "${commentsController.getCommentsModel.comments?[index].numberOfLikes.value == 0 ? "" : commentsController.getCommentsModel.comments?[index].numberOfLikes}",
+                                                  "${commentsController.getCommentsModel.value.comments?[index].numberOfLikes.value == 0 ? "" : commentsController.getCommentsModel.value.comments?[index].numberOfLikes}",
                                                 );
                                               }),
                                             ],
                                           )
                                         ],
                                       ),
-                                      if ("${commentsController.getCommentsModel.comments?[index].user?.id}" == PrefUtils().getUserId())
+                                      if ("${commentsController.getCommentsModel.value.comments?[index].user?.id}" == PrefUtils().getUserId())
                                         InkWell(
                                           onTap: () async {
-                                            commentsController.deleteComments(id: id, postType: postType, commentId: "${commentsController.getCommentsModel.comments?[index].id}");
+                                            commentsController.deleteComments(id: id, postType: postType, commentId: "${commentsController.getCommentsModel.value.comments?[index].id}");
                                           },
                                           child: Text(
                                             "Delete".tr,
@@ -1427,7 +1426,15 @@ class VlogBottomSheets {
     required String userName,
     required String isUrl,
   }) async {
-    ShareController controller = Get.find<ShareController>();
+  //  ShareController controller = Get.find<ShareController>();
+    final ShareController controller =
+    Get.isRegistered<ShareController>()
+        ? Get.find<ShareController>()
+        : Get.put(ShareController());
+
+    // 🔥 HAR BAAR LIST REFRESH
+    await controller.getFriends(force: true);
+
     await Get.bottomSheet(
       Container(
         padding: const EdgeInsets.all(16.0),
@@ -1461,18 +1468,15 @@ class VlogBottomSheets {
                     child: CircularProgressIndicator(
                       strokeWidth: 1,
                     ),
-                  )
-                      : SizedBox(
+                  ) : SizedBox(
                     height: MediaQuery.of(context).size.height * .40,
-                    child: controller.allFriendsModel.friends?.length ==
+                    child: controller.allFriendsModel.value.friends?.length ==
                         0
                         ? Center(child: Text("no_friends_found".tr))
                         : ListView.builder(
                       //  shrinkWrap: true,
                       // physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller
-                          .allFriendsModel.friends?.length ??
-                          0,
+                      itemCount: controller.allFriendsModel.value.friends?.length ?? 0,
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -1483,7 +1487,7 @@ class VlogBottomSheets {
                               CreateChatModel createChatModel =
                               await ApiRepository.createChat(
                                   userId:
-                                  "${controller.allFriendsModel.friends?[index].id}");
+                                  "${controller.allFriendsModel.value.friends?[index].id}");
                               int indexxx =
                               "${createChatModel.payload?.participants?[0].id}" ==
                                   PrefUtils().getUserId()
@@ -1526,20 +1530,15 @@ class VlogBottomSheets {
                                   child: CustomImageView(
                                     height: 60.adaptSize,
                                     width: 60.adaptSize,
-                                    imagePath: controller
-                                        .allFriendsModel
-                                        .friends?[index]
-                                        .avatarUrl,
+                                    imagePath: controller.allFriendsModel.value.friends?[index].avatarUrl,
                                     fit: BoxFit.cover,
-                                    radius: BorderRadius.circular(
-                                        45.adaptSize),
+                                    radius: BorderRadius.circular(45.adaptSize),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                    "${controller.allFriendsModel.friends?[index].fullName}")
+                                Text("${controller.allFriendsModel.value.friends?[index].fullName}")
                               ],
                             ),
                           ),

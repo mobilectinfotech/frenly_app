@@ -166,11 +166,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
               child: const Icon(Icons.arrow_back_sharp)),
         ),
       ),
+
       body: notificationsModel.notifications?.length==0?Center(child:Text("no_notification_found".tr),):ListView(
         children: [
           SizedBox(height: 20.ah),
-          isLading ?const SizedBox(
-                  height: 500,
+          isLading ? SizedBox(
+                  height: 500.ah,
                   child: Center(
                       child: CircularProgressIndicator(strokeWidth: 1,
                   )))
@@ -183,7 +184,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       child: Container(
                         width: double.infinity,
                         height: 78.ah,
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: SingleChildScrollView(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -255,7 +256,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
                                       TextSpan(
                                         text: removeUserName(notificationsModel.notifications?[index].byUser?.fullName ?? "App", notificationsModel.notifications?[index].content ?? "",),
-                                        style:const TextStyle(
+                                        style: TextStyle(
                                           color: Color(0xFF505050),
                                           fontSize: 15,
                                           fontFamily: 'Roboto',
@@ -267,7 +268,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   ),
                                 ),
                               ),
-
 
                                // post
                                if("${notificationsModel.notifications?[index].type}" == "post")
@@ -389,6 +389,136 @@ class _NotificationScreenState extends State<NotificationScreen> {
           SizedBox(height: 20.ah),
         ],
       ),
+
+    /*  body: isLading ? const Center(
+        child: CircularProgressIndicator(strokeWidth: 1),
+      ) : notificationsModel.notifications == null || notificationsModel.notifications!.isEmpty
+          ? Center(
+        child: Text("no_notification_found".tr),
+      )
+          : ListView.builder(
+       // padding: EdgeInsets.symmetric(vertical: 20.ah),
+        padding: EdgeInsets.zero,
+        itemCount: notificationsModel.notifications!.length,
+        itemBuilder: (context, index) {
+          final notification = notificationsModel.notifications![index];
+          return Container(
+            margin: const EdgeInsets.only(bottom: 0),
+            padding:  EdgeInsets.symmetric(horizontal: 10,vertical: 10.ah),
+            height: 78.ah,
+            width: double.infinity,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                /// Profile image
+                CustomImageView(
+                  width: 56.adaptSize,
+                  height: 56.adaptSize,
+                  radius: BorderRadius.circular(100),
+                  imagePath: notification.byUser?.avatarUrl,
+                  onTap: () {
+                    Get.to(() => UserProfileScreen(
+                      userId: '${notification.byUser?.id}',
+                    ));
+                  },
+                ),
+
+                const SizedBox(width: 10),
+
+                /// Text
+                SizedBox(
+                  width: 180.aw,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text:
+                          '${notification.byUser?.fullName ?? "App Notification"} ',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: removeUserName(
+                            notification.byUser?.fullName ?? '',
+                            notification.content ?? '',
+                          ),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF505050),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                /// Post
+                if (notification.type == "post")
+                  CustomImageView(
+                    width: 48,
+                    height: 48,
+                    radius: BorderRadius.circular(8),
+                    imagePath: notification.data?.imageUrl,
+                  ),
+
+                /// Follow request
+                if (notification.type == "followRequest")
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          ApiRepository.acepedReqest(
+                            byUserId: notification.byUserId!,
+                            toUserId: notification.toUserId!,
+                            notificationId: notification.id!,
+                          );
+                          notificationsModel.notifications!
+                              .removeAt(index);
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF001649),
+                            borderRadius:
+                            BorderRadius.circular(4),
+                          ),
+                          child: const Text(
+                            'Accept',
+                            style:
+                            TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      InkWell(
+                        onTap: () async {
+                          await ApiRepository
+                              .deleteNotification(
+                              notificationID:
+                              "${notification.id}");
+                          notificationsModel.notifications!
+                              .removeAt(index);
+                          setState(() {});
+                        },
+                        child: const Icon(Icons.close,
+                            color: Color(0xFF001649)),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          );
+        },
+      ),*/
+
+
     );
   }
 }

@@ -761,17 +761,39 @@ class ApiRepository {
     return GetCommentsModel();
   }
 
-  static Future<bool> postCommentAll({
+  // static Future<bool> postCommentAll({
+  //   required String id,
+  //   required PostType postType,
+  //   required String comment,
+  // }) async {
+  //   Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "${postType.name}/comment/$id", body: {"content": comment});
+  //   if (response != null) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  static Future<PostCommentResponse> postCommentAll({
     required String id,
     required PostType postType,
     required String comment,
   }) async {
-    Map<String, dynamic>? response = await ApiClient().postRequest(endPoint: "${postType.name}/comment/$id", body: {"content": comment});
-    if (response != null) {
-      return true;
+
+    Map<String, dynamic>? response =
+    await ApiClient().postRequest(
+      endPoint: "${postType.name}/comment/$id",
+      body: {"content": comment},
+    );
+
+    if (response == null) {
+      return PostCommentResponse(
+        success: false,
+        message: "Something went wrong",
+      );
     }
-    return false;
+
+    return PostCommentResponse.fromJson(response);
   }
+
 
   static Future<bool> deleteCommentAll({required String id, required PostType postType, required String commentId}) async {
     Map<String, dynamic>? response = await ApiClient().deleteRequest(

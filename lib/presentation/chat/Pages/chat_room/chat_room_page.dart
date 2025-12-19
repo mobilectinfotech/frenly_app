@@ -301,9 +301,24 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   // }
 
   PreferredSizeWidget _buildCustomAppBar(BuildContext context) {
-    final ChatScreenController controllerChat = Get.put(ChatScreenController());
+    final ChatScreenController controllerChat = Get.find<ChatScreenController>();
     final myUserId = int.parse(PrefUtils().getUserId());
-    final otherUser = controllerChat.chatsModel.value!.chats!.first.participants!.firstWhere((p) => p.id != myUserId);
+
+    // // ✅ Find correct chat using chatId
+    // final chat = controllerChat.chatsModel.value!.chats!
+    //     .firstWhere((c) => c.id.toString() == widget.chatId);
+    //
+    // // ✅ Find other participant from that chat
+    // final otherUser = chat.participants!
+    //     .firstWhere((p) => p.id != myUserId);
+
+    final chat = controllerChat.chatsModel.value?.chats
+        ?.firstWhereOrNull((c) => c.id.toString() == widget.chatId);
+
+    // 🔹 FALLBACK: notification se aaye ho
+    final otherUser = chat != null
+        ? chat.participants!.firstWhere((p) => p.id != myUserId)
+        : widget.participant; // 👈 IMPORTANT
 
     return PreferredSize(
       preferredSize: Size.fromHeight(70),
