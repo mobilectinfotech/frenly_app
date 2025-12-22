@@ -324,6 +324,11 @@ class Messages extends Translations {
           "uploading": "uploading",
           "videoNotBeEmpty": "Video Not be Empty",
           "vlog_created_successfully": "vlog Created Successfully",
+          "post_shared_successfully": "Post shared successfully",
+          "blog_shared_successfully": "Blog shared successfully",
+          "vlog_shared_successfully": "Vlog shared successfully",
+
+          "profile_updated_successfully": "Profile updated successfully"
 
           // "Vlog_not_Found": "Vlog not Found",
           // "Blog_not_Found": "Blog not Found",
@@ -659,10 +664,15 @@ class Messages extends Translations {
           "videoNotBeEmpty": "Videon får inte vara tom",
           "vlog_created_successfully": "vlogg skapad",
 
+          "post_shared_successfully": "Inlägget har delats",
+          "blog_shared_successfully": "Bloggen har delats",
+          "vlog_shared_successfully": "Vloggen har delats",
+          "profile_updated_successfully": "Profilen har uppdaterats"
 
           // "Vlog_not_Found": "Vlogg hittades inte",
           // "Blog_not_Found": "Blogg hittades inte",
           // "Photo_not_Found": "Foto hittades inte"
+
         }
       };
 }

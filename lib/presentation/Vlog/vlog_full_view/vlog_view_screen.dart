@@ -1488,10 +1488,8 @@ class VlogBottomSheets {
                               Get.back();
                               CreateChatModel createChatModel =
                               await ApiRepository.createChat(
-                                  userId:
-                                  "${controller.allFriendsModel.value.friends?[index].id}");
-                              int indexxx =
-                              "${createChatModel.payload?.participants?[0].id}" ==
+                                  userId: "${controller.allFriendsModel.value.friends?[index].id}");
+                              int indexxx = "${createChatModel.payload?.participants?[0].id}" ==
                                   PrefUtils().getUserId()
                                   ? 1
                                   : 0;

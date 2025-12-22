@@ -282,7 +282,8 @@ class ApiRepository {
       body: data,
     );
     if (response != null) {
-      AppDialog.taostMessage("${response["message"]}");
+     // AppDialog.taostMessage("${response["message"]}");
+      AppDialog.taostMessage("profile_updated_successfully".tr);
       return true;
     }
     return false;
@@ -504,6 +505,7 @@ class ApiRepository {
     }
     return CreateChatModel();
   }
+  // /post/share/103
 
   //static Future<bool> postPost({required String photoPath, required String title}) async {
   static Future<bool> postPost({required String photoPath, required String title,required String location}) async {
@@ -849,10 +851,15 @@ class ApiRepository {
       body: {},
     );
 
-    if (response != null) {
-      AppDialog.taostMessage(
-        response["message"] ?? "Shared successfully",
-      );
+    // if (response != null) {
+    //   AppDialog.taostMessage(
+    //     response["message"] ?? "Shared successfully",
+    //   );
+    //   return true;
+    // }
+
+    if (response != null && response["success"] == true) {
+      AppDialog.taostMessage(_shareSuccessKey(postType).tr);
       return true;
     }
     return false;
@@ -866,7 +873,18 @@ class ApiRepository {
       case PostType.blog:
         return "blog/share/$id";
       case PostType.vlog:
-        return "vlog/share/$id"; // ✅ SINGULAR
+        return "vlog/share/$id"; // ✅SINGULAR
+    }
+  }
+
+  static String _shareSuccessKey(PostType type) {
+    switch (type) {
+      case PostType.post:
+        return "post_shared_successfully".tr;
+      case PostType.blog:
+        return "blog_shared_successfully".tr;
+      case PostType.vlog:
+        return "vlog_shared_successfully".tr;
     }
   }
 

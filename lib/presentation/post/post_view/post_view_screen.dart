@@ -518,7 +518,6 @@ class HighlightHashtags extends StatelessWidget {
   }
 }
 
-
 /* SizedBox(height: 10.ah),
             Row(
               children: [
