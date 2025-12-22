@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:frenly_app/Widgets/custom_appbar.dart';
 import 'package:frenly_app/core/utils/size_utils.dart';
 import 'package:frenly_app/data/repositories/api_repository.dart';
-
 import 'package:frenly_app/presentation/all_category/all_category_screen.dart';
 import 'package:frenly_app/presentation/all_saved/my_saved_screen.dart';
 import 'package:frenly_app/presentation/settings_screen/setting_controller.dart';

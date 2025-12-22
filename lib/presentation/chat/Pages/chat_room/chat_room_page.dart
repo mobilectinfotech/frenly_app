@@ -2053,20 +2053,21 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
 
       cam = CameraController(
         camera,
-        ResolutionPreset.high,
+       // ResolutionPreset.high,
+        ResolutionPreset.medium,  // 🔥 FIX: Medium instead of high (reduces buffer demand, fixes overflow)
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.jpeg,
       );
 
       await cam!.initialize();
       await cam!.setFlashMode(FlashMode.off);
+      await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
 
       if (mounted) setState(() {});
     } catch (e) {
       print("setupController error: $e");
       rethrow;
     }
-  //  await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
 
   }
 
@@ -2114,7 +2115,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
 
       await cam!.initialize();
       await cam!.startVideoRecording();
-
       recording = true;
       seconds = 0;
       timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -2240,7 +2240,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
             ),
           ),
 
-
           ///This Belove Code Camera is Proper in IOS Working
          /* Positioned.fill(
             child: SizedBox(
@@ -2257,7 +2256,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
               ),
             ),
           ),*/
-
 
           if (recording)
             Positioned(
