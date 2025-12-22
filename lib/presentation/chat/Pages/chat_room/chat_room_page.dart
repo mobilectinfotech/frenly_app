@@ -2061,7 +2061,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
 
       await cam!.initialize();
       await cam!.setFlashMode(FlashMode.off);
-      await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+      await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp); ///yeelagayabaadm
 
       if (mounted) setState(() {});
     } catch (e) {
@@ -2077,7 +2077,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     final lens = cam!.description.lensDirection == CameraLensDirection.back
         ? CameraLensDirection.front
         : CameraLensDirection.back;
-
     final camera = cameras!.firstWhere((c) => c.lensDirection == lens);
     await setupController(camera);
   }
