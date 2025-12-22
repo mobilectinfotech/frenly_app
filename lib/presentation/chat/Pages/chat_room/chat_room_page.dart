@@ -2031,7 +2031,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       errorMessage = "Camera unavailable. Please check permissions and restart app.";
       isLoading = false;
     });
-    Future.delayed(const Duration(seconds: 2), () => Get.back());
+    Future.delayed(const Duration(seconds: 2),() => Get.back());
   }
 
   Future initCamera() async {
@@ -2066,6 +2066,8 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       print("setupController error: $e");
       rethrow;
     }
+  //  await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp);
+
   }
 
   Future switchCamera() async {
@@ -2217,7 +2219,30 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
               ),
             ),
           ),*/
+
           Positioned.fill(
+            child: AspectRatio(
+              aspectRatio: cam!.value.aspectRatio,
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.identity()
+                  ..rotateZ(
+                    GetPlatform.isAndroid ? math.pi / 2 : 0,
+                  )
+                  ..scale(
+                    cam!.description.lensDirection == CameraLensDirection.front
+                        ? -1.0
+                        : 1.0,
+                    1.0,
+                  ),
+                child: CameraPreview(cam!),
+              ),
+            ),
+          ),
+
+
+          ///This Belove Code Camera is Proper in IOS Working
+         /* Positioned.fill(
             child: SizedBox(
               width: Get.width,
               height: Get.height,
@@ -2231,7 +2256,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
                 child: CameraPreview(cam!),
               ),
             ),
-          ),
+          ),*/
 
 
           if (recording)
@@ -2315,6 +2340,9 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     );
   }
 }
+
+
+
 
 
 class IOSAudioSessionHelper {
