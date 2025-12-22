@@ -725,8 +725,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 */
 
 
-  Future<CroppedFile?> imagePicker(
-      {required ImageSource source, CropAspectRatio? cropAspectRatio})
+  Future<CroppedFile?> imagePicker({required ImageSource source,
+    CropAspectRatio? cropAspectRatio})
   async {
     final ImagePicker _picker = ImagePicker();
     CroppedFile? _croppedFile;
@@ -767,7 +767,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           type: MessageType.image,
                         );
                       }
-
                       Navigator.pop(context);
                     },
                   ),
@@ -792,7 +791,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       }
                     Get.back();
                    // Get.back();
-                    },
+                  },
                   ),
 
                   ListTile(
@@ -803,7 +802,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       Get.back();
                     },
                   ),
-
                 ],
               ),
             ),
@@ -1315,13 +1313,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 //       AppDialog.taostMessage("Recording failed: $e");
 //     }
 //   }
-
-
-
-
-
-
-
 
 
 /*  Future<void> _recordAudio() async {
