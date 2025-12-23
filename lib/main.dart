@@ -9,7 +9,7 @@ import 'package:frenly_app/socket_service/socket_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'LifeCycleManager/life_cycle_manager.dart';
 import 'firebase_options.dart';
@@ -196,4 +196,4 @@ void setupTimeagoLocales() {
 // pod deintegrate
 // flutter build ios --config-only --release
 
-///Today 18 deccc aaj
+///Today 18 deccc aajjj
