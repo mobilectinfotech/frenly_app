@@ -16,6 +16,7 @@ import '../../Widgets/bottom_sheet_widgets.dart';
 import '../../core/utils/pref_utils.dart';
 import '../../localservice/local_service.dart';
 import '../../socket_service/socket_service.dart';
+import '../auth/login_screen/controller/login_controller.dart';
 import '../auth/login_screen/login_screen.dart';
 import '../my_block_list/my_blocklist_screen.dart';
 
@@ -939,6 +940,14 @@ class _SettingScreenState extends State<SettingScreen> {
 
 void onTapLogOutBtn() {
   PrefUtils().logout();
+  // Delete controllers
+  if (Get.isRegistered<LoginController>()) {
+    final loginController = Get.find<LoginController>();
+    loginController.emaillController.clear();
+    loginController.passworddController.clear();
+    Get.delete<LoginController>(force: true);
+  }
+
   // Get.delete<ShareController>(force: true);
    Get.delete<SaveController>(force: true);
   Get.offAll(() => const LoginScreen());

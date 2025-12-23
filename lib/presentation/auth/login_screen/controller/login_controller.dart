@@ -21,6 +21,13 @@ class LoginController extends GetxController {
     super.dispose();
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    emaillController.clear();
+    passworddController.clear();
+  }
+
   Future<void> loginWithEmail() async {
       isLoading(true);
     bool login = await ApiRepository.loginWithEmailPassword(
