@@ -42,9 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordVisible = true;
   }
 
-
-
-
   @override
   void dispose() {
     _sub?.cancel();

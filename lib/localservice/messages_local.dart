@@ -327,8 +327,9 @@ class Messages extends Translations {
           "post_shared_successfully": "Post shared successfully",
           "blog_shared_successfully": "Blog shared successfully",
           "vlog_shared_successfully": "Vlog shared successfully",
-
-          "profile_updated_successfully": "Profile updated successfully"
+          "profile_updated_successfully": "Profile updated successfully",
+          "invalid_login_credentials": "Invalid login credentials",
+          "login_success": "Login successful",
 
           // "Vlog_not_Found": "Vlog not Found",
           // "Blog_not_Found": "Blog not Found",
@@ -667,7 +668,9 @@ class Messages extends Translations {
           "post_shared_successfully": "Inlägget har delats",
           "blog_shared_successfully": "Bloggen har delats",
           "vlog_shared_successfully": "Vloggen har delats",
-          "profile_updated_successfully": "Profilen har uppdaterats"
+          "profile_updated_successfully": "Profilen har uppdaterats",
+          "invalid_login_credentials": "Ogiltig e-post eller lösenord",
+          "login_success": "Inloggning lyckades",
 
           // "Vlog_not_Found": "Vlogg hittades inte",
           // "Blog_not_Found": "Blogg hittades inte",

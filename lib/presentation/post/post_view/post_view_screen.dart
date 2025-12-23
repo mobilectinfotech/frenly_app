@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
@@ -13,6 +14,7 @@ import '../../../../Widgets/custom_image_view.dart';
 import '../../../../core/constants/my_colour.dart';
 import '../../../../core/utils/calculateTimeDifference.dart';
 import '../../../../data/repositories/api_repository.dart';
+import '../../../Widgets/kWidgetPhotoGalleryWidget.dart';
 import '../../Vlog/vlog_full_view/vlog_view_screen.dart';
 import '../../auth/my_profile_view/my_profile_screen.dart';
 import '../../search/search_page.dart';
@@ -111,6 +113,26 @@ class _PostViewScreenState extends State<PostViewScreen> {
               ),
               ),
             ),
+
+           /* SizedBox(height:20),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0.aw),
+              child: ClipRRect(
+                borderRadius:BorderRadius.circular(20.adaptSize),
+                child: InkWell(
+                  onTap: () {
+                    kWidgetPhotoGalleryWidget(
+                      imageUrls: [controller.postSingleViewModel.value?.post?.imageUrl??''],
+                    );
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl:controller.postSingleViewModel.value?.post?.imageUrl??'',
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder: (context, url, progress) => LinearProgressIndicator(),
+                  ),
+                ),
+              ),
+            ),*/
 
             // Padding(
             //   padding: EdgeInsets.all(20.0.aw),

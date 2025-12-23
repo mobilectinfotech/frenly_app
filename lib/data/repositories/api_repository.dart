@@ -73,7 +73,7 @@ class ApiRepository {
   }
 
   static Future<bool> loginWithBankID({String? fcmToken, required namestr, required personalNumberstr}) async {
-    print("line_no_59");
+    print("line_no_76");
     List<String> location = await getLocation();
     String fcm = await getFCMToken();
     var data = json.encode({"personalNumber": personalNumberstr, "full_name": namestr, "lat": location[0], "lng": location[1], "fcm_token": fcm});
