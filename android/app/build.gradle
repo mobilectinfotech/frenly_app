@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.cti.frenly"
-    compileSdk flutter.compileSdkVersion
+    compileSdk 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -54,9 +54,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.cti.frenly"
         minSdkVersion 24
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        targetSdkVersion 34
+        versionCode 3
+        versionName "1.0.2"
     }
 
     signingConfigs {
@@ -101,5 +101,5 @@ flutter {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
     // 🔥 ADD THIS: Google Play Core (latest compatible version)
-    implementation 'com.google.android.play:core:1.10.3'
+   // implementation 'com.google.android.play:core:1.10.3'
 }
