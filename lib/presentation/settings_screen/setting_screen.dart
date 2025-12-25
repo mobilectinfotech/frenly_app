@@ -860,7 +860,6 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
           );
         })
-
     );
   }
 
@@ -935,7 +934,6 @@ class _SettingScreenState extends State<SettingScreen> {
       },
     );
   }
-
 }
 
 void onTapLogOutBtn() {
