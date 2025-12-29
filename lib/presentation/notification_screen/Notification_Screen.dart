@@ -167,25 +167,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
 
-      body: notificationsModel.notifications?.length==0?Center(child:Text("no_notification_found".tr),):ListView(
+      body: notificationsModel.notifications?.length==0?Center(
+        child:Text("no_notification_found".tr)):
+      Column(
         children: [
           SizedBox(height: 20.ah),
           isLading ? SizedBox(
                   height: 500.ah,
                   child: Center(
-                      child: CircularProgressIndicator(strokeWidth: 1,
-                  )))
-              : ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: notificationsModel.notifications?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return SingleChildScrollView(
-                      child: Container(
-                        width: double.infinity,
-                        height: 78.ah,
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: SingleChildScrollView(
+                      child: CircularProgressIndicator(strokeWidth: 1.aw)))
+              : Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: notificationsModel.notifications?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          width: double.infinity,
+                          height: 78.ah,
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -381,14 +381,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
                             ],
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
+              ),
           SizedBox(height: 20.ah),
         ],
       ),
+    );
+  }
+}
 
     /*  body: isLading ? const Center(
         child: CircularProgressIndicator(strokeWidth: 1),
@@ -519,6 +521,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),*/
 
 
-    );
-  }
-}
+//     );
+//   }
+// }

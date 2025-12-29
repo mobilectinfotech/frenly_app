@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 176.ah,
-      child:   (controller.homeModel.usersInCities?.length == null || controller.homeModel.usersInCities!.isEmpty ) ?  Center(child:Text("no_active_user_found".tr),): ListView.builder(
+      child:(controller.homeModel.usersInCities?.length == null || controller.homeModel.usersInCities!.isEmpty ) ?  Center(child:Text("no_active_user_found".tr),): ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: controller.homeModel.usersInCities?.length,

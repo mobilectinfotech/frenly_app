@@ -34,7 +34,6 @@ class HomeController extends GetxController {
   Future<void> homepage() async {
     isLoading.value =true;
     try{
-
      final response   = await ApiRepository.homePage();
      homeData(response);
      homeData.refresh();

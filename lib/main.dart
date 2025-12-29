@@ -21,12 +21,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Get.put(PrefUtils(),permanent: true);
-
  // Get.put(SettingsController(), permanent: true);
   final localeService = LocaleService();
   final locale = await localeService.getLocale();
-  // FIX: Start socket globally
 
+  // FIX: Start socket globally
   await SocketService().socketConnect();
    print("Start socket globally");
 
@@ -85,7 +84,6 @@ Future<void> main() async {
   // FlutterError.onError = (errorDetails) {FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);};
   // PlatformDispatcher.instance.onError = (error, stack) {FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);return true;};
   ///for crush Analitics end
-
 
   setupTimeagoLocales();
   runApp(MyApp(locale: locale));

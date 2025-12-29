@@ -449,8 +449,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 ),
               ),
             ),
-            Text(
-              '${controller.getUserByIdModel.user?.country}',
+            Text('${controller.getUserByIdModel.user?.country}',
               style: TextStyle(
                 color: HexColor('#FFFFFF'),
                 fontWeight: FontWeight.w600,
@@ -458,12 +457,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ),
             ),
             Spacer(),
-            SizedBox(
-              width: 22.aw,
-            ),
-            SizedBox(
-              width: 20,
-            )
+            SizedBox(width: 22.aw),
+            SizedBox(width: 20)
           ],
         ),
       ),
@@ -484,12 +479,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: 15.0,
-              ),
-              child: Text(
-                '${controller.getUserByIdModel.user?.vlogs![index].title}'.tr,
+            Padding(padding: EdgeInsets.only(left: 15.0),
+              child: Text('${controller.getUserByIdModel.user?.vlogs![index].title}'.tr,
                 style: TextStyle(
                     color: HexColor('#FFFFFF'),
                     fontWeight: FontWeight.w700,
@@ -513,24 +504,21 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       imagePath: controller.getUserByIdModel.user!.avatarUrl,
                       radius: BorderRadius.circular(60),
                     ),
-                    Text(
-                      '  ${controller.getUserByIdModel.user!.fullName}  ',
+                    Text('  ${controller.getUserByIdModel.user!.fullName}  ',
                       style: TextStyle(
                         color: HexColor('#FFFFFF'),
                         fontWeight: FontWeight.w600,
                         fontSize: 11.fSize,
                       ),
                     ),
-                    Text(
-                      '${controller.getUserByIdModel.user?.vlogs![index].numberOfViews} "${"views".tr}"  ',
+                    Text('${controller.getUserByIdModel.user?.vlogs![index].numberOfViews} "${"views".tr}"  ',
                       style: TextStyle(
                         color: HexColor('#FFFFFF'),
                         fontWeight: FontWeight.w600,
                         fontSize: 11.fSize,
                       ),
                     ),
-                    Text(
-                      '${differenceInDays} ${"days_ago".tr}',
+                    Text('${differenceInDays} ${"days_ago".tr}',
                       style: TextStyle(
                         color: HexColor('#FFFFFF'),
                         fontWeight: FontWeight.w600,
@@ -589,9 +577,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       1,
       1,
     ];
-    return Obx(
-      () => Padding(
-        padding: const EdgeInsets.all(10.0),
+    return Obx(() => Padding(
+        padding:EdgeInsets.all(10.0.adaptSize),
         child: StaggeredGrid.count(
           crossAxisCount: 3,
           mainAxisSpacing: 4,
@@ -612,7 +599,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   fit: BoxFit.cover,
                   radius: BorderRadius.circular(10),
                 ),
-              )),
+              )
+              ),
             ),
           ),
         ),
@@ -621,6 +609,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   List<Post> postsList() => (controller.getUserByIdModel.user?.posts??[]);
+
 }
 extension StringExtensions on String {
   String get capitalize =>
