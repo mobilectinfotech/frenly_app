@@ -100,7 +100,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           await ApiRepository.deleteNotificationAll(postId: '');
                           setState(() {
                           });
-
                         },
                         child: Container(
                           height: 44.adaptSize,
