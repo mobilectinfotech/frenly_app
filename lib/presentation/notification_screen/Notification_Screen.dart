@@ -199,7 +199,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 },
                                 imagePath: notificationsModel.notifications?[index].byUser?.avatarUrl,
                                 radius : BorderRadius.circular(100),
-
                               ),
                               SizedBox(width: 10),
                               SizedBox(
@@ -209,9 +208,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     children: [
                                       TextSpan(
                                         text: '${notificationsModel.notifications?[index].byUser?.fullName ?? "App Notification"} ',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 15, fontFamily: 'Roboto',
+                                          fontSize: 15.adaptSize, fontFamily: 'Roboto',
                                           fontWeight: FontWeight.w500, height: 0),
 
                                         recognizer: TapGestureRecognizer()
@@ -232,6 +231,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                 print("Create chat failed: payload is null");
                                                 return;
                                               }
+
 
                                               // Choose correct participant
                                               final int indexxx =
