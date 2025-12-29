@@ -169,6 +169,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
       body: notificationsModel.notifications?.length==0?Center(
         child:Text("no_notification_found".tr)):
+
       Column(
         children: [
           SizedBox(height: 20.ah),
