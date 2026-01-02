@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:frenly_app/data/repositories/api_repository.dart';
 import 'package:get/get.dart';
 
@@ -11,10 +13,15 @@ class BlogListController extends GetxController{
     getBlogList();
   }
 
+  Future<void> refreshBlogList() async{
+    getBlogList();
+  }
+
 
   BlogListModel blogListModel= BlogListModel();
 
   RxBool isLoading =false.obs;
+
   getBlogList()async{
     isLoading.value =true;
    blogListModel =await ApiRepository.blog();

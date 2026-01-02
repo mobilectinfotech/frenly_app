@@ -21,6 +21,11 @@ class ChatScreenController extends GetxController{
     getchats(); //again refresh
   }
 
+
+  Future<void> refreshChatList() async {
+   return getchats();
+  }
+
   Rxn<ChatsModel> chatsModel =Rxn(null);
   RxBool isLoading =false.obs;
 

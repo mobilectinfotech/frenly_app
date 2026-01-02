@@ -2063,7 +2063,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
   Future startRecording() async {
     try {
       await cam?.dispose();
-
       cam = CameraController(
         cam!.description,
         ResolutionPreset.high,
@@ -2185,12 +2184,12 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
                 alignment: Alignment.center,
                 transform: Matrix4.identity()
                   ..rotateZ(
-                    GetPlatform.isAndroid ? math.pi / 2 : 0,
+                    GetPlatform.isAndroid ? math.pi / 2 : 100,
                   )
                   ..scale(
                     cam!.description.lensDirection == CameraLensDirection.front
-                        ? -1.0
-                        : 1.0,
+                        ? -2.0
+                        : 2.0,
                       1.0
                   ),
                 child: CameraPreview(cam!),

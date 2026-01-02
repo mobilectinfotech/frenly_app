@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';import 'package:frenly_app/data/models/blog_model.dart';
+import 'package:flutter/material.dart';
+import 'package:frenly_app/data/models/blog_model.dart';
 import 'package:frenly_app/data/models/post_model.dart';
 import 'package:frenly_app/data/models/vlog_model.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -57,111 +58,116 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           ? const Center(
               child: CircularProgressIndicator(strokeWidth: 1),
             )
-          : ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                imageView(),
-               SizedBox(height: 10.ah),
-                bioTexts(),
-                SizedBox(height: 20.ah),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0.aw, right: 10.aw),
-                  child: Container(
-                    height: 52.ah,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.adaptSize)),
-                    child: Padding(
-                      padding: EdgeInsets.all(6.0.adaptSize),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              activeIndex = 0;
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 95,
-                              decoration: BoxDecoration(
-                                  color: activeIndex == 0
-                                      ? Color(0xff001649)
-                                      : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(9.adaptSize)),
-                              child: Center(
-                                  child: Text(
-                                'Vlogs'.tr,
-                                style: TextStyle(
+          : RefreshIndicator(
+            onRefresh: () {
+              return controller.refreshProfile();
+            },
+            child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  imageView(),
+                 SizedBox(height: 10.ah),
+                  bioTexts(),
+                  SizedBox(height: 20.ah),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0.aw, right: 10.aw),
+                    child: Container(
+                      height: 52.ah,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.adaptSize)),
+                      child: Padding(
+                        padding: EdgeInsets.all(6.0.adaptSize),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                activeIndex = 0;
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 95,
+                                decoration: BoxDecoration(
                                     color: activeIndex == 0
-                                        ? Colors.white
-                                        : Colors.black54),
-                              )),
+                                        ? Color(0xff001649)
+                                        : Colors.transparent,
+                                    borderRadius:
+                                        BorderRadius.circular(9.adaptSize)),
+                                child: Center(
+                                    child: Text(
+                                  'Vlogs'.tr,
+                                  style: TextStyle(
+                                      color: activeIndex == 0
+                                          ? Colors.white
+                                          : Colors.black54),
+                                )),
+                              ),
                             ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              activeIndex = 1;
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 95,
-                              decoration: BoxDecoration(
-                                  color: activeIndex == 1
-                                      ? Color(0xff001649)
-                                      : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(9.adaptSize)),
-                              child: Center(
-                                  child: Text(
-                                'Blogs'.tr,
-                                style: TextStyle(
+                            InkWell(
+                              onTap: () {
+                                activeIndex = 1;
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 95,
+                                decoration: BoxDecoration(
                                     color: activeIndex == 1
-                                        ? Colors.white
-                                        : Colors.black54),
-                              )),
+                                        ? Color(0xff001649)
+                                        : Colors.transparent,
+                                    borderRadius:
+                                        BorderRadius.circular(9.adaptSize)),
+                                child: Center(
+                                    child: Text(
+                                  'Blogs'.tr,
+                                  style: TextStyle(
+                                      color: activeIndex == 1
+                                          ? Colors.white
+                                          : Colors.black54),
+                                )),
+                              ),
                             ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              activeIndex = 2;
-                              setState(() {});
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 95,
-                              decoration: BoxDecoration(
-                                  color: activeIndex == 2
-                                      ? Color(0xff001649)
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(9.adaptSize)),
-                              child: Center(
-                                  child: Text('Photos'.tr,
-                                style: TextStyle(
+                            InkWell(
+                              onTap: () {
+                                activeIndex = 2;
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 95,
+                                decoration: BoxDecoration(
                                     color: activeIndex == 2
-                                        ? Colors.white
-                                        : Colors.black54)
-                                  )),
+                                        ? Color(0xff001649)
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(9.adaptSize)),
+                                child: Center(
+                                    child: Text('Photos'.tr,
+                                  style: TextStyle(
+                                      color: activeIndex == 2
+                                          ? Colors.white
+                                          : Colors.black54)
+                                    )),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20.ah),
-                Column(
-                  children: [
-                    activeIndex == 0 ? _vlogs() : SizedBox(),
-                    activeIndex == 1 ? _blogs() : SizedBox(),
-                    activeIndex == 2 ? _photos() : SizedBox(),
-                  ],
-                ),
-                SizedBox(height: 80.ah),
-              ],
-            ),
+                  SizedBox(height: 20.ah),
+                  Column(
+                    children: [
+                      activeIndex == 0 ? _vlogs() : SizedBox(),
+                      activeIndex == 1 ? _blogs() : SizedBox(),
+                      activeIndex == 2 ? _photos() : SizedBox(),
+                    ],
+                  ),
+                  SizedBox(height: 80.ah),
+                ],
+              ),
+          ),
     );
   }
 

@@ -23,6 +23,11 @@ class MyProfileController extends GetxController {
 
   RxBool isLoading = false.obs;
 
+
+  Future<void> refreshProfile() async {
+    getProfile();
+  }
+
   getProfile() async {
     isLoading.value = true;
     final response = await ApiRepository.myProfile();

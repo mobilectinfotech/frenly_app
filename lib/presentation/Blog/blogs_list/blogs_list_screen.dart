@@ -25,9 +25,13 @@ class _BlogsListScreenState extends State<BlogsListScreen> {
       appBar: appBarPrimary( title: 'Blogs'.tr),
       body: Padding(
         padding:  EdgeInsets.only(top: 15.0.ah),
-        child: Obx(()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) : _blogs()),
+        child: Obx(()=>controller.isLoading.value ? const Center(child: CircularProgressIndicator(strokeWidth: 1,),) :
+        RefreshIndicator(
+            onRefresh: () {
+              return controller.refreshBlogList();
+            },
+            child: _blogs())),
       ),
-
     );
   }
   Widget _blogs() {

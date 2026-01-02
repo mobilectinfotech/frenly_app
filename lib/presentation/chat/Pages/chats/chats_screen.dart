@@ -38,11 +38,16 @@ class ChatsScreen extends StatelessWidget {
                   ? Center(
                       child: Text("no_chats_found".tr),
                     )
-                  : Obx(() => ListView.builder(
-                        itemCount: controller.chatsModel.value?.chats!.length,
-                        itemBuilder: (context, index) => chatsCard(index),
-              ),
-          ),
+                  : RefreshIndicator(
+                    onRefresh: () {
+                      return controller.refreshChatList();
+                    },
+                    child: Obx(() => ListView.builder(
+                          itemCount: controller.chatsModel.value?.chats!.length,
+                          itemBuilder: (context, index) => chatsCard(index),
+                                  ),
+                              ),
+                  ),
         ),
       ),
     );

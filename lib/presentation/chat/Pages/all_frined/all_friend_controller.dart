@@ -9,14 +9,9 @@ class AllFriendController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
   }
 
-
   AllFriendsModel allFriendsModel = AllFriendsModel();
-
-
-
 
   RxBool isLoading =false.obs;
   getAllFriends() async {
