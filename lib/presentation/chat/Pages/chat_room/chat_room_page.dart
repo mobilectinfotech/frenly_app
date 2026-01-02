@@ -2189,8 +2189,8 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
                   )
                   ..scale(
                     cam!.description.lensDirection == CameraLensDirection.front
-                        ? -1.9
-                        : 1.0,
+                        ? -2.2
+                        : 2.0,
                       1.0
                   ),
                 child: CameraPreview(cam!),
