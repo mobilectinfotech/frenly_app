@@ -2198,6 +2198,27 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
             ),
           ),
 
+         ///Ye Camera Position Fix Karne Se Pehle ka Code
+         /* Positioned.fill(
+            child: AspectRatio(
+              aspectRatio: cam!.value.aspectRatio,
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.identity()
+                  ..rotateZ(
+                    GetPlatform.isAndroid ? math.pi / 2 : 0,
+                  )
+                  ..scale(
+                      cam!.description.lensDirection == CameraLensDirection.front
+                          ? -1.0
+                          : 1.0,
+                      1.0
+                  ),
+                child: CameraPreview(cam!),
+              ),
+            ),
+          ),*/
+
           ///This Belove Code Camera is Proper in IOS Working
          /* Positioned.fill(
             child: SizedBox(
