@@ -548,11 +548,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemCount: blogsList().length,
-        padding: const EdgeInsets.only(bottom: 10),
+        padding:EdgeInsets.only(bottom: 10.adaptSize),
         itemBuilder: (context, index) {
           String ? jsonString = blogsList()[index].tags ;
           List<String> tagsList =jsonString==null ? [] : json.decode(jsonString).cast<String>();
-
           return CustomBlogCard(
             isown: true,
             blog: blogsList()[index],
@@ -591,15 +590,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               child: Center(
                   child: InkWell(
                 onTap: () {
-                  Get.to(() => PostViewScreen(id: "${controller.getUserByIdModel.user?.posts![index].id}", own: true,));
+                  Get.to(() => PostViewScreen(id: "${controller.getUserByIdModel.user?.posts![index].id}", own: true));
                 },
                 child: CustomImageView(
-                  imagePath:
-                      controller.getUserByIdModel.user?.posts![index].imageUrl,
+                  imagePath: controller.getUserByIdModel.user?.posts![index].imageUrl,
                   fit: BoxFit.cover,
-                  radius: BorderRadius.circular(10),
-                ),
-              )
+                  radius: BorderRadius.circular(10.adaptSize),
+                )
+                  )
               ),
             ),
           ),
@@ -607,7 +605,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       ),
     );
   }
-
   List<Post> postsList() => (controller.getUserByIdModel.user?.posts??[]);
 
 }

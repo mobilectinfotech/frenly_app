@@ -277,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
 
-                           SizedBox(height: 5.adaptSize),
+                          SizedBox(height: 5.adaptSize),
                           Text('${controller.homeModel.usersInCities?[index].userCount}'.tr,
                             style: TextStyle(
                               color: const Color(0xff000000),

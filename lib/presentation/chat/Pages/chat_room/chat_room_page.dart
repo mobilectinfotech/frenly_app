@@ -30,7 +30,6 @@ import '../../CustomUI/OwnMessgaeCrad.dart';
 import '../../CustomUI/ReplyCard.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-
 import '../chats/chats_controller.dart';   // <-- ADD THIS IMPORT
 
 enum MessageType { text, image, video, audio, gif }
@@ -53,7 +52,6 @@ class ChatRoomPage extends StatefulWidget {
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
   final ChatRoomController controller = Get.put(ChatRoomController(), permanent: true);
-  //final ChatRoomController controller = Get.put(ChatRoomController());
 
   final ImagePicker _picker = ImagePicker();
   final FocusNode focusNode = FocusNode();
@@ -72,17 +70,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 // 2. Recording flag
   bool _isRecording = false;
 
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   controller.currentParticipantId = widget.participant.id.toString();
-  //   _initializeChat();
-  //   _audioRecorder = FlutterSoundRecorder();
-  //   _initAudio();
-  //   focusNode.addListener(_handleFocusChange);
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -100,16 +87,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       statusText.refresh();
     });
   }
-
-
-  ///Pramod Code
-  // void _initializeChat() {
-  //   SocketService().activeChatId.value = int.parse(widget.chatId);
-  //    controller.getAllMsg(chatId: widget.chatId);
-  //   SocketService()._socket.emit("joinChat", chatId);
-  //   SocketService().joinChatRoom(widget.chatId);
-  //   _getLastSeen();
-  // }
 
   Future<void> _initializeChat() async {
     if (!SocketService().socket.connected) {
@@ -214,6 +191,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   //     locale: lang,
   //   );
   // }
+
   String formatLastSeen(DateTime dt) {
     final langCode = Get.locale?.languageCode;
 
@@ -275,7 +253,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 Expanded(
                   child: _buildMessageList(),
                 ),
-                // _buildMessageInput(),
+              //   _buildMessageInput(),
                 // SizedBox(height: 30.ah),
                 _buildMessageInputt(),
                 SizedBox(height: 10.ah),
@@ -304,14 +282,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     final ChatScreenController controllerChat = Get.find<ChatScreenController>();
     final myUserId = int.parse(PrefUtils().getUserId());
 
-    // // ✅ Find correct chat using chatId
-    // final chat = controllerChat.chatsModel.value!.chats!
-    //     .firstWhere((c) => c.id.toString() == widget.chatId);
-    //
-    // // ✅ Find other participant from that chat
-    // final otherUser = chat.participants!
-    //     .firstWhere((p) => p.id != myUserId);
-
     final chat = controllerChat.chatsModel.value?.chats
         ?.firstWhereOrNull((c) => c.id.toString() == widget.chatId);
 
@@ -326,12 +296,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         return customAppbarForChat(
           userId: widget.participant.id.toString(),
           context: context,
-          //handle: lastSeenUser
           handle: controller.statusText.value, //LIVE STRING
           name: widget.participant.fullName?.capitalizeFirst,
          // imagepath: widget.participant.avatarUrl,
           imagepath: fixedAvatar(otherUser.avatarUrl),
-          // imagepath: otherUser.avatarUrl, // ✅ CORRECT,
         );
       }),
     );
@@ -340,8 +308,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   String? fixedAvatar(String? url) {
     if (url == null) return null;
     if (url.contains('https://www.frenly.se:4000/images/https')) {
-      return url.replaceFirst(
-        'https://www.frenly.se:4000/images/',
+      return url.replaceFirst('https://www.frenly.se:4000/images/',
         '',
       );
     }
@@ -358,15 +325,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-            // SizedBox(height: 10.v),
               _buildTimestamp(index),
              SizedBox(height: 10.ah),
               isOwnMessage
                   ? OwnMessageCard(
                 message: message,
                 createdAt: message.createdAt!.toLocal()
-              ):
-              ReplyCard(
+              ): ReplyCard(
                 message: message,
                 createdAt: message.createdAt!.toLocal(),
               ),
@@ -381,11 +346,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     try {
       final currentMessage = controller.allMsg.messages![index];
       final previousMessage = controller.allMsg.messages![index + 1];
-
       if (formatTimestamp(currentMessage.createdAt!) != formatTimestamp(previousMessage.createdAt!)) {
         return Text(formatTimestamp(currentMessage.createdAt!).capitalizeFirst!,
           style: TextStyle(fontSize: 15.adaptSize,
-            fontWeight: FontWeight.w600, fontFamily: "Roboto",
+            fontWeight: FontWeight.w600,
+            fontFamily: "Roboto",
           ));
       }
     } catch (e) {
@@ -394,7 +359,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     return const SizedBox.shrink();
   }
 
-  Widget _buildMessageInput() {
+  /*Widget _buildMessageInput() {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -410,9 +375,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         ),
       ),
     );
-  }
+  }*/
 
-  Widget _buildTextInput() {
+ /* Widget _buildTextInput() {
     return Container(
       width: 305.aw,
       child: TextFormField(
@@ -430,8 +395,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         decoration: _inputDecoration(),
       ),
     );
-  }
+  }*/
 
+/*
   InputDecoration _inputDecoration() {
     return InputDecoration(
       hintText: "Messages".tr,
@@ -474,6 +440,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
+*/
 
   Widget _buildSendButton() {
     return CircleAvatar(
@@ -658,7 +625,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       Permission.camera,
       Permission.microphone,
     ].request();
-
     final camera = results[Permission.camera]!;
     final mic = results[Permission.microphone]!;
 
@@ -745,6 +711,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     return _croppedFile;
   }
 
+/*
   void _showImagePiker() {
     showModalBottomSheet(
         context: context,
@@ -808,6 +775,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           );
         });
   }
+*/
 
   Widget _iconButton(IconData icon, VoidCallback onTap, {
         Color color = Colors.black54,
@@ -863,7 +831,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 */
 
-  Future<void> _captureMedia() async {
+  /*Future<void> _captureMedia() async {
     final XFile? file = await _picker.pickMedia();
 
     if (file == null) return;
@@ -881,11 +849,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         type: MessageType.image,
       );
     }
-  }
+  }*/
 
   Future<void> captureVideo() async {
     final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
-
     if (video != null) {
       await controller.sendMedia(
         chatId: widget.chatId,
@@ -945,7 +912,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     );
   }
 
-
   Future<void> _pickFromGallery() async {
     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
     if (file != null) {
@@ -956,6 +922,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       );
     }
   }
+
 
   Future<String> downloadGif(String url) async {
     final response = await Dio().get(url, options: Options(responseType: ResponseType.bytes));
@@ -985,6 +952,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   // Future<void> _initAudio() async {
   //   await _audioRecorder.openRecorder();
   // }
+
   /*
   Future<void> _recordAudio() async {
     // 1️⃣ Request mic permission
@@ -1036,7 +1004,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   }
 */
 
-
   // Future<void> _initAudio() async {
   //   try {
   //     await _audioRecorder.openRecorder();
@@ -1048,6 +1015,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
 
   // Updated _initAudio (add AVAudioSession config for iOS volume)
+
   Future<void> _initAudio() async {
     try {
       await _audioRecorder.openRecorder();
@@ -1060,13 +1028,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       //   // await session.setActive(true);
       //   print("✅ iOS AVAudioSession configured for full volume");
       // }
+
     } catch (e) {
       print("❌ Audio init error: $e");
     }
   }
 
 // Updated _recordAudio with bitrate/sampleRate for speed fix
-
 
   Future<void> _recordAudio() async {
     print("🔊 _recordAudio called - isRecording: $_isRecording");
@@ -2053,7 +2021,6 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       await cam!.initialize();
       await cam!.setFlashMode(FlashMode.off);
       await cam!.lockCaptureOrientation(DeviceOrientation.portraitUp); ///yeelagayabaadm
-
       if (mounted) setState(() {});
     } catch (e) {
       print("setupController error: $e");
@@ -2157,14 +2124,15 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.camera, color: Colors.red, size: 64),
-              const SizedBox(height: 16),
+               Icon(Icons.camera, color: Colors.red, size: 64.adaptSize),
+               SizedBox(height: 16.adaptSize),
               Text(
                 errorMessage!,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
+                style:TextStyle(color: Colors.white, fontSize: 16.adaptSize),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+
+              SizedBox(height: 16.adaptSize),
               ElevatedButton(
                 onPressed: _initWithRetry,
                 child: const Text("Retry"),
@@ -2185,7 +2153,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // 🔥 FIXED SYNTAX: Proper nesting for Transform child
+          // 🔥FIXED SYNTAX: Proper nesting for Transform child
          /* Positioned.fill(
             child: OverflowBox(
               maxHeight: double.infinity,
@@ -2223,7 +2191,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
                     cam!.description.lensDirection == CameraLensDirection.front
                         ? -1.0
                         : 1.0,
-                    1.0,
+                      1.0
                   ),
                 child: CameraPreview(cam!),
               ),
@@ -2253,8 +2221,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
               left: 0.adaptSize,
               right: 0.adaptSize,
               child: Center(
-                child: Text(
-                  "$seconds s",
+                child: Text("$seconds s",
                   style: TextStyle(color: Colors.red, fontSize: 22.fSize),
                 ),
               ),
@@ -2331,13 +2298,10 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
 
 
 
-
-
 class IOSAudioSessionHelper {
   /// Call BEFORE recording
   static Future<void> prepareForRecording() async {
     if (!Platform.isIOS) return;
-
     final session = await AudioSession.instance;
     await session.configure(
        AudioSessionConfiguration(
@@ -2361,7 +2325,6 @@ class IOSAudioSessionHelper {
     await session.setActive(true);
   }
 }
-
 
 
 /*
@@ -2673,7 +2636,8 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
       ),
     );
   }
-}*/
+}
+*/
 
 
 // <?xml version="1.0" encoding="UTF-8"?>
