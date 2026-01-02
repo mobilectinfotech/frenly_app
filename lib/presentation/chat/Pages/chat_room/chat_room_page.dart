@@ -936,7 +936,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     final gif = await GiphyPicker.pickGif(
       context: context,
       apiKey: 'hffmbZdBZrBpe9zrzw8AHJwlWNGJDGXt',
-      showPreviewPage: false, // 🚀 remove preview
+      showPreviewPage: false, // 🚀remove preview
     );
     if (gif != null && gif.images.original != null) {
       final gifUrl = gif.images.original!.url!;
@@ -1165,8 +1165,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     }
   }
 
-
-
 // // Updated _ensureMicPermission with iOS workaround
 //   Future<bool> _ensureMicPermission() async {
 //     try {
@@ -1281,7 +1279,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 //       AppDialog.taostMessage("Recording failed: $e");
 //     }
 //   }
-
 
 /*  Future<void> _recordAudio() async {
     // 🔥 FIX: permission logic
@@ -1993,6 +1990,7 @@ class _WhatsappCameraScreenState extends State<WhatsappCameraScreen> {
     Future.delayed(const Duration(seconds: 2),() => Get.back());
   }
 
+
   Future initCamera() async {
     try {
       cameras = await availableCameras();
@@ -2338,7 +2336,6 @@ class IOSAudioSessionHelper {
   /// Call AFTER recording (VERY IMPORTANT)
   static Future<void> prepareForPlayback() async {
     if (!Platform.isIOS) return;
-
     final session = await AudioSession.instance;
     await session.configure(
       const AudioSessionConfiguration.music(),
